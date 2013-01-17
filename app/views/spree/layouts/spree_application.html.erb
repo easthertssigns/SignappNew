@@ -1,0 +1,38 @@
+<!doctype html>
+
+<!--[if lt IE 7 ]>
+<html class="ie ie6" lang="en"> <![endif]-->
+<!--[if IE 7 ]>
+<html class="ie ie7" lang="en"> <![endif]-->
+<!--[if IE 8 ]>
+<html class="ie ie8" lang="en"> <![endif]-->
+<!--[if IE 9 ]>
+<html class="ie ie9" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html lang="en"><!--<![endif]-->
+
+<head data-hook="inside_head">
+  <%= yield :javascript_includes %>
+  <%= render :partial => 'spree/shared/head' %>
+</head>
+
+<body class="<%= body_class %>" id="<%= @body_id || 'default' %>" data-hook="body">
+<%= render "/refinery/header" %>
+
+<% if content_for?(:sidebar) %>
+    <aside id="sidebar" class="columns alpha four" data-hook>
+      <%= yield :sidebar %>
+    </aside>
+<% end %>
+
+<%= breadcrumbs(@taxon) %>
+<%= flash_messages %>
+<%= yield %>
+
+<%= render "/refinery/footer" %>
+
+<%= render :partial => 'spree/shared/google_analytics' %>
+
+</body>
+
+</html>

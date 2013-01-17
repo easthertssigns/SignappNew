@@ -1,0 +1,21 @@
+<%= render :partial => 'spree/admin/shared/product_sub_menu' %>
+
+<h1>Add Sign Shape</h1>
+
+<%= form_for @shape, :url => "/admin/new_sign_shape", :html => { :multipart => true } do |form| %>
+    <div>
+      <%= form.label "Sign Shape Name" %>
+      <%= form.text_field :name %>
+    </div>
+    <div>
+      <%= form.label "Sign Shape Description" %>
+      <%= form.text_area :description %>
+    </div>
+    <div>
+      <%= form.file_field :svg_file %>
+    </div>
+    <%= hidden_field_tag "shape_id", "0" %>
+    <div>
+      <%= form.submit "Save" %>
+    </div>
+<% end %>

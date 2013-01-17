@@ -1,0 +1,94 @@
+<% content_for :stylesheets do %>
+    <%= stylesheet_link_tag 'store' %>
+    <%= stylesheet_link_tag 'style' %>
+<% end %>
+
+<% content_for :javascripts do %>
+    <%= javascript_include_tag('quicksand') %>
+<% end %>
+
+<script type="text/javascript">
+    $(function () {
+        $("#taxon-sort-all").click(function (e) {
+            $('#source').quicksand($('#dest-all li'));
+            e.preventDefault();
+        });
+
+        <% @taxon.children.each do |taxon| %>
+        $("#taxon-sort-<%= taxon.id %>").click(function (e) {
+            $('#source').quicksand($('#dest-<%= taxon.id %> li'));
+            e.preventDefault();
+        });
+        <% end %>
+    });
+</script>
+
+<h1 class="taxon-title">Choose a Material</h1>
+
+<% content_for :sidebar do %>
+    <div data-hook="taxon_sidebar_navigation">
+      <%= render :partial => 'spree/shared/taxonomies' %>
+      <%= render :partial => 'spree/shared/filters' if @taxon.children.empty? %>
+    </div>
+<% end %>
+
+<% if @taxon.children.empty? || !params[:keywords].blank? %>
+    <div class="blueBackground" data-hook="taxon_products">
+      <%= render :partial => 'spree/shared/products', :locals => {:products => @products, :taxon => @taxon} %>
+    </div>
+<% else %>
+    <div class="blueBackground" data-hook="taxon_children">
+      <div class="container_12">
+        <ul class=" MaterialSelector">
+          <li><a href="#" id="taxon-sort-all">All</a></li>
+          <% @taxon.children.each do |taxon| %>
+              <li><a href="#" id="taxon-sort-<%= taxon.id %>"><%= taxon.name %></a></li>
+          <% end %>
+        </ul>
+
+        <div class="clearfix"></div>
+
+        <div class="taxon-listing">
+          <ul id="source">
+            <% @taxon.children.each do |taxon| %>
+                <% get_products(taxon).each do |product| %>
+                    <li data-id="taxon-<%= product.id %>">
+                      <%= render :partial => 'spree/products/product', :locals => {:product => product} %>
+                    </li>
+                <% end %>
+            <% end %>
+          </ul>
+
+          <!-- hidden content -->
+
+          <div class="clearfix"></div>
+        </div>
+
+        <div style="display: none;">
+          <ul id="dest-all">
+            <!-- All -->
+            <% @taxon.children.each do |taxon| %>
+                <% get_products(taxon).each do |product| %>
+                    <li data-id="taxon-<%= product.id %>">
+                      <%= render :partial => 'spree/products/product', :locals => {:product => product} %>
+                    </li>
+                <% end %>
+            <% end %>
+          </ul>
+
+          <% @taxon.children.each do |taxon| %>
+              <!-- dest-<%= taxon.id %> content -->
+              <ul id="dest-<%= taxon.id %>">
+                <% get_products(taxon).each do |product| %>
+                    <li data-id="taxon-<%= product.id %>">
+                      <%= render :partial => 'spree/products/product', :locals => {:product => product} %>
+                    </li>
+                <% end %>
+              </ul>
+          <% end %>
+        </div>
+
+        <!-- end hidden content -->
+      </div>
+    </div>
+<% end %>

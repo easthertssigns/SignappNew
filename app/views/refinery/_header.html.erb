@@ -1,0 +1,111 @@
+<header>
+  <div class="container_12">
+    <div class="grid_2">
+      <%= link_to image_tag('header-logo.png', :width => 135, :height => 77, :alt => Refinery::Core.site_name), refinery.root_path, :class => "logo" %>
+    </div>
+    <div class="grid_10">
+      <div class="floatRight">
+        <ul class="subNav">
+          <% if session[:account_id] %>
+              <li>
+                <%= link_to "Log Out", "/customer_account/logout" %>
+              </li>
+          <% else %>
+              <li><a href="/account/login">Log In / Register</a></li>
+          <% end %>
+        </ul>
+        <%= render :partial => 'spree/shared/minicart' %>
+      </div>
+    </div>
+    <div class="grid_10">
+      <nav id="menu" class="menu">
+        <ul>
+          <li><a href="#">Home</a></li>
+          <li class="topLevel"><a href="#">Shop for Ideas</a>
+
+            <div class="megaMenu">
+              <% get_taxonomies.each do |taxonomy| %>
+                  <ul>
+                    <li>
+                      <h4 class='taxonomy-root'><%= link_to taxonomy.name, seo_url(taxonomy.root) %></h4>
+                    </li>
+                    <%= taxons_tree(taxonomy.root, @taxon, Spree::Config[:max_level_in_taxons_menu] || 1) %>
+                  </ul>
+              <% end %>
+              <!--              <ul>
+             <li><h4><a href="#">Sign Types</a></h4></li>
+             <li><a href="#">Bus Scrolls</a></li>
+             <li><a href="#">Something Awesome</a></li>
+             <li><a href="#">Most Things</a></li>
+             <li><a href="#">(Hopefully)</a></li>
+             <li><a href="#">House Signs</a></li>
+             <li><a href="#">Safety &amp; Plaques</a></li>
+             <li><a href="#">Business Plaques</a></li>
+             <li><a href="#">Fascias</a></li>
+             <li><a href="#">School Signs &amp; Safety</a></li>
+             <li><a href="#">Pop-up, Standard etc.</a></li>
+           </ul>
+           <ul>
+             <li><h4><a href="#">Materials</a></h4></li>
+             <li><a href="#">Slate</a></li>
+             <li><a href="#">Corian&reg; (Stone Effect)</a></li>
+                <li><a href="#">Oak</a></li>
+                <li><a href="#">Mahogany</a></li>
+                <li><a href="#">Brass</a></li>
+                <li><a href="#">Bronze</a></li>
+                <li><a href="#">Stainless Steel</a></li>
+                <li><a href="#">Aluminium</a></li>
+                <li><a href="#">Alu-Dibond</a></li>
+                <li><a href="#">Foamex (PVC Plastic)</a></li>
+                <li><a href="#">Rigid PVC Plastic</a></li>
+                <li><a href="#">Perspex</a></li>
+                <li><a href="#">Vinyl</a></li>
+                <li><a href="#">Paper</a></li>
+                <li><a href="#">Canvas</a></li>
+                <li><a href="#">Magnetic</a></li>
+                <li><a href="#">Banner Material</a></li>
+              </ul>-->
+              <div class="blueColumn">
+                <h4>What's Hot</h4>
+                <img src="/assets/our-products-whats-hot.jpg" width="234" height="130">
+                <h5>UK Olympics 2012 Bus Scroll</h5>
+
+                <p>In aenean vut phasellus enim lundium sed augue nisi amet elit sagittis!</p>
+
+                <p class="price">From <span>£49.99</span></p>
+                <a href="#" class="button red">Buy</a><a href="#" class="button">Customise</a>
+                <a href="#" class="customisation">How does customisation work?</a>
+
+                <div class="clearfix"></div>
+              </div>
+            </div>
+          </li>
+          <li class="topLevel"><a href="#">Business Signs</a>
+
+            <div class="megaMenu">
+              <ul>
+                <li><h4><a href="#">Business Signs</a></h4></li>
+                <li><a href="#">Prohibition</a></li>
+                <li><a href="#">Mandatory</a></li>
+                <li><a href="#">Hazard</a></li>
+                <li><a href="#">Road Signs</a></li>
+                <li><a href="#">Fire Fighting</a></li>
+                <li><a href="#">Fire Action</a></li>
+                <li><a href="#">Fire Door</a></li>
+                <li><a href="#">Fire Exit</a></li>
+                <li><a href="#">Emergency Exit</a></li>
+                <li><a href="#">No Smoking</a></li>
+                <li><a href="#">CCTV</a></li>
+                <li><a href="#">Electrical Warning</a></li>
+              </ul>
+            </div>
+          </li>
+          <li><a href="#" class="button createASign">Create a Sign</a></li>
+        </ul>
+      </nav>
+      <div class="search">
+        <%= render :partial => 'spree/shared/search' %>
+      </div>
+    </div>
+  </div>
+</header>

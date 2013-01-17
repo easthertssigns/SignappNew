@@ -1,0 +1,18 @@
+<h1>Edit Graphic</h1>
+
+<%= form_for @sign_base_shape, :url => "/admin/sign_shape/" + @sign_base_shape.id.to_s, :html => { :multipart => true }, :method => :put do |form| %>
+    <div>
+      <%= form.label "Sign Shape Name" %>
+      <%= form.text_field :name %>
+    </div>
+    <div>
+      <%= form.label "Description" %>
+      <%= form.text_area :description %>
+    </div>
+    <div>
+      <%= form.file_field :svg_file %>
+    </div>
+    <div>
+      <%= form.submit "Save" %>
+    </div>
+<% end %>

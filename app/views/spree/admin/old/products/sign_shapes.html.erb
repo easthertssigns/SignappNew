@@ -1,0 +1,27 @@
+<%= render :partial => 'spree/admin/shared/product_sub_menu' %>
+
+
+
+<h1>Sign Base Shapes</h1>
+<div id="new_sign_shape"><a href="/admin/add_sign_shape">Add New Shape</a></div>
+<table class="index" id="listing_products">
+  <tr data-hook="admin_products_index_headers">
+    <th>Thumbnail</th>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Actions</th>
+  </tr>
+<% @shapes.each do |s| %>
+  <tr>
+    <td><%= image_tag s.svg_file.url(:thumb) %></td>
+    <td><a href="/admin/show_sign_shape?shape_id=<%= s.id %>"><%= s.name %></a></td>
+    <td><%= s.description %></td>
+    <td class="actions" data-hook="admin_products_index_row_actions">
+      <a href="/admin/edit_sign_shape?shape_id=<%= s.id %>" class="edit">Edit</a>
+      &nbsp;
+      <a href="/admin/delete_sign_shape?shape_id=<%= s.id %>" class="delete">Delete</a>
+    </td>
+  </tr>
+<% end %>
+</table>
+<%= paginate @shapes %>

@@ -1,0 +1,61 @@
+<footer>
+  <div class="container_12">
+    <div class="grid_4">
+      <h3>Customer Service</h3>
+
+      <p>Our sales and customer service team is available:</p>
+
+      <p><strong>9am to 5pm - Monday to Friday</strong></p>
+      <h4 class="contactTelephone">Contact Telephone: <span>01234 567 890</span></h4>
+
+      <p class="emailAddress">Email Address:
+        <a href="mailto:customerservice@signapp.com">customerservice@signapp.com</a></p>
+      </a></p>
+    </div>
+    <div class="grid_4">
+      <h3>We accept:</h3>
+
+      <div class="card visa"></div>
+      <div class="card mastercard"></div>
+      <div class="card maestro"></div>
+      <div class="card paypal"></div>
+      <div class="clearfix"></div>
+      <h3 class="newsletter">Newsletter:</h3>
+
+      <p>Full of offers, news and more!</p>
+      <%= form_tag do %>
+          <%= text_field_tag(:newsletter, "", :placeholder => "Enter your email address here...") %>
+          <%= submit_tag("Submit") %>
+      <% end %>
+    </div>
+    <div class="grid_4">
+      <p class="sellingPoint delivery">Delivery to the UK in 4 working days</p>
+
+      <p class="sellingPoint exchange">30 day exchange policy</p>
+
+      <p class="sellingPoint international">International delivery available</p>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <div class="container_12">
+    <div class="grid_4">
+      <ul class="links">
+        <li><a href="#">About</a></li>
+        <li><a href="#">Terms &amp; Conditions</a></li>
+        <li><a href="#">Privacy Policy</a></li>
+        <li><a href="#">Company Information</a></li>
+        <li><a href="#">Contact Us</a></li>
+      </ul>
+    </div>
+    <div class="grid_4">
+      &nbsp;
+      <!--Facebook & Twitter-->
+    </div>
+    <div class="grid_4">
+      <a href="http://www.wearealight.com" title="Alight Digital Design Agency" class="alight">Alight Digital Design
+        Agency</a>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+</footer>
+

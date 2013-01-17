@@ -1,0 +1,15 @@
+<h3>Categories</h3>
+<table width="50%">
+  <% count = 1 %>
+  <% @categories_for_graphic.each do |c| %>
+    <% if count == 1 %>
+      <tr>
+    <% end %>
+      <td width="33%"><%= check_box_tag "category[category_id][#{c[:id]}]", c[:id], c[:selected] %><%= c[:name] %></td>
+      <% count = count+1 %>
+    <% if count > 3 %>
+      </tr>
+    <% count = 1
+       end %>
+  <% end %>
+</table>

@@ -1,0 +1,32 @@
+<tr class="<%= cycle('', 'alt') %>">
+  <td class="imageColumn" data-hook="minicart_item_image">
+    <% if variant.images.length == 0 %>
+        <%#= link_to minibasket_image(variant.product), variant.product %>
+    <% else %>
+        <%= link_to image_tag(variant.images.first.attachment.url(:minibasket)), variant.product %>
+    <% end %>
+  </td>
+  <td class="descriptionColumn" data-hook="minicart_item_description">
+    <div data-hook="minicart_item_name">
+      <strong><%= link_to variant.product.name, spree.product_path(variant.product) %></strong><br>
+      Attributes: <%= variant.options_text %>
+      <br>
+      <%= "Quantity: #{line_item.quantity}" -%>
+      <% if @minicart_order.insufficient_stock_lines.include? line_item %>
+          <%= variant.in_stock? ? t(:insufficient_stock, :on_hand => variant.on_hand) : t(:out_of_stock) %>
+          <br/>
+      <% end %>
+    </div>
+  </td>
+  <td class='priceColumn' data-hook="minicart_item_actions">
+    <div data-hook="minicart_item_quantity">
+      <%= item_form.hidden_field :quantity, :min => 0, :class => "line_item_quantity" %>
+    </div>
+    <div data-hook="minicart_item_delete">
+      <%= link_to t("delete"), '#', :class => 'delete', :id => "delete_#{dom_id(line_item)}" %>
+    </div>
+    <div data-hook="minicart_item_total">
+      <strong><%= number_to_currency(line_item.price * line_item.quantity) unless line_item.quantity.nil? %></strong>
+    </div>
+  </td>
+</tr>

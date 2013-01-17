@@ -1,0 +1,112 @@
+<h1><%= t(:user_account) %></h1>
+
+<table>
+  <tr data-hook="email">
+    <th><%= t(:email) %></th>
+    <td>
+      <%= @user.email %>
+    </td>
+  </tr>
+  <tr data-hook="bill_address">
+      <th><%= t(:billing_address) %></th>
+      <td>
+        <% if @user.bill_address_id.blank? %>
+              No Billing Address Entered
+              <% else %>
+            <% unless @user.bill_address.firstname.blank? && @user.bill_address.lastname.blank? %>
+                       <%= @user.bill_address.firstname + " " + @user.bill_address.lastname %><br/>
+                   <% end %>
+                   <% unless @user.bill_address.company.blank? %>
+                       <%= @user.bill_address.company %><br/>
+                   <% end %>
+                   <% unless @user.bill_address.address1.blank? %>
+                       <%= @user.bill_address.address1 %><br/>
+                   <% end %>
+                   <% unless @user.bill_address.address2.blank? %>
+                       <%= @user.bill_address.address2 %><br/>
+                   <% end %>
+                   <% unless @user.bill_address.city.blank? %>
+                       <%= @user.bill_address.city %><br/>
+                   <% end %>
+                   <% unless @user.bill_address.state_id.blank? %>
+                       <%= @user.bill_address.state.name %> <br/>
+                   <% end %>
+                   <% unless @user.bill_address.zipcode.blank? %>
+                       <%= @user.bill_address.zipcode %><br/>
+                   <% end %>
+                   <% unless @user.bill_address.country_id.blank? %>
+                       <%= @user.bill_address.country.name %> <br/>
+                   <% end %>
+                   <% unless @user.bill_address.phone.blank? %>
+                       <%= @user.bill_address.phone %> <br/>
+                   <% end %>
+                   <% unless @user.bill_address.alternative_phone.blank? %>
+                       <%= @user.bill_address.alternative_phone %> </br>
+                   <% end %>
+              <% end %>
+      </td>
+    </tr>
+  <tr data-hook="ship_address">
+        <th><%= t(:shipping_address) %></th>
+        <td>
+          <% if @user.ship_address_id.blank? %>
+                   No Shipping Address Entered
+                   <% else %>
+                       <% if @user.ship_address_id == @user.bill_address_id %>
+                       Shipping Address same as Billing Address
+                       <% else %>
+                           <% unless @user.ship_address.firstname.blank? && @user.ship_address.lastname.blank? %>
+                               <%= @user.ship_address.firstname + " " + @user.ship_address.lastname %><br/>
+                           <% end %>
+                           <% unless @user.ship_address.company.blank? %>
+                               <%= @user.ship_address.company %><br/>
+                           <% end %>
+                           <% unless @user.ship_address.address1.blank? %>
+                               <%= @user.ship_address.address1 %><br/>
+                           <% end %>
+                           <% unless @user.ship_address.address2.blank? %>
+                               <%= @user.ship_address.address2 %><br/>
+                           <% end %>
+                           <% unless @user.ship_address.city.blank? %>
+                               <%= @user.ship_address.city %><br/>
+                           <% end %>
+                           <% unless @user.ship_address.state_id.blank? %>
+                               <%= @user.ship_address.state.name %> <br/>
+                           <% end %>
+                           <% unless @user.ship_address.zipcode.blank? %>
+                               <%= @user.ship_address.zipcode %><br/>
+                           <% end %>
+                           <% unless @user.ship_address.country_id.blank? %>
+                               <%= @user.ship_address.country.name %> <br/>
+                           <% end %>
+                           <% unless @user.ship_address.phone.blank? %>
+                               <%= @user.ship_address.phone %> <br/>
+                           <% end %>
+                           <% unless @user.ship_address.alternative_phone.blank? %>
+                               <%= @user.ship_address.alternative_phone %> </br>
+                           <% end %>
+                       <% end %>
+                   <% end %>
+  </td>
+  </tr>
+  <tr data-hook="roles">
+    <th><%= t(:roles) %></th>
+    <td>
+      <%= list_roles(@user) %>
+    </td>
+  </tr>
+  <tr data-hook="notes">
+      <th><%= t(:notes) %> </th>
+      <td>
+        <% @user.user_notes.each do |un| %>
+            <%= un.added_at.strftime('%d/%m/%y - %H:%M')%>: <%= un.note_text %> (<%= link_to "Edit", "/admin/users/" + @user.id.to_s + "/" + un.id.to_s + "/edit_note" %> | <%= link_to "Remove", "/admin/users/" + @user.id.to_s + "/" + un.id.to_s + "/delete_note", :confirm => 'Are you sure?' %>)<br/><br/>
+        <% end %>
+        <%= link_to "Add new note", "/admin/users/" + @user.id.to_s + "/add_note" %>
+      </td>
+    </tr>
+</table>
+
+<p>
+  <%= link_to_edit @user, :class => 'edit_user' %> <%= t(:or) %>
+  <%= link_to t(:back), collection_url %>
+</p>

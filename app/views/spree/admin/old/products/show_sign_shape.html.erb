@@ -1,0 +1,16 @@
+<%= render :partial => 'spree/admin/shared/product_sub_menu' %>
+
+<h1>Sign Shape Details</h1>
+
+<div>
+  <div><%= image_tag @shape.svg_file.url(:medium) %></div>
+  <h2><%= @shape.name %></h2>
+  <div><%= @shape.description %></div>
+
+  <h3>Usable by the following:</h3>
+  <ul>
+    <% @products_for_shape.each do |p| %>
+        <li><%= p[:name] %></li>
+    <% end %>
+  </ul>
+</div>

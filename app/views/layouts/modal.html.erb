@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Signapp</title>
+  <%= stylesheet_link_tag "application" %>
+  <%= javascript_include_tag "jquery" %>
+  <%= javascript_include_tag "jquery.hoverIntent.minified" %>
+  <%= javascript_include_tag "generic" %>
+  <%= yield :javascript_includes %>
+  <%= csrf_meta_tags %>
+  <!--[if gte IE 9]>
+  <style type="text/css">
+      a.button:hover, a.button:active {
+          filter: none;
+      }
+  </style>
+  <![endif]-->
+</head>
+<body style="background-color: white;">
+<%= yield %>
+</body>
+</html>

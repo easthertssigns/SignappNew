@@ -1,0 +1,4 @@
+<% @custom_signs.each do |s| %>
+    <%= s.name.blank? ? "Custom Sign" : s.name %> View | <%= link_to("Edit", "/admin/edit_custom_sign?sign_id=" + s.id.to_s) %> | Delete
+    <br/>
+<% end %>

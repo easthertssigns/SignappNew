@@ -1,0 +1,37 @@
+<% content_for :javascripts do %>
+    <script language="javascript" type="text/javascript">
+      function submitDeleteForm(graphic_id){
+          var conf = confirm("Are you sure?");
+          if (conf == true){
+            $("#delete_form" + graphic_id).submit();
+          }
+      }
+    </script>
+<% end %>
+
+<h1>Sign Graphics</h1>
+<div id="new_sign_graphic"><a href="/admin/sign_graphics/new">Add New Graphic</a></div>
+<table class="index" id="listing_products">
+  <tr data-hook="admin_products_index_headers">
+    <th>Thumbnail</th>
+    <th>Name</th>
+    <th>Description</th>
+    <th>Actions</th>
+  </tr>
+<% @graphics.each do |g| %>
+  <tr>
+    <td><%= image_tag g.svg_file.url(:thumb) %></td>
+    <td><a href="/admin/sign_graphics/<%= g.id %>"><%= g.title %></a></td>
+    <td><%= g.description %></td>
+    <td class="actions" data-hook="admin_products_index_row_actions">
+      <a href="/admin/sign_graphics/<%= g.id %>/edit" class="edit">Edit</a>
+      &nbsp;
+      <form action="/admin/sign_graphics/<%=g.id %>" method="post" id="delete_form<%= g.id%>" name="delete_form<%= g.id%>">
+        <input type="hidden" value="delete" name="_method">
+        <input type="hidden" id="graphic_id" name="graphic_id" value="<%=g.id %>">
+      <a href="javascript:submitDeleteForm(<%= g.id %>)" class="delete">Delete</a></form>
+    </td>
+  </tr>
+<% end %>
+</table>
+<%= paginate @graphics %>

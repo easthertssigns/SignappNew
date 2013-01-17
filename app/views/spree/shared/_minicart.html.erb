@@ -1,0 +1,59 @@
+<% @minicart_order ||= get_current_order %>
+<div class="basketContainer" id="basketContainer">
+  <% @body_id = 'cart' %>
+  <% unless @minicart_order.nil? %>
+  <% if @minicart_order.line_items.empty? %>
+      <div class="basketDropDown" id="basketDropDown" data-hook="outside_minicart_form">
+        <div class="basketHeading">Basket overview</div>
+        <div class="whiteBackground">
+          <div data-hook="empty_minicart">
+            <strong class="yourBasketIsEmpty">Your basket is empty</strong>
+          </div>
+        </div>
+        <%= link_to t(:continue_shopping), spree.products_path, :class => 'goToCheckout' %>
+      </div>
+      <div class="basket" id="basketTab">
+        <div class="tip"></div>
+        <a href="#">Basket <span>(<%= get_current_order.item_count %>)</span></a>
+      </div>
+  <% else %>
+      <div class="basketDropDown" id="basketDropDown" data-hook="outside_minicart_form">
+        <div class="basketHeading">Basket overview</div>
+        <div class="whiteBackground">
+          <%= form_for @minicart_order, :url => spree.update_cart_path, :html => {:id => 'update-minicart'}, :remote => true do |order_form| %>
+              <div data-hook="inside_minicart_form">
+                <div data-hook="minicart_items">
+                  <table>
+                    <tfoot>
+                    <tr>
+                      <td class="imageColumn"></td>
+                      <td class="descriptionColumn">
+                        Delivery Costs<br/>
+                        <strong>Total</strong>
+                      </td>
+                      <td class="priceColumn">
+                        + &pound;20.00<br/>
+                        <strong><%= order_subtotal(@minicart_order) %></strong>
+                      </td>
+                    </tr>
+                    </tfoot>
+                    <tbody>
+                    <%= order_form.fields_for :line_items do |item_form| %>
+                        <%= render :partial => 'spree/shared/minicart_line_items', :locals => {:variant => item_form.object.variant, :line_item => item_form.object, :item_form => item_form} %>
+                    <% end %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+          <% end %>
+        </div>
+        <%= link_to 'Go to checkout', spree.checkout_path, :class => 'goToCheckout', :id => 'checkout-link' %>
+      </div>
+      <%= render :partial => 'spree/shared/error_messages', :locals => {:target => @order} %>
+      <div class="basket full" id="basketTab">
+        <div class="tip"></div>
+        <a href="#">Basket <span>(<%= get_current_order.item_count %>)</span></a>
+      </div>
+  <% end %>
+  <% end %>
+</div>

@@ -1,0 +1,19 @@
+<% content_for :javascript_includes do %>
+    <script language="javascript" type="text/javascript">
+      $(document).ready(function(){
+          $("#custom_data").val(parent.$("#custom_data").val());
+          $("#spree_user_id").val(parent.$("#spree_user_id").val());
+          alert(parent.$("#custom_data").val());
+      });
+    </script>
+<% end %>
+<form action="/custom_sign/save_sign">
+  <div>Please enter a name for your saved design</div>
+  <div><input type= "text" id="name" name="name"></div>
+  <br/>
+  <div id="hiddenFields">
+    <input type="hidden" name="custom_data" id="custom_data" value="">
+    <input type="hidden" name="spree_user_id" id="spree_user_id" value="">
+  </div>
+  <div><input type="submit" value="Save"></div>
+</form>

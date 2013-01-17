@@ -1,0 +1,6 @@
+<h1>Add New Note</h1>
+<%= form_tag '/admin/users/save_note' %>
+    <%= label_tag "Note Text" %>
+    <%= text_area_tag :note_text %>
+    <%= hidden_field_tag :spree_user_id, @note.spree_user_id.to_s %>
+    <%= submit_tag "Add Note" %>

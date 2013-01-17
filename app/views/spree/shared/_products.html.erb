@@ -1,0 +1,63 @@
+<%
+   paginated_products = @searcher.retrieve_products if params.key?(:keywords)
+   paginated_products ||= products
+%>
+<% if products.empty? %>
+    <%= t(:no_products_found) %>
+<% elsif params.key?(:keywords) %>
+    <div class="container_12">
+      <div class="grid_12">
+        <h1 class="search-results-title"><%= t(:search_results, :keywords => h(params[:keywords])) %></h1>
+      </div>
+    </div>
+<% end %>
+
+<% if products.any? %>
+    <div class="container_12">
+      <ul id="products" class="inline product-listing" data-hook>
+        <% reset_cycle('default') %>
+        <% products.each do |product| %>
+            <% if Spree::Config[:show_zero_stock_products] || product.has_stock? %>
+                <li id="product_<%= product.id %>" class="columns three <%= cycle("alpha", "secondary", "", "omega secondary", :name => "classes") %>" data-hook="products_list_item" itemscope itemtype="http://schema.org/Product">
+                  <div class="product-container">
+                    <div class="product-name">
+                      <%= link_to truncate(product.name, :length => 18), product, :class => 'info', :itemprop => "name", :title => product.name %>
+                    </div>
+                    <div class="product-gallery">
+                      Gallery
+                    </div>
+                    <div class="clearfix"></div>
+                    <div class="product-image">
+                      <%= link_to small_image(product, :itemprop => "image"), product, :itemprop => 'url' %>
+                      <div class="imageOverlay">
+                        <p><%= truncate(product.description, :length => 100) %></p>
+                        <%= link_to "Take a look at the " + product.name + " gallery", product %>
+                      </div>
+                    </div>
+                    <div class="materialFeatures">
+                      <div class="feature weatherProof" title="Weather Proof"></div>
+                      <div class="feature drillable" title="Drillable"></div>
+                      <div class="feature fullColourPrint" title="Full Colour Print"></div>
+                    </div>
+                    <!--<span class="price selling" itemprop="price"><%#= number_to_currency product.price %></span>-->
+                  </div>
+                  <%= link_to "Choose " + truncate(product.name, :length => 20), product, :class => 'choose-button', :itemprop => "name", :title => product.name %>
+                </li>
+            <% end %>
+        <% end %>
+        <% reset_cycle("classes") %>
+        <li class="getInspired">
+          <h3>Get inspired</h3>
+          <h4>Still can't decide?</h4>
+
+          <p>Take a look at the kinds of signs people have already made in our gallery and customise one of them to
+            suit.</p>
+        </li>
+        <div class="clearfix"></div>
+      </ul>
+    </div>
+<% end %>
+
+<% if paginated_products.respond_to?(:num_pages) %>
+    <%= paginate paginated_products %>
+<% end %>

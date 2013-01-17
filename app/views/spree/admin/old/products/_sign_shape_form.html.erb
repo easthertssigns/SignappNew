@@ -1,0 +1,36 @@
+<div><%= image_tag @shape.svg_file.url(:medium) %></div>
+
+<%= form_for @shape, :url => "/admin/update_sign_shape", :html => { :multipart => true } do |form| %>
+    <div>
+      <%= form.label "Sign Shape Name" %>
+      <%= form.text_field :name %>
+    </div>
+    <div>
+      <%= form.label "Sign Shape Description" %>
+      <%= form.text_area :description %>
+    </div>
+    <div>
+      <%= form.file_field :svg_file %>
+    </div>
+    <div>
+      <h3>Usable with the following products:</h3>
+      <table width="50%">
+        <% count = 1 %>
+        <% @products_for_shape.each do |p| %>
+          <% if count == 1 %>
+            <tr>
+          <% end %>
+            <td width="33%"><%= check_box_tag "product[product_id][#{p[:id]}]", p[:id], p[:selected] %> <%= p[:name] %></td>
+            <% count = count+1 %>
+          <% if count > 3 %>
+            </tr>
+          <% count = 1
+             end %>
+        <% end %>
+      </table>
+    </div>
+    <%= hidden_field_tag "shape_id", @shape.id.nil? ? "0" : @shape.id %>
+    <div>
+      <%= form.submit "Save" %>
+    </div>
+<% end %>

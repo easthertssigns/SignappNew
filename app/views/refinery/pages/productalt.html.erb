@@ -1,0 +1,685 @@
+<% content_for :stylesheets do %>
+    <% stylesheet_link_tag('select2', 'spectrum', 'customisation', 'stylesheet') %>
+<% end %>
+<% content_for :javascripts do %>
+    <% javascript_include_tag('select2.min', 'spectrum', 'customisation', 'fabric',) %>
+<% end %>
+<div id="loadingOverlay"></div>
+<div class="toolBar">
+  <div class="container_24">
+    <div class="grid_24">
+      <div class="buttonSegment">
+        <input type="text" id="showPaletteOnly" value="#000000"/>
+      </div>
+      <div class="buttonSegment">
+        <div id="zoomIn" class="button">+</div>
+        <div id="zoomOut" class="button">-</div>
+        <div id="canvasScale">100%</div>
+      </div>
+      <div class="buttonSegment">
+        <div class="button" id="flipX">X</div>
+        <div class="button" id="flipY">Y</div>
+      </div>
+      <div class="buttonSegment">
+        <div class="button" id="bringForward">&uarr;</div>
+        <div class="button" id="bringToFront">Front</div>
+        <div class="button" id="sendBackwards">&darr;</div>
+        <div class="button" id="sendToBack">Back</div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+</div>
+<div id="canvasZoomWrapper">
+  <canvas id="my-canvas" width="600" height="600"></canvas>
+</div>
+<div>
+  <select id="fontFamily">
+    <optgroup label="Serif">
+      <option value="ArvoRegular">Arvo</option>
+      <option value="DroidSerifRegular">Droid Serif</option>
+      <option value="RokkittRegular">Rokkitt</option>
+    </optgroup>
+    <optgroup label="Sans Serif">
+      <option value="OpenSansRegular" selected="selected">Open Sans</option>
+      <option value="OswaldRegular">Oswald</option>
+      <option value="QuestrialRegular">Questrial</option>
+    </optgroup>
+    <optgroup label="Display">
+      <option value="ChewyRegular">Chewy</option>
+      <option value="FredokaOneRegular">Fredoka One</option>
+      <option value="SpecialEliteRegular">Special Elite</option>
+    </optgroup>
+    <optgroup label="Handwriting">
+      <option value="ComingSoonRegular">Coming Soon</option>
+      <option value="PacificoRegular">Pacifico</option>
+      <option value="PermanentMarkerRegular">Permanent Marker</option>
+    </optgroup>
+  </select>
+
+  <div class="button" id="addText">Add Text</div>
+  <div class="button" id="textBold">B</div>
+  <div class="button" id="textItalic">I</div>
+  <div class="button" id="textUnderline">U</div>
+  <div class="button" id="alignLeft">Left</div>
+  <div class="button" id="alignCenter">Center</div>
+  <div class="button" id="alignRight">Right</div>
+  <div class="formRow">
+    <div id="undo" class="button">Undo</div>
+    <div id="redo" class="button">Redo</div>
+  </div>
+  <div class="formRow">
+    <div class="button" id="saveCanvas">Save</div>
+    <div class="button" id="loadCanvas">Load</div>
+  </div>
+  <div class="formRow">
+    <div class="button red" id="deleteActiveObject">Delete</div>
+    <div class="button red" id="clearCanvas">Clear Canvas</div>
+  </div>
+  <div class="formRow">
+    <div class="button" id="toggleScrewHoles">Show Screw Holes</div>
+  </div>
+  <div class="formRow">
+    <div class="button" id="toggleMargins">Show Margins</div>
+  </div>
+  <div class="formRow symbolContainer">
+    <object data="/assets/svg/ant.svg" type="image/svg+xml"></object>
+    <object data="/assets/svg/bear.svg" type="image/svg+xml"></object>
+    <object data="/assets/svg/chicken.svg" type="image/svg+xml"></object>
+    <object data="/assets/svg/cow.svg" type="image/svg+xml"></object>
+    <object data="/assets/svg/crab.svg" type="image/svg+xml"></object>
+    <object data="/assets/svg/crow.svg" type="image/svg+xml"></object>
+    <object data="/assets/svg/deadbird.svg" type="image/svg+xml"></object>
+    <object data="/assets/svg/seahorse.svg" type="image/svg+xml"></object>
+    <object data="/assets/svg/squirrel.svg" type="image/svg+xml"></object>
+  </div>
+</div>
+<script src="/assets/aligning_guidelines"></script>
+<script src="/assets/centering_guidelines"></script>
+<script>
+    (function () {
+
+        var canvas = new fabric.Canvas('my-canvas');
+
+        initAligningGuidelines(canvas);
+        initCenteringGuidelines(canvas);
+
+        var canvasWidth = 600;
+        var canvasHeight = 600;
+
+        var canvasScale = 1.0;
+
+        var placeholderText = 'Click me and start typing...';
+
+        canvas.setWidth(canvasWidth);
+        canvas.setHeight(canvasHeight);
+
+        canvas.clear();
+
+        $('<textarea rows="1" cols="1" id="textArea"></textarea>').appendTo('.canvas-container');
+
+        $('<div class="button" id="editText">Edit</div>').appendTo('.canvas-container');
+        $('<div class="button" id="editDone">Done</div>').appendTo('.canvas-container');
+
+        $("#saveCanvas").click(function () {
+            json = JSON.stringify(canvas);
+        });
+
+        $("#loadCanvas").click(function () {
+            canvas.loadFromJSON(json);
+        });
+
+        $('#addText').click(function () {
+            var textValue = $('#textArea').val();
+            var fontFamily = $('#fontFamily').val();
+            var color = $('#showPaletteOnly').val();
+            var text = new fabric.Text(placeholderText, {
+                fontFamily:fontFamily,
+                fill:color,
+                left:canvasWidth / 2,
+                top:canvasHeight / 2
+            });
+            canvas.add(text.scale(canvasScale));
+//            text.hasRotatingPoint = true;
+        });
+
+        canvas._onMouseUp = (function () {
+            return function (e) {
+                canvas.__onMouseUp(e);
+                if (canvas.getActiveObject()) {
+                    var currentText = canvas.getActiveObject().getText();
+                    canvas.fire('object:mouseup', { target:canvas.getActiveObject() }, e);
+                    $('#textArea').focus().val(currentText);
+                    if (currentText == placeholderText) {
+                        $('#textArea').val('');
+                    }
+                }
+            };
+        })(canvas.setActiveObject);
+
+//        Set Tab key to deselect current text object if focus is in text area
+        $('#textArea').live('keyup', function (e) {
+            var keyCode = e.keyCode || e.which;
+            if (keyCode == 9) {
+                e.preventDefault();
+                canvas.deactivateAll().renderAll();
+                $('#textArea').val('').blur();
+            }
+        });
+
+        canvas.observe('selection:cleared', function (e) {
+            $('#editText, #editDone').css({
+                display:'none'
+            });
+            $('#textArea').val('').css({
+                'display':'none'
+            });
+        });
+
+        canvas.observe('object:selected', function (e) {
+            var activeObject = canvas.getActiveObject();
+            var activeObjectFill = canvas.getActiveObject().fill;
+            if (canvas.getActiveObject() && canvas.getActiveObject().type === 'text') {
+                var activeObjectFontFamily = canvas.getActiveObject().fontFamily;
+                $('#fontFamily').val(activeObjectFontFamily).trigger("change");
+                $('#editText').css({
+                    display:'block'
+                });
+                activeObject.hasControls = true;
+                canvas.observe('object:modified', function () {
+                    $('#editText').css({
+                        display:'block',
+                        left:activeObject.left + activeObject.getWidth() / 2,
+                        top:activeObject.top + activeObject.getHeight() / 2
+                    });
+                    $('#textArea').css({
+                        '-webkit-transform':'rotate(' + activeObject.theta * 180 / Math.PI + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
+                        height:activeObject.height,
+                        left:activeObject.left - activeObject.width / 2,
+                        top:activeObject.top - activeObject.height / 2,
+                        width:activeObject.width
+                    });
+                });
+                canvas.observe('object:moving', function () {
+                    $('#editText, #editDone').hide();
+                    $('#textArea').css({
+                        display:'none'
+                    });
+
+                });
+                canvas.observe('object:scaling', function () {
+                    $('#editText, #editDone').hide();
+                    $('#textArea').css({
+                        display:'none'
+                    });
+                });
+                canvas.observe('object:rotating', function () {
+                    $('#editText, #editDone').hide();
+                    $('#textArea').css({
+                        display:'none'
+                    });
+                });
+                canvas.observe('after:render', function () {
+                    $('#editText, #editDone').css({
+                        left:activeObject.left + activeObject.getWidth() / 2,
+                        top:activeObject.top + activeObject.getHeight() / 2
+                    });
+                    $('#textArea').css({
+                        fontFamily:activeObject.fontFamily,
+                        fontStyle:activeObject.fontStyle,
+                        fontWeight:activeObject.fontWeight,
+                        height:activeObject.height,
+                        left:activeObject.left - activeObject.width / 2,
+                        textAlign:activeObject.textAlign,
+                        textDecoration:activeObject.textDecoration,
+                        top:activeObject.top - activeObject.height / 2,
+                        width:activeObject.width
+                    });
+                    if (activeObject.fontFamily === 'PacificoRegular') {
+                        $('#textArea').css({
+                            marginTop:activeObject.scaleY * 0.25 + 'em'
+                        });
+                    }
+                    else {
+                        $('#textArea').css({
+                            marginTop:0
+                        })
+                    }
+                });
+            }
+            $('#showPaletteOnly').spectrum("set", activeObjectFill);
+        });
+
+        $('#editText').click(function () {
+            var activeObject = canvas.getActiveObject();
+            activeObject.hasControls = false;
+            $(this).hide();
+            $('#editDone').css({
+                display:'block',
+                left:activeObject.left + activeObject.getWidth() / 2,
+                top:activeObject.top + activeObject.getHeight() / 2
+            });
+            $('#textArea').css({
+                '-webkit-transform':'rotate(' + activeObject.theta * 180 / Math.PI + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
+                '-moz-transform':'rotate(' + activeObject.theta * 180 / Math.PI + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
+                '-0-transform':'rotate(' + activeObject.theta * 180 / Math.PI + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
+                '-ms-transform':'rotate(' + activeObject.theta * 180 / Math.PI + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
+                display:'block',
+                fontFamily:activeObject.fontFamily,
+                fontSize:activeObject.fontSize,
+                height:activeObject.height,
+                left:activeObject.left - activeObject.width / 2,
+                lineHeight:activeObject.lineHeight,
+                textAlign:activeObject.textAlign,
+                top:activeObject.top - activeObject.height / 2,
+                width:activeObject.width
+            }).focus().val(activeObject.text);
+            canvas.renderAll();
+        });
+
+        $('#editDone').click(function () {
+            var activeObject = canvas.getActiveObject();
+            activeObject.setActive(false);
+            canvas.renderAll();
+            $('#textArea').hide();
+            $(this).hide();
+        });
+
+        var textEl = $('#textArea');
+        if (textEl) {
+            textEl.keyup(function (e) {
+                var activeObject = canvas.getActiveObject();
+                if (activeObject) {
+                    if (!this.value) {
+                        canvas.discardActiveObject();
+                    }
+                    else {
+                        activeObject.text = this.value;
+                    }
+                    canvas.renderAll();
+                }
+            });
+        }
+
+        $('#fontFamily').change(function () {
+            var fontFamily = $(this).val();
+            var activeObject = canvas.getActiveObject();
+            if (activeObject && activeObject.type === 'text') {
+                activeObject.fontFamily = (activeObject.fill == fontFamily ? '' : fontFamily);
+                canvas.renderAll();
+            }
+        });
+
+        $('#showPaletteOnly').change(function () {
+            var fillColor = $(this).val();
+            var activeObject = canvas.getActiveObject();
+            activeObject.fill = fillColor;
+            canvas.renderAll();
+        });
+
+        $('#textBold').click(function () {
+            var activeObject = canvas.getActiveObject();
+            if (activeObject && activeObject.type === 'text') {
+                activeObject.fontWeight = (activeObject.fontWeight == 'bold' ? '' : 'bold');
+                canvas.renderAll();
+            }
+        });
+
+        $('#textItalic').click(function () {
+            var activeObject = canvas.getActiveObject();
+            if (activeObject && activeObject.type === 'text') {
+                activeObject.fontStyle = (activeObject.fontStyle == 'italic' ? '' : 'italic');
+                canvas.renderAll();
+            }
+        });
+
+        $('#textUnderline').click(function () {
+            var activeObject = canvas.getActiveObject();
+            if (activeObject && activeObject.type === 'text') {
+                activeObject.textDecoration = (activeObject.textDecoration == 'underline' ? '' : 'underline');
+                canvas.renderAll();
+            }
+        });
+
+        $('#alignLeft').click(function () {
+            var activeObject = canvas.getActiveObject();
+            if (activeObject && activeObject.type === 'text') {
+                activeObject.textAlign = 'left';
+                canvas.renderAll();
+            }
+        });
+
+        $('#alignCenter').click(function () {
+            var activeObject = canvas.getActiveObject();
+            if (activeObject && activeObject.type === 'text') {
+                activeObject.textAlign = 'center';
+                canvas.renderAll();
+            }
+        });
+
+        $('#alignRight').click(function () {
+            var activeObject = canvas.getActiveObject();
+            if (activeObject && activeObject.type === 'text') {
+                activeObject.textAlign = 'right';
+                canvas.renderAll();
+            }
+        });
+
+        $('#flipX').click(function () {
+            var activeObject = canvas.getActiveObject();
+            activeObject.flipX = (activeObject.flipX != true);
+            canvas.renderAll();
+        });
+
+        $('#flipY').click(function () {
+            var activeObject = canvas.getActiveObject();
+            activeObject.flipY = (activeObject.flipY != true);
+            canvas.renderAll();
+        });
+
+        $('#bringForward').click(function () {
+            var activeObject = canvas.getActiveObject();
+            canvas.bringForward(activeObject);
+            canvas.renderAll();
+        });
+
+        $('#bringToFront').click(function () {
+            var activeObject = canvas.getActiveObject();
+            canvas.bringToFront(activeObject);
+            canvas.renderAll();
+        });
+
+        $('#sendBackwards').click(function () {
+            var activeObject = canvas.getActiveObject();
+            canvas.sendBackwards(activeObject);
+            canvas.renderAll();
+        });
+
+        $('#sendToBack').click(function () {
+            var activeObject = canvas.getActiveObject();
+            canvas.sendToBack(activeObject);
+            canvas.renderAll();
+        });
+
+        $('#deleteActiveObject').click(function () {
+            var activeObject = canvas.getActiveObject(),
+                    activeGroup = canvas.getActiveGroup();
+            if (activeObject) {
+                canvas.remove(activeObject);
+            }
+            else if (activeGroup) {
+                var objectsInGroup = activeGroup.getObjects();
+                canvas.discardActiveGroup();
+                objectsInGroup.forEach(function (object) {
+                    canvas.remove(object);
+                });
+            }
+        });
+
+        $('object').wrap('<div class="svgButton"></div>');
+
+        $('.svgButton').append('<div class="hitArea"></div>');
+
+        $('.hitArea').hover(function () {
+            $(this).siblings('object').addClass('hover');
+        }, function () {
+            $(this).siblings('object').removeClass('hover');
+        });
+
+        $('.hitArea').mouseup(function () {
+            $(this).siblings('object').removeClass('active');
+        }).mousedown(function () {
+                    $(this).siblings('object').addClass('active');
+                }).mouseleave(function () {
+                    $(this).siblings('object').removeClass('active');
+                });
+
+
+        $('.hitArea').click(function () {
+            var svg = $(this).siblings('object').attr('data');
+            fabric.loadSVGFromURL(svg, function (objects, options) {
+                var obj = fabric.util.groupSVGElements(objects, options);
+                canvas.add(obj.scale(canvasScale)).centerObject(obj).renderAll();
+                obj.setCoords();
+                obj.hasRotatingPoint = true;
+            });
+        });
+
+        $('#clearCanvas').click(function () {
+            if (confirm('Are you sure?')) {
+                canvas.clear();
+            }
+        });
+
+        //Top Left Screw Hole
+        var topLeftScrewHoleDepth = new fabric.Circle({
+            left:20,
+            top:16,
+            fill:'#000',
+            radius:10,
+            opacity:0.5,
+            selectable:false
+        });
+        var topLeftScrewHole = new fabric.Circle({
+            left:20,
+            top:20,
+            radius:10,
+            selectable:false
+        });
+        topLeftScrewHole.setGradientFill(canvas.getContext(), {
+            x1:0,
+            y1:0,
+            x2:0,
+            y2:topLeftScrewHole.height,
+            colorStops:{
+                0:'#000',
+                1:'#666'
+            }
+        });
+        //Top Right Screw Hole
+        var topRightScrewHoleDepth = new fabric.Circle({
+            left:canvasWidth - 20,
+            top:16,
+            fill:'#000',
+            radius:10,
+            opacity:0.5,
+            selectable:false
+        });
+        var topRightScrewHole = new fabric.Circle({
+            left:canvasWidth - 20,
+            top:20,
+            radius:10,
+            selectable:false
+        });
+        topRightScrewHole.setGradientFill(canvas.getContext(), {
+            x1:0,
+            y1:0,
+            x2:0,
+            y2:topRightScrewHole.height,
+            colorStops:{
+                0:'#000',
+                1:'#666'
+            }
+        });
+        //Bottom Right Screw Hole
+        var bottomRightScrewHoleDepth = new fabric.Circle({
+            left:canvasWidth - 20,
+            top:canvasHeight - 24,
+            fill:'#000',
+            radius:10,
+            opacity:0.5,
+            selectable:false
+        });
+        var bottomRightScrewHole = new fabric.Circle({
+            left:canvasWidth - 20,
+            top:canvasHeight - 20,
+            radius:10,
+            selectable:false
+        });
+        bottomRightScrewHole.setGradientFill(canvas.getContext(), {
+            x1:0,
+            y1:0,
+            x2:0,
+            y2:bottomRightScrewHole.height,
+            colorStops:{
+                0:'#000',
+                1:'#666'
+            }
+        });
+        //Bottom Left Screw Hole
+        var bottomLeftScrewHoleDepth = new fabric.Circle({
+            left:20,
+            top:canvasHeight - 24,
+            fill:'#000',
+            radius:10,
+            opacity:0.5,
+            selectable:false
+        });
+        var bottomLeftScrewHole = new fabric.Circle({
+            left:20,
+            top:canvasHeight - 20,
+            radius:10,
+            selectable:false
+        });
+        bottomLeftScrewHole.setGradientFill(canvas.getContext(), {
+            x1:0,
+            y1:0,
+            x2:0,
+            y2:bottomLeftScrewHole.height,
+            colorStops:{
+                0:'#000',
+                1:'#666'
+            }
+        });
+
+        var screwHoles = new fabric.Group([topLeftScrewHoleDepth, topLeftScrewHole, topRightScrewHoleDepth, topRightScrewHole, bottomRightScrewHoleDepth, bottomRightScrewHole, bottomLeftScrewHoleDepth, bottomLeftScrewHole], {selectable:false});
+        $('#toggleScrewHoles').toggle(function () {
+            canvas.add(screwHoles.scale(canvasScale)).centerObject(screwHoles).sendToBack(screwHoles);
+            $(this).text("Hide Screw Holes");
+        }, function () {
+            canvas.remove(screwHoles);
+            $(this).text("Show Screw Holes");
+        });
+
+        var leftMargin = new fabric.Line([40, 0, 40, canvasHeight], {
+            fill:'cyan',
+            opacity:0.5,
+            selectable:false
+        });
+        var topMargin = new fabric.Line([0, 40, canvasWidth, 40], {
+            fill:'cyan',
+            opacity:0.5,
+            selectable:false
+        });
+        var rightMargin = new fabric.Line([canvasWidth - 40, 0, canvasWidth - 40, canvasHeight], {
+            fill:'cyan',
+            opacity:0.5,
+            selectable:false
+        });
+        var bottomMargin = new fabric.Line([0, canvasHeight - 40, canvasWidth, canvasHeight - 40], {
+            fill:'cyan',
+            opacity:0.5,
+            selectable:false
+        });
+
+        var margins = new fabric.Group([leftMargin, topMargin, rightMargin, bottomMargin], {selectable:false});
+
+        $('#toggleMargins').toggle(function () {
+            canvas.add(margins.scale(canvasScale)).centerObject(margins).sendToBack(margins);
+            $(this).text("Hide Margins");
+        }, function () {
+            canvas.remove(margins);
+            $(this).text("Show Margins");
+        });
+
+        (function () {
+            var undoStack = [];
+            var redoStack = [];
+            var currentState = [];
+
+            canvas.observe('object:modified', function () {
+                obj = canvas.getActiveObject();
+                undoStack.push(obj);
+//                alert("Undo: " + undoStack.length);
+//                alert("Redo: " + redoStack.length);
+            });
+
+            $('#undo').click(function undo() {
+                redoStack.push(obj);
+                canvas.renderAll(undoStack.pop(obj));
+//                alert("Undo: " + undoStack.length);
+//                alert("Redo: " + redoStack.length);
+            });
+
+            $('#redo').click(function redo() {
+                undoStack.push(obj);
+                canvas.renderAll(redoStack.pop(obj));
+//                alert("Undo: " + undoStack.length);
+//                alert("Redo: " + redoStack.length);
+            });
+        })();
+
+        $('#zoomIn').click(function () {
+            if (canvasScale < 3.375) {
+                canvasScale = canvasScale * 1.5;
+                canvas.setHeight(canvas.getHeight() * 1.5);
+                canvas.setWidth(canvas.getWidth() * 1.5);
+                var obj = canvas.getObjects();
+                for (var i in obj) {
+                    var scaleX = obj[i].get('scaleX');
+                    var scaleY = obj[i].get('scaleY');
+                    var left = obj[i].get('left');
+                    var top = obj[i].get('top');
+
+                    var tempScaleX = scaleX * 1.5;
+                    var tempScaleY = scaleY * 1.5;
+                    var tempLeft = left * 1.5;
+                    var tempTop = top * 1.5;
+
+                    obj[i].set('scaleX', tempScaleX);
+                    obj[i].set('scaleY', tempScaleY);
+                    obj[i].set('left', tempLeft);
+                    obj[i].set('top', tempTop);
+
+                    obj[i].setCoords();
+                }
+            }
+            canvas.renderAll();
+            canvas.calcOffset();
+
+            $('#canvasScale').text(Math.round(canvasScale * 100) + "%");
+
+        });
+
+        $('#zoomOut').click(function () {
+            if (canvasScale > 0.3) {
+                canvasScale = canvasScale / 1.5;
+                canvas.setHeight(canvas.getHeight() / 1.5);
+                canvas.setWidth(canvas.getWidth() / 1.5);
+                var obj = canvas.getObjects();
+                for (var i in obj) {
+                    var scaleX = obj[i].get('scaleX');
+                    var scaleY = obj[i].get('scaleY');
+                    var left = obj[i].get('left');
+                    var top = obj[i].get('top');
+
+                    var tempScaleX = scaleX / 1.5;
+                    var tempScaleY = scaleY / 1.5;
+                    var tempLeft = left / 1.5;
+                    var tempTop = top / 1.5;
+
+                    obj[i].set('scaleX', tempScaleX);
+                    obj[i].set('scaleY', tempScaleY);
+                    obj[i].set('left', tempLeft);
+                    obj[i].set('top', tempTop);
+
+                    obj[i].setCoords();
+                }
+            }
+            canvas.renderAll();
+
+            $('#canvasScale').text(Math.round(canvasScale * 100) + "%");
+        });
+    })
+            ();
+</script>

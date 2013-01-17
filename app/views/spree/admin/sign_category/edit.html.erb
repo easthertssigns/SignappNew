@@ -1,0 +1,19 @@
+<h1>Edit Sign Category</h1>
+
+<%= form_for @category, :url => "/admin/sign_category/" + @category.id.to_s, :html => { :multipart => true }, :method => :put do |form| %>
+    <div>
+      <%= form.label "Category Name" %>
+      <%= form.text_field :category_name %>
+    </div>
+    <div>
+      <%= form.label "Category Description" %>
+      <%= form.text_area :category_description %>
+    </div>
+    <div>
+      <%= form.label "Enable Category?" %>
+      <%= form.check_box :category_enabled %>
+    </div>
+    <div>
+      <%= form.submit "Save" %>
+    </div>
+<% end %>

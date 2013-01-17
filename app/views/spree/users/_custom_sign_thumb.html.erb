@@ -1,0 +1,7 @@
+<div>
+    <div>This is where the thumbnail image of the sign will go</div>
+    <div><%= @c.name.blank? ? "Your Custom Sign" : @c.name %></div>
+    <div><%= @c.description.blank? ? "No description added" : @c.description %></div>
+    <div>Material: None Specified</div>
+    <div>Width: <%= @c.width.blank? ? "None Specified" : @c.width + "mm" %>, Height: <%= @c.height.blank? ? "None Specified" : @c.height + "mm" %></div>
+</div>

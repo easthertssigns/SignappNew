@@ -1,0 +1,28 @@
+<div class="taxon" style="" data-hook="taxon">
+  <div class="product-container">
+    <div class="product-name">
+      <%= link_to truncate(product.name, :length => 18), seo_url(product), :class => 'breadcrumbs' %>
+    </div>
+    <div class="product-gallery">
+      Gallery
+    </div>
+    <div class="clearfix"></div>
+    <div class="product-image">
+      <% if product.images.size > 0 %>
+          <%= link_to image_tag image_tag(product.images[0].attachment.url(:mini)), {:action => seo_url(product)} %>
+          <div class="imageOverlay">
+            <p><%= truncate(product.description, :length => 100) %></p>
+            <%= link_to "Take a look at the " + product.name + " gallery", seo_url(product) %>
+          </div>
+      <% end %>
+    </div>
+    <div class="materialFeatures">
+      <div class="feature weatherProof" title="Weather Proof"></div>
+      <div class="feature drillable" title="Drillable"></div>
+      <div class="feature fullColourPrint" title="Full Colour Print"></div>
+    </div>
+  </div>
+
+  <%= link_to "Choose " + truncate(product.name, :length => 20), spree.product_url(product), :class => 'choose-button', :itemprop => "name", :title => product.name %>
+</div>
+

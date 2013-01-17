@@ -1,0 +1,19 @@
+<h1>Edit Graphic</h1>
+
+<%= form_for @graphic, :url => "/admin/sign_graphics/" + @graphic.id.to_s, :html => { :multipart => true }, :method => :put do |form| %>
+    <div>
+      <%= form.label "Graphic Title" %>
+      <%= form.text_field :title %>
+    </div>
+    <div>
+      <%= form.label "Graphic Description" %>
+      <%= form.text_area :description %>
+    </div>
+    <div>
+      <%= form.file_field :svg_file %>
+    </div>
+    <div><%= render :partial => "categories" %></div>
+    <div>
+      <%= form.submit "Save" %>
+    </div>
+<% end %>

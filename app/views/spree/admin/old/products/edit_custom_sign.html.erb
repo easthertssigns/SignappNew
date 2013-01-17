@@ -1,0 +1,3 @@
+<h1><%= @custom_sign.name.blank? ? "Custom Sign" : @custom_sign.name %></h1>
+<div><%= Base64.decode64(@custom_sign.custom_data) %></div>
+<%= @user.email %>

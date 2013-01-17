@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SignApp</title>
+  <%= stylesheet_link_tag "fluid_grid" %>
+  <%= stylesheet_link_tag "generic" %>
+  <%= yield :stylesheets %>
+  <%= javascript_include_tag "jquery" %>
+  <%= javascript_include_tag "jquery.hoverIntent.minified" %>
+  <%= javascript_include_tag "generic" %>
+  <%= yield :javascripts %>
+  <script type="text/javascript" src="//use.typekit.net/iqp1yxo.js"></script>
+  <script type="text/javascript">try {
+      Typekit.load();
+  } catch (e) {
+  }</script>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<%= render "/refinery/header_compact" %>
+<!--<p class="notice"><%= notice %></p>-->
+<!--<p class="alert"><%= alert %></p>-->
+<%= yield %>
+<div class="clearfix"></div>
+<div class="footerWrapper" id="footerWrapper">
+  <div class="footerTab" id="footerTab">Explore SignApp</div>
+  <%= render "/refinery/footer" %>
+</div>
+</body>
+</html>

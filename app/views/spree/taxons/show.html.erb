@@ -1,0 +1,35 @@
+<h1 class="taxon-title"><%= accurate_title %></h1>
+
+<% content_for :sidebar do %>
+    <div data-hook="taxon_sidebar_navigation">
+      <%= render :partial => 'spree/shared/taxonomies' %>
+      <%= render :partial => 'spree/shared/filters' if @taxon.children.empty? %>
+    </div>
+<% end %>
+
+<% if @taxon.children.empty? || !params[:keywords].blank? %>
+    <div>
+      <h2>About <%= @taxon %></h2>
+      <p>Blah blah blah!</p>
+    </div>
+    <div class="blueBackground" data-hook="taxon_products">
+      <%= render :partial => 'spree/shared/products', :locals => {:products => @products, :taxon => @taxon} %>
+    </div>
+<% else %>
+    <div class="blueBackground" data-hook="taxon_children">
+      <div class="container_12">
+        <div class="taxon-listing">
+          <%= render :partial => 'taxon', :collection => @taxon.children %>
+          <div class="getInspired">
+            <h3>Get inspired</h3>
+            <h4>Still can't decide?</h4>
+
+            <p>Take a look at the kinds of signs people have already made in our gallery and customise one of them to
+              suit.</p>
+          </div>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+<% end %>
+

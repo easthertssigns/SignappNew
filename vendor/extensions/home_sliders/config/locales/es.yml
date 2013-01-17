@@ -1,0 +1,30 @@
+es:
+  refinery:
+    plugins:
+      home_sliders:
+        title: Home Sliders
+#        article: masculino/femenino
+    home_sliders:
+      admin:
+        home_sliders:
+          actions:
+            create_new: Crear nuevo home slider
+            reorder: Reordenar home sliders
+            reorder_done: Reordenación de home sliders completada
+          records:
+            title: Home Sliders
+            sorry_no_results: Lo siento, no hay resultados
+            no_items_yet: No hay home sliders todavía. Pulsa en "Crear nuevo Home Slider" para crear tu primer home slider.
+          home_slider:
+            view_live_html: Ver este home slider como abierto al público <br/><em>(abre en ventana nueva)</em>
+            edit: Editar este home slider
+            delete: Borrar este home slider para siempre
+      home_sliders:
+        show:
+          other: Otros home sliders
+  activerecord:
+    attributes:
+      'refinery/home_sliders/home_slider':
+        title: Title
+        background: Background
+        content: Content

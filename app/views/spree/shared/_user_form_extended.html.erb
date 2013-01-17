@@ -1,0 +1,93 @@
+<p>
+  <%= f.label :email, t(:email) %><br />
+  <%= f.email_field :email, :class => 'title' %>
+</p>
+<div id="password-credentials">
+  <p>
+    <%= f.label :password, t(:password) %><br />
+    <%= f.password_field :password, :class => 'title' %>
+  </p>
+
+  <p>
+    <%= f.label :password_confirmation, t(:confirm_password) %><br />
+    <%= f.password_field :password_confirmation, :class => 'title' %>
+  </p>
+
+  <% if @user.bill_address_id.nil? %>
+      <% @user.bill_address = Spree::Address.new %>
+    <% end %>
+    <p>
+    <%= f.fields_for :bill_address do |ba| %>
+        <%= ba.label :firstname, "Billing First Name" %><br/>
+        <%= ba.text_field :firstname %>
+        <br/>
+        <%= ba.label :lastname, "Billing Last Name" %><br/>
+        <%= ba.text_field :lastname %>
+        <br/>
+        <%= ba.label :address1, "Billing Address Line 1" %><br/>
+        <%= ba.text_field :address1 %>
+        <br/>
+        <%= ba.label :address2, "Billing Address Line 2" %><br/>
+        <%= ba.text_field :address2 %>
+        <br/>
+        <%= ba.label :city, "Billing City" %><br/>
+        <%= ba.text_field :city %>
+        <br/>
+        <%= ba.label :zipcode, "Billing Postcode" %><br/>
+        <%= ba.text_field :zipcode %>
+        <br/>
+        <%= ba.label :country_id, "Billing Country" %><br/>
+        <%= ba.collection_select(:country_id, available_countries, :id, :name ) %>
+        <br>
+        <%= ba.label :phone, "Billing Phone" %><br/>
+        <%= ba.text_field :phone %>
+        <br/>
+        <%= ba.label :alternative_phone, "Billing Mobile" %><br/>
+        <%= ba.text_field :alternative_phone %>
+        <br/>
+    <% end %>
+    </p>
+
+  <p>
+    <% if @user.ship_address_id.nil? %>
+        <% @user.ship_address = Spree::Address.new %>
+      <% end %>
+      <%= f.fields_for :ship_address do |sa| %>
+            <%= sa.label :firstname, "Shipping First Name" %><br/>
+            <%= sa.text_field :firstname %>
+            <br/>
+            <%= sa.label :lastname, "Shipping Last Name" %><br/>
+            <%= sa.text_field :lastname %>
+            <br/>
+            <%= sa.label :address1, "Shipping Address Line 1" %><br/>
+            <%= sa.text_field :address1 %>
+            <br/>
+            <%= sa.label :address2, "Shipping Address Line 2" %><br/>
+            <%= sa.text_field :address2 %>
+            <br/>
+            <%= sa.label :city, "Shipping City" %><br/>
+            <%= sa.text_field :city %>
+            <br/>
+            <%= sa.label :zipcode, "Shipping Postcode" %><br/>
+            <%= sa.text_field :zipcode %>
+            <br/>
+            <%= sa.label :country_id, "Shipping Country" %><br/>
+            <%= sa.collection_select(:country_id, available_countries, :id, :name ) %>
+            <br>
+            <%= sa.label :phone, "Shipping Phone" %><br/>
+            <%= sa.text_field :phone %>
+            <br/>
+            <%= sa.label :alternative_phone, "Shipping Mobile" %><br/>
+            <%= sa.text_field :alternative_phone %>
+            <br/>
+        <% end %>
+  </p>
+
+  <p>
+        <%= f.label :mailing_list, t(:mailing_list) %><br />
+        <%= f.check_box :mailing_list, :class => 'title' %>
+      </p>
+
+</div>
+
+<div data-hook="signup_below_password_fields"></div>

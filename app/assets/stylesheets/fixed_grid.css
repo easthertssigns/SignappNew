@@ -1,0 +1,355 @@
+/*
+	Variable Grid System.fixed_
+	Learn more ~ http://www.fixed_spry-soft.fixed_com/grids/
+	Based on 960 Grid System - http://960.fixed_gs/
+
+	Licensed under GPL and MIT.fixed_
+*/
+
+/*
+  Forces backgrounds to span full width,
+  even if there is horizontal scrolling.fixed_
+  Increase this if your layout is wider.fixed_
+
+  Note: IE6 works fine without this fix.fixed_
+*/
+
+/*
+body {
+    min-width: 960px;
+}
+*/
+
+/* Containers
+----------------------------------------------------------------------------------------------------*/
+.fixed_container_12 {
+    margin-left: auto;
+    margin-right: auto;
+    width: 960px;
+}
+
+/* Grid >> Global
+----------------------------------------------------------------------------------------------------*/
+
+.fixed_grid_1,
+.fixed_grid_2,
+.fixed_grid_3,
+.fixed_grid_4,
+.fixed_grid_5,
+.fixed_grid_6,
+.fixed_grid_7,
+.fixed_grid_8,
+.fixed_grid_9,
+.fixed_grid_10,
+.fixed_grid_11,
+.fixed_grid_12 {
+    display: inline;
+    float: left;
+    position: relative;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.fixed_push_1, .fixed_pull_1,
+.fixed_push_2, .fixed_pull_2,
+.fixed_push_3, .fixed_pull_3,
+.fixed_push_4, .fixed_pull_4,
+.fixed_push_5, .fixed_pull_5,
+.fixed_push_6, .fixed_pull_6,
+.fixed_push_7, .fixed_pull_7,
+.fixed_push_8, .fixed_pull_8,
+.fixed_push_9, .fixed_pull_9,
+.fixed_push_10, .fixed_pull_10,
+.fixed_push_11, .fixed_pull_11,
+.fixed_push_12, .fixed_pull_12 {
+    position: relative;
+}
+
+/* Grid >> Children (Alpha ~ First, Omega ~ Last)
+----------------------------------------------------------------------------------------------------*/
+
+.fixed_alpha {
+    margin-left: 0;
+}
+
+.fixed_omega {
+    margin-right: 0;
+}
+
+/* Grid >> 12 Columns
+----------------------------------------------------------------------------------------------------*/
+
+.fixed_container_12 .fixed_grid_1 {
+    width: 60px;
+}
+
+.fixed_container_12 .fixed_grid_2 {
+    width: 140px;
+}
+
+.fixed_container_12 .fixed_grid_3 {
+    width: 220px;
+}
+
+.fixed_container_12 .fixed_grid_4 {
+    width: 300px;
+}
+
+.fixed_container_12 .fixed_grid_5 {
+    width: 380px;
+}
+
+.fixed_container_12 .fixed_grid_6 {
+    width: 460px;
+}
+
+.fixed_container_12 .fixed_grid_7 {
+    width: 540px;
+}
+
+.fixed_container_12 .fixed_grid_8 {
+    width: 620px;
+}
+
+.fixed_container_12 .fixed_grid_9 {
+    width: 700px;
+}
+
+.fixed_container_12 .fixed_grid_10 {
+    width: 780px;
+}
+
+.fixed_container_12 .fixed_grid_11 {
+    width: 860px;
+}
+
+.fixed_container_12 .fixed_grid_12 {
+    width: 940px;
+}
+
+/* Prefix Extra Space >> 12 Columns
+----------------------------------------------------------------------------------------------------*/
+
+.fixed_container_12 .fixed_prefix_1 {
+    padding-left: 80px;
+}
+
+.fixed_container_12 .fixed_prefix_2 {
+    padding-left: 160px;
+}
+
+.fixed_container_12 .fixed_prefix_3 {
+    padding-left: 240px;
+}
+
+.fixed_container_12 .fixed_prefix_4 {
+    padding-left: 320px;
+}
+
+.fixed_container_12 .fixed_prefix_5 {
+    padding-left: 400px;
+}
+
+.fixed_container_12 .fixed_prefix_6 {
+    padding-left: 480px;
+}
+
+.fixed_container_12 .fixed_prefix_7 {
+    padding-left: 560px;
+}
+
+.fixed_container_12 .fixed_prefix_8 {
+    padding-left: 640px;
+}
+
+.fixed_container_12 .fixed_prefix_9 {
+    padding-left: 720px;
+}
+
+.fixed_container_12 .fixed_prefix_10 {
+    padding-left: 800px;
+}
+
+.fixed_container_12 .fixed_prefix_11 {
+    padding-left: 880px;
+}
+
+/* Suffix Extra Space >> 12 Columns
+----------------------------------------------------------------------------------------------------*/
+
+.fixed_container_12 .fixed_suffix_1 {
+    padding-right: 80px;
+}
+
+.fixed_container_12 .fixed_suffix_2 {
+    padding-right: 160px;
+}
+
+.fixed_container_12 .fixed_suffix_3 {
+    padding-right: 240px;
+}
+
+.fixed_container_12 .fixed_suffix_4 {
+    padding-right: 320px;
+}
+
+.fixed_container_12 .fixed_suffix_5 {
+    padding-right: 400px;
+}
+
+.fixed_container_12 .fixed_suffix_6 {
+    padding-right: 480px;
+}
+
+.fixed_container_12 .fixed_suffix_7 {
+    padding-right: 560px;
+}
+
+.fixed_container_12 .fixed_suffix_8 {
+    padding-right: 640px;
+}
+
+.fixed_container_12 .fixed_suffix_9 {
+    padding-right: 720px;
+}
+
+.fixed_container_12 .fixed_suffix_10 {
+    padding-right: 800px;
+}
+
+.fixed_container_12 .fixed_suffix_11 {
+    padding-right: 880px;
+}
+
+/* Push Space >> 12 Columns
+----------------------------------------------------------------------------------------------------*/
+
+.fixed_container_12 .fixed_push_1 {
+    left: 80px;
+}
+
+.fixed_container_12 .fixed_push_2 {
+    left: 160px;
+}
+
+.fixed_container_12 .fixed_push_3 {
+    left: 240px;
+}
+
+.fixed_container_12 .fixed_push_4 {
+    left: 320px;
+}
+
+.fixed_container_12 .fixed_push_5 {
+    left: 400px;
+}
+
+.fixed_container_12 .fixed_push_6 {
+    left: 480px;
+}
+
+.fixed_container_12 .fixed_push_7 {
+    left: 560px;
+}
+
+.fixed_container_12 .fixed_push_8 {
+    left: 640px;
+}
+
+.fixed_container_12 .fixed_push_9 {
+    left: 720px;
+}
+
+.fixed_container_12 .fixed_push_10 {
+    left: 800px;
+}
+
+.fixed_container_12 .fixed_push_11 {
+    left: 880px;
+}
+
+/* Pull Space >> 12 Columns
+----------------------------------------------------------------------------------------------------*/
+
+.fixed_container_12 .fixed_pull_1 {
+    left: -80px;
+}
+
+.fixed_container_12 .fixed_pull_2 {
+    left: -160px;
+}
+
+.fixed_container_12 .fixed_pull_3 {
+    left: -240px;
+}
+
+.fixed_container_12 .fixed_pull_4 {
+    left: -320px;
+}
+
+.fixed_container_12 .fixed_pull_5 {
+    left: -400px;
+}
+
+.fixed_container_12 .fixed_pull_6 {
+    left: -480px;
+}
+
+.fixed_container_12 .fixed_pull_7 {
+    left: -560px;
+}
+
+.fixed_container_12 .fixed_pull_8 {
+    left: -640px;
+}
+
+.fixed_container_12 .fixed_pull_9 {
+    left: -720px;
+}
+
+.fixed_container_12 .fixed_pull_10 {
+    left: -800px;
+}
+
+.fixed_container_12 .fixed_pull_11 {
+    left: -880px;
+}
+
+/* `Clear Floated Elements
+----------------------------------------------------------------------------------------------------*/
+
+/* http://sonspring.fixed_com/journal/clearing-floats */
+
+.fixed_clear {
+    clear: both;
+    display: block;
+    overflow: hidden;
+    visibility: hidden;
+    width: 0;
+    height: 0;
+}
+
+/* http://www.fixed_yuiblog.fixed_com/blog/2010/09/27/clearfix-reloaded-overflowhidden-demystified */
+
+.fixed_clearfix:before,
+.fixed_clearfix:after {
+    content: '\0020';
+    display: block;
+    overflow: hidden;
+    visibility: hidden;
+    width: 0;
+    height: 0;
+}
+
+.fixed_clearfix:after {
+    clear: both;
+}
+
+/*
+  The following zoom:1 rule is specifically for IE6 + IE7.fixed_
+  Move to separate stylesheet if invalid CSS is a problem.fixed_
+*/
+
+.fixed_clearfix {
+    zoom: 1;
+}

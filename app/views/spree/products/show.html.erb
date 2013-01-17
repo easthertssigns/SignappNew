@@ -1,0 +1,120 @@
+<% content_for :stylesheets do %>
+    <% stylesheet_link_tag('fixed_grid', 'select2') %>
+<% end %>
+<% content_for :javascripts do %>
+    <% javascript_include_tag 'select2.min' %>
+<% end %>
+<div data-hook="product_show" itemscope itemtype="http://schema.org/Product">
+  <% @body_id = 'product-details' %>
+  <h1 class="product-title" itemprop="name"><%= accurate_title %></h1>
+
+  <div class="blueBackground">
+    <div class="productOverview">
+      <div class="imageColumn">
+        <div id="product-images" data-hook="product_images">
+          <div id="main-image" data-hook>
+            <%= render :partial => 'image' %>
+          </div>
+          <div id="thumbnails" data-hook>
+            <%= render :partial => 'thumbnails', :locals => {:product => @product} %>
+          </div>
+        </div>
+      </div>
+      <div class="detailsColumn">
+        <h2>About <%= accurate_title %></h2>
+
+        <div id="product-description" data-hook="product_description">
+          <div itemprop="description" data-hook="description">
+            <%= product_description(@product) rescue t(:product_has_no_description) %>
+          </div>
+          <h2>Characteristics</h2>
+
+          <div data-hook="product_properties">
+            <%= render :partial => 'properties' %>
+          </div>
+        </div>
+        <%= render :partial => 'taxons' %>
+      </div>
+      <div class="priceColumn">
+        <h2>Base price</h2>
+
+        <div class="priceWrapper">
+          <% unless @product.price.nil? %>
+              <span class="price"><%= number_to_currency @product.price %></span><span class="inclVAT"> Incl. VAT</span>
+          <% end %>
+        </div>
+        <h3>Based on dimensions:</h3>
+
+        <p><strong>Shape: </strong>Rectangle</p>
+
+        <p><strong>Size: </strong>29.7 cm X 21 cm (A4)</p>
+
+        <h3>Note:</h3>
+
+        <p>The final price or your sign will be affected by the amount of elements you add to your design but you will
+          be able to see exactly how much each element will cost as you are adding them.</p>
+      </div>
+      <div class="whiteTip"></div>
+      <div class="clearfix"></div>
+    </div>
+    <div class="productOptions">
+      <h3>Choose your signs shape &amp; size</h3>
+
+      <%= form_tag("/custom_sign/new_custom_sign", :method => :post) do %>
+          <%= hidden_field_tag "product_id", @product.id %>
+          <div class="labelsRow">
+            <div class="step one">
+              <label for="shapeSelect">Shape</label>
+            </div>
+            <div class="step two">
+              <label for="sizeSelect">Size</label>
+            </div>
+            <div class="step three">
+              <label>Base price</label>
+            </div>
+          </div>
+          <div class="inputsRow">
+            <div class="step one">
+              <select id="shapeSelect">
+                <% get_sign_shapes_for_product(@product).each do |shape| %>
+                    <option value="<%= shape.id %>"><%= shape.name %></option>
+                <% end %>
+              </select>
+
+              <div class="arrow"></div>
+            </div>
+            <div class="step two">
+              <select id="sizeSelect">
+                <option>29.7cm x 21cm (A4)</option>
+              </select>
+
+              <%= hidden_field_tag "width", 20 %>
+              <%= hidden_field_tag "height", 12 %>
+
+              <div class="arrow"></div>
+            </div>
+            <div class="step three">
+              <div class="priceWrapper">
+                <% unless @product.price.nil? %>
+                    <span class="price"><%= number_to_currency @product.price %></span><span class="inclVAT"> Incl. VAT</span>
+                <% end %>
+              </div>
+              <div class="arrow"></div>
+            </div>
+            <div class="step four">
+              <input type="submit" value="Ready? Let's design your sign!">
+            </div>
+          </div>
+      <% end %>
+      <div id="cart-form" data-hook="cart_form">
+        <%= render :partial => 'cart_form' %>
+      </div>
+    </div>
+    <div class="relatedProducts fixed_container_12">
+      <div class="fixed_grid_12">
+        <h4>Customers who bought this also bought&hellip;</h4>
+      </div>
+    </div>
+    <div class="upperShadow"></div>
+  </div>
+</div>

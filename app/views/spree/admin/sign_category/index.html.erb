@@ -1,0 +1,23 @@
+<h1>Sign Categories</h1>
+<div id="new_sign_graphic_category"><a href="/admin/sign_category/new">Add New Category</a></div>
+<table class="index" id="listing_products">
+  <tr data-hook="admin_products_index_headers">
+    <th>Name</th>
+    <th>Description</th>
+    <th>Actions</th>
+  </tr>
+<% @categories.each do |c| %>
+  <tr>
+    <td><a href="/admin/sign_category/<%= c.id %>"><%= c.category_name %></a></td>
+    <td><%= c.category_description %></td>
+    <td class="actions" data-hook="admin_products_index_row_actions">
+      <%= c.category_enabled == true ? "Enabled" : "Disabled" %>
+      &nbsp;
+      <a href="/admin/sign_category/<%= c.id %>/edit" class="edit">Edit</a>
+      &nbsp;
+      <a href="/admin/sign_category/<%= c.id %>/delete" class="delete">Delete</a>
+    </td>
+  </tr>
+<% end %>
+</table>
+<%= paginate @categories %>

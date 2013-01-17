@@ -1,0 +1,14 @@
+<h1>Sign Graphic Details</h1>
+
+<div>
+  <div><%= image_tag @graphic.svg_file.url(:medium) %></div>
+  <h2><%= @graphic.title %></h2>
+  <div><%= @graphic.description %></div>
+
+  <h3>Appears in the following categories:</h3>
+  <ul>
+    <% @categories_for_graphic.each do |p| %>
+        <li><%= p[:name] %></li>
+    <% end %>
+  </ul>
+</div>

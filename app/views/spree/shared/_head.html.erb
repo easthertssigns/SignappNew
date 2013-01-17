@@ -1,0 +1,41 @@
+<meta charset="utf-8">
+
+<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+<title><%= title %></title>
+
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1" name="viewport">
+
+<%== meta_data_tags %>
+<%= csrf_meta_tags %>
+
+<%= favicon_link_tag image_path('favicon.ico') %>
+
+<!--<%= stylesheet_link_tag 'store/all', :media => 'screen' %>-->
+<%= stylesheet_link_tag "fluid_grid" %>
+<%= stylesheet_link_tag "generic" %>
+<%= stylesheet_link_tag "store" %>
+<%= yield :stylesheets %>
+
+<%= csrf_meta_tags %>
+<%= javascript_include_tag "jquery" %>
+
+<%= javascript_include_tag "generic" %>
+<%= javascript_include_tag "store" %>
+<%= javascript_include_tag 'store/all' %>
+<%= javascript_include_tag "jquery.hoverIntent.minified" %>
+<%= yield :javascripts %>
+<script type="text/javascript" src="//use.typekit.net/iqp1yxo.js"></script>
+<script type="text/javascript">try {
+    Typekit.load();
+} catch (e) {
+}</script>
+
+
+<!--[if lt IE 9]>
+<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+<%= yield :head %>

@@ -1,0 +1,9 @@
+<div class="container_24">
+  <section class="grid_16">
+    <h1><%= page_title %></h1>
+    <%= raw @page.content_for(:body) %>
+  </section>
+  <aside class="grid_8">
+    <%= raw @page.content_for(:side_body) %>
+  </aside>
+</div>

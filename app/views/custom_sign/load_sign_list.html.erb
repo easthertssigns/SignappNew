@@ -1,0 +1,3 @@
+<% @custom_signs.each do |cs| %>
+    <div><a href="/home/product-page?saved_sign_id=<%= cs.id %>" onClick="parent.jQuery.fancybox.close(); parent.location=this.href; return false"><%= cs.name %></a></div>
+<% end %>
