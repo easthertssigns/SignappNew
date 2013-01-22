@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121205115009) do
+ActiveRecord::Schema.define(:version => 20130122132028) do
 
   create_table "custom_signs", :force => true do |t|
     t.integer  "spree_user_id"
@@ -55,6 +55,48 @@ ActiveRecord::Schema.define(:version => 20121205115009) do
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
   end
+
+  create_table "refinery_membership_email_part_translations", :force => true do |t|
+    t.integer  "refinery_membership_email_part_id"
+    t.string   "locale"
+    t.text     "body"
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
+  end
+
+  add_index "refinery_membership_email_part_translations", ["locale"], :name => "index_refinery_membership_email_part_translations_on_locale"
+  add_index "refinery_membership_email_part_translations", ["refinery_membership_email_part_id"], :name => "index_a67a470abc863aaf2d59f6b294eb9bb4414afa68"
+
+  create_table "refinery_membership_email_parts", :force => true do |t|
+    t.string   "title"
+    t.text     "body"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "refinery_membership_email_parts", ["title"], :name => "index_refinery_membership_email_parts_on_title", :unique => true
+
+  create_table "refinery_membership_email_translations", :force => true do |t|
+    t.integer  "refinery_membership_email_id"
+    t.string   "locale"
+    t.string   "subject"
+    t.text     "body"
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
+  end
+
+  add_index "refinery_membership_email_translations", ["locale"], :name => "index_refinery_membership_email_translations_on_locale"
+  add_index "refinery_membership_email_translations", ["refinery_membership_email_id"], :name => "index_2605064b986486e26049fef85d6ee6d5c6b78479"
+
+  create_table "refinery_membership_emails", :force => true do |t|
+    t.string   "title"
+    t.string   "subject"
+    t.text     "body"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  add_index "refinery_membership_emails", ["title"], :name => "index_refinery_membership_emails_on_title", :unique => true
 
   create_table "refinery_page_part_translations", :force => true do |t|
     t.integer  "refinery_page_part_id"
@@ -118,6 +160,11 @@ ActiveRecord::Schema.define(:version => 20121205115009) do
   add_index "refinery_pages", ["parent_id"], :name => "index_refinery_pages_on_parent_id"
   add_index "refinery_pages", ["rgt"], :name => "index_refinery_pages_on_rgt"
 
+  create_table "refinery_pages_roles", :id => false, :force => true do |t|
+    t.integer "page_id"
+    t.integer "role_id"
+  end
+
   create_table "refinery_resources", :force => true do |t|
     t.string   "file_mime_type"
     t.string   "file_name"
@@ -150,9 +197,9 @@ ActiveRecord::Schema.define(:version => 20121205115009) do
   add_index "refinery_user_plugins", ["user_id", "name"], :name => "index_refinery_user_plugins_on_user_id_and_name", :unique => true
 
   create_table "refinery_users", :force => true do |t|
-    t.string   "username",                             :null => false
-    t.string   "email",                                :null => false
-    t.string   "encrypted_password",                   :null => false
+    t.string   "username",                                                           :null => false
+    t.string   "email",                                                              :null => false
+    t.string   "encrypted_password",                                                 :null => false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -161,11 +208,30 @@ ActiveRecord::Schema.define(:version => 20121205115009) do
     t.datetime "remember_created_at"
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
-    t.datetime "created_at",                           :null => false
-    t.datetime "updated_at",                           :null => false
+    t.datetime "created_at",                                                         :null => false
+    t.datetime "updated_at",                                                         :null => false
     t.string   "spree_api_key",          :limit => 48
     t.integer  "ship_address_id"
     t.integer  "bill_address_id"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "title"
+    t.string   "phone"
+    t.string   "fax"
+    t.string   "website"
+    t.string   "organization"
+    t.string   "street_address"
+    t.string   "city"
+    t.string   "province"
+    t.string   "postal_code"
+    t.datetime "member_until"
+    t.string   "membership_level",                     :default => "Refinery::User"
+    t.boolean  "enabled",                              :default => false
+    t.boolean  "seen",                                 :default => false
+    t.string   "rejected",                             :default => "UNDECIDED"
+    t.string   "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
   end
 
   add_index "refinery_users", ["id"], :name => "index_refinery_users_on_id"
@@ -222,6 +288,7 @@ ActiveRecord::Schema.define(:version => 20121205115009) do
     t.datetime "updated_at",      :null => false
     t.text     "sign_data"
     t.text     "sharing_key"
+    t.decimal  "price"
   end
 
   create_table "sign_data_to_categories", :force => true do |t|

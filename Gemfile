@@ -9,7 +9,7 @@ group :development, :test do
   gem 'sqlite3'
 end
 
-gem 'refinerycms-memberships', '2.0'
+gem 'refinerycms-memberships', '2.0.3', :git => 'git://github.com/rbriank/refinerycms_membership.git'
 
 gem 'spree', '~> 1.2.0'
 gem 'spree-refinerycms-authentication', :git => 'git://github.com/adrianmacneil/spree-refinery-authentication.git'

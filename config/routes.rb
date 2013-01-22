@@ -26,6 +26,7 @@ SignappNew::Application.routes.draw do
   match "custom_sign/load_sign_ajax" => "custom_sign#load_sign_ajax"
   match "custom_sign/edit_sign" => "custom_sign#edit_sign"
   match "custom_sign/new_custom_sign" => "custom_sign#new_custom_sign"
+  match "custom_sign/calculate_sign_base_price" => "custom_sign#calculate_sign_base_price"
 
   match "admin/sign_shapes" => "spree/admin#sign_shapes"
   match "admin/add_sign_shape" => "spree/admin/products#add_sign_shape"

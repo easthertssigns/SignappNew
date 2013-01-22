@@ -3,6 +3,47 @@
 <% end %>
 <% content_for :javascripts do %>
     <% javascript_include_tag 'select2.min' %>
+    <script type="text/javascript" language="javascript">
+      $(document).ready(function() {
+          $("#sizeSelect").change(function(){
+              var selectedSize = $("#sizeSelect").val();
+              if (selectedSize.indexOf("|") > -1){
+                  var width =  selectedSize.split('|')[0];
+                  var height = selectedSize.split('|')[1];
+                  $("#width").val(width);
+                  $("#height").val(height);
+              }
+              else{
+                  $("#width").val(selectedSize);
+                  $("#height").val(selectedSize);
+              }
+              $("#displaySize").text($("#sizeSelect option[value='" + selectedSize + "']").text());
+              //alert($("#sizeSelect option[value='" + selectedSize + "']").text());
+              get_calculated_price_of_sign();
+          });
+
+          $("#shapeSelect").change(function(){
+              var selectedShape = $("#shapeSelect").val();
+              $("#displayShape").text($("#shapeSelect option[value='" + selectedShape + "']").text());
+          });
+       });
+
+       function get_calculated_price_of_sign(){
+           var width = $("#width").val();
+           var height = $("#height").val();
+           var product_id = $("#product_id").val();
+//           var sign_area = width * height;
+//           var sign_price = sign_area * base_price;
+           $.ajax({
+               url: "/custom_sign/calculate_sign_base_price",
+               data: { width: width, height: height, product_id: product_id }
+           }).done(function(result){
+               $("#calculated_price").val(result.result.toFixed(2));
+               $("#displayPrice").text(result.result.toFixed(2));
+               //alert(result.result);
+           });
+       }
+    </script>
 <% end %>
 <div data-hook="product_show" itemscope itemtype="http://schema.org/Product">
   <% @body_id = 'product-details' %>
@@ -45,9 +86,9 @@
         </div>
         <h3>Based on dimensions:</h3>
 
-        <p><strong>Shape: </strong>Rectangle</p>
+        <p><strong>Shape: </strong><span id="displayShape">Rectangle</span></p>
 
-        <p><strong>Size: </strong>29.7 cm X 21 cm (A4)</p>
+        <p><strong>Size: </strong><span id="displaySize">29.7 cm X 21 cm (A4)</span></p>
 
         <h3>Note:</h3>
 
@@ -75,7 +116,7 @@
           </div>
           <div class="inputsRow">
             <div class="step one">
-              <select id="shapeSelect">
+              <select id="shapeSelect" name="shapeSelect">
                 <% get_sign_shapes_for_product(@product).each do |shape| %>
                     <option value="<%= shape.id %>"><%= shape.name %></option>
                 <% end %>
@@ -84,19 +125,22 @@
               <div class="arrow"></div>
             </div>
             <div class="step two">
-              <select id="sizeSelect">
-                <option>29.7cm x 21cm (A4)</option>
+              <select id="sizeSelect" name="sizeSelect">
+                <option value="297|210">29.7cm x 21cm (A4)</option>
+                <option value="210|149">21cm x 14.9cm (A5)</option>
+                <option value="100">10cm Diameter</option>
               </select>
 
-              <%= hidden_field_tag "width", 20 %>
-              <%= hidden_field_tag "height", 12 %>
+              <%= hidden_field_tag "width", 0 %>
+              <%= hidden_field_tag "height", 0 %>
+              <%= hidden_field_tag "calculated_price", 0 %>
 
               <div class="arrow"></div>
             </div>
             <div class="step three">
               <div class="priceWrapper">
                 <% unless @product.price.nil? %>
-                    <span class="price"><%= number_to_currency @product.price %></span><span class="inclVAT"> Incl. VAT</span>
+                    <span class="price" id="displayPrice"><%= number_to_currency @product.price %></span><span class="inclVAT"> Incl. VAT</span>
                 <% end %>
               </div>
               <div class="arrow"></div>

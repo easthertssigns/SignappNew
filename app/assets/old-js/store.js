@@ -29,15 +29,15 @@ $(function () {
         return "<img class='shape' src='/assets/shapes/" + shape.id.toLowerCase() + ".png'/>" + shape.text;
     }
 
-    $("#shapeSelect").select2({
-        width:'resolve',
-        minimumResultsForSearch:9999,
-        formatResult:format,
-        formatSelection:format
-    });
+    //$("#shapeSelect").select2({
+    //    width:'resolve',
+    //    minimumResultsForSearch:9999,
+    //    formatResult:format,
+    //    formatSelection:format
+    //});
 
-    $("#sizeSelect").select2({
-        width:'resolve',
-        minimumResultsForSearch:9999
-    });
+    //$("#sizeSelect").select2({
+    //    width:'resolve',
+    //    minimumResultsForSearch:9999
+    //});
 });

@@ -59,7 +59,9 @@ class CustomSignController < ApplicationController
     @sign_data.height = params[:height].to_i
     @sign_data.width = params[:width].to_i
 
-    @sign_data.shape_id = params[:shape_id].to_i
+    @sign_data.shape_id = params[:shapeSelect].to_i
+
+    @sign_data.price = params[:calculated_price].to_f
 
     if session[:account_id]
       @sign_data.account_id = params[:account_id]
@@ -68,6 +70,20 @@ class CustomSignController < ApplicationController
     @sign_data.save
 
     render "edit_sign"
+  end
+
+  def calculate_sign_base_price
+    #raise "got this far"
+    height = (params[:height].to_f)/10
+    width = (params[:width].to_f)/10
+    total_sign_area = width * height
+
+    material = Spree::Product.find params[:product_id]
+    base_price = material.price.to_f
+
+    calculated_price = (total_sign_area * base_price).to_f
+
+    render :json => { :result => calculated_price }
   end
 
 end

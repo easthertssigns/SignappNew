@@ -16,7 +16,7 @@
     <div class="function" id="clearCanvas">Clear Canvas</div>
     <div class="function">Quick Tutorial</div>
   </div>
-       <div style="position: absolute; top: 90px; color: white; left: 50px;">Canvas Size : Width : <%= params[:width] %>cm X Height : <%=  params[:height] %>cm</div>
+       <div style="position: absolute; top: 90px; color: white; left: 50px;">Canvas Size : Width : <%= (params[:width].to_f)/10 %>cm X Height : <%= (params[:height].to_f)/10 %>cm</div>
   <canvas id="my-canvas" width="600" height="600"></canvas>
 
   <!--Object buttons-->
@@ -104,7 +104,7 @@
 
     <!--Price-->
     <div class="priceWrapper">
-      <span class="price">&pound;22.99</span><span class="inclVAT"> Incl. VAT</span>
+      <span class="price">&pound;<%= number_with_precision(@sign_data.price, :precision => 2) %></span><span class="inclVAT"> Incl. VAT</span>
     </div>
 
     <!--Add to Basket button-->
