@@ -80,10 +80,21 @@ class CustomSignController < ApplicationController
 
     material = Spree::Product.find params[:product_id]
     base_price = material.price.to_f
+    if !material.small_size_threshold.nil? && !material.small_size_price.nil?
+      if total_sign_area < material.small_size_threshold
+        base_price = material.small_size_price.to_f
+      end
+    end
+    if !material.large_size_threshold.nil? && !material.large_size_price.nil?
+      if total_sign_area > material.large_size_threshold
+        base_price = material.large_size_price.to_f
+      end
+    end
+
 
     calculated_price = (total_sign_area * base_price).to_f
 
-    render :json => { :result => calculated_price }
+    render :json => { :result => calculated_price, :base_price => base_price }
   end
 
 end

@@ -1,3 +1,7 @@
+#ENV['S3_KEY']='AKIAJHMMYZ5GOYGV6OHQ'
+#ENV['S3_SECRET']='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'
+#ENV['S3_BUCKET']='signapp-dev'
+
 require File.expand_path('../boot', __FILE__)
 
 # Pick the frameworks you want:

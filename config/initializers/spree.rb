@@ -12,6 +12,11 @@ Spree.config do |config|
   config.allow_locale_switching = false
 
   config.default_locale = 'en'
+
+  config.use_s3 = true
+  config.s3_bucket = 'signapp-dev'
+  config.s3_access_key = 'AKIAJHMMYZ5GOYGV6OHQ'
+  config.s3_secret = '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'
 end
 
 Spree.user_class = "Spree::LegacyUser"

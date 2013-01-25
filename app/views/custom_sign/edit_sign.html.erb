@@ -223,9 +223,25 @@
         canvas.setWidth(canvasWidth);
         canvas.setHeight(canvasHeight);
 
-        canvas.setBackgroundImage('/assets/customisation/brass.jpg', function () {
-            canvas.renderAll()
-        });
+        //this is where the background image is set. Need to think about how to store and recall this.
+        <% background_image = get_background_image_for_product(@sign_data.base_product_id) %>
+        <%
+        if background_image.nil?
+           %>
+            canvas.setBackgroundImage('/assets/customisation/brass.jpg', function () {
+                        canvas.renderAll();
+            });
+        <%
+        else
+                %>
+        var bg_image_url = '<%= background_image.attachment.url(:product) %>';
+               canvas.setBackgroundImage(bg_image_url, function () {
+               //canvas.setBackgroundImage('/assets/customisation/brass.jpg', function () {
+                   canvas.renderAll();
+               });
+        <%
+        end
+        %>
         canvas.renderAll();
 
         canvas.clear();

@@ -198,5 +198,14 @@ module Spree
       SignBaseShape.all
     end
 
+    def get_background_image_for_product(product_id)
+      product = Spree::Product.find product_id
+      image = nil
+      if !product.editor_background_image_id.nil?
+        image = Spree::Asset.find product.editor_background_image_id
+      end
+      image
+    end
+
   end
 end

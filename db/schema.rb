@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130122132028) do
+ActiveRecord::Schema.define(:version => 20130123143516) do
 
   create_table "custom_signs", :force => true do |t|
     t.integer  "spree_user_id"
@@ -627,7 +627,7 @@ ActiveRecord::Schema.define(:version => 20130122132028) do
   add_index "spree_product_properties", ["product_id"], :name => "index_product_properties_on_product_id"
 
   create_table "spree_products", :force => true do |t|
-    t.string   "name",                 :default => "", :null => false
+    t.string   "name",                       :default => "", :null => false
     t.text     "description"
     t.datetime "available_on"
     t.datetime "deleted_at"
@@ -636,9 +636,10 @@ ActiveRecord::Schema.define(:version => 20130122132028) do
     t.string   "meta_keywords"
     t.integer  "tax_category_id"
     t.integer  "shipping_category_id"
-    t.datetime "created_at",                           :null => false
-    t.datetime "updated_at",                           :null => false
-    t.integer  "count_on_hand",        :default => 0,  :null => false
+    t.datetime "created_at",                                 :null => false
+    t.datetime "updated_at",                                 :null => false
+    t.integer  "count_on_hand",              :default => 0,  :null => false
+    t.integer  "editor_background_image_id"
   end
 
   add_index "spree_products", ["available_on"], :name => "index_spree_products_on_available_on"
@@ -877,18 +878,26 @@ ActiveRecord::Schema.define(:version => 20130122132028) do
   add_index "spree_users", ["persistence_token"], :name => "index_users_on_persistence_token"
 
   create_table "spree_variants", :force => true do |t|
-    t.string   "sku",                                         :default => "",    :null => false
-    t.decimal  "price",         :precision => 8, :scale => 2,                    :null => false
-    t.decimal  "weight",        :precision => 8, :scale => 2
-    t.decimal  "height",        :precision => 8, :scale => 2
-    t.decimal  "width",         :precision => 8, :scale => 2
-    t.decimal  "depth",         :precision => 8, :scale => 2
+    t.string   "sku",                                                :default => "",    :null => false
+    t.decimal  "price",                :precision => 8, :scale => 2,                    :null => false
+    t.decimal  "weight",               :precision => 8, :scale => 2
+    t.decimal  "height",               :precision => 8, :scale => 2
+    t.decimal  "width",                :precision => 8, :scale => 2
+    t.decimal  "depth",                :precision => 8, :scale => 2
     t.datetime "deleted_at"
-    t.boolean  "is_master",                                   :default => false
+    t.boolean  "is_master",                                          :default => false
     t.integer  "product_id"
-    t.integer  "count_on_hand",                               :default => 0,     :null => false
-    t.decimal  "cost_price",    :precision => 8, :scale => 2
+    t.integer  "count_on_hand",                                      :default => 0,     :null => false
+    t.decimal  "cost_price",           :precision => 8, :scale => 2
     t.integer  "position"
+    t.decimal  "small_size_price"
+    t.decimal  "large_size_price"
+    t.integer  "small_size_threshold"
+    t.integer  "large_size_threshold"
+    t.integer  "minimum_width"
+    t.integer  "maximum_width"
+    t.integer  "minimum_height"
+    t.integer  "maximum_height"
   end
 
   add_index "spree_variants", ["product_id"], :name => "index_spree_variants_on_product_id"

@@ -9,7 +9,7 @@
     <div class="clearfix"></div>
     <div class="product-image">
       <% if product.images.size > 0 %>
-          <%= link_to image_tag image_tag(product.images[0].attachment.url(:mini)), {:action => seo_url(product)} %>
+          <%= image_tag product.images[0].attachment.url(:product) %>
           <div class="imageOverlay">
             <p><%= truncate(product.description, :length => 100) %></p>
             <%= link_to "Take a look at the " + product.name + " gallery", seo_url(product) %>

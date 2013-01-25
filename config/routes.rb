@@ -38,6 +38,8 @@ SignappNew::Application.routes.draw do
   match "admin/update_sign_shape" => "spree/admin/products#update_sign_shape", :via => :put
   #match "admin/sign_graphics" => "sign_graphics#index"
 
+  match "/admin/update_editor_bg_image" => "spree/admin/products#update_editor_bg_image"
+
   match "admin/users/:id/log_in_as" => "spree/admin/users#log_in_as"
   root :to => "refinery/pages#home"
 

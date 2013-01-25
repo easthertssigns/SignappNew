@@ -21,9 +21,49 @@
     </div>
     <div class="right" data-hook="admin_product_form_right">
         <%= f.field_container :price do %>
-          <%= f.label :price, t(:master_price) %> <span class="required">*</span><br />
+          <%= f.label :price, t(:master_price) + " per cm squared" %> <span class="required">*</span><br />
           <%= f.text_field :price, :value => number_to_currency(@product.price, :unit => '') %>
           <%= f.error_message_on :price %>
+        <% end %>
+
+        <%= f.field_container :small_size_price do %>
+          <%= f.label :small_size_price, "Small Size Price per cm squared" %><br />
+          <%= f.text_field :small_size_price, :value => number_to_currency(@product.small_size_price, :unit => '') %>
+        <% end %>
+
+        <%= f.field_container :small_size_threshold do %>
+          <%= f.label :small_size_threshold, "Small Size Threshold (cm squared)" %><br />
+          <%= f.text_field :small_size_threshold, :value => @product.small_size_threshold %>
+        <% end %>
+
+        <%= f.field_container :large_size_price do %>
+          <%= f.label :large_size_price, "Large Size Price per cm squared" %><br />
+          <%= f.text_field :large_size_price, :value => number_to_currency(@product.large_size_price, :unit => '') %>
+        <% end %>
+
+        <%= f.field_container :large_size_threshold do %>
+          <%= f.label :large_size_threshold, "Large Size Threshold (cm squared)" %><br />
+          <%= f.text_field :large_size_threshold, :value => @product.large_size_threshold %>
+        <% end %>
+
+        <%= f.field_container :minimum_width do %>
+          <%= f.label :minimum_width, "Minimum Width" %><br />
+          <%= f.text_field :minimum_width, :value => @product.minimum_width %>
+        <% end %>
+
+        <%= f.field_container :maximum_width do %>
+          <%= f.label :maximum_width, "Maximum Width" %><br />
+          <%= f.text_field :maximum_width, :value => @product.maximum_width %>
+        <% end %>
+
+        <%= f.field_container :minimum_height do %>
+          <%= f.label :minimum_height, "Minimum Height" %><br />
+          <%= f.text_field :minimum_height, :value => @product.minimum_height %>
+        <% end %>
+
+        <%= f.field_container :maximum_height do %>
+          <%= f.label :maximum_height, "Maximum Height" %><br />
+          <%= f.text_field :maximum_height, :value => @product.maximum_height %>
         <% end %>
 
         <%= f.field_container :cost_price do %>

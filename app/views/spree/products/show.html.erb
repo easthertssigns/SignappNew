@@ -7,24 +7,70 @@
       $(document).ready(function() {
           $("#sizeSelect").change(function(){
               var selectedSize = $("#sizeSelect").val();
-              if (selectedSize.indexOf("|") > -1){
-                  var width =  selectedSize.split('|')[0];
-                  var height = selectedSize.split('|')[1];
-                  $("#width").val(width);
-                  $("#height").val(height);
+              if (selectedSize == "custom"){
+                  //do stuff that shows text boxes for custom size
+                  //un-hide div that has width and height boxes and a "set" button
+                  $("#custom_size_div").show();
+                  $("#custom_width").val("");
+                  $("#custom_height").val("");
               }
               else{
-                  $("#width").val(selectedSize);
-                  $("#height").val(selectedSize);
+                  $("#custom_size_div").hide();
+                  if (selectedSize.indexOf("|") > -1){
+                      var width =  selectedSize.split('|')[0];
+                      var height = selectedSize.split('|')[1];
+                      $("#width").val(width);
+                      $("#height").val(height);
+                  }
+                  else{
+                      $("#width").val(selectedSize);
+                      $("#height").val(selectedSize);
+                  }
+                  $("#displaySize").text($("#sizeSelect option[value='" + selectedSize + "']").text());
+                  //alert($("#sizeSelect option[value='" + selectedSize + "']").text());
+                  get_calculated_price_of_sign();
               }
-              $("#displaySize").text($("#sizeSelect option[value='" + selectedSize + "']").text());
-              //alert($("#sizeSelect option[value='" + selectedSize + "']").text());
-              get_calculated_price_of_sign();
           });
 
           $("#shapeSelect").change(function(){
               var selectedShape = $("#shapeSelect").val();
               $("#displayShape").text($("#shapeSelect option[value='" + selectedShape + "']").text());
+          });
+
+          $("#custom_size_button").click(function(){
+              var custom_width = $("#custom_width").val();
+              var custom_height = $("#custom_height").val();
+              var error_string = "";
+              var valid_dimensions = true;
+
+              if (custom_width.length == 0){
+                  error_string += "Please enter a width\r\n";
+                  valid_dimensions = false;
+              }
+              else if (isNaN(custom_width)){
+                  error_string += "Please enter a valid width in mm\r\n";
+                  valid_dimensions = false;
+              }
+
+              if (custom_height.length == 0){
+                  error_string += "Please enter a height\r\n";
+                  valid_dimensions = false;
+              }
+              else if (isNaN(custom_height)){
+                  error_string += "Please enter a valid height in mm\r\n";
+                  valid_dimensions = false;
+              }
+
+              if (valid_dimensions == false){
+                  alert(error_string);
+              }
+              else{
+                  //set the hidden values and calculate the price
+                  $("#width").val(custom_width);
+                  $("#height").val(custom_height);
+                  $("#displaySize").text((custom_width / 10) + "cm x " + (custom_height / 10) + "cm");
+                  get_calculated_price_of_sign();
+              }
           });
        });
 
@@ -40,7 +86,7 @@
            }).done(function(result){
                $("#calculated_price").val(result.result.toFixed(2));
                $("#displayPrice").text(result.result.toFixed(2));
-               //alert(result.result);
+               //alert("base price=" + result.base_price);
            });
        }
     </script>
@@ -129,6 +175,7 @@
                 <option value="297|210">29.7cm x 21cm (A4)</option>
                 <option value="210|149">21cm x 14.9cm (A5)</option>
                 <option value="100">10cm Diameter</option>
+                <option value="custom">Custom</option>
               </select>
 
               <%= hidden_field_tag "width", 0 %>
@@ -149,10 +196,13 @@
               <input type="submit" value="Ready? Let's design your sign!">
             </div>
           </div>
+          <div id="custom_size_div" style="display: none">
+            <div><%= label_tag "Width (mm)" %> <%=text_field_tag "custom_width" %> <%= label_tag "Height (mm)" %> <%=text_field_tag "custom_height" %> <input type="button" id="custom_size_button" value="Set Size"></div>
+          </div>
       <% end %>
-      <div id="cart-form" data-hook="cart_form">
-        <%= render :partial => 'cart_form' %>
-      </div>
+      <!--<div id="cart-form" data-hook="cart_form">-->
+        <!--<%= render :partial => 'cart_form' %>-->
+      <!--</div>-->
     </div>
     <div class="relatedProducts fixed_container_12">
       <div class="fixed_grid_12">
