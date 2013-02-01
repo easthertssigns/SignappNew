@@ -3,7 +3,7 @@
     <% if variant.images.length == 0 %>
         <%#= link_to minibasket_image(variant.product), variant.product %>
     <% else %>
-        <%= link_to image_tag(variant.images.first.attachment.url(:minibasket)), variant.product %>
+        <%= link_to image_tag(variant.images.first.attachment.url(:mini)), variant.product %>
     <% end %>
   </td>
   <td class="descriptionColumn" data-hook="minicart_item_description">

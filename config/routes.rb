@@ -9,7 +9,8 @@ SignappNew::Application.routes.draw do
   get "account/edit"
   get "account/login"
   get "account/logout"
-
+  match "account/login" => "account#sign_in_user", :via => :post
+  match "account/create" => "account#create_new_user", :via => :post
 
   # devise_for :customer_accounts, :controllers => { :sessions => "account_sessions" }
 

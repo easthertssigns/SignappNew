@@ -8,13 +8,14 @@
 <div id="tourOverlay"></div>
 <div id="canvasZoomWrapper">
   <div class="minorFunctions" id="minorFunctions">
-    <% unless session[:account_id].nil? %>
-        <div class="function" id="saveCanvas">Save</div>
-        <div class="function" id="loadCanvas">Load</div>
-    <% end %>
+
     <div class="function">Start Again</div>
     <div class="function" id="clearCanvas">Clear Canvas</div>
     <div class="function">Quick Tutorial</div>
+    <% if current_refinery_user %>
+        <div class="function" id="saveCanvas">Save</div>
+        <div class="function" id="loadCanvas">Load</div>
+    <% end %>
   </div>
        <div style="position: absolute; top: 90px; color: white; left: 50px;">Canvas Size : Width : <%= (params[:width].to_f)/10 %>cm X Height : <%= (params[:height].to_f)/10 %>cm</div>
   <canvas id="my-canvas" width="600" height="600"></canvas>
@@ -160,8 +161,14 @@
 </div>
 <div id="hiddenForm">
   <form action="/custom_sign/save_dialog" method="POST" id="customSignForm">
-    <input type="hidden" id="custom_data" name="custom_data" value="">
-    <input type="hidden" id="spree_user_id" name="spree_user_id" value="">
+    <input type="hidden" id="sign_data" name="sign_data" value="">
+    <input type="hidden" id="sign_data_id" name="sign_data_id" value="<%= @sign_data.id %>">
+    <input type="hidden" id="account_id" name="account_id" value="<%= current_refinery_user ? current_refinery_user.id : '' %>">
+    <input type="hidden" id="product_id" name="product_id" value="<%= @sign_data.spree_product_id %>">
+    <input type="hidden" id="quantity" name="quantity" value="1">
+    <input type="hidden" id="name" name="name" value="">
+    <input type="hidden" id="description" name="description" value="">
+    <input type="hidden" id="calculated_price" name="calculated_price" value="<%= @sign_data.price %>">
   </form>
 </div>
 <ol id="tourSteps">
@@ -224,7 +231,7 @@
         canvas.setHeight(canvasHeight);
 
         //this is where the background image is set. Need to think about how to store and recall this.
-        <% background_image = get_background_image_for_product(@sign_data.base_product_id) %>
+        <% background_image = get_background_image_for_product(@sign_data.spree_product_id) %>
         <%
         if background_image.nil?
            %>
@@ -248,11 +255,22 @@
 
         $('<textarea rows="1" cols="1" id="textArea"></textarea>').appendTo('.canvas-container');
 
+        $("#addToBasket").click(function(){
+            //serialize the custom sign data
+            //add this to the form field
+            json = JSON.stringify(canvas);
+            var custom_data = $.base64.encode(json);
+            $("#sign_data").val(custom_data);
+            //change submit path of the form
+            $("#customSignForm").attr("action", "/orders/populate");
+            //submit the form to the basket
+            $("#customSignForm").submit();
+        });
+
         $("#saveCanvas").click(function () {
             json = JSON.stringify(canvas);
             var custom_data = $.base64.encode(json);
-            $("#custom_data").val(custom_data);
-            $("#spree_user_id").val(<%= session[:account_id].nil? ? "0" : session[:account_id].id.to_s %>);
+            $("#sign_data").val(custom_data);
             //this is where custom_sign/save_sign is called
             $.fancybox.open({href:'/custom_sign/save_dialog',
                 title:'Save Custom Sign',

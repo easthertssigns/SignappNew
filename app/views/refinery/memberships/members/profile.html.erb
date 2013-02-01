@@ -1,0 +1,67 @@
+<% content_for :body_content_left do %>
+    <%= render :partial => 'message' %>
+  <%=raw @page.content_for(:body_above) if @page %>
+  <%=raw @page.content_for(:body) if @page %>
+  <div id="member">
+    <%= render :partial => "static_account" %>
+    <%= render :partial => "static_profile" %>
+    <%= render :partial => "static_organization" %>
+  </div>
+  <%= link_to t('.edit_profile'), edit_members_path %>
+  <%=raw @page.content_for(:body_below) if @page %>
+    <div>
+      <div>Your Saved Signs</div>
+      <div>
+        <% if @saved_signs.count > 0 %>
+          <% @saved_signs.each do |s| %>
+            <div>
+              <div>[sign image]</div>
+              <div><%= s.name %></div>
+              <% unless s.description.blank? %>
+              <div><%= s.description %></div>
+              <% end %>
+              <div>Created on <%= s.created_at.strftime("%d %B %Y") %> </div>
+              <div><%= s.price %></div>
+              <div>Preview | Add to Basket | Post on Facebook</div>
+              <div>EDIT</div>
+            </div>
+          <% end %>
+        <% else %>
+            You have no signs saved.
+        <% end %>
+      </div>
+      <div>Your Orders</div>
+      <div>[Order List to go Here]</div>
+    </div>
+<% end %>
+<% content_for :body_content_right do %>
+    <div>
+      <div>Connect With Facebook</div>
+      <div>
+        <div>By Linking with your Facebook account you can easily share your designed signs on your timeline.</div>
+        <div>[facebook link to go here]</div>
+      </div>
+      <div>
+        <div>Change Your Password</div>
+        <form action="/change_password">
+          <div>
+            <%= label_tag "Old Password" %><br/>
+            <%= text_field_tag :password %><br/>
+          </div>
+          <div>
+            <%= label_tag "New Password" %><br/>
+            <%= text_field_tag :new_password %><br/>
+          </div>
+          <div>
+            <%= label_tag "Confirm New Password" %><br/>
+            <%= text_field_tag :confirm_new_password %><br/>
+          </div>
+          <div><%= button_tag "Save Changes" %></div>
+        </form>
+      </div>
+      <div>
+        Change Your Delivery Details
+      </div>
+    </div>
+<% end %>
+<%= render :partial => "/refinery/content_page", :locals => {:hide_sections => [:bodybelow, :bodyabove]} %>

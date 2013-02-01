@@ -1,2 +1,43 @@
-<h1>Create a new Sign app Account</h1>
-<p>to do form</p>
+<!--<h1>Create a new SignApp Account</h1>-->
+<div>
+    <%= form_tag(:controller => "account", :action => "login") do -%>
+    <h3>Log in</h3>
+    <div>Login with Facebook button here</div>
+    <h3>SignApp Account</h3>
+    <div>
+        <%= label_tag "Your Email" %><br/>
+        <%= text_field_tag(:email) %>
+    </div>
+    <div>
+        <%= label_tag "Your Password" %><br/>
+        <%= password_field_tag(:password) %>
+    </div>
+    <div><%= button_tag "Log in" %></div>
+    <a href="">Forgotten your password?</a>
+    <% end -%>
+</div>
+<div>
+    <%= form_tag(:controller => "account", :action => "create") do -%>
+    <h3>Create an Account</h3>
+    <h3>Lets get started</h3>
+    <div>
+        <%= label_tag "Your Email" %><br/>
+        <%= text_field_tag(:email) %>
+    </div>
+    <div>
+        <%= label_tag "Create a Password" %><br/>
+        <%= password_field_tag(:password) %>
+    </div>
+    <div>
+        <%= label_tag "Confirm Your Password" %><br/>
+        <%= password_field_tag(:confirm_password) %>
+    </div>
+    <div><%= button_tag "Create My Account" %></div>
+    <% end -%>
+</div>
+
+<% if current_refinery_user %>
+    Account is logged in <%= current_refinery_user.email %> <%= current_refinery_user.id %>
+<% else %>
+    Account is not logged in
+<% end %>

@@ -1,19 +1,47 @@
 <% content_for :javascript_includes do %>
     <script language="javascript" type="text/javascript">
       $(document).ready(function(){
-          $("#custom_data").val(parent.$("#custom_data").val());
-          $("#spree_user_id").val(parent.$("#spree_user_id").val());
-          alert(parent.$("#custom_data").val());
+          $("#sign_data_id").val(parent.$("#sign_data_id").val());
+          $("#sign_data").val(parent.$("#sign_data").val());
+          $("#account_id").val(parent.$("#account_id").val());
+          $("#name").val(parent.$("#name").val());
+          $("#description").val(parent.$("#description").val());
+          $("#calculated_price").val(parent.$("#calculated_price").val());
+          //alert(parent.$("#sign_data").val());
+
+          $("#save_button").click(function(){
+              alert("save button clicked");
+              var id = $("#sign_data_id").val();
+              var sign_data = $("#sign_data").val();
+              var account_id = $("#account_id").val();
+              var name = $("#name").val();
+              var description = $("#description").val();
+              var calculated_price = $("#calculated_price").val();
+              parent.$("#name").val($("#name").val());
+              parent.$("#description").val($("#description").val());
+              $.ajax({
+                  type: "POST",
+                  url: "/custom_sign/save_sign",
+                  data: { id: id, sign_data: sign_data, account_id: account_id, name: name, description: description, calculated_price: calculated_price }
+              }).done(function( msg ) {
+                  alert( "Data Saved: " + msg );
+              });
+          });
       });
     </script>
 <% end %>
-<form action="/custom_sign/save_sign">
+<form action="/custom_sign/save_sign_dummy">
   <div>Please enter a name for your saved design</div>
-  <div><input type= "text" id="name" name="name"></div>
+  <div><%= text_field_tag "name" %></div>
+  <br/>
+  <div>Please enter a description for your saved design (optional)</div>
+  <div><%= text_area_tag "description" %></div>
   <br/>
   <div id="hiddenFields">
-    <input type="hidden" name="custom_data" id="custom_data" value="">
-    <input type="hidden" name="spree_user_id" id="spree_user_id" value="">
+    <input type="hidden" name="sign_data_id" id="sign_data_id" value="">
+    <input type="hidden" name="sign_data" id="sign_data" value="">
+    <input type="hidden" name="account_id" id="account_id" value="">
+    <input type="hidden" name="calculated_price" id="calculated_price" value="">
   </div>
-  <div><input type="submit" value="Save"></div>
+  <div><input type="button" id="save_button" value="Save"></div>
 </form>

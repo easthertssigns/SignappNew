@@ -1,0 +1,46 @@
+<div>
+  <%= form_for Refinery::User.new, :as => :refinery_user, :url => refinery_user_session_path do | f | %>
+    <h3>Log in</h3>
+    <div>Login with Facebook button here</div>
+    <h3>SignApp Account</h3>
+    <div>
+        <%= label_tag "Your Email" %><br/>
+        <%= f.text_field(:login) %>
+    </div>
+    <div>
+        <%= label_tag "Your Password" %><br/>
+        <%= f.password_field(:password) %>
+    </div>
+    <div><%= button_tag "Log in" %></div>
+    <a href="">Forgotten your password?</a>
+      <%= hidden_field_tag :redirect, params[:redirect] %>
+      <%= hidden_field_tag :member_login, true %>
+    <% end %>
+</div>
+<div>
+    <%= form_for Refinery::User.new, :as => :member, :url => members_path do |f| %>
+    <h3>Create an Account</h3>
+    <h3>Lets get started</h3>
+    <div>
+        <%= label_tag "Your Email" %><br/>
+        <%= f.text_field(:email) %>
+    </div>
+    <div>
+        <%= label_tag "Create a Password" %><br/>
+        <%= f.password_field(:password) %>
+    </div>
+    <div>
+        <%= label_tag "Confirm Your Password" %><br/>
+        <%= f.password_field(:password_confirmation) %>
+    </div>
+      <div>
+              <%= label_tag "First Name" %><br/>
+              <%= f.text_field(:first_name) %>
+          </div>
+      <div>
+              <%= label_tag "Last Name" %><br/>
+              <%= f.text_field(:last_name) %>
+          </div>
+    <div><%= button_tag "Create My Account" %></div>
+    <% end %>
+</div>

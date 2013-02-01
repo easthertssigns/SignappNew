@@ -3,21 +3,33 @@ class CustomSignController < ApplicationController
     @message = ""
     if params[:id].nil?
       #create new custom sign
-      @new_sign = CustomSign.new
-      @new_sign.spree_user_id = params[:spree_user_id]
-      @new_sign.custom_data = params[:custom_data]
+      @new_sign = SignData.new
+      @new_sign.base_product_id = params[:product_id]
+
+      @new_sign.height = params[:height].to_i
+      @new_sign.width = params[:width].to_i
+
+      @new_sign.shape_id = params[:shapeSelect].to_i
+
+      @new_sign.price = params[:calculated_price].to_f
+
+      @new_sign.account_id = params[:spree_user_id]
+      @new_sign.sign_data = params[:custom_data]
       unless params[:name].nil?
         @new_sign.name = params[:name]
       end
-      unless params[:spree_product_id].nil?
-        @new_sign.spree_product_id = params[:spree_product_id]
-      end
+
       @new_sign.save
       @message = "Custom Sign Created"
     else
       #load, modify and save existing custom sign
-      @current_sign = CustomSign.find params[:id]
-      @current_sign.custom_data = params[:custom_data]
+      #may have to save other details as well. Height and width aren't changeable as far as I understand, put price certainly is
+      @current_sign = SignData.find params[:id]
+      @current_sign.price = params[:calculated_price].to_f
+      @current_sign.sign_data = params[:sign_data]
+      @current_sign.name = params[:name]
+      @current_sign.description = params[:description]
+      @current_sign.account_id = params[:account_id]
       @current_sign.save
       @message = "Custom Sign Saved"
     end
@@ -27,19 +39,19 @@ class CustomSignController < ApplicationController
   end
 
   def delete_sign
-    @sign = CustomSign.find params[:id]
+    @sign = SignData.find params[:id]
     @sign.destroy
   end
 
   def load_sign_ajax
-    @custom_sign = CustomSign.find params[:saved_sign_id]
+    @custom_sign = SignData.find params[:saved_sign_id]
     respond_to do |format|
       format.js
     end
   end
 
   def load_sign_list
-    @custom_signs = CustomSign.all(:conditions => ["spree_user_id = ?", params[:user_id]])
+    @custom_signs = SignData.all(:conditions => ["account_id = ?", params[:user_id]])
     render :layout => "modal"
   end
 
@@ -54,7 +66,7 @@ class CustomSignController < ApplicationController
   def new_custom_sign
     # Create new sign_data record
     @sign_data = SignData.new()
-    @sign_data.base_product_id = params[:product_id]
+    @sign_data.spree_product_id = params[:product_id]
 
     @sign_data.height = params[:height].to_i
     @sign_data.width = params[:width].to_i
@@ -68,7 +80,6 @@ class CustomSignController < ApplicationController
     end
 
     @sign_data.save
-
     render "edit_sign"
   end
 
