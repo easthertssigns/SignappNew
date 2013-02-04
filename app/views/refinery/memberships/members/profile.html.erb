@@ -12,7 +12,7 @@
     <div>
       <div>Your Saved Signs</div>
       <div>
-        <% if @saved_signs.count > 0 %>
+        <% if !@saved_signs.nil? %>
           <% @saved_signs.each do |s| %>
             <%= render "saved_sign_thumb", :s => s %>
           <% end %>
