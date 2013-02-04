@@ -14,17 +14,7 @@
       <div>
         <% if @saved_signs.count > 0 %>
           <% @saved_signs.each do |s| %>
-            <div>
-              <div>[sign image]</div>
-              <div><%= s.name %></div>
-              <% unless s.description.blank? %>
-              <div><%= s.description %></div>
-              <% end %>
-              <div>Created on <%= s.created_at.strftime("%d %B %Y") %> </div>
-              <div><%= s.price %></div>
-              <div>Preview | Add to Basket | Post on Facebook</div>
-              <div>EDIT</div>
-            </div>
+            <%= render "saved_sign_thumb", :s => s %>
           <% end %>
         <% else %>
             You have no signs saved.

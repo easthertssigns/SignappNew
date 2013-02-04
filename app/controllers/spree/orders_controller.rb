@@ -57,6 +57,7 @@ module Spree
       if params[:sign_data_id].blank?
         raise "sign data id is null, new sign data will be created"
       else
+        #sign data needs to be saved first, or rather updated. Am I already doing this on the page?
         sign_data = SignData.find params[:sign_data_id]
       end
       @order = current_order(true)
@@ -71,6 +72,19 @@ module Spree
       #  quantity = quantity.to_i
       #  @order.add_variant(Variant.find(variant_id), quantity) if quantity > 0
       #end if params[:variants]
+      fire_event('spree.cart.add')
+      fire_event('spree.order.contents_changed')
+      respond_with(@order) { |format| format.html { redirect_to cart_path } }
+    end
+
+    def add_saved_sign_to_basket
+      sign_data = SignData.find params[:id]
+      product = Spree::Product.find sign_data.spree_product_id
+      product_id = product.id
+      variant_id = product.variants_with_only_master.id
+      quantity = 1
+      @order = current_order(true)
+      @order.add_variant(Variant.find(variant_id), quantity, sign_data) if quantity > 0
       fire_event('spree.cart.add')
       fire_event('spree.order.contents_changed')
       respond_with(@order) { |format| format.html { redirect_to cart_path } }

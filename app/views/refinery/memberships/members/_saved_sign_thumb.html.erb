@@ -1,0 +1,11 @@
+<div>
+  <div>[sign image]</div>
+  <div><%= s.name %></div>
+  <% unless s.description.blank? %>
+  <div><%= s.description %></div>
+  <% end %>
+  <div>Created on <%= s.created_at.strftime("%d %B %Y") %> </div>
+  <div><%= s.price %></div>
+  <div>Preview | <a href="/orders/add_saved_sign_to_basket?id=<%= s.id %>">Add to Basket</a> | Post On Facebook</div>
+  <div>EDIT</div>
+</div>
