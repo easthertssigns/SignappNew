@@ -10,6 +10,6 @@
 
  *= require_self
  *= require_tree .
- *= require store/spree-flexi-variants
+
  *= require store/spree_minicart
 */
