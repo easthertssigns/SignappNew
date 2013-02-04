@@ -135,6 +135,7 @@ GEM
       activesupport (>= 2.3.2)
       cocaine (>= 0.0.2)
       mime-types
+    pg (0.14.1-x86-mingw32)
     polyamorous (0.5.0)
       activerecord (~> 3.0)
     polyglot (0.3.3)
@@ -293,6 +294,7 @@ DEPENDENCIES
   coffee-rails (~> 3.2.1)
   devise
   jquery-rails (~> 2.0.0)
+  pg
   rails (= 3.2.9)
   refinerycms (~> 2.0.0)
   refinerycms-memberships (= 2.0.3)!
