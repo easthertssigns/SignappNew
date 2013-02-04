@@ -7,5 +7,5 @@
   <div>Created on <%= s.created_at.strftime("%d %B %Y") %> </div>
   <div><%= s.price %></div>
   <div>Preview | <a href="/orders/add_saved_sign_to_basket?id=<%= s.id %>">Add to Basket</a> | Post On Facebook</div>
-  <div>EDIT</div>
+  <div><a href="/custom_sign/edit_sign?id=<%= s.id %>">EDIT</a></div>
 </div>

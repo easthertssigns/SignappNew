@@ -12,6 +12,8 @@ SignappNew::Application.routes.draw do
   match "account/login" => "account#sign_in_user", :via => :post
   match "account/create" => "account#create_new_user", :via => :post
 
+  match "/orders/add_saved_sign_to_basket" => "spree/orders#add_saved_sign_to_basket"
+
   # devise_for :customer_accounts, :controllers => { :sessions => "account_sessions" }
 
   # match "/user." => "spree/users#create", :via => :post

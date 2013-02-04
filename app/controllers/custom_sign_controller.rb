@@ -60,6 +60,7 @@ class CustomSignController < ApplicationController
   end
 
   def edit_sign
+    @sign_data = SignData.find params[:id]
     render :layout => "edit_sign"
   end
 

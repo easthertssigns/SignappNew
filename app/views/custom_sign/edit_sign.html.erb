@@ -255,6 +255,14 @@
 
         $('<textarea rows="1" cols="1" id="textArea"></textarea>').appendTo('.canvas-container');
 
+        $("#sign_data").val('<%= @sign_data.sign_data %>');
+        if ($("#sign_data").val() != ''){
+            alert("Saved sign loaded!");
+            var jsn = $.base64.decode($("#sign_data").val());
+            canvas.loadFromJSON(jsn);
+        }
+
+
         $("#addToBasket").click(function(){
             //serialize the custom sign data
             //add this to the form field
@@ -1032,8 +1040,10 @@
             $('#addBorderMenu').hide();
         });
 
-        <% if !params["saved_sign_id"].nil? %>
-        jQuery.ajax("/custom_sign/load_sign_ajax?saved_sign_id=" + <%=params["saved_sign_id"]%>);
+        <% if !params["id"].nil? %>
+        //jQuery.ajax("/custom_sign/load_sign_ajax?saved_sign_id=" + <%=params["id"]%>);
+        $("#custom_data").val(<%= @sign_data.sign_data %>);
+        alert($("#custom_data").val());
         var jsn = $.base64.decode($("#custom_data").val());
         canvas.loadFromJSON(jsn);
         <% end %>
