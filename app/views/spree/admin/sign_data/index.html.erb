@@ -1,0 +1,45 @@
+<h1>Saved Signs</h1>
+<select id="material_type">
+  <option>Please Select</option>
+  <% get_material_types.each do |m| %>
+     <option value="<%= m.id %>"><%= m.name%></option>
+  <% end %>
+</select>
+<div id="select_product_list">
+<% get_product_list.each do |p| %>
+    <%= p.name %><br>
+<% end %>
+</div>
+<div id="sign_results">
+    <% @signs.each do |s| %>
+        <%= s.name %> <%= s.description %> <%= get_spree_product(s.spree_product_id).name %> <%= s.deleted_by_user = true ? "(Deleted by User)" : "" %><br>
+    <% end %>
+</div>
+
+
+<script language="javascript" type="text/javascript">
+  $(document).ready(function(){
+      $("#material_type").change(function(){
+          var material_type_id = $("#material_type").val();
+          $.ajax({
+            url: "/admin/sign_data/filter_product_list_ajax",
+            data: { material_type_id: material_type_id }
+          }).done(function(result){
+                $("#select_product_list").html(result.list);
+                $("#sign_results").html(result.results);
+          });
+      });
+
+      $("#material").live('change', function(){
+          var material_id = $("#material").val();
+          alert(material_id);
+          $.ajax({
+            url: "/admin/sign_data/filter_results_ajax",
+            data: { material: material_id }
+          }).done(function(result){
+                //$("#select_product_list").html(result.list);
+                $("#sign_results").html(result.results);
+          });
+      });
+  });
+</script>

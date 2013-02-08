@@ -1,0 +1,3 @@
+<% @filtered_signs.each do |s| %>
+    <%= s.name %> <%= s.description %> <%= get_spree_product(s.spree_product_id).name %> <%= s.deleted_by_user = true ? "(Deleted by User)" : "" %><br>
+<% end %>

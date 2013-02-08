@@ -207,5 +207,20 @@ module Spree
       image
     end
 
+    def get_spree_product(product_id)
+      product = Spree::Product.find product_id
+    end
+
+    def get_material_types
+      materials = Spree::Taxon.all(:conditions => ["parent_id = ?", 1])
+      materials = materials.sort_by &:name
+    end
+
+    def get_product_list
+      products = Spree::Product.all
+      products = products.sort_by &:name
+      products
+    end
+
   end
 end

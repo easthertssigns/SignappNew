@@ -1,0 +1,22 @@
+<script language="javascript" type="text/javascript">
+  $(document).ready(function(){
+      $("#show_as_product").click(function(){
+          var box_checked = $("#show_as_product").is(':checked') ? true : false;
+          $.ajax({
+            url: "/admin/sign_data/set_show_as_product_ajax",
+            data: { id: <%= @sign.id %> , value: box_checked }
+          }).done(function(result){
+
+          });
+          alert("clicked! " + box_checked);
+      });
+  });
+</script>
+
+<div>[IMAGE TO GO HERE]</div>
+<div><%= @sign.name %></div>
+<div><%= @sign.description %></div>
+<div>Material: <%= get_spree_product(@sign.spree_product_id).name %></div>
+<div>Size: <%= @sign.width %> x <%= @sign.height %></div>
+<div>Price: £<%= @sign.price %></div>
+<div><%= check_box_tag('show_as_product', 'show_as_product', @sign.show_as_product?) %> Show sign as product on site?</div>

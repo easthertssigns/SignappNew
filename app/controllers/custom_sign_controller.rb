@@ -43,6 +43,15 @@ class CustomSignController < ApplicationController
     @sign.destroy
   end
 
+  def delete_saved_sign
+    @sign = SignData.first(:conditions => ["id = ? AND account_id = ? ", params[:custom_sign_id], current_refinery_user.id.to_i])
+    unless @sign.nil?
+      @sign.deleted_by_user = true
+      @sign.save
+    end
+    redirect_to "/members/profile"
+  end
+
   def load_sign_ajax
     @custom_sign = SignData.find params[:saved_sign_id]
     respond_to do |format|

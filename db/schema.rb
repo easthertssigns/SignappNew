@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130130132752) do
+ActiveRecord::Schema.define(:version => 20130205113149) do
 
   create_table "custom_signs", :force => true do |t|
     t.integer  "spree_user_id"
@@ -302,6 +302,8 @@ ActiveRecord::Schema.define(:version => 20130130132752) do
     t.text     "sign_data"
     t.text     "sharing_key"
     t.decimal  "price"
+    t.boolean  "deleted_by_user"
+    t.boolean  "deleted_by_admin"
   end
 
   create_table "sign_data_to_categories", :force => true do |t|

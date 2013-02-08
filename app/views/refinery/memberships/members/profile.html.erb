@@ -14,7 +14,9 @@
       <div>
         <% if !@saved_signs.nil? %>
           <% @saved_signs.each do |s| %>
-            <%= render "saved_sign_thumb", :s => s %>
+                <% if (s.deleted_by_user.nil? || s.deleted_by_user == false) && (s.deleted_by_admin.nil? || s.deleted_by_admin == false) %>
+                    <%= render "saved_sign_thumb", :s => s %>
+                <% end %>
           <% end %>
         <% else %>
             You have no signs saved.
@@ -23,6 +25,11 @@
       <div>Your Orders</div>
       <div>[Order List to go Here]</div>
     </div>
+    <%= form_tag '/custom_sign/delete_saved_sign', :id => 'delete_sign_form' do -%>
+        <input type="hidden" id="custom_sign_id" name="custom_sign_id" value="">
+        <input type="hidden" id="user_id" name="user_id" value="<%= @member.id %>">
+    <% end -%>
+
 <% end %>
 <% content_for :body_content_right do %>
     <div>
@@ -33,21 +40,17 @@
       </div>
       <div>
         <div>Change Your Password</div>
-        <form action="/change_password">
+        <%= form_for @member, :as => :member, :url => '/members' do |f| %>
           <div>
-            <%= label_tag "Old Password" %><br/>
-            <%= text_field_tag :password %><br/>
+            <%= f.label :password, "New Password" %><br/>
+            <%= f.password_field :password %><br/>
           </div>
           <div>
-            <%= label_tag "New Password" %><br/>
-            <%= text_field_tag :new_password %><br/>
+            <%= f.label :password_confirmation, "Confirm New Password" %><br/>
+            <%= f.password_field :password_confirmation %><br/>
           </div>
-          <div>
-            <%= label_tag "Confirm New Password" %><br/>
-            <%= text_field_tag :confirm_new_password %><br/>
-          </div>
-          <div><%= button_tag "Save Changes" %></div>
-        </form>
+          <div><%= f.button "Save Changes" %></div>
+        <% end %>
       </div>
       <div>
         Change Your Delivery Details
@@ -55,3 +58,15 @@
     </div>
 <% end %>
 <%= render :partial => "/refinery/content_page", :locals => {:hide_sections => [:bodybelow, :bodyabove]} %>
+<script language="javascript" type="text/javascript">
+  function submit_delete_sign(id){
+      var confirmed = confirm("Are you sure you want to delete this sign?");
+      if (confirmed == true){
+          $("#custom_sign_id").val(id);
+          $("#delete_sign_form").submit();
+      }
+      else{
+          $("#custom_sign_id").val("");
+      }
+  }
+</script>
