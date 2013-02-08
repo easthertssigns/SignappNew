@@ -8,9 +8,21 @@
           }).done(function(result){
 
           });
-          alert("clicked! " + box_checked);
       });
   });
+
+  function delete_sign(id){
+    var confirmed = confirm('Are you sure you want to delete this sign?');
+    if (confirmed == true){
+        $.ajax({
+            url: "/admin/sign_data/delete_sign",
+            data: { id: id }
+        }).done(function(result){
+            //do nothing
+            window.location = '/admin/sign_data';
+        });
+    }
+  }
 </script>
 
 <div>[IMAGE TO GO HERE]</div>
@@ -20,3 +32,4 @@
 <div>Size: <%= @sign.width %> x <%= @sign.height %></div>
 <div>Price: £<%= @sign.price %></div>
 <div><%= check_box_tag('show_as_product', 'show_as_product', @sign.show_as_product?) %> Show sign as product on site?</div>
+<div><a href="javascript:delete_sign(<%= @sign.id %>)">Delete</a></div>
