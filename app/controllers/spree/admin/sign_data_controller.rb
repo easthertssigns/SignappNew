@@ -38,6 +38,12 @@ module Spree
         render :json => "ok"
       end
 
+      def delete_sign
+        sign_data = SignData.find params[:id]
+        sign_data.deleted_by_admin = true
+        sign_data.save
+        #what to do here? ajax or redirect?
+      end
     end
   end
 end

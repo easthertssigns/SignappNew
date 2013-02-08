@@ -45,6 +45,7 @@ SignappNew::Application.routes.draw do
   match "admin/sign_data/filter_product_list_ajax" => "spree/admin/sign_data#filter_product_list_ajax"
   match "admin/sign_data/filter_results_ajax" => "spree/admin/sign_data#filter_results_ajax"
   match "admin/sign_data/set_show_as_product_ajax" => "spree/admin/sign_data#set_show_as_product_ajax"
+  match "admin/sign_data/delete_sign" => "spree/admin/sign_data#delete_sign"
 
   match "/admin/update_editor_bg_image" => "spree/admin/products#update_editor_bg_image"
 
