@@ -1,9 +1,9 @@
 <tr class="<%= cycle('', 'alt') %>">
   <td class="imageColumn" data-hook="minicart_item_image">
     <% if variant.images.length == 0 %>
-        <%#= link_to minibasket_image(variant.product), variant.product %>
+        <%= link_to spree.minibasket_image(variant.product), variant.product %>
     <% else %>
-        <%= link_to image_tag(variant.images.first.attachment.url(:mini)), variant.product %>
+        <%= link_to image_tag(variant.product.images[0].attachment.url(:mini)), spree.product_path(variant.product) %>
     <% end %>
   </td>
   <td class="descriptionColumn" data-hook="minicart_item_description">

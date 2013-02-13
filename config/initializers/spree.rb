@@ -19,4 +19,5 @@ Spree.config do |config|
   config.s3_secret = 'r042QNV4dojCI4dAqgN/tA/9lQMm9rg8jWJrtDvd'
 end
 
-Spree.user_class = "Spree::LegacyUser"
+#Spree.user_class = "Spree::LegacyUser"
+Spree.user_class = "Refinery::Memberships::Member"
