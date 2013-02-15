@@ -1,0 +1,5 @@
+<h1>Sign Details</h1>
+<div><b>Title:</b> <%= @sign_size.title %></div>
+<div><b>Width:</b> <%= @sign_size.width %></div>
+<div><b>Height:</b> <%= @sign_size.height %></div>
+<div><%= link_to "Edit", edit_admin_sign_size_path(@sign_size) %> | <%=  link_to "Back", admin_sign_size_index_path %> </div>

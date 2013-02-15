@@ -1,0 +1,25 @@
+<h1>Pre-Defined Sign Sizes</h1>
+
+<%= link_to "Add Sign Size", new_admin_sign_size_path %>
+
+<table class="index" id="listing_sign_sizes">
+  <tr data-hook="admin_sign_sizes_index_headers">
+    <th>Title</th>
+    <th>Width</th>
+    <th>Height</th>
+    <th data-hook="admin_sign_size_index_header_actions"></th>
+  </tr>
+<% @sign_sizes.each do |ss| %>
+  <tr id="<%= "sign_size" + ss.id.to_s %>" data-hook="admin_sign_size_index_rows">
+    <td><%= link_to ss.title, admin_sign_size_path(ss) %></td>
+    <td><%= ss.width %></td>
+    <td><%= ss.height %></td>
+    <td class="actions" data-hook="admin_sign_size_index_row_actions">
+      <%= link_to t(:edit), edit_admin_sign_size_path(ss), :class => 'edit' %>
+      &nbsp;
+      <%#= link_to_delete ss %>
+    </td>
+  </tr>
+<% end %>
+</table>
+<%#= paginate @sign_sizes %>

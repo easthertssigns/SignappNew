@@ -84,8 +84,13 @@
                url: "/custom_sign/calculate_sign_base_price",
                data: { width: width, height: height, product_id: product_id }
            }).done(function(result){
-               $("#calculated_price").val(result.result.toFixed(2));
-               $("#displayPrice").text(result.result.toFixed(2));
+               var thePrice = result.result.toFixed(2);
+               $("#calculated_price").val(thePrice);
+               var split_price = thePrice.split('.');
+               var display_price = "£" + split_price[0] + "<sup>." + split_price[1] + "<sup>";
+               //$("#displayPrice").text(result.result.toFixed(2));
+               $("#displayPrice").html(display_price);
+               $("#sidebarDisplayPrice").html(display_price);
                //alert("base price=" + result.base_price);
            });
        }
@@ -127,7 +132,7 @@
 
         <div class="priceWrapper">
           <% unless @product.price.nil? %>
-              <span class="price"><%= number_to_currency @product.price %></span><span class="inclVAT"> Incl. VAT</span>
+              <span class="price" id="sidebarDisplayPrice"><%= Spree::Money.new @product.price %></span><span class="inclVAT"> Incl. VAT</span>
           <% end %>
         </div>
         <h3>Based on dimensions:</h3>
@@ -172,10 +177,10 @@
             </div>
             <div class="step two">
               <select id="sizeSelect" name="sizeSelect">
-                <option value="297|210">29.7cm x 21cm (A4)</option>
-                <option value="210|149">21cm x 14.9cm (A5)</option>
-                <option value="100">10cm Diameter</option>
                 <option value="custom">Custom</option>
+                <% get_sign_sizes_for_product(@product).each do |size| %>
+                    <option value="<%= size.width %>|<%= size.height %>"><%= size.title %></option>
+                <% end %>
               </select>
 
               <%= hidden_field_tag "width", 0 %>
@@ -187,7 +192,7 @@
             <div class="step three">
               <div class="priceWrapper">
                 <% unless @product.price.nil? %>
-                    <span class="price" id="displayPrice"><%= number_to_currency @product.price %></span><span class="inclVAT"> Incl. VAT</span>
+                    <span class="price" id="displayPrice"><%= Spree::Money.new @product.price %></span><span class="inclVAT"> Incl. VAT</span>
                 <% end %>
               </div>
               <div class="arrow"></div>

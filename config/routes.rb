@@ -146,5 +146,6 @@ Spree::Core::Engine.routes.draw do
     resources :sign_graphic_category
     resources :sign_category
     resources :sign_data
+    resources :sign_size
   end
 end

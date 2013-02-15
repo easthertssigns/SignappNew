@@ -198,6 +198,10 @@ module Spree
       SignBaseShape.all
     end
 
+    def get_sign_sizes_for_product(product)
+      SignSize.all
+    end
+
     def get_background_image_for_product(product_id)
       product = Spree::Product.find product_id
       image = nil

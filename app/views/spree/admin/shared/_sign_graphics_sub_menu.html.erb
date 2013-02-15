@@ -1,0 +1,6 @@
+<% content_for :sub_menu do %>
+  <ul id="sub_nav" data-hook="admin_sign_graphic_sub_tabs">
+    <%= tab :sign_graphics, '/admin/sign_graphics' %>
+    <%= tab :sign_graphic_category_index, admin_sign_graphic_category_index_path  %>
+  </ul>
+<% end %>

@@ -1,18 +1,25 @@
+<%= render :partial => 'spree/admin/shared/sign_graphics_sub_menu' %>
+
 <h1>Add New Sign Graphic</h1>
 
 <%= form_for @graphic, :url => "/admin/sign_graphics", :html => { :multipart => true } do |form| %>
     <div>
-      <%= form.label "Graphic Title" %>
+      <%= form.label "Graphic Title" %><br/>
       <%= form.text_field :title %>
     </div>
     <div>
-      <%= form.label "Graphic Description" %>
+      <%= form.label "Graphic Description" %><br/>
       <%= form.text_area :description %>
     </div>
     <div>
+      <%= form.label "Price" %><br/>
+      <%= form.text_field :price %>
+    </div><br/>
+    <div>
       <%= form.file_field :svg_file %>
-    </div>
+    </div><br/>
     <div>
       <%= form.submit "Save" %>
     </div>
+    <br/>
 <% end %>

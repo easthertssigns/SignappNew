@@ -68,12 +68,14 @@ module Spree
       def update
         #update the categories here - do I just delete them all and add new records every time, or do some sort of check?
         SignGraphicToCategory.delete_all(["sign_graphic_id = ?", params[:id]])
-        params[:category][:category_id].each do |c|
-          category_id =  c[0]
-          sgtc = SignGraphicToCategory.new
-          sgtc.sign_graphic_category_id = category_id
-          sgtc.sign_graphic_id = params[:id]
-          sgtc.save
+        if params[:category]
+          params[:category][:category_id].each do |c|
+            category_id =  c[0]
+            sgtc = SignGraphicToCategory.new
+            sgtc.sign_graphic_category_id = category_id
+            sgtc.sign_graphic_id = params[:id]
+            sgtc.save
+          end
         end
         @graphic = SignGraphic.find params[:id]
         @graphic.update_attributes(params[:sign_graphic])

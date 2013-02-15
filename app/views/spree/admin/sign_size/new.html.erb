@@ -1,0 +1,9 @@
+<h1>Add New Sign Size</h1>
+
+<%= form_for @sign_size, :url => '/admin/sign_size', :html => { :multipart => true } do |f| %>
+    <%= render :partial => 'form', :locals => { :f => f } %>
+    <div>
+        <%= button t('actions.create') %>
+        <%= t(:or) %> <%= link_to t('actions.cancel'), admin_sign_size_index_url %>
+    </div>
+<% end %>

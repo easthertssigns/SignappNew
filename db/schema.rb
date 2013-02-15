@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130205113149) do
+ActiveRecord::Schema.define(:version => 20130214162611) do
 
   create_table "custom_signs", :force => true do |t|
     t.integer  "spree_user_id"
@@ -336,6 +336,15 @@ ActiveRecord::Schema.define(:version => 20130205113149) do
     t.string   "svg_file_content_type"
     t.integer  "svg_file_file_size"
     t.datetime "svg_file_updated_at"
+    t.decimal  "price"
+  end
+
+  create_table "sign_sizes", :force => true do |t|
+    t.string   "title"
+    t.integer  "width"
+    t.integer  "height"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "spree_activators", :force => true do |t|
