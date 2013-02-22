@@ -33,3 +33,8 @@
 <div>Price: £<%= @sign.price %></div>
 <div><%= check_box_tag('show_as_product', 'show_as_product', @sign.show_as_product?) %> Show sign as product on site?</div>
 <div><a href="javascript:delete_sign(<%= @sign.id %>)">Delete</a></div>
+<%= form_tag '/admin/sign_products' do -%>
+  <input type="hidden" id="sign_data_id" name="sign_data_id" value="<%= @sign.id %>">
+  <input type="submit" value="Create Product">
+<% end -%>
+blah

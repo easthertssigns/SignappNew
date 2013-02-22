@@ -150,6 +150,7 @@
       <div class="clearfix"></div>
     </div>
     <div class="productOptions">
+      <% if @product.is_material %>
       <h3>Choose your signs shape &amp; size</h3>
 
       <%= form_tag("/custom_sign/new_custom_sign", :method => :post) do %>
@@ -208,6 +209,11 @@
       <!--<div id="cart-form" data-hook="cart_form">-->
         <!--<%= render :partial => 'cart_form' %>-->
       <!--</div>-->
+    <% else %>
+      <h3>Buy this product</h3>
+          <div class="button"><a href="/orders/add_saved_sign_to_basket?id=<%= @product.sign_data_id.to_s %>">Add to basket</a></div>
+          <div class="button"><a href="/custom_sign/edit_sign_from_product?id=<%= @product.sign_data_id.to_s %>">Customise this sign</a></div>
+    <% end %>
     </div>
     <div class="relatedProducts fixed_container_12">
       <div class="fixed_grid_12">

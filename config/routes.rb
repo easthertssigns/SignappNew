@@ -31,6 +31,12 @@ SignappNew::Application.routes.draw do
   match "custom_sign/new_custom_sign" => "custom_sign#new_custom_sign"
   match "custom_sign/calculate_sign_base_price" => "custom_sign#calculate_sign_base_price"
   match "custom_sign/delete_saved_sign" => "custom_sign#delete_saved_sign", :via => :post
+  match "custom_sign/edit_sign_from_product" => "custom_sign#edit_sign_from_product"
+  match "custom_sign/reset_sign_data_ajax" => "custom_sign#reset_sign_data_ajax"
+  match "custom_sign/get_graphic_url_ajax" => "custom_sign#get_graphic_url_ajax"
+  match "custom_sign/write_file" => "custom_sign#write_file"
+
+  match "admin/sign_products/product_not_found" => "spree/admin/sign_products#product_not_found"
 
   match "admin/sign_shapes" => "spree/admin#sign_shapes"
   match "admin/add_sign_shape" => "spree/admin/products#add_sign_shape"
@@ -147,5 +153,6 @@ Spree::Core::Engine.routes.draw do
     resources :sign_category
     resources :sign_data
     resources :sign_size
+    resources :sign_products
   end
 end

@@ -12,7 +12,7 @@
     <div>
       <div>Your Saved Signs</div>
       <div>
-        <% if !@saved_signs.nil? %>
+        <% if @saved_signs.count > 0 %>
           <% @saved_signs.each do |s| %>
                 <% if (s.deleted_by_user.nil? || s.deleted_by_user == false) && (s.deleted_by_admin.nil? || s.deleted_by_admin == false) %>
                     <%= render "saved_sign_thumb", :s => s %>
@@ -23,7 +23,13 @@
         <% end %>
       </div>
       <div>Your Orders</div>
-      <div>[Order List to go Here]</div>
+        <% if @orders.count > 0 %>
+          <% @orders.each do |order| %>
+            <%= render "order_thumb", :order => order %>
+          <% end %>
+        <% else %>
+          <div>You haven't made any orders yet.</div>
+        <% end %>
     </div>
     <%= form_tag '/custom_sign/delete_saved_sign', :id => 'delete_sign_form' do -%>
         <input type="hidden" id="custom_sign_id" name="custom_sign_id" value="">

@@ -1,0 +1,27 @@
+<% @products.each do |product| %>
+    <%= product.name %><br>
+<% end %>
+<table class="index" id="listing_products">
+  <tr data-hook="admin_products_index_headers">
+    <th><%= t(:sku) %></th>
+    <th><%= t(:name) %></th>
+    <th><%= t(:master_price) %></th>
+    <th data-hook="admin_products_index_header_actions"></th>
+  </tr>
+<% @products.each do |product| %>
+  <% if product.is_product %>
+      <tr <%= "style='color: red;'" if product.deleted? %> id="<%= spree_dom_id product %>" data-hook="admin_products_index_rows">
+        <td><%= product.sku rescue 'ain\'t none' %></td>
+        <td><%= link_to product.try(:name), admin_sign_product_path(product) %></td>
+        <td><%= Spree::Money.new(product.price) rescue '' %></td>
+        <td class="actions" data-hook="admin_products_index_row_actions">
+          <%= link_to "Edit", edit_admin_sign_product_path(product), :class => "edit-resource" %>
+          <!--&nbsp;-->
+          <%#= link_to_clone product, :class => 'clone' %>
+          &nbsp;
+          <%= link_to "Delete", "/delete/", :class => "delete-resource", :data => { :confirm => t(:are_you_sure) } %>
+        </td>
+      </tr>
+  <% end %>
+<% end %>
+</table>

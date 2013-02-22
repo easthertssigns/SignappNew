@@ -75,7 +75,8 @@ module Spree
                     :shipping_category_id, :tax_category_id, :product_properties_attributes,
                     :variants_attributes, :taxon_ids, :option_type_ids,
                     :small_size_price, :small_size_threshold, :large_size_price, :large_size_threshold,
-                    :minimum_width, :maximum_width, :minumum_height, :maximum_height, :editor_background_image_id
+                    :minimum_width, :maximum_width, :minimum_height, :maximum_height, :editor_background_image_id,
+                    :is_featured, :is_material, :is_product
 
     attr_accessible :cost_price if Variant.table_exists? && Variant.column_names.include?('cost_price')
 

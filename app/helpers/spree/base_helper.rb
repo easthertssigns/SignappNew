@@ -226,5 +226,9 @@ module Spree
       products
     end
 
+    def get_sign_graphics
+      sign_graphics = SignGraphic.all
+    end
+
   end
 end

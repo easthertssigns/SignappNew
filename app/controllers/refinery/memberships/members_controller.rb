@@ -11,6 +11,7 @@ module Refinery
       def profile
         @member = current_refinery_user
         @saved_signs = SignData.all(:conditions => ["account_id = ?", current_refinery_user.id.to_s])
+        @orders = Spree::Order.all(:conditions => ["user_id = ?", current_refinery_user.id.to_s])
       end
 
       def new
@@ -35,7 +36,7 @@ module Refinery
 
         if @member.update_attributes(params[:member])
           flash[:notice] = t('successful', :scope => 'members.update', :email => @member.email)
-          #MembershipMailer.deliver_member_profile_updated(@member).deliver unless @member.has_role?(:admin)
+          MembershipMailer.deliver_member_profile_updated(@member).deliver unless @member.has_role?(:admin)
           sign_in(:refinery_user, Refinery::User.find(user_id))
           redirect_to profile_members_path
         else

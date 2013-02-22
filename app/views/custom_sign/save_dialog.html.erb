@@ -3,6 +3,7 @@
       $(document).ready(function(){
           $("#sign_data_id").val(parent.$("#sign_data_id").val());
           $("#sign_data").val(parent.$("#sign_data").val());
+          $("#svg_data").val(parent.$("#svg_data").val());
           $("#account_id").val(parent.$("#account_id").val());
           $("#name").val(parent.$("#name").val());
           $("#description").val(parent.$("#description").val());
@@ -10,9 +11,10 @@
           //alert(parent.$("#sign_data").val());
 
           $("#save_button").click(function(){
-              alert("save button clicked");
+              //alert("save button clicked");
               var id = $("#sign_data_id").val();
               var sign_data = $("#sign_data").val();
+              var svg_data = $("#svg_data").val();
               var account_id = $("#account_id").val();
               var name = $("#name").val();
               var description = $("#description").val();
@@ -22,9 +24,9 @@
               $.ajax({
                   type: "POST",
                   url: "/custom_sign/save_sign",
-                  data: { id: id, sign_data: sign_data, account_id: account_id, name: name, description: description, calculated_price: calculated_price }
+                  data: { id: id, sign_data: sign_data, svg_data: svg_data, account_id: account_id, name: name, description: description, calculated_price: calculated_price }
               }).done(function( msg ) {
-                  alert( "Data Saved: " + msg );
+                  //alert( "Data Saved: " + msg );
               });
           });
       });
@@ -40,6 +42,7 @@
   <div id="hiddenFields">
     <input type="hidden" name="sign_data_id" id="sign_data_id" value="">
     <input type="hidden" name="sign_data" id="sign_data" value="">
+    <input type="hidden" name="svg_data" id="svg_data" value="">
     <input type="hidden" name="account_id" id="account_id" value="">
     <input type="hidden" name="calculated_price" id="calculated_price" value="">
   </div>

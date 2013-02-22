@@ -68,6 +68,11 @@
         <div class="arrow"></div>
         <select class="shapeSelect" id="shapeSelect">
           <option></option>
+          <optgroup label="Misc">
+            <% get_sign_graphics.each do |g| %>
+              <option value="<%= g.id %>"><%= g.title %></option>
+            <% end %>
+          </optgroup>
           <optgroup label="Animals">
             <option value="ant">Ant</option>
             <option value="bear">Bear</option>
@@ -162,6 +167,7 @@
 <div id="hiddenForm">
   <form action="/custom_sign/save_dialog" method="POST" id="customSignForm">
     <input type="hidden" id="sign_data" name="sign_data" value="">
+    <input type="hidden" id="svg_data" name="svg_data" value="">
     <input type="hidden" id="sign_data_id" name="sign_data_id" value="<%= @sign_data.id %>">
     <input type="hidden" id="account_id" name="account_id" value="<%= current_refinery_user ? current_refinery_user.id : '' %>">
     <input type="hidden" id="product_id" name="product_id" value="<%= @sign_data.spree_product_id %>">
@@ -257,9 +263,13 @@
 
         $("#sign_data").val('<%= @sign_data.sign_data %>');
         if ($("#sign_data").val() != ''){
-            alert("Saved sign loaded!");
+            //alert("Saved sign loaded!");
             var jsn = $.base64.decode($("#sign_data").val());
             canvas.loadFromJSON(jsn);
+            $("#name").val("<%= @sign_data.name %>");
+            $("#description").val("<%= @sign_data.description %>");
+            //var svg = canvas.toSVG();
+            //window.open(canvas.toDataURL('png'));
         }
 
 
@@ -267,18 +277,39 @@
             //serialize the custom sign data
             //add this to the form field
             json = JSON.stringify(canvas);
+            alert(json);
+            var svg_data = canvas.toSVG();
+            alert(svg_data);
             var custom_data = $.base64.encode(json);
             $("#sign_data").val(custom_data);
+            $("#svg_data").val(svg_data);
+            var id = $("#sign_data_id").val();
+            var account_id = $("#account_id").val();
+            var name = $("#name").val();
+            var description = $("#description").val();
+            var calculated_price = $("#calculated_price").val();
+            $.ajax({
+                type: "POST",
+                url: "/custom_sign/save_sign",
+                data: { id: id, sign_data: custom_data, svg_data: svg_data, account_id: account_id, name: name, description: description, calculated_price: calculated_price }
+            }).done(function( msg ) {
+                //alert( "Data Saved: " + msg );
+                $("#customSignForm").attr("action", "/orders/populate");
+                //submit the form to the basket
+                $("#customSignForm").submit();
+            });
             //change submit path of the form
-            $("#customSignForm").attr("action", "/orders/populate");
+            //$("#customSignForm").attr("action", "/orders/populate");
             //submit the form to the basket
-            $("#customSignForm").submit();
+            //$("#customSignForm").submit();
         });
 
         $("#saveCanvas").click(function () {
             json = JSON.stringify(canvas);
+            var svg_data = canvas.toSVG();
             var custom_data = $.base64.encode(json);
             $("#sign_data").val(custom_data);
+            $("#svg_data").val(svg_data);
             //this is where custom_sign/save_sign is called
             $.fancybox.open({href:'/custom_sign/save_dialog',
                 title:'Save Custom Sign',
@@ -627,6 +658,29 @@
         });
 
         $('#shapeSelect').change(function () {
+//            var svg = "";
+//            $.ajax({
+//                url: "/custom_sign/get_graphic_url_ajax",
+//                data: { id: $(this).val() }
+//            }).done(function(result){
+//                svg = result.image_path;
+//                alert(svg);
+//                fabric.loadSVGFromURL(svg, function (objects, options) {
+//                    var obj = fabric.util.groupSVGElements(objects, options);
+//                    /*var ctx = canvas.getContext();
+//                     ctx.shadowColor = "rgba(255,255,255,0.75)";
+//                     ctx.shadowBlur = 0;
+//                     ctx.shadowOffsetX = 0;
+//                     ctx.shadowOffsetY = 1;*/
+//                    canvas.add(obj.scale(canvasScale)).centerObject(obj).renderAll();
+//                    obj.setCoords();
+//                    obj.hasRotatingPoint = true;
+//                    obj.set({
+//                        borderColor:'cyan',
+//                        cornerColor:'cyan'
+//                    })
+//                });
+//            });
             var svg = "/assets/svg/" + $(this).val() + ".svg";
             fabric.loadSVGFromURL(svg, function (objects, options) {
                 var obj = fabric.util.groupSVGElements(objects, options);
@@ -742,13 +796,29 @@
                 canvas.renderAll();
             }
         });
-
+        <% if @sign_data.based_on.nil? %>
         $('#clearCanvas').click(function () {
             if (confirm('Are you sure?')) {
                 canvas.clear();
             }
             $(disabledTools).addClass('disabled');
         });
+        <% else %>
+        $('#clearCanvas').click(function () {
+            if (confirm('Are you sure?')) {
+                canvas.clear();
+                $.ajax({
+                    url: "/custom_sign/reset_sign_data_ajax",
+                    data: { id: <%= @sign_data.based_on.to_s %> }
+                }).done(function(result){
+                    $("#sign_data").val(result.sign_data);
+                    var jsn = $.base64.decode($("#sign_data").val());
+                    canvas.loadFromJSON(jsn);
+                });
+            }
+            $(disabledTools).addClass('disabled');
+        });
+        <% end %>
 
         //Top Left Screw Hole
         var topLeftScrewHoleShadow = new fabric.Circle({

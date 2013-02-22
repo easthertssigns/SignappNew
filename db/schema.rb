@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130214162611) do
+ActiveRecord::Schema.define(:version => 20130221103754) do
 
   create_table "custom_signs", :force => true do |t|
     t.integer  "spree_user_id"
@@ -297,13 +297,18 @@ ActiveRecord::Schema.define(:version => 20130214162611) do
     t.text     "name"
     t.text     "description"
     t.boolean  "show_as_product"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
     t.text     "sign_data"
     t.text     "sharing_key"
     t.decimal  "price"
     t.boolean  "deleted_by_user"
     t.boolean  "deleted_by_admin"
+    t.integer  "based_on"
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
   end
 
   create_table "sign_data_to_categories", :force => true do |t|
@@ -665,6 +670,10 @@ ActiveRecord::Schema.define(:version => 20130214162611) do
     t.datetime "updated_at",                                 :null => false
     t.integer  "count_on_hand",              :default => 0,  :null => false
     t.integer  "editor_background_image_id"
+    t.boolean  "is_product"
+    t.boolean  "is_material"
+    t.boolean  "is_featured"
+    t.integer  "sign_data_id"
   end
 
   add_index "spree_products", ["available_on"], :name => "index_spree_products_on_available_on"

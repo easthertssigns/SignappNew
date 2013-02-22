@@ -21,18 +21,20 @@
     <th data-hook="admin_products_index_header_actions"></th>
   </tr>
 <% @collection.each do |product| %>
-  <tr <%= "style='color: red;'" if product.deleted? %> id="<%= spree_dom_id product %>" data-hook="admin_products_index_rows">
-    <td><%= product.sku rescue '' %></td>
-    <td><%= link_to product.try(:name), edit_admin_product_path(product) %></td>
-    <td><%= money(product.price) rescue '' %></td>
-    <td class="actions" data-hook="admin_products_index_row_actions">
-      <%= link_to_edit product, :class => 'edit' unless product.deleted? %>
-      &nbsp;
-      <%= link_to_clone product, :class => 'clone' %>
-      &nbsp;
-      <%= link_to_delete product unless product.deleted? %>
-    </td>
-  </tr>
+  <% if product.is_material %>
+      <tr <%= "style='color: red;'" if product.deleted? %> id="<%= spree_dom_id product %>" data-hook="admin_products_index_rows">
+        <td><%= product.sku rescue '' %></td>
+        <td><%= link_to product.try(:name), edit_admin_product_path(product) %></td>
+        <td><%= money(product.price) rescue '' %></td>
+        <td class="actions" data-hook="admin_products_index_row_actions">
+          <%= link_to_edit product, :class => 'edit' unless product.deleted? %>
+          &nbsp;
+          <%= link_to_clone product, :class => 'clone' %>
+          &nbsp;
+          <%= link_to_delete product unless product.deleted? %>
+        </td>
+      </tr>
+  <% end %>
 <% end %>
 </table>
 <%= paginate @collection %>
