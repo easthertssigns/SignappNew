@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.9'
+gem 'rails', '3.2.11'
 gem 'pg'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -9,11 +9,15 @@ group :development, :test do
   gem 'sqlite3'
 end
 
-gem 'refinerycms-memberships', '2.0.3', :git => 'git://github.com/rbriank/refinerycms_membership.git'
-
-gem 'spree', '~> 1.2.0'
-gem 'spree-refinerycms-authentication', :git => 'git://github.com/adrianmacneil/spree-refinery-authentication.git'
+gem 'spree'
+gem 'spree_i18n', :git => 'git://github.com/spree/spree_i18n.git'
+gem 'spree-refinerycms-authentication', :git => 'git://github.com/snorripall/spree-refinery-authentication.git'
+gem 'spree_promo'
 # gem "spree_auth"
+# gem 'spree_flexi_variants', :git => 'https://github.com/jsqu99/spree_flexi_variants.git'
+# gem 'spree_related_products' # , :git => 'git://github.com/spree/spree_related_products.git'
+# gem 'spree_minicart' #, '~> 1.1.0'
+# gem 'refinerycms-home_sliders', :path => 'vendor/extensions'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -27,7 +31,8 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-gem 'jquery-rails', '~> 2.0.0'
+gem 'devise'
+gem 'acts_as_indexed'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
@@ -48,16 +53,9 @@ gem 'jquery-rails', '~> 2.0.0'
 gem 'refinerycms', '~> 2.0.0'
 
 # Specify additional Refinery CMS Extensions here (all optional):
+gem 'refinerycms-memberships', '2.0.3', :git => 'git://github.com/rbriank/refinerycms_membership.git'
 # gem 'refinerycms-i18n', '~> 2.0.0'
-#  gem 'refinerycms-blog', '~> 2.0.0'
-#  gem 'refinerycms-inquiries', '~> 2.0.0'
-#  gem 'refinerycms-search', '~> 2.0.0'
-#  gem 'refinerycms-page-images', '~> 2.0.0'
-
-gem 'spree_promo'
-# gem 'spree_flexi_variants', :git => 'https://github.com/jsqu99/spree_flexi_variants.git'
-# gem 'spree_related_products' # , :git => 'git://github.com/spree/spree_related_products.git'
-# gem 'spree_minicart' #, '~> 1.1.0'
-# gem 'refinerycms-home_sliders', :path => 'vendor/extensions'
-
-gem 'devise'
+# gem 'refinerycms-blog', '~> 2.0.0'
+# gem 'refinerycms-inquiries', '~> 2.0.0'
+# gem 'refinerycms-search', '~> 2.0.0'
+# gem 'refinerycms-page-images', '~> 2.0.0'

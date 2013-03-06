@@ -1,46 +1,65 @@
-<div>
-  <%= form_for Refinery::User.new, :as => :refinery_user, :url => refinery_user_session_path do | f | %>
-    <h3>Log in</h3>
-    <div>Login with Facebook button here</div>
-    <h3>SignApp Account</h3>
-    <div>
-        <%= label_tag "Your Email" %><br/>
-        <%= f.text_field(:login) %>
-    </div>
-    <div>
-        <%= label_tag "Your Password" %><br/>
-        <%= f.password_field(:password) %>
-    </div>
-    <div><%= button_tag "Log in" %></div>
-    <a href="">Forgotten your password?</a>
-      <%= hidden_field_tag :redirect, params[:redirect] %>
-      <%= hidden_field_tag :member_login, true %>
+<div class="grid_6">
+  <div class="log-in-form-container floatRight">
+    <%= form_for Refinery::User.new, :as => :refinery_user, :url => refinery_user_session_path do |f| %>
+        <h2>Log in</h2>
+        <section class="log-in-with-facebook">
+          <%= link_to "Log in with Facebook", "#", :class => "log-in-with-facebook-button" %>
+        </section>
+        <section>
+          <h3>SignApp Account</h3>
+
+          <div class="field">
+            <%= label_tag "Your Email" %>
+            <%= f.text_field(:login) %>
+          </div>
+          <div class="field">
+            <%= label_tag "Your Password" %>
+            <%= f.password_field(:password) %>
+          </div>
+          <div class="field">
+            <%= button_tag "Log In", :class => "floatRight" %>
+          </div>
+          <div class="field">
+            <%= link_to "Forgotten your password?", "#", :class => "forgotten-your-password" %>
+          </div>
+          <%= hidden_field_tag :redirect, params[:redirect] %>
+          <%= hidden_field_tag :member_login, true %>
+          <div class="clearfix"></div>
+        </section>
     <% end %>
+  </div>
 </div>
-<div>
+<div class="grid_6">
+  <div class="log-in-form-container">
     <%= form_for Refinery::User.new, :as => :member, :url => members_path do |f| %>
-    <h3>Create an Account</h3>
-    <h3>Lets get started</h3>
-    <div>
-        <%= label_tag "Your Email" %><br/>
-        <%= f.text_field(:email) %>
-    </div>
-    <div>
-        <%= label_tag "Create a Password" %><br/>
-        <%= f.password_field(:password) %>
-    </div>
-    <div>
-        <%= label_tag "Confirm Your Password" %><br/>
-        <%= f.password_field(:password_confirmation) %>
-    </div>
-      <div>
-              <%= label_tag "First Name" %><br/>
-              <%= f.text_field(:first_name) %>
+        <h2>Create an Account</h2>
+        <section>
+          <h3>Lets get started!</h3>
+
+          <div class="field">
+            <%= label_tag "Your Email" %>
+            <%= f.text_field(:email) %>
           </div>
-      <div>
-              <%= label_tag "Last Name" %><br/>
-              <%= f.text_field(:last_name) %>
+          <div class="field">
+            <%= label_tag "Create a Password" %>
+            <%= f.password_field(:password) %>
           </div>
-    <div><%= button_tag "Create My Account" %></div>
+          <div class="field">
+            <%= label_tag "Confirm Your Password" %>
+            <%= f.password_field(:password_confirmation) %>
+          </div>
+          <div class="field">
+            <%= label_tag "First Name" %>
+            <%= f.text_field(:first_name) %>
+          </div>
+          <div class="field">
+            <%= label_tag "Last Name" %>
+            <%= f.text_field(:last_name) %>
+          </div>
+          <div class="field"><%= button_tag "Create My Account", :class => "floatRight" %></div>
     <% end %>
+    <div class="clearfix"></div>
+    </section>
+  </div>
 </div>
+<div class="clearfix"></div>

@@ -15,6 +15,17 @@ Spree::Admin::ProductsController.class_eval do
     end
   end
 
+  def create
+    authorize! :create, Spree::Product
+    params[:product][:available_on] ||= Time.now
+    @product = Spree::Product.new(params[:product])
+    @product.is_material = 't'
+    if @product.save
+    else
+      invalid_resource!(@product)
+    end
+  end
+
   def product_not_found
 
   end

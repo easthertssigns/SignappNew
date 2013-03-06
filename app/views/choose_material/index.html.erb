@@ -5,25 +5,42 @@
 
 <% content_for :javascripts do %>
     <%= javascript_include_tag('quicksand') %>
+    <%= javascript_include_tag('jquery.easing.1.3') %>
+    <%= javascript_include_tag('jquery-css-transform') %>
+    <%= javascript_include_tag('jquery-animate-css-rotate-scale') %>
 <% end %>
 
 <script type="text/javascript">
     $(function () {
         $("#taxon-sort-all").click(function (e) {
-            $('#source').quicksand($('#dest-all li'));
+            $('#source').quicksand($('#dest-all li'), {
+                adjustHeight: 'dynamic',
+                useScaling: true
+            });
             e.preventDefault();
+            $(this).parent('li').siblings().children('a').removeClass('current');
+            $(this).addClass('current');
         });
 
         <% @taxon.children.each do |taxon| %>
         $("#taxon-sort-<%= taxon.id %>").click(function (e) {
-            $('#source').quicksand($('#dest-<%= taxon.id %> li'));
+            $('#source').quicksand($('#dest-<%= taxon.id %> li'), {
+                adjustHeight: 'dynamic',
+                useScaling: true
+            });
             e.preventDefault();
+            $(this).parent('li').siblings().children('a').removeClass('current');
+            $(this).addClass('current');
         });
         <% end %>
     });
 </script>
 
-<h1 class="taxon-title">Choose a Material</h1>
+<div class="materialsHeading">
+  <h1 class="taxon-title">Choose a Material</h1>
+
+  <h2>Take a look below and choose a material for your sign.</h2>
+</div>
 
 <% content_for :sidebar do %>
     <div data-hook="taxon_sidebar_navigation">
@@ -39,12 +56,15 @@
 <% else %>
     <div class="blueBackground" data-hook="taxon_children">
       <div class="container_12">
-        <ul class=" MaterialSelector">
-          <li><a href="#" id="taxon-sort-all">All</a></li>
-          <% @taxon.children.each do |taxon| %>
-              <li><a href="#" id="taxon-sort-<%= taxon.id %>"><%= taxon.name %></a></li>
-          <% end %>
-        </ul>
+        <div class="materialSelectorContainer">
+          <label>Filter:</label>
+          <ul class="materialSelector">
+            <li><a href="#" id="taxon-sort-all" class="current">All</a></li>
+            <% @taxon.children.each do |taxon| %>
+                <li><a href="#" id="taxon-sort-<%= taxon.id %>"><%= taxon.name %></a></li>
+            <% end %>
+          </ul>
+        </div>
         <div class="clearfix"></div>
 
         <div class="taxon-listing">
@@ -56,7 +76,15 @@
                     </li>
                 <% end %>
             <% end %>
+            <li class="taxon getInspired" data-id="taxon-getInspired">
+              <h3>Get inspired</h3>
+              <h4>Still can't decide?</h4>
+
+              <p>Take a look at the kinds of signs people have already made in our gallery and customise one of them to
+                suit.</p>
+            </li>
           </ul>
+
           <!-- hidden content -->
 
           <div class="clearfix"></div>
@@ -72,6 +100,13 @@
                     </li>
                 <% end %>
             <% end %>
+            <li class="taxon getInspired" data-id="taxon-getInspired">
+              <h3>Get inspired</h3>
+              <h4>Still can't decide?</h4>
+
+              <p>Take a look at the kinds of signs people have already made in our gallery and customise one of them to
+                suit.</p>
+            </li>
           </ul>
 
           <% @taxon.children.each do |taxon| %>
@@ -82,6 +117,13 @@
                       <%= render :partial => 'spree/products/product', :locals => {:product => product} %>
                     </li>
                 <% end %>
+                <li class="taxon getInspired" data-id="taxon-getInspired">
+                  <h3>Get inspired</h3>
+                  <h4>Still can't decide?</h4>
+
+                  <p>Take a look at the kinds of signs people have already made in our gallery and customise one of them to
+                    suit.</p>
+                </li>
               </ul>
           <% end %>
         </div>

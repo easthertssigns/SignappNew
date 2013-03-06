@@ -3,7 +3,11 @@
    paginated_products ||= products
 %>
 <% if products.empty? %>
-    <%= t(:no_products_found) %>
+    <div class="container_12">
+      <div class="grid_12">
+        <h1><%= t(:no_products_found) %></h1>
+      </div>
+    </div>
 <% elsif params.key?(:keywords) %>
     <div class="container_12">
       <div class="grid_12">
