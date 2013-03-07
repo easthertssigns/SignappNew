@@ -63,10 +63,11 @@ $(function () {
     var basketHeight = $('#basketDropDown').outerHeight();
     $("#basketTab").toggle(function () {
         $('#basketDropDown').show();
-        $('#basketContainer').animate({bottom:-basketHeight + 8});
+        $('#basketContainer').css({'z-index': 30}).animate({bottom:-basketHeight + 8});
     }, function () {
         $('#basketContainer').animate({bottom:8}, function () {
             $('#basketDropDown').hide();
+            $(this).css({'z-index': 10})
         });
     });
 

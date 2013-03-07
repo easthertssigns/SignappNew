@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130221103754) do
+ActiveRecord::Schema.define(:version => 20130307144061) do
 
   create_table "custom_signs", :force => true do |t|
     t.integer  "spree_user_id"
@@ -55,6 +55,35 @@ ActiveRecord::Schema.define(:version => 20130221103754) do
     t.datetime "created_at",      :null => false
     t.datetime "updated_at",      :null => false
   end
+
+  create_table "refinery_inquiries_inquiries", :force => true do |t|
+    t.string   "name"
+    t.string   "email"
+    t.string   "phone"
+    t.text     "message"
+    t.boolean  "spam",       :default => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+  end
+
+  add_index "refinery_inquiries_inquiries", ["id"], :name => "index_refinery_inquiries_inquiries_on_id"
+
+  create_table "refinery_mailchimp_campaigns", :force => true do |t|
+    t.string   "subject"
+    t.string   "mailchimp_campaign_id"
+    t.string   "mailchimp_list_id"
+    t.string   "mailchimp_template_id"
+    t.string   "from_email"
+    t.string   "from_name"
+    t.text     "body"
+    t.datetime "sent_at"
+    t.datetime "scheduled_at"
+    t.boolean  "auto_tweet",            :default => false
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
+  end
+
+  add_index "refinery_mailchimp_campaigns", ["id"], :name => "index_refinery_mailchimp_campaigns_on_id"
 
   create_table "refinery_membership_email_part_translations", :force => true do |t|
     t.integer  "refinery_membership_email_part_id"
@@ -668,7 +697,7 @@ ActiveRecord::Schema.define(:version => 20130221103754) do
     t.integer  "shipping_category_id"
     t.datetime "created_at",                                 :null => false
     t.datetime "updated_at",                                 :null => false
-    t.integer  "count_on_hand",              :default => 0,  :null => false
+    t.integer  "count_on_hand",              :default => 0
     t.integer  "editor_background_image_id"
     t.boolean  "is_product"
     t.boolean  "is_material"
@@ -830,18 +859,21 @@ ActiveRecord::Schema.define(:version => 20130221103754) do
   end
 
   create_table "spree_tax_rates", :force => true do |t|
-    t.decimal  "amount",            :precision => 8, :scale => 5
+    t.decimal  "amount",             :precision => 8, :scale => 5
     t.integer  "zone_id"
     t.integer  "tax_category_id"
-    t.datetime "created_at",                                                         :null => false
-    t.datetime "updated_at",                                                         :null => false
-    t.boolean  "included_in_price",                               :default => false
+    t.datetime "created_at",                                                          :null => false
+    t.datetime "updated_at",                                                          :null => false
+    t.boolean  "included_in_price",                                :default => false
+    t.string   "name"
+    t.boolean  "show_rate_in_label",                               :default => true
   end
 
   create_table "spree_taxonomies", :force => true do |t|
-    t.string   "name",       :null => false
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.string   "name",                      :null => false
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
+    t.integer  "position",   :default => 0
   end
 
   create_table "spree_taxons", :force => true do |t|
@@ -921,7 +953,7 @@ ActiveRecord::Schema.define(:version => 20130221103754) do
     t.datetime "deleted_at"
     t.boolean  "is_master",                                          :default => false
     t.integer  "product_id"
-    t.integer  "count_on_hand",                                      :default => 0,     :null => false
+    t.integer  "count_on_hand",                                      :default => 0
     t.decimal  "cost_price",           :precision => 8, :scale => 2
     t.integer  "position"
     t.decimal  "small_size_price"
@@ -932,6 +964,7 @@ ActiveRecord::Schema.define(:version => 20130221103754) do
     t.integer  "maximum_width"
     t.integer  "minimum_height"
     t.integer  "maximum_height"
+    t.integer  "lock_version",                                       :default => 0
   end
 
   add_index "spree_variants", ["product_id"], :name => "index_spree_variants_on_product_id"

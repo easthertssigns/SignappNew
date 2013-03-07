@@ -21,6 +21,7 @@ Spree::Admin::ProductsController.class_eval do
     @product = Spree::Product.new(params[:product])
     @product.is_material = 't'
     if @product.save
+      render :edit, :status => 201
     else
       invalid_resource!(@product)
     end

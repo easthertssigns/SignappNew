@@ -23,9 +23,9 @@
       <h3 class="newsletter">Newsletter:</h3>
 
       <p>Full of offers, news and more!</p>
-      <%= form_tag do %>
-          <%= text_field_tag(:newsletter, "", :placeholder => "Enter your email address here...") %>
-          <%= submit_tag("Submit") %>
+      <%= form_tag('http://tubchairs.us6.list-manage.com/subscribe/post?u=ad6068f1a93593ee42055ccbc&amp;id=d1e6390631', :id => 'mc-embedded-subscribe-form', :name => 'mc-embedded-subscribe-form', :class => 'validate', :target => '_blank', :novalidate => true) do %>
+          <%= email_field_tag('EMAIL', '', :class => 'email', :id => 'mce-EMAIL', :placeholder => 'Enter your email address here...', :required => true) %>
+          <%= submit_tag('Submit', :name => 'subscribe', :id => 'mc-embedded-subscribe') %>
       <% end %>
     </div>
     <div class="grid_4">
@@ -40,11 +40,12 @@
   <div class="container_12">
     <div class="grid_4">
       <ul class="links">
-        <li><a href="#">About</a></li>
-        <li><a href="#">Terms &amp; Conditions</a></li>
-        <li><a href="#">Privacy Policy</a></li>
-        <li><a href="#">Company Information</a></li>
-        <li><a href="#">Contact Us</a></li>
+        <% footerlinks = Refinery::Page.live.sort_by { |page| page.lft }
+           for page in footerlinks %>
+            <% unless page.parent || page.title === 'Home' || page.show_in_menu == false %>
+                <li><%= link_to(page.custom_slug_or_title, refinery.url_for(page.url)) %></li>
+            <% end %>
+        <% end %>
       </ul>
     </div>
     <div class="grid_4">

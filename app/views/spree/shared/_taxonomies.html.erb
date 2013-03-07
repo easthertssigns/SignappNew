@@ -4,6 +4,6 @@
       <%= taxons_tree(taxonomy.root, @taxon, Spree::Config[:max_level_in_taxons_menu] || 1) %>
   <% end %>
 </ul>
-<% if @taxon.parent %>
+<% if @taxon && @taxon.parent %>
     <%= link_to 'Show All', '/t/' + @taxon.parent.permalink, :class => 'button dark' %>
 <% end %>

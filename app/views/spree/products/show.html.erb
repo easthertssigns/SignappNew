@@ -117,7 +117,7 @@
 
         <div id="product-description" data-hook="product_description">
           <div itemprop="description" data-hook="description">
-            <%= product_description(@product) rescue t(:product_has_no_description) %>
+            <%= simple_format(@product.description) rescue t(:product_has_no_description) %>
           </div>
           <h2>Characteristics</h2>
 

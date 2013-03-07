@@ -9,11 +9,6 @@
       </div>
     </div>
 <% elsif params.key?(:keywords) %>
-    <div class="container_12">
-      <div class="grid_12">
-        <h1 class="search-results-title"><%= t(:search_results, :keywords => h(params[:keywords])) %></h1>
-      </div>
-    </div>
 <% end %>
 
 <% if products.any? %>
