@@ -13,7 +13,7 @@ group :development, :test do
 end
 
 gem 'spree', '~> 1.2.0'
-gem 'spree_i18n', :git => 'git://github.com/spree/spree_i18n.git'
+#gem 'spree_i18n', :git => 'git://github.com/spree/spree_i18n.git'
 gem 'spree-refinerycms-authentication', :git => 'git://github.com/snorripall/spree-refinery-authentication.git'
 gem 'spree_promo'
 # gem "spree_auth"
@@ -59,7 +59,7 @@ gem 'refinerycms', '~> 2.0.0'
 # Specify additional Refinery CMS Extensions here (all optional):
 gem 'refinerycms-memberships', '2.0.3', :git => 'git://github.com/rbriank/refinerycms_membership.git'
 gem 'refinerycms-inquiries', '~> 2.0.0'
-gem 'refinerycms-mailchimp', :github => 'Wirelab/refinerycms-mailchimp', :branch => 'refinery-2.0'
+#gem 'refinerycms-mailchimp', :github => 'Wirelab/refinerycms-mailchimp', :branch => 'refinery-2.0'
 # gem 'refinerycms-i18n', '~> 2.0.0'
 # gem 'refinerycms-blog', '~> 2.0.0'
 # gem 'refinerycms-search', '~> 2.0.0'

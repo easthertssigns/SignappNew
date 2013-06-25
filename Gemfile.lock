@@ -1,14 +1,4 @@
 GIT
-  remote: git://github.com/Wirelab/refinerycms-mailchimp.git
-  revision: 67de4d2c5d1fb0c8c20f7bb372dd868243a911b3
-  branch: refinery-2.0
-  specs:
-    refinerycms-mailchimp (0.1.0)
-      hominid (~> 3.0)
-      refinerycms-core (~> 2.0.8)
-      refinerycms-settings (~> 2.0.1)
-
-GIT
   remote: git://github.com/rbriank/refinerycms_membership.git
   revision: c2176f4b64132b6297e90be306a78775f3b284b8
   specs:
@@ -25,15 +15,6 @@ GIT
     spree-refinerycms-authentication (0.0.1)
       refinerycms (~> 2.0.0)
       spree
-
-GIT
-  remote: git://github.com/spree/spree_i18n.git
-  revision: c2f5bc17cc0790984190465438829f89ed460e2c
-  specs:
-    spree_i18n (1.0.0)
-      i18n (~> 0.6)
-      rails-i18n
-      spree_core
 
 GEM
   remote: https://rubygems.org/
@@ -132,7 +113,6 @@ GEM
       paper_trail (~> 2)
     highline (1.6.11)
     hike (1.2.1)
-    hominid (3.0.5)
     httparty (0.8.3)
       multi_json (~> 1.0)
       multi_xml
@@ -190,8 +170,6 @@ GEM
       activesupport (= 3.2.12)
       bundler (~> 1.0)
       railties (= 3.2.12)
-    rails-i18n (0.7.2)
-      i18n (~> 0.5)
     railties (3.2.12)
       actionpack (= 3.2.12)
       activesupport (= 3.2.12)
@@ -341,12 +319,10 @@ DEPENDENCIES
   rails (= 3.2.12)
   refinerycms (~> 2.0.0)
   refinerycms-inquiries (~> 2.0.0)
-  refinerycms-mailchimp!
   refinerycms-memberships (= 2.0.3)!
   sass-rails (~> 3.2.3)
   spree (~> 1.2.0)
   spree-refinerycms-authentication!
-  spree_i18n!
   spree_promo
   sqlite3
   uglifier (>= 1.0.3)
