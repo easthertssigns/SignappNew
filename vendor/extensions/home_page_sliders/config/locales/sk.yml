@@ -1,0 +1,29 @@
+sk:
+  refinery:
+    plugins:
+      home_page_sliders:
+        title: Home Page Sliders
+    home_page_sliders:
+      admin:
+        home_page_sliders:
+          actions:
+            create_new: Pridať Home Page Slider
+            reorder: Preusporiadať Home Page Sliders
+            reorder_done: Koniec radenia Home Page Sliders
+          records:
+            title: Home Page Sliders
+            sorry_no_results: Ľutujeme, ale neboli nájdené žiadne výsledky.
+            no_items_yet: Nie sú vytvorené žiadne Home Page Sliders. Kliknite na "Pridať Home Page Slider" pre pridanie prvého home page slider.
+          home_page_slider:
+            view_live_html: Zobraziť náhľad home page slider<br/><em>(otvorí sa v novom okne)</em>
+            edit: Upraviť home page slider
+            delete: Zmazať home page slider
+      home_page_sliders:
+        show:
+          other: Daľšie Home Page Sliders
+  activerecord:
+    attributes:
+      'refinery/home_page_sliders/home_page_slider':
+        banner_text: Banner Text
+        display: Display
+        background: Background

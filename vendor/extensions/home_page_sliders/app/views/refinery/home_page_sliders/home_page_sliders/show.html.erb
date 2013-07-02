@@ -1,0 +1,39 @@
+<% content_for :body_content_title do %>
+  <%= @home_page_slider.banner_text %>
+<% end %>
+
+<% content_for :body do %>
+  <section>
+    <h1>Banner Text</h1>
+    <p>
+      <%=raw @home_page_slider.banner_text %>
+    </p>
+  </section>
+  <section>
+    <h1>Display</h1>
+    <p>
+      <%=raw @home_page_slider.display %>
+    </p>
+  </section>
+  <section>
+    <h1>Background</h1>
+    <p>
+      <%= image_fu @home_page_slider.background, nil %>
+    </p>
+  </section>
+<% end %>
+
+<% content_for :side_body do %>
+  <aside>
+    <h2><%= t('.other') %></h2>
+    <ul id="home_page_sliders">
+      <% @home_page_sliders.each do |home_page_slider| %>
+        <li>
+          <%= link_to home_page_slider.banner_text, refinery.home_page_sliders_home_page_slider_path(home_page_slider) %>
+        </li>
+      <% end %>
+    </ul>
+  </aside>
+<% end %>
+
+<%= render '/refinery/content_page' %>

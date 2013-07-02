@@ -1,0 +1,31 @@
+zh-CN:
+  refinery:
+    plugins:
+      home_page_sliders:
+        title: Home Page Sliders
+    home_page_sliders:
+      admin:
+        home_page_sliders:
+          actions:
+            create_new: 建立新的 Home Page Slider
+            reorder: 对 Home Page Sliders 重新排序
+            reorder_done: 对 Home Page Sliders 的重新排序结束
+          records:
+            title: Home Page Sliders
+            sorry_no_results: 对不起，未找到结果。 #Sorry! There are no results found.
+
+            # There are no Home Page Sliders yet. Click "Add New Home Page Slider" to add your first home page slider.
+            no_items_yet: 目前没有 Home Page Sliders . 点击 "Add New Home Page Slider" 创建一个home page slider.
+          home_page_slider:
+            view_live_html: 查看 home page slider 的最新内容.<br/><em>(新窗口中打开)</em>
+            edit: 编辑 home page slider
+            delete: 永久删除 home page slider
+      home_page_sliders:
+        show:
+          other: 其他 Home Page Sliders
+  activerecord:
+    attributes:
+      'refinery/home_page_sliders/home_page_slider':
+        banner_text: Banner Text
+        display: Display
+        background: Background

@@ -1,0 +1,11 @@
+<% content_for :body do %>
+  <ul id="home_page_sliders">
+    <% @home_page_sliders.each do |home_page_slider| %>
+      <li>
+        <%= link_to home_page_slider.banner_text, refinery.home_page_sliders_home_page_slider_path(home_page_slider) %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<%= render '/refinery/content_page' %>

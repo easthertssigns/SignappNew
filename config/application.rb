@@ -101,5 +101,11 @@ module SignappNew
     #  app.routes_reloader.paths << File.expand_path('../named_routes_overide.rb', __FILE__)
     #end
 
+    config.s3_access_key_id = 'AKIAJHMMYZ5GOYGV6OHQ'
+    config.s3_secret_access_key = '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'
+    config.s3_bucket_name = 'signapp-dev'
+
   end
 end
+
+Refinery::Core.config.s3_backend = true

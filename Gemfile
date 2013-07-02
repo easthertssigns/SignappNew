@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
-
-gem 'rails', '3.2.12'
+ruby '1.9.3'
+gem 'rails', '3.2.13'
 gem 'pg'
 
 # Bundle edge Rails instead:
@@ -21,6 +21,10 @@ gem 'spree_promo'
 # gem 'spree_related_products' # , :git => 'git://github.com/spree/spree_related_products.git'
 # gem 'spree_minicart' #, '~> 1.1.0'
 # gem 'refinerycms-home_sliders', :path => 'vendor/extensions'
+
+group :production do
+  gem 'fog'
+end
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -64,3 +68,5 @@ gem 'refinerycms-inquiries', '~> 2.0.0'
 # gem 'refinerycms-blog', '~> 2.0.0'
 # gem 'refinerycms-search', '~> 2.0.0'
 # gem 'refinerycms-page-images', '~> 2.0.0'
+
+gem 'refinerycms-home_page_sliders', :path => 'vendor/extensions'

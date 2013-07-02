@@ -366,6 +366,7 @@
         }
       }
       .inclVAT {
+        color: $green;
         font-size: 0.750em;
         font-weight: bold;
       }
@@ -456,12 +457,13 @@
             font-size: 0.571em;
             vertical-align: top;
           }
+        }
           .inclVAT {
             color: $green;
             font-size: 0.750em;
             font-weight: bold;
           }
-        }
+
       }
     }
     &.four {

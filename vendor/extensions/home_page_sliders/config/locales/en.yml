@@ -1,0 +1,29 @@
+en:
+  refinery:
+    plugins:
+      home_page_sliders:
+        title: Home Page Sliders
+    home_page_sliders:
+      admin:
+        home_page_sliders:
+          actions:
+            create_new: Add New Home Page Slider
+            reorder: Reorder Home Page Sliders
+            reorder_done: Done Reordering Home Page Sliders
+          records:
+            title: Home Page Sliders
+            sorry_no_results: Sorry! There are no results found.
+            no_items_yet: There are no Home Page Sliders yet. Click "Add New Home Page Slider" to add your first home page slider.
+          home_page_slider:
+            view_live_html: View this home page slider live <br/><em>(opens in a new window)</em>
+            edit: Edit this home page slider
+            delete: Remove this home page slider forever
+      home_page_sliders:
+        show:
+          other: Other Home Page Sliders
+  activerecord:
+    attributes:
+      'refinery/home_page_sliders/home_page_slider':
+        banner_text: Banner Text
+        display: Display
+        background: Background

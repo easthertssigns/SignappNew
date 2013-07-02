@@ -5,17 +5,13 @@
     <% javascript_include_tag('home', 'jquery.cycle.all', 'jquery.carouFredSel-5.6.4-packed', 'jquery.easing.1.3') %>
 <% end %>
 <!--Start top slider area-->
- <div id="heroContainer" class="loading">
+<div id="heroContainer" class="loading">
   <div id="heroSlider">
-    <div class="heroSlide" style="background-image: url('/assets/home-slider-01.jpg');">
-      <h1>Design your own sign</h1>
-    </div>
-    <div class="heroSlide" style="background-image: url('/assets/home-slider-02.jpg');">
-      <h2>Do other stuff too&hellip;</h2>
-    </div>
-    <div class="heroSlide" style="background-image: url('/assets/home-slider-03.jpg');">
-      <h2>Another feature</h2>
-    </div>
+    <% get_home_page_slides.each do |slide| %>
+            <div class="heroSlide" style="background-image: url('<%=  slide.background.url %>');">
+              <h2><%= slide.banner_text %></h2>
+            </div>
+    <% end %>
   </div>
   <div id="heroControls">
     <div class="arrowControl prev">
@@ -36,38 +32,37 @@
     <div class="grid_4 stepOne">
       <div class="radialGradient"></div>
       <div class="icon"></div>
-      <h3>1. Choose a material</h3>
 
-      <p>We've loads of great materials and finishes. Choose from wood, to brass, to perspex and more.</p>
-      <a href="/choose_material" class="button">Choose your material</a>
+      <% if @page.content_for(:choose_a_material) %>
+          <%= raw (@page.content_for(:choose_a_material)) %>
+      <% end %>
 
       <div class="arrow"></div>
     </div>
     <div class="grid_4 stepTwo">
       <div class="radialGradient"></div>
       <div class="icon"></div>
-      <h3>2. Design your sign</h3>
-
-      <p>Have fun with our new custom sign creator. Add text, shapes and colours to make your sign!</p>
-      <a href="/choose_material" class="button">Create your sign now</a>
+      <% if @page.content_for(:design_your_sign) %>
+          <%= raw (@page.content_for(:design_your_sign)) %>
+      <% end %>
 
       <div class="arrow"></div>
     </div>
     <div class="grid_4 stepThree">
       <div class="radialGradient"></div>
       <div class="icon"></div>
-      <h3>3. We deliver it!</h3>
-
-      <p>It's as simple as that. And, we'll even deliver your unique brand new sign within 3 to 5 working days.
-        Hooray!</p>
-      <a href="/choose_material" class="button">Get started today!</a></div>
+      <% if @page.content_for(:we_deliver_it) %>
+          <%= raw (@page.content_for(:we_deliver_it)) %>
+      <% end %>
+    </div>
   </div>
   <div class="clearfix"></div>
 </div>
 <div class="howArePeopleUsingSignApp">
   <h3><span class="downArrow"></span>How are people using SignApp?<span class="downArrow"></span></h3>
 
-  <a href="#" class="howDoesCustomisationWork">How does customisation work?</a>
+  <a href="/how-does-customisation-works" class="howDoesCustomisationWork">How does customisation work?</a>
+
   <div class="signCarousel" id="signCarousel">
     <div class="imageTile"><img src="/assets/home-tile-01.jpg"/>
 

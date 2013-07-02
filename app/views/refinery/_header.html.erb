@@ -20,7 +20,7 @@
     <div class="grid_10">
       <nav id="menu" class="menu">
         <ul>
-          <li><a href="#">Home</a></li>
+          <li><a href="/">Home</a></li>
           <li class="topLevel"><a href="#">Shop for Ideas</a>
 
             <div class="megaMenu">
@@ -34,36 +34,28 @@
               <% end %>
               <div class="blueColumn">
                 <h4>What's Hot</h4>
-                <img src="/assets/our-products-whats-hot.jpg" width="234" height="130">
+                <img src="http://placehold.it/234x130" width="234" height="130">
                 <h5>UK Olympics 2012 Bus Scroll</h5>
 
                 <p>In aenean vut phasellus enim lundium sed augue nisi amet elit sagittis!</p>
 
                 <p class="price">From <span>£49.99</span></p>
                 <a href="#" class="button red">Buy</a><a href="#" class="button">Customise</a>
-                <a href="#" class="customisation">How does customisation work?</a>
+                <a href="/how-does-customisation-works" class="customisation">How does customisation work?</a>
 
                 <div class="clearfix"></div>
               </div>
             </div>
           </li>
-          <li class="topLevel"><a href="#">Business Signs</a>
+          <li class="topLevel"><a href="/t/business-signs">Business Signs</a>
 
             <div class="megaMenu">
               <ul>
-                <li><h4><a href="#">Business Signs</a></h4></li>
-                <li><a href="#">Prohibition</a></li>
-                <li><a href="#">Mandatory</a></li>
-                <li><a href="#">Hazard</a></li>
-                <li><a href="#">Road Signs</a></li>
-                <li><a href="#">Fire Fighting</a></li>
-                <li><a href="#">Fire Action</a></li>
-                <li><a href="#">Fire Door</a></li>
-                <li><a href="#">Fire Exit</a></li>
-                <li><a href="#">Emergency Exit</a></li>
-                <li><a href="#">No Smoking</a></li>
-                <li><a href="#">CCTV</a></li>
-                <li><a href="#">Electrical Warning</a></li>
+                <% get_taxonomies.where(:name => 'Business Signs').each do |taxonomy| %>
+                    <% taxonomy.root.children.each do |taxon| %>
+                        <li>  <%= link_to taxon.name, seo_url(taxon) %></li>
+                    <% end %>
+                <% end %>
               </ul>
             </div>
           </li>

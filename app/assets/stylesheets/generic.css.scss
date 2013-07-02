@@ -241,6 +241,14 @@ header {
                   color: $dark-blue-grey;
                 }
               }
+              &:first-child > a {
+                background: none;
+                display: block;
+                height: auto;
+                padding: 0;
+                text-indent: 0px;
+                width: auto;
+              }
             }
           }
           .blueColumn {

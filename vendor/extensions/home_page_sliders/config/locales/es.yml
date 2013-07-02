@@ -1,0 +1,30 @@
+es:
+  refinery:
+    plugins:
+      home_page_sliders:
+        title: Home Page Sliders
+#        article: masculino/femenino
+    home_page_sliders:
+      admin:
+        home_page_sliders:
+          actions:
+            create_new: Crear nuevo home page slider
+            reorder: Reordenar home page sliders
+            reorder_done: Reordenación de home page sliders completada
+          records:
+            title: Home Page Sliders
+            sorry_no_results: Lo siento, no hay resultados
+            no_items_yet: No hay home page sliders todavía. Pulsa en "Crear nuevo Home Page Slider" para crear tu primer home page slider.
+          home_page_slider:
+            view_live_html: Ver este home page slider como abierto al público <br/><em>(abre en ventana nueva)</em>
+            edit: Editar este home page slider
+            delete: Borrar este home page slider para siempre
+      home_page_sliders:
+        show:
+          other: Otros home page sliders
+  activerecord:
+    attributes:
+      'refinery/home_page_sliders/home_page_slider':
+        banner_text: Banner Text
+        display: Display
+        background: Background

@@ -1,0 +1,33 @@
+<%= form_for [refinery, :home_page_sliders_admin, @home_page_slider] do |f| -%>
+  <%= render '/refinery/admin/error_messages',
+              :object => @home_page_slider,
+              :include_object_name => true %>
+
+  
+  <div class='field'>
+    <%= f.label :banner_text -%>
+    <%= f.text_field :banner_text, :class => 'larger widest'  -%>
+
+  </div>
+  
+  <div class='field'>
+    <%= f.label :display -%>
+    <%= f.check_box :display, :checked => @home_page_slider[:display]  -%>
+
+  </div>
+  
+  <div class='field'>
+    <%= f.label :background -%>
+    <%= render '/refinery/admin/image_picker',
+               :f => f,
+               :field => :background_id,
+               :image => @home_page_slider.background,
+               :toggle_image_display => false %>
+
+  </div>
+  
+  <%= render '/refinery/admin/form_actions', :f => f,
+             :continue_editing => false,
+             :delete_title => t('delete', :scope => 'refinery.home_page_sliders.admin.home_page_sliders.home_page_slider'),
+             :delete_confirmation => t('message', :scope => 'refinery.admin.delete', :title => @home_page_slider.banner_text) %>
+<% end -%>

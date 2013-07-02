@@ -28,6 +28,11 @@ module ApplicationHelper
          else
            order.line_items
          end
-       end
+   end
+
+
+   def get_home_page_slides
+     @slides = Refinery::HomePageSliders::HomePageSlider.order('position ASC').where(:display => true)
+   end
 
 end

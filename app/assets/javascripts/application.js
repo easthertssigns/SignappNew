@@ -12,5 +12,4 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require rails
 //= require_tree .

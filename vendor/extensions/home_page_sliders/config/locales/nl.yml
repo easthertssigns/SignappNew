@@ -1,0 +1,29 @@
+nl:
+  refinery:
+    plugins:
+      home_page_sliders:
+        title: Home Page Sliders
+    home_page_sliders:
+      admin:
+        home_page_sliders:
+          actions:
+            create_new: Maak een nieuwe Home Page Slider
+            reorder: Wijzig de volgorde van de Home Page Sliders
+            reorder_done: Klaar met het wijzingen van de volgorde van de Home Page Sliders
+          records:
+            title: Home Page Sliders
+            sorry_no_results: Helaas! Er zijn geen resultaten gevonden.
+            no_items_yet: Er zijn nog geen Home Page Sliders. Druk op 'Maak een nieuwe Home Page Slider' om de eerste aan te maken.
+          home_page_slider:
+            view_live_html: Bekijk deze home page slider op de website <br/><em>(opent een nieuw venster)</em>
+            edit: Bewerk deze home page slider
+            delete: Verwijder deze home page slider voor eeuwig
+      home_page_sliders:
+        show:
+          other: Andere Home Page Sliders
+  activerecord:
+    attributes:
+      'refinery/home_page_sliders/home_page_slider':
+        banner_text: Banner Text
+        display: Display
+        background: Background
