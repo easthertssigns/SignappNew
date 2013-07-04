@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130618085230) do
+ActiveRecord::Schema.define(:version => 20130703080935) do
 
   create_table "custom_signs", :force => true do |t|
     t.integer  "spree_user_id"
@@ -43,6 +43,15 @@ ActiveRecord::Schema.define(:version => 20130618085230) do
 
   add_index "customer_accounts", ["email"], :name => "index_customer_accounts_on_email", :unique => true
   add_index "customer_accounts", ["reset_password_token"], :name => "index_customer_accounts_on_reset_password_token", :unique => true
+
+  create_table "refinery_home_page_sliders", :force => true do |t|
+    t.string   "banner_text"
+    t.boolean  "display"
+    t.integer  "background_id"
+    t.integer  "position"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
+  end
 
   create_table "refinery_images", :force => true do |t|
     t.string   "image_mime_type"
@@ -136,7 +145,7 @@ ActiveRecord::Schema.define(:version => 20130618085230) do
   end
 
   add_index "refinery_page_part_translations", ["locale"], :name => "index_refinery_page_part_translations_on_locale"
-  add_index "refinery_page_part_translations", ["refinery_page_part_id"], :name => "index_f9716c4215584edbca2557e32706a5ae084a15ef"
+  add_index "refinery_page_part_translations", ["refinery_page_part_id"], :name => "index_refinery_page_part_translations_on_refinery_page_part_id"
 
   create_table "refinery_page_parts", :force => true do |t|
     t.integer  "refinery_page_id"
@@ -162,7 +171,7 @@ ActiveRecord::Schema.define(:version => 20130618085230) do
   end
 
   add_index "refinery_page_translations", ["locale"], :name => "index_refinery_page_translations_on_locale"
-  add_index "refinery_page_translations", ["refinery_page_id"], :name => "index_d079468f88bff1c6ea81573a0d019ba8bf5c2902"
+  add_index "refinery_page_translations", ["refinery_page_id"], :name => "index_refinery_page_translations_on_refinery_page_id"
 
   create_table "refinery_pages", :force => true do |t|
     t.integer  "parent_id"
@@ -703,6 +712,7 @@ ActiveRecord::Schema.define(:version => 20130618085230) do
     t.boolean  "is_material"
     t.boolean  "is_featured"
     t.integer  "sign_data_id"
+    t.boolean  "show_in_menu"
   end
 
   add_index "spree_products", ["available_on"], :name => "index_spree_products_on_available_on"

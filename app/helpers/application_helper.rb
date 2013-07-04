@@ -35,4 +35,8 @@ module ApplicationHelper
      @slides = Refinery::HomePageSliders::HomePageSlider.order('position ASC').where(:display => true)
    end
 
+   def get_product_list_for_menu
+     @products = Spree::Product.where(:show_in_menu => true).limit(1).first
+   end
+
 end

@@ -32,11 +32,9 @@
     <div class="grid_4 stepOne">
       <div class="radialGradient"></div>
       <div class="icon"></div>
-
       <% if @page.content_for(:choose_a_material) %>
           <%= raw (@page.content_for(:choose_a_material)) %>
       <% end %>
-
       <div class="arrow"></div>
     </div>
     <div class="grid_4 stepTwo">
@@ -45,7 +43,6 @@
       <% if @page.content_for(:design_your_sign) %>
           <%= raw (@page.content_for(:design_your_sign)) %>
       <% end %>
-
       <div class="arrow"></div>
     </div>
     <div class="grid_4 stepThree">
@@ -188,8 +185,9 @@
   <div class="container_12">
     <div class="grid_4 panelOne">
       <div class="radialGradient"></div>
-      <h4><strong>All our materials are sourced from renewable sources.</strong> And, are hand picked for their superior
-        quality.</h4>
+      <% if @page.content_for(:box1) %>
+          <%= raw (@page.content_for(:box1)) %>
+      <% end %>
 
       <div class="iconContainer">
         <div class="icon"></div>
@@ -199,8 +197,9 @@
     </div>
     <div class="grid_4 panelTwo">
       <div class="radialGradient"></div>
-      <h4><strong>You can use our sign designer to make your sign on your computer or iPad.</strong> Or at work if
-        you're sneaky!</h4>
+      <% if @page.content_for(:box2) %>
+          <%= raw (@page.content_for(:box2)) %>
+      <% end %>
 
       <div class="iconContainer">
         <div class="icon"></div>
@@ -210,8 +209,9 @@
     </div>
     <div class="grid_4 panelThree">
       <div class="radialGradient"></div>
-      <h4><strong>What are people saying?</strong><br/> Comments from some of our customers.</h4>
-      <q>I made a sign for my dad's birthday. The look on his face said it all! Fantastic!</q>
+      <% if @page.content_for(:box3) %>
+          <%= raw (@page.content_for(:box3)) %>
+      <% end %>
     </div>
   </div>
   <div class="upperShadow"></div>

@@ -130,7 +130,17 @@
           <%= f.collection_select(:tax_category_id, @tax_categories, :id, :name, { :include_blank => true }, { 'style' => 'width:200px' }) %>
           <%= f.error_message_on :tax_category %>
       <% end %>
+
+      <%= f.field_container :show_in_menu do %>
+
+          <%= f.check_box :show_in_menu %> <%= f.label :show_in_menu, "When ticked, this product will be visible on mega menu" %>
+          <p> </p>
+
+      <% end %>
+
+
     </div>
+
   </div>
 
 

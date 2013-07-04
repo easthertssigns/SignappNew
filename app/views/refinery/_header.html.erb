@@ -32,23 +32,23 @@
                     <%= taxons_tree(taxonomy.root, @taxon, Spree::Config[:max_level_in_taxons_menu] || 1) %>
                   </ul>
               <% end %>
+
+
               <div class="blueColumn">
                 <h4>What's Hot</h4>
-                <img src="http://placehold.it/234x130" width="234" height="130">
-                <h5>UK Olympics 2012 Bus Scroll</h5>
-
-                <p>In aenean vut phasellus enim lundium sed augue nisi amet elit sagittis!</p>
-
-                <p class="price">From <span>£49.99</span></p>
-                <a href="#" class="button red">Buy</a><a href="#" class="button">Customise</a>
-                <a href="/how-does-customisation-works" class="customisation">How does customisation work?</a>
-
+                <% unless get_product_list_for_menu.nil? %>
+                    <img src="http://placehold.it/234x130" width="234" height="130">
+                    <h5><%= get_product_list_for_menu.name %></h5>
+                    <p><%= truncate(get_product_list_for_menu.description, :length => 80) %> </p>
+                    <p class="price">From <span><%= get_product_list_for_menu.display_price %></span></p>
+                    <a href="<%= '/products/' + get_product_list_for_menu.permalink %>" class="button red">Buy</a><a href="<%= '/products/' + get_product_list_for_menu.permalink %>" class="button">Customise</a>
+                    <a href="/how-does-customisation-works" class="customisation">How does customisation work?</a>
+                <% end %>
                 <div class="clearfix"></div>
               </div>
             </div>
           </li>
           <li class="topLevel"><a href="/t/business-signs">Business Signs</a>
-
             <div class="megaMenu">
               <ul>
                 <% get_taxonomies.where(:name => 'Business Signs').each do |taxonomy| %>
