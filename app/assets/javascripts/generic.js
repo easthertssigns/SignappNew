@@ -76,4 +76,5 @@ $(function () {
         $(this).parents('form').first().submit();
         e.preventDefault();
     });
+
 });

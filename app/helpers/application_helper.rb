@@ -36,7 +36,7 @@ module ApplicationHelper
    end
 
    def get_product_list_for_menu
-     @products = Spree::Product.where(:show_in_menu => true).limit(1).first
+     @product = Spree::Product.where(:show_in_menu => true).limit(1).first
    end
 
 end

@@ -1,0 +1,21 @@
+<div class="genericlayout">
+
+      <div class="pageTitle">
+        <h1><%= page_title %></h1>
+      </div>
+
+  <div class="container_12">
+    <div class="container_960">
+
+
+      <section class="grid_12">
+        <%= raw @page.content_for(:body) %>
+      </section>
+      <div class="clearfix"></div>
+      <a href="/choose_material" class="buttonChoosematerial" style="bottom: -3px;">
+        Create your sign now!
+      </a>
+    </div>
+  </div>
+  <div class="defaultShadow"></div>
+</div>

@@ -269,8 +269,8 @@ store/all.js: store/all-6d8805c0381ff83d1102edfa4a1d3474.js
 store/all/index.js: store/all-6d8805c0381ff83d1102edfa4a1d3474.js
 admin/all.css: admin/all-0ada2f073b5e66fcf7d901612541bed8.css
 admin/all/index.css: admin/all-0ada2f073b5e66fcf7d901612541bed8.css
-application.css: application-9c54ebf00358fddd37588bd7d728c90a.css
-application/index.css: application-9c54ebf00358fddd37588bd7d728c90a.css
+application.css: application-b80964f9442227e37c572c23b1a37212.css
+application/index.css: application-b80964f9442227e37c572c23b1a37212.css
 home.css: home-a80db29321735b59a85c63c7d577907f.css
 home/index.css: home-a80db29321735b59a85c63c7d577907f.css
 store/all.css: store/all-521b62a27671b48b46f8af5b69b5503d.css

@@ -59,7 +59,7 @@ Refinery::Pages.configure do |config|
 
   config.layout_template_whitelist = ["application"]
 
-  config.view_template_whitelist = ["home", "show", "product", "choose_material"]
+  config.view_template_whitelist = ["default", "generic", "home", "show", "product", "choose_material"]
 
   config.use_layout_templates = true
 
