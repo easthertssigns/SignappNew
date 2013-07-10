@@ -1,5 +1,7 @@
 SignappNew::Application.routes.draw do
 
+  get "product_gallery/show"
+
   # This line mounts Spree's routes at the root of your application.
   # This means, any requests to URLs such as /products, will go to Spree::ProductsController.
   # If you would like to change where this engine is mounted, simply change the :at option to something different.
@@ -144,6 +146,10 @@ SignappNew::Application.routes.draw do
 end
 
 Spree::Core::Engine.routes.draw do
+  resources :products do
+    get "product_gallery/show"
+  end
+
   get "choose_material/show"
 
   get "choose_material/index"

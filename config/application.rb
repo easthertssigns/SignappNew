@@ -101,9 +101,9 @@ module SignappNew
     #  app.routes_reloader.paths << File.expand_path('../named_routes_overide.rb', __FILE__)
     #end
 
-    config.s3_access_key_id = 'AKIAJHMMYZ5GOYGV6OHQ'
-    config.s3_secret_access_key = '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'
-    config.s3_bucket_name = 'signapp-dev'
+    config.s3_access_key_id = 'AKIAJSZTTNHJIAPK672A'
+    config.s3_secret_access_key = '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'
+    config.s3_bucket_name = 'signapp-production'
 
   end
 end
