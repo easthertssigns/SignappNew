@@ -9,8 +9,8 @@ Spree.config do |config|
   # Example:
   # Uncomment to override the default site name.
   config.site_name = "SignApp"
-
-
+  config.attachment_url = ":s3_eu_url"
+  config.s3_host_alias = "s3-eu-west-1.amazonaws.com"
 end
 
 #Spree.user_class = "Spree::LegacyUser"
