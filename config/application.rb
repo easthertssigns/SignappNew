@@ -104,7 +104,7 @@ module SignappNew
     config.s3_access_key_id = 'AKIAJSZTTNHJIAPK672A'
     config.s3_secret_access_key = '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'
     config.s3_bucket_name = 'signapp-production'
-
+    config.s3_region = 'EU_Ireland'
   end
 end
 
