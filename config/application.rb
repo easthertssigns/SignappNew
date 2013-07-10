@@ -105,6 +105,8 @@ module SignappNew
     config.s3_secret_access_key = 'OEhVJF7Ob+PUb9/JtYyYBcCl34LGFMsAsExli4Mn'
     config.s3_bucket_name = 'signapp-production'
     config.s3_region = 'EU_Ireland'
+    config.attachment_url = ':s3_eu_url'
+    config.s3_host_alias = 's3-eu-west-1.amazonaws.com'
   end
 end
 
