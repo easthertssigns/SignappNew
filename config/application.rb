@@ -106,6 +106,7 @@ module SignappNew
     config.s3_bucket_name = 'signapp-production'
     config.s3_region = 'eu-west-1'
     config.s3_endpoint = 's3-eu-west-1.amazonaws.com'
+
   end
 end
 
