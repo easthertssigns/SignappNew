@@ -11,7 +11,7 @@ Spree::Image.class_eval do
                     :default_style => :product,
                     :storage => :s3,
                     :s3_credentials => "#{Rails.root}/config/s3.yml",
-                    :bucket => "signapp-production",
+                    :bucket => "signapp-prod",
                     :url => '/spree/products/:id/:style/:basename.:extension',
                     :path => ':rails_root/public/spree/products/:id/:style/:basename.:extension',
                     :convert_options => {
@@ -26,7 +26,6 @@ Spree::Image.class_eval do
                         :small => "-background transparent -gravity center -extent 235x120 -strip",
                         :product => "-background transparent -gravity center -extent 470x260 -strip",
                         :large => "-background transparent -gravity center -extent 1000x750 -strip"
-
                     }
 
   # Load user defined paperclip settings
