@@ -146,9 +146,8 @@ SignappNew::Application.routes.draw do
 end
 
 Spree::Core::Engine.routes.draw do
-  resources :products do
-    get "product_gallery/show"
-  end
+
+  get "product_gallery/show"
 
   get "choose_material/show"
 
