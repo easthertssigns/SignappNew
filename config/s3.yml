@@ -1,7 +1,7 @@
 development:
-  bucket: 'signapp-production'
-  access_key_id: 'AKIAJSZTTNHJIAPK672A'
-  secret_access_key: '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'
+  bucket: 'signapp-dev'
+  access_key_id: 'AKIAJHMMYZ5GOYGV6OHQ'
+  secret_access_key: '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'
 
 test:
   bucket: 'signapp-dev'
