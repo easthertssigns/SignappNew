@@ -12,7 +12,6 @@ Spree::Image.class_eval do
                     :storage => :s3,
                     :s3_credentials => "#{Rails.root}/config/s3.yml",
                     :bucket => "signapp-production",
-                    :s3_endpoint => 's3-eu-west-1.amazonaws.com',
                     :url => '/spree/products/:id/:style/:basename.:extension',
                     :path => ':rails_root/public/spree/products/:id/:style/:basename.:extension',
                     :convert_options => {
