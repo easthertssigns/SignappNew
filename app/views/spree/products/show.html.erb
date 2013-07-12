@@ -2,98 +2,104 @@
     <% stylesheet_link_tag('fixed_grid', 'select2') %>
 <% end %>
 <% content_for :javascripts do %>
-    <% javascript_include_tag 'select2.min' %>
+    <%= javascript_include_tag('select2.min', 'jquery-ui-1.8.23.custom.min') %>
+
     <script type="text/javascript" language="javascript">
-      $(document).ready(function() {
-          $("#sizeSelect").change(function(){
-              var selectedSize = $("#sizeSelect").val();
-              if (selectedSize == "custom"){
-                  //do stuff that shows text boxes for custom size
-                  //un-hide div that has width and height boxes and a "set" button
-                  $("#custom_size_div").show();
-                  $("#custom_width").val("");
-                  $("#custom_height").val("");
-              }
-              else{
-                  $("#custom_size_div").hide();
-                  if (selectedSize.indexOf("|") > -1){
-                      var width =  selectedSize.split('|')[0];
-                      var height = selectedSize.split('|')[1];
-                      $("#width").val(width);
-                      $("#height").val(height);
-                  }
-                  else{
-                      $("#width").val(selectedSize);
-                      $("#height").val(selectedSize);
-                  }
-                  $("#displaySize").text($("#sizeSelect option[value='" + selectedSize + "']").text());
-                  //alert($("#sizeSelect option[value='" + selectedSize + "']").text());
-                  get_calculated_price_of_sign();
-              }
-          });
+        $(document).ready(function () {
+            $("#sizeSelect").change(function () {
+                var selectedSize = $("#sizeSelect").val();
+                if (selectedSize == "custom") {
+                    //do stuff that shows text boxes for custom size
+                    //un-hide div that has width and height boxes and a "set" button
+                    $("#custom_size_div").show();
+                    $("#custom_width").val("");
+                    $("#custom_height").val("");
+                }
+                else {
+                    $("#custom_size_div").hide();
+                    if (selectedSize.indexOf("|") > -1) {
+                        var width = selectedSize.split('|')[0];
+                        var height = selectedSize.split('|')[1];
+                        $("#width").val(width);
+                        $("#height").val(height);
+                    }
+                    else {
+                        $("#width").val(selectedSize);
+                        $("#height").val(selectedSize);
+                    }
+                    $("#displaySize").text($("#sizeSelect option[value='" + selectedSize + "']").text());
+                    //alert($("#sizeSelect option[value='" + selectedSize + "']").text());
+                    get_calculated_price_of_sign();
+                }
+            });
 
-          $("#shapeSelect").change(function(){
-              var selectedShape = $("#shapeSelect").val();
-              $("#displayShape").text($("#shapeSelect option[value='" + selectedShape + "']").text());
-          });
+            $("#shapeSelect").change(function () {
+                var selectedShape = $("#shapeSelect").val();
+                $("#displayShape").text($("#shapeSelect option[value='" + selectedShape + "']").text());
+            });
 
-          $("#custom_size_button").click(function(){
-              var custom_width = $("#custom_width").val();
-              var custom_height = $("#custom_height").val();
-              var error_string = "";
-              var valid_dimensions = true;
+            $("#custom_size_button").click(function () {
+                var custom_width = $("#custom_width").val();
+                var custom_height = $("#custom_height").val();
+                var error_string = "";
+                var valid_dimensions = true;
 
-              if (custom_width.length == 0){
-                  error_string += "Please enter a width\r\n";
-                  valid_dimensions = false;
-              }
-              else if (isNaN(custom_width)){
-                  error_string += "Please enter a valid width in mm\r\n";
-                  valid_dimensions = false;
-              }
+                if (custom_width.length == 0) {
+                    error_string += "Please enter a width\r\n";
+                    valid_dimensions = false;
+                }
+                else if (isNaN(custom_width)) {
+                    error_string += "Please enter a valid width in mm\r\n";
+                    valid_dimensions = false;
+                }
 
-              if (custom_height.length == 0){
-                  error_string += "Please enter a height\r\n";
-                  valid_dimensions = false;
-              }
-              else if (isNaN(custom_height)){
-                  error_string += "Please enter a valid height in mm\r\n";
-                  valid_dimensions = false;
-              }
+                if (custom_height.length == 0) {
+                    error_string += "Please enter a height\r\n";
+                    valid_dimensions = false;
+                }
+                else if (isNaN(custom_height)) {
+                    error_string += "Please enter a valid height in mm\r\n";
+                    valid_dimensions = false;
+                }
 
-              if (valid_dimensions == false){
-                  alert(error_string);
-              }
-              else{
-                  //set the hidden values and calculate the price
-                  $("#width").val(custom_width);
-                  $("#height").val(custom_height);
-                  $("#displaySize").text((custom_width / 10) + "cm x " + (custom_height / 10) + "cm");
-                  get_calculated_price_of_sign();
-              }
-          });
-       });
+                if (valid_dimensions == false) {
+                    alert(error_string);
+                }
+                else {
+                    //set the hidden values and calculate the price
+                    $("#width").val(custom_width);
+                    $("#height").val(custom_height);
+                    $("#displaySize").text((custom_width / 10) + "cm x " + (custom_height / 10) + "cm");
+                    get_calculated_price_of_sign();
+                }
+            });
 
-       function get_calculated_price_of_sign(){
-           var width = $("#width").val();
-           var height = $("#height").val();
-           var product_id = $("#product_id").val();
+            $("#shapeSelect, #sizeSelect").select2({
+                placeholder: "Select a State"
+            });
+
+        });
+
+        function get_calculated_price_of_sign() {
+            var width = $("#width").val();
+            var height = $("#height").val();
+            var product_id = $("#product_id").val();
 //           var sign_area = width * height;
 //           var sign_price = sign_area * base_price;
-           $.ajax({
-               url: "/custom_sign/calculate_sign_base_price",
-               data: { width: width, height: height, product_id: product_id }
-           }).done(function(result){
-               var thePrice = result.result.toFixed(2);
-               $("#calculated_price").val(thePrice);
-               var split_price = thePrice.split('.');
-               var display_price = "£" + split_price[0] + "<sup>." + split_price[1] + "<sup>";
-               //$("#displayPrice").text(result.result.toFixed(2));
-               $("#displayPrice").html(display_price);
-               $("#sidebarDisplayPrice").html(display_price);
-               //alert("base price=" + result.base_price);
-           });
-       }
+            $.ajax({
+                url: "/custom_sign/calculate_sign_base_price",
+                data: { width: width, height: height, product_id: product_id }
+            }).done(function (result) {
+                        var thePrice = result.result.toFixed(2);
+                        $("#calculated_price").val(thePrice);
+                        var split_price = thePrice.split('.');
+                        var display_price = "£" + split_price[0] + "<sup>." + split_price[1] + "<sup>";
+                        //$("#displayPrice").text(result.result.toFixed(2));
+                        $("#displayPrice").html(display_price);
+                        $("#sidebarDisplayPrice").html(display_price);
+                        //alert("base price=" + result.base_price);
+                    });
+        }
     </script>
 <% end %>
 <div data-hook="product_show" itemscope itemtype="http://schema.org/Product">
@@ -151,70 +157,76 @@
     </div>
     <div class="productOptions">
       <% if @product.is_material %>
-      <h3>Choose your signs shape &amp; size</h3>
+          <h3>Choose your signs shape &amp; size</h3>
 
-      <%= form_tag("/custom_sign/new_custom_sign", :method => :post) do %>
-          <%= hidden_field_tag "product_id", @product.id %>
-          <div class="labelsRow">
-            <div class="step one">
-              <label for="shapeSelect">Shape</label>
-            </div>
-            <div class="step two">
-              <label for="sizeSelect">Size</label>
-            </div>
-            <div class="step three">
-              <label>Base price</label>
-            </div>
-          </div>
-          <div class="inputsRow">
-            <div class="step one">
-              <select id="shapeSelect" name="shapeSelect">
-                <% get_sign_shapes_for_product(@product).each do |shape| %>
-                    <option value="<%= shape.id %>"><%= shape.name %></option>
-                <% end %>
-              </select>
-
-              <div class="arrow"></div>
-            </div>
-            <div class="step two">
-              <select id="sizeSelect" name="sizeSelect">
-                <option value="custom">Custom</option>
-                <% get_sign_sizes_for_product(@product).each do |size| %>
-                    <option value="<%= size.width %>|<%= size.height %>"><%= size.title %></option>
-                <% end %>
-              </select>
-
-              <%= hidden_field_tag "width", 0 %>
-              <%= hidden_field_tag "height", 0 %>
-              <%= hidden_field_tag "calculated_price", 0 %>
-
-              <div class="arrow"></div>
-            </div>
-            <div class="step three">
-              <div class="priceWrapper">
-                <% unless @product.price.nil? %>
-                    <span class="price" id="displayPrice"><%= Spree::Money.new @product.price %></span><span class="inclVAT"> Incl. VAT</span>
-                <% end %>
+          <%= form_tag("/custom_sign/new_custom_sign", :method => :post) do %>
+              <%= hidden_field_tag "product_id", @product.id %>
+              <div class="labelsRow">
+                <div class="step one">
+                  <label for="shapeSelect">Shape</label>
+                </div>
+                <div class="step two">
+                  <label for="sizeSelect">Size</label>
+                </div>
+                <div class="step three">
+                  <label>Base price</label>
+                </div>
               </div>
-              <div class="arrow"></div>
-            </div>
-            <div class="step four">
-              <input type="submit" value="Ready? Let's design your sign!">
-            </div>
-          </div>
-          <div id="custom_size_div" style="display: none">
-            <div><%= label_tag "Width (mm)" %> <%=text_field_tag "custom_width" %> <%= label_tag "Height (mm)" %> <%=text_field_tag "custom_height" %> <input type="button" id="custom_size_button" value="Set Size"></div>
-          </div>
+              <div class="inputsRow">
+                <div class="step one">
+                  <select id="shapeSelect" name="shapeSelect">
+                    <% get_sign_shapes_for_product(@product).each do |shape| %>
+                        <option value="<%= shape.id %>"> <%= image_tag shape.svg_file.url(:thumb) %> <%= shape.name %></option>
+                    <% end %>
+                  </select>
+
+                  <div class="arrow"></div>
+                </div>
+                <div class="step two">
+                  <select id="sizeSelect" name="sizeSelect">
+                    <option value="custom">Custom</option>
+                    <% get_sign_sizes_for_product(@product).each do |size| %>
+                        <option value="<%= size.width %>|<%= size.height %>"><%= size.title %></option>
+                    <% end %>
+                  </select>
+
+                  <%= hidden_field_tag "width", 0 %>
+                  <%= hidden_field_tag "height", 0 %>
+                  <%= hidden_field_tag "calculated_price", 0 %>
+
+                  <div class="arrow"></div>
+                </div>
+                <div class="step three">
+                  <div class="priceWrapper">
+                    <% unless @product.price.nil? %>
+                        <span class="price" id="displayPrice"><%= Spree::Money.new @product.price %></span><span class="inclVAT"> Incl. VAT</span>
+                    <% end %>
+                  </div>
+                  <div class="arrow"></div>
+                </div>
+                <div class="step four">
+                  <input type="submit" value="Ready? Let's design your sign!">
+                </div>
+              </div>
               <div class="clearfix"></div>
+              <div id="custom_size_div" style="display: none">
+                <div><%= label_tag "Width (mm)" %> <%= text_field_tag "custom_width" %> <%= label_tag "Height (mm)" %> <%= text_field_tag "custom_height" %>
+                  <input type="button" id="custom_size_button" value="Set Size"></div>
+              </div>
+              <div class="clearfix"></div>
+          <% end %>
+          <!--<div id="cart-form" data-hook="cart_form">-->
+          <!--<%= render :partial => 'cart_form' %>-->
+          <!--</div>-->
+      <% else %>
+          <h3>Buy this product</h3>
+
+          <div class="button">
+            <a href="/orders/add_saved_sign_to_basket?id=<%= @product.sign_data_id.to_s %>">Add to basket</a></div>
+          <div class="button">
+            <a href="/custom_sign/edit_sign_from_product?id=<%= @product.sign_data_id.to_s %>">Customise this sign</a>
+          </div>
       <% end %>
-      <!--<div id="cart-form" data-hook="cart_form">-->
-        <!--<%= render :partial => 'cart_form' %>-->
-      <!--</div>-->
-    <% else %>
-      <h3>Buy this product</h3>
-          <div class="button"><a href="/orders/add_saved_sign_to_basket?id=<%= @product.sign_data_id.to_s %>">Add to basket</a></div>
-          <div class="button"><a href="/custom_sign/edit_sign_from_product?id=<%= @product.sign_data_id.to_s %>">Customise this sign</a></div>
-    <% end %>
     </div>
     <div class="relatedProducts fixed_container_12">
       <div class="fixed_grid_12">

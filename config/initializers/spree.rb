@@ -12,5 +12,5 @@ Spree.config do |config|
 end
 
 #Spree.user_class = "Spree::LegacyUser"
-Spree.user_class = "Refinery::Memberships::Member"
+Spree.user_class = "Refinery::User"
 
