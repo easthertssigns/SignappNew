@@ -74,9 +74,14 @@
                 }
             });
 
-            $("#shapeSelect, #sizeSelect").select2({
-                placeholder: "Select a State"
+
+            $('#shapeSelect').select2({
             });
+
+            $('#sizeSelect').select2({
+
+            });
+
 
         });
 
@@ -176,9 +181,15 @@
                 <div class="step one">
                   <select id="shapeSelect" name="shapeSelect">
                     <% get_sign_shapes_for_product(@product).each do |shape| %>
-                        <option value="<%= shape.id %>"> <%= image_tag shape.svg_file.url(:thumb) %> <%= shape.name %></option>
+                        <option value="<%= shape.id %>">
+                          <span><%= image_tag shape.svg_file.url(:mini) %></span> <%= shape.name %></option>
                     <% end %>
                   </select>
+
+                  <% get_sign_shapes_for_product(@product).each do |shape| %>
+                      <div>Image <%= image_tag shape.svg_file.url(:mini) %> <%= shape.name %></div>
+                  <% end %>
+
 
                   <div class="arrow"></div>
                 </div>

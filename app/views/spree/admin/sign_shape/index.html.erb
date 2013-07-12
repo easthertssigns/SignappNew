@@ -7,18 +7,24 @@
     }
 </script>
 
-<a href="/admin/sign_shape/new">Add new shape</a>
+<a href="/admin/sign_shape/new" class="button" style="margin-bottom: 20px;"><span>Add new shape</span></a>
 
-<ul>
+
+<table class="index" id="listing_products">
   <% @sign_base_shapes.each do |shape| %>
-      <li>
-        <h2><%= shape.name %></h2>
-        <a href="/admin/sign_shape/<%= shape.id %>/edit" class="edit">Edit</a>
-        &nbsp;
-        <form action="/admin/sign_shape/<%= shape.id %>" method="post" id="delete_form<%= shape.id %>" name="delete_form<%= shape.id %>">
-          <input type="hidden" value="delete" name="_method">
-          <input type="hidden" id="graphic_id" name="graphic_id" value="<%= shape.id %>">
-          <a href="javascript:submitDeleteForm(<%= shape.id %>)" class="delete">Delete</a></form>
-      </li>
+      <tr>
+        <td width="10%"><%= image_tag shape.svg_file.url(:thumb) %></td>
+
+       <td>
+         <a href="/admin/sign_shape/<%= shape.id %>/edit" class="edit">Edit</a> |
+         <form action="/admin/sign_shape/<%= shape.id %>" method="post" id="delete_form<%= shape.id %>" name="delete_form<%= shape.id %>" style="display: inline; ">
+         <input type="hidden" value="delete" name="_method">
+         <input type="hidden" id="graphic_id" name="graphic_id" value="<%= shape.id %>">
+         <a href="javascript:submitDeleteForm(<%= shape.id %>)" class="delete">Delete</a></form>
+
+       </td>
+
+      </tr>
   <% end %>
-</ul>
+</table>
+
