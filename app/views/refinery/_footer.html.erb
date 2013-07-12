@@ -1,20 +1,13 @@
 <footer>
   <div class="container_12">
     <div class="grid_4">
-      <h3>Customer Service</h3>
-
-      <p>Our sales and customer service team is available:</p>
-
-      <p><strong>9am to 5pm - Monday to Friday</strong></p>
-      <h4 class="contactTelephone">Contact Telephone: <span>01234 567 890</span></h4>
-
-      <p class="emailAddress">Email Address:
-        <a href="mailto:customerservice@signapp.com">customerservice@signapp.com</a></p>
-      </a></p>
+      <% customer_service = Refinery::Page.find_by_path('footer-customer-service') %>
+      <% unless customer_service.nil? %>
+          <%= raw customer_service.content_for(:body) %>
+      <% end %>
     </div>
     <div class="grid_4">
       <h3>We accept:</h3>
-
       <div class="card visa"></div>
       <div class="card mastercard"></div>
       <div class="card maestro"></div>
