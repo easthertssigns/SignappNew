@@ -1,8 +1,8 @@
 <% content_for :stylesheets do %>
-    <% stylesheet_link_tag('fixed_grid', 'select2') %>
+    <% stylesheet_link_tag('fixed_grid', 'select2', 'store/magiczoom') %>
 <% end %>
 <% content_for :javascripts do %>
-    <%= javascript_include_tag('select2.min', 'jquery-ui-1.8.23.custom.min') %>
+    <%= javascript_include_tag('select2.min', 'jquery-ui-1.8.23.custom.min', 'store/magiczoom') %>
 
     <script type="text/javascript" language="javascript">
         $(document).ready(function () {
@@ -77,6 +77,18 @@
 
             $('#shapeSelect').select2({
             });
+
+//            function format(shape) {
+//                if (!shape.id) return shape.text; // optgroup
+//               // return "<img class='flag' src='images/flags/" + shape.id.toLowerCase() + ".png'/>" + shape.text;
+//                return "<img src='http://s3.amazonaws.com/signapp-prod" + "<%#= shape.svg_file.path %>" + />' + <%#= shape.name %>;
+//            }
+//            $('#shapeSelect').select2({
+//                formatResult: format,
+//                formatSelection: format,
+//                escapeMarkup: function(m) { return m; }
+//            });
+
 
             $('#sizeSelect').select2({
 

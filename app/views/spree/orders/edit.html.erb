@@ -1,61 +1,83 @@
 <div class="genericlayout blueBackground contact">
 
   <div class="pageTitle">
-    <h1><%= t(:shopping_cart) %></h1>
+    <h1><%#= t(:shopping_cart) %> Basket</h1>
   </div>
 
   <div class="container_12">
     <div class="container_960">
 
       <div class="grid_9 basketLeft">
-      <% @body_id = 'cart' %>
-      <% if @order.line_items.empty? %>
+        <% @body_id = 'cart' %>
+        <% if @order.line_items.empty? %>
 
-          <div data-hook="empty_cart">
-            <p><%= t(:your_cart_is_empty) %></p>
+            <div data-hook="empty_cart">
+              <p><%= t(:your_cart_is_empty) %></p>
 
-            <p><%= link_to t(:continue_shopping), products_path, :class => 'button continue' %></p>
-          </div>
+              <p><%= link_to t(:continue_shopping), products_path, :class => 'button continue' %></p>
+            </div>
 
-      <% else %>
-          <div data-hook="outside_cart_form">
-            <%= form_for @order, :url => update_cart_path, :html => {:id => 'update-cart'} do |order_form| %>
-                <div data-hook="inside_cart_form">
+        <% else %>
+            <div data-hook="outside_cart_form">
+              <%= form_for @order, :url => update_cart_path, :html => {:id => 'update-cart'} do |order_form| %>
+                  <div data-hook="inside_cart_form">
 
-                  <div data-hook="cart_items">
-                    <%= render :partial => 'form', :locals => {:order_form => order_form} %>
+                    <div data-hook="cart_items">
+                      <%= render :partial => 'form', :locals => {:order_form => order_form} %>
+                    </div>
+
+                    <div data-hook="cart_buttons">
+
+                    </div>
+
+
+                    <div id="subtotal" data-hook class="columns sixteen alpha omega">
+                      <h5><%= t(:subtotal) %> </h5>
+                      <span class="order-total"><%= @order.display_total %></span>
+
+                      <div class="clearfix"></div>
+                    </div>
+
+                    <div class="links columns sixteen alpha omega">
+                      <%= button_tag :class => 'button cream', :id => 'update-button' do %>
+                          <%= t(:update) %>
+                      <% end %>
+                    </div>
+
                   </div>
+              <% end %>
+            </div>
 
-                  <div id="subtotal" data-hook class="columns sixteen alpha omega">
-                    <h5><%= t(:subtotal) %>: <span class="order-total"><%= @order.display_total %></span></h5>
-                  </div>
 
-                  <div class="links columns sixteen alpha omega" data-hook="cart_buttons">
-                    <%= button_tag :class => 'primary', :id => 'update-button' do %>
-                        <%= t(:update) %>
-                    <% end %>
-                    <%= link_to t(:checkout), checkout_state_path(@order.checkout_steps.first), :class => 'button checkout primary', :id => 'checkout-link' %>
-                  </div>
+            <div id="empty-cart" data-hook>
+              <%= form_tag empty_cart_path, :method => :put do %>
+                  <p id="clear_cart_link" data-hook>
+                    <%#= submit_tag t(:empty_cart), :class => 'button gray' %>
+                    <%#= t(:or) %>
+                    <%= link_to t(:continue_shopping), products_path, :class => 'continue button cream' %>
+                  </p>
+              <% end %>
 
-                </div>
-            <% end %>
-          </div>
-
-          <div id="empty-cart" data-hook>
-            <%= form_tag empty_cart_path, :method => :put do %>
-                <p id="clear_cart_link" data-hook>
-                  <%= submit_tag t(:empty_cart), :class => 'button gray' %>
-                  <%= t(:or) %>
-                  <%= link_to t(:continue_shopping), products_path, :class => 'continue button cream' %>
-                </p>
-            <% end %>
-          </div>
-      <% end %>
+              <%= link_to 'Proceed To Checkout', checkout_state_path(@order.checkout_steps.first), :class => 'button checkout red', :id => 'checkout-link' %>
+              <div class="clearfix"></div>
+            </div>
+        <% end %>
 
       </div>
 
       <div class="grid_3 basketRight">
-        Right content
+        <h4>Policies</h4>
+
+          <%= link_to 'Shopping Policy', '/shopping-policy' %>
+         <%= link_to 'Legal Policy', '/legal-policy' %>
+
+        <br>
+        <br>
+
+        <h4>Secure Payment</h4>
+
+        <%= image_tag("payment-icons.png") %>
+
       </div>
 
       <div class="clearfix"></div>

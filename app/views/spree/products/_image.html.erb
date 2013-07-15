@@ -1,5 +1,11 @@
-<% if image %> 
-  <%= image_tag image.attachment.url(:product), :itemprop => "image" %>
+<% if image %>
+    <%= image_tag image.attachment.url(:large), :itemprop => "image" %>
+<% elsif @product.images.empty? %>
+    <div class="no-image">
+      <%= image_tag '/assets/noimage/product.png' %>
+    </div>
 <% else %>
-  <%= product_image(@product, :itemprop => "image") %>
+    <% @product.images.each do |i| %>
+        <div class="gallery_image"><%= link_to image_tag(i.attachment.url(:product)), i.attachment.url(:large), :class => "MagicZoom", :rel => "zoom-position: inner; zoom-fade: true; zoom-width: 1000; zoom-height: 1000; zoom-window-effect: false; hint: false" %></div>
+    <% end %>
 <% end %>

@@ -17,7 +17,7 @@
     <%#= truncate(variant.product.description.gsub(/<(.*?)>/,""), :length => 100, :omission => "...") %>
 
     <div class="cart-item-price" data-hook="cart_item_price">
-      <%= line_item.price %>
+      <%= money line_item.price %>
     </div>
     <div class="cart-item-quantity" data-hook="cart_item_quantity">
       <%#= item_form.number_field :quantity, :min => 0, :class => "line_item_quantity", :size => 5 %>
@@ -33,7 +33,7 @@
   </div>
 
   <div class="cart-item-total" data-hook="cart_item_total">
-    <%= (line_item.price * line_item.quantity) unless line_item.quantity.nil? %>
+    <%= money (line_item.price * line_item.quantity) unless line_item.quantity.nil? %>
   </div>
 
   <div class="clear"></div>
