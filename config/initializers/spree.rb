@@ -9,6 +9,8 @@ Spree.config do |config|
   # Example:
   # Uncomment to override the default site name.
   config.site_name = "SignApp"
+  config[:address_requires_state] = false
+  config.default_country_id = 213
 end
 
 #Spree.user_class = "Spree::LegacyUser"

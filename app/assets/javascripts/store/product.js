@@ -55,17 +55,6 @@ $(function () {
 
         showImage(0);
 
-
-        var thumb_count = $('#thumbnails ul li').length;
-        $('#thumbnails .thumbs-length').text(thumb_count);
-
-
-        if (thumb_count <= 4) {
-            $('#thumbnails .thumbs-count, #thumbnails .thumb-prev, #thumbnails .thumb-next').hide();
-        } else {
-            $('#thumbnails .thumbs-count, #thumbnails .thumb-prev, #thumbnails .thumb-next').show();
-        }
-
     }
 
 });

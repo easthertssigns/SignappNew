@@ -1,14 +1,15 @@
+<div class="row" data-hook="checkout_header">
+  <h1 class="checkout_title" data-hook="checkout_title">
+    Billing & Delivery
+  </h1>
+</div>
+
 <div class="columns alpha six" data-hook="billing_fieldset_wrapper">
   <fieldset id="billing" data-hook>
     <%= form.fields_for :bill_address do |bill_form| %>
-
-
         <div class="inner" data-hook="billing_inner">
-
           <div class="splitColumn">
-
             <legend>Your Details</legend>
-
             <p class="field" id="bfirstname">
               <%= bill_form.label :firstname, t(:first_name) %><span class="required">*</span><br/>
               <%= bill_form.text_field :firstname, :class => 'required' %>
@@ -27,18 +28,15 @@
             <% end %>
 
             <p class="field" style='clear: both'>
-              <%= form.label :email %><br/>
-              <%= form.text_field :email %>
+              <%= form.label :email, 'Email' %><span class="required">*</span><br/>
+              <%= form.text_field :email, :class => 'required'  %>
             </p>
 
             <p class="field" id="bphone">
               <%= bill_form.label :phone, t(:phone) %><span class="required">*</span><br/>
               <%= bill_form.phone_field :phone, :class => 'required' %>
             </p>
-
-
           </div>
-
 
           <div class="splitColumn">
             <legend><%= t(:billing_address) %></legend>
@@ -59,7 +57,8 @@
             </p>
 
             <p class="field" id="bcountry">
-              <%= bill_form.label :country_id, t(:country) %><span class="required">*</span><br/>
+              <%= bill_form.label :country_id, t(:country) %><br/>
+
         <span id="bcountry">
           <%= bill_form.collection_select :country_id, available_countries, :id, :name, {}, {:class => 'required'} %>
         </span>
@@ -90,7 +89,7 @@
             <% end %>
 
             <p class="field" id="bzipcode">
-              <%= bill_form.label :zipcode, t(:zip) %><span class="required">*</span><br/>
+              <%= bill_form.label :zipcode, 'Postcode' %><span class="required">*</span><br/>
               <%= bill_form.text_field :zipcode, :class => 'required' %>
             </p>
 
@@ -159,7 +158,7 @@
           <% if Spree::Config[:address_requires_state] %>
               <p class="field" id="sstate">
                 <% have_states = !@order.ship_address.country.states.empty? %>
-                <%= ship_form.label :state, t(:state) %><span class="required">*</span><br/>
+                <%= ship_form.label :state, t(:state) %><br/>
                 <% state_elements = [
                         ship_form.collection_select(:state_id, @order.ship_address.country.states,
                                                     :id, :name,
@@ -181,7 +180,7 @@
           <% end %>
 
           <p class="field" id="szipcode">
-            <%= ship_form.label :zipcode, t(:zip) %><span class="required">*</span><br/>
+            <%= ship_form.label :zipcode, 'Postcode' %><span class="required">*</span><br/>
             <%= ship_form.text_field :zipcode, :class => 'required' %>
           </p>
 
@@ -198,8 +197,17 @@
         </div>
     <% end %>
   </fieldset>
+
 </div>
 <hr class="clear"/>
 <div class="form-buttons" data-hook="buttons">
-  <%= submit_tag t(:save_and_continue), :class => 'continue button primary' %>
+
+  <div class="payment-methods">
+  <h4>We Accept:</h4>
+    <%= image_tag('') %>
+
+  </div>
+
+  <p>By proceeding with this order you are agreeing to our <%= link_to 'Terms & Conditions', '/terms-and-conditions', :target => '_blank' %></p>
+  <%= submit_tag 'Proceed to Shipping', :class => 'continue button red' %>
 </div>

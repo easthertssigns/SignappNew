@@ -608,7 +608,7 @@
   text-transform: uppercase;
 }
 
-.basketLeft, basketRight {
+.basketLeft, .basketRight {
   position: relative;
 }
 
@@ -623,14 +623,19 @@
       float: left;
       padding: 20px 0;
       margin-right: 20px;
+      img {
+        border: 1px solid #2B3E42;
+      }
     }
     .cart-item-description {
       float: left;
-      width: 350px;
+      width: 430px;
       h4 {
         font-size: 18px;
         text-transform: uppercase;
         padding: 20px 0;
+        margin-top: 10px;
+        font-weight: 700;
         a {
           text-decoration: none;
           color: #212F32;
@@ -639,13 +644,13 @@
 
       .cart-item-price {
         float: left;
-        width: 120px;
+        width: 150px;
         font-size: 20px;
       }
 
       .cart-item-quantity {
         float: left;
-        width: 130px;
+        width: 140px;
 
         .quantity-container {
           position: relative;
@@ -678,7 +683,7 @@
 
       .cart-item-delete {
         float: left;
-        width: 100px;
+        width: 140px;
         text-align: center;
         a {
           text-decoration: none;
@@ -699,33 +704,33 @@
     }
   }
 
- .coupon-code-field {
-   position: relative;
-   padding: 20px 0;
-   border-top: 1px solid #2B3E42;
-   border-right: 1px solid #2B3E42;
+  .coupon-code-field {
+    position: relative;
+    padding: 20px 0;
+    border-top: 1px solid #2B3E42;
+    border-right: 1px solid #2B3E42;
 
-   label {
-     font-size: 18px;
-     text-transform: uppercase;
-     margin-bottom: 15px;
-     color: $white;
-     display: inline-block;
-   }
+    label {
+      font-size: 18px;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+      color: $white;
+      display: inline-block;
+    }
 
-   input[type=text] {
-     width: 230px;
-     height: 10px;
-     border: 1px solid #2B3E42;
-     padding: 10px;
-   }
-   input[type=submit] {
-     height: 30px;
-   }
- }
+    input[type=text] {
+      width: 230px;
+      height: 10px;
+      border: 1px solid #2B3E42;
+      padding: 10px;
+    }
+    input[type=submit] {
+      height: 30px;
+    }
+  }
   #subtotal {
-   position: relative;
-   background: #2B3E42;
+    position: relative;
+    background: #2B3E42;
 
     h5 {
       float: left;
@@ -743,7 +748,7 @@
       width: 166px;
       text-align: center;
     }
- }
+  }
 
   #update-button {
     margin: 20px 0 0 0;
@@ -770,9 +775,10 @@
 
   }
 }
+
 .basketRight {
   h4 {
-    font-size: 18px;
+    font-size: 16px;
     text-transform: uppercase;
     color: $white;
     margin-bottom: 20px;
@@ -786,6 +792,7 @@
     margin-bottom: 15px;
   }
 }
+
 .checkout {
   padding-top: 0;
   position: relative;
@@ -807,6 +814,10 @@
   }
   label {
     font-size: 14px;
+    display: inline-block;
+  }
+  label.error {
+    color: #db4464;
   }
   input[type=text], input[type=tel] {
     width: 230px;
@@ -814,23 +825,32 @@
     border: 1px solid #2B3E42;
     padding: 10px;
   }
+  input[type=text].error, input[type=tel].error {
+    border: 1px solid #db4464;
+  }
+  .select2-container {
+    width: 250px;
+    .select2-choice {
+      height: 31px;
+      line-height: 31px;
+      border: 1px solid #2B3E42;
+    }
+  }
 
   .checkout_content {
     position: relative;
 
-
     .columns.alpha {
       float: left;
       width: 569px;
-      border-top:1px solid $darkest-blue-grey;
-      border-right:1px solid $darkest-blue-grey;
+      border-top: 1px solid $darkest-blue-grey;
+      border-right: 1px solid $darkest-blue-grey;
       padding-top: 20px;
 
       .splitColumn {
         width: 284px;
         float: left;
       }
-
     }
 
     .columns.omega {
@@ -843,14 +863,70 @@
       input[type=checkbox] {
         margin-left: -70px;
       }
-     #use_billing {
-       font-size: 18px;
-       color: $white;
-       margin-bottom: 20px;
-     }
+      #use_billing {
+        font-size: 18px;
+        color: $white;
+        margin-bottom: 20px;
+      }
     }
-
-
   }
+
+  .form-buttons {
+    padding: 20px 0;
+    border-top: 1px solid $darkest-blue-grey;
+    text-align: right;
+    a {
+      color: $white;
+    }
+    .red {
+      height: 30px;
+      font-weight: 500;
+      letter-spacing: 0;
+      padding: 0 20px;
+      letter-spacing: 0;
+    }
+  }
+
+ .progressBar {
+   position: relative;
+   border-top: 2px solid $darkest-blue-grey;
+   border-bottom: 2px solid $darkest-blue-grey;
+   margin-bottom: 30px;
+   font-size: 18px;
+   color: $white;
+   background: #21c2d4;
+
+   .grid_4 {
+     margin: 0;
+     padding: 18px 0;
+     width: 30%;
+     background: url('progress-arrow.png') top right no-repeat;
+   }
+    .grid_4.billing {
+      text-align: right;
+      padding-right: 5%;
+   }
+   .grid_4.shipping {
+     text-align: center;
+   }
+   .grid_4.payment {
+     text-align: left;
+     padding-left: 5%;
+     background: none;
+   }
+
+
+   .grid_4.current {
+     background:#3fcc74 url('progress-current-arrow.png') top right no-repeat;
+   }
+   .grid_4.current.payment {
+     background:#3fcc74;
+   }
+
+   .grid_4.prev {
+     background: #21c2d4 url('progress-current-arrow2.png') top right no-repeat;
+   }
+
+ }
 
 }
