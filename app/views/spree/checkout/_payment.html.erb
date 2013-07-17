@@ -5,7 +5,7 @@
 </div>
 
 <fieldset id="payment" data-hook>
-  <legend><%= t(:payment_information) %></legend>
+  <h5><%= t(:payment_information) %></h5>
   <div data-hook="checkout_payment_step">
     <% @order.available_payment_methods.each do |method| %>
     <p>
@@ -33,6 +33,17 @@
 <br class="space" />
 
 <div class="form-buttons" data-hook="buttons">
-  <%= submit_tag t(:save_and_continue), :class => 'continue button primary' %>
+
+  <div class="payment-methods">
+    <h4>We Accept:</h4>
+    <div class="card visa"></div>
+    <div class="card mastercard"></div>
+    <div class="card maestro"></div>
+    <div class="card paypal"></div>
+    <div class="clearfix"></div>
+
+  </div>
+
+  <%= submit_tag 'Confirm & Continue', :class => 'continue button red' %>
   <script>disableSaveOnClick();</script>
 </div>

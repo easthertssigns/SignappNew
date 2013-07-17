@@ -264,7 +264,7 @@ header {
             width: 240px;
             .image {
               width: 234px;
-              height: 130px;
+              height: 250px;
             }
             h4 {
               color: $mid-blue-grey;
@@ -1295,6 +1295,13 @@ footer {
   }
 
 }
+
+.container_960 {
+  width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .flash {
   padding: 10px;
   text-align: center;

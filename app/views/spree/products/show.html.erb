@@ -78,15 +78,14 @@
             $('#shapeSelect').select2({
             });
 
-//            function format(shape) {
-//                if (!shape.id) return shape.text; // optgroup
-//               // return "<img class='flag' src='images/flags/" + shape.id.toLowerCase() + ".png'/>" + shape.text;
-//                return "<img src='http://s3.amazonaws.com/signapp-prod" + "<%#= shape.svg_file.path %>" + />' + <%#= shape.name %>;
-//            }
+            <!--<% get_sign_shapes_for_product(@product).each do |shape| %>-->
+//                function format(shape) {
+//                    return '<img src=<%= shape.svg_file.url(:mini) %>/>' + shape.text;
+//                }
+            <!--<% end %>-->
 //            $('#shapeSelect').select2({
 //                formatResult: format,
-//                formatSelection: format,
-//                escapeMarkup: function(m) { return m; }
+//                formatSelection: format
 //            });
 
 
@@ -198,9 +197,9 @@
                     <% end %>
                   </select>
 
-                  <% get_sign_shapes_for_product(@product).each do |shape| %>
-                      <div>Image <%= image_tag shape.svg_file.url(:mini) %> <%= shape.name %></div>
-                  <% end %>
+                  <!--<% get_sign_shapes_for_product(@product).each do |shape| %>-->
+                      <!--<div><%= image_tag shape.svg_file.url(:mini) %> <%= shape.name %></div>-->
+                  <!--<% end %>-->
 
 
                   <div class="arrow"></div>

@@ -21,7 +21,7 @@ gem 'spree_promo'
 # gem 'spree_related_products' # , :git => 'git://github.com/spree/spree_related_products.git'
 # gem 'spree_minicart' #, '~> 1.1.0'
 # gem 'refinerycms-home_sliders', :path => 'vendor/extensions'
-
+gem 'spree_html_email', :git => 'git://github.com/campbell/spree-html-email.git'
 group :production do
   gem 'fog'
 end

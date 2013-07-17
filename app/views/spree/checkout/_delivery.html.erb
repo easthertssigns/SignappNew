@@ -1,32 +1,86 @@
-<div class="row" data-hook="checkout_header">
-  <h1 class="checkout_title" data-hook="checkout_title">
-    Shipping
-  </h1>
-</div>
-<fieldset id='shipping_method' data-hook>
-  <legend><%= t(:shipping_method) %></legend>
-  <div class="inner" data-hook="shipping_method_inner">
-    <div id="methods">
-      <p class="field radios">
-        <% @order.rate_hash.each do |shipping_method| %>
-          <label>
-            <%= radio_button(:order, :shipping_method_id, shipping_method[:id]) %>
-            <%= shipping_method.name %> <%= shipping_method.display_price %>
-          </label>
-        <% end %>
-      </p>
-    </div>
-    <% if Spree::Config[:shipping_instructions] && @order.rate_hash.present? %>
-      <p id="minstrs" data-hook>
-        <%= form.label :special_instructions, t(:shipping_instructions) %><br />
-        <%= form.text_area :special_instructions, :cols => 40, :rows => 7 %>
-      </p>
-    <% end %>
+<div class="checkout">
+  <div class="row" data-hook="checkout_header">
+    <h1 class="checkout_title" data-hook="checkout_title">
+      Shipping
+    </h1>
   </div>
-</fieldset>
+  <div id="subtotal-shipping"><label>SubTotal</label>
 
-<br />
+    <div class="total-figure"> <%= Spree::Money.new @order.item_total %></div>
+  </div>
+  <div class="shipping-options">
+    <fieldset id='shipping_method' data-hook>
+      <h5><%= t(:shipping_method) %></h5>
 
-<div class="form-buttons" data-hook="buttons">
-  <%= submit_tag t(:save_and_continue), :class => 'continue button primary' %>
+      <div class="inner" data-hook="shipping_method_inner">
+        <div id="methods">
+          <p class="field radios">
+            <% @order.rate_hash.each do |shipping_method| %>
+                <label>
+                  <%= radio_button(:order, :shipping_method_id, shipping_method[:id]) %>
+                  <%= shipping_method.name %> <span><%= shipping_method.display_price %></span>
+                  <i style="display: none;"><%= shipping_method.display_price_no_currency_sign %></i>
+                </label>
+            <% end %>
+          </p>
+        </div>
+        <% if Spree::Config[:shipping_instructions] && @order.rate_hash.present? %>
+            <p id="minstrs" data-hook>
+              <%= form.label :special_instructions, t(:shipping_instructions) %><br/>
+              <%= form.text_area :special_instructions, :cols => 40, :rows => 7 %>
+            </p>
+        <% end %>
+      </div>
+    </fieldset>
+
+    <div id="shipping-amount"></div>
+    <div class="clearfix"></div>
+  </div>
+  <div id="total-with-shipping"><label>Total (with shipping included)</label>
+
+    <div id="Total-include-shipping"> £32</div>
+  </div>
+
+  <div class="form-buttons" data-hook="buttons">
+
+    <div class="payment-methods">
+      <h4>We Accept:</h4>
+
+      <div class="card visa"></div>
+      <div class="card mastercard"></div>
+      <div class="card maestro"></div>
+      <div class="card paypal"></div>
+      <div class="clearfix"></div>
+
+    </div>
+
+    <%= submit_tag 'Confirm & Continue', :class => 'continue button red' %>
+  </div>
 </div>
+
+<% content_for :javascripts do %>
+
+    <script>
+        $(function () {
+           item_total = <%= @order.item_total%>;
+           var shippingValue =  $('#methods label input:checked').next().next('i').text();
+           var selectedShippingValue = $('#methods label input:checked').next('span').text();
+
+           var subTotalWithShipping = parseFloat(item_total) + parseFloat(shippingValue);
+           $('#shipping-amount').text(selectedShippingValue);
+           $('#Total-include-shipping').text(subTotalWithShipping.toFixed(2));
+            $('.checkout #shipping_method #methods label').click(function() {
+
+                var newShippingValue =  $(this).find('i').text();
+
+                var newSelectedShippingValue = $(this).find('span').text();
+
+                var totalShippingIncluded = parseFloat(item_total) + parseFloat(newShippingValue);
+
+                $('#shipping-amount').text(newSelectedShippingValue);
+
+                $('#Total-include-shipping').text(totalShippingIncluded.toFixed(2));
+            });
+        });
+    </script>
+<% end %>

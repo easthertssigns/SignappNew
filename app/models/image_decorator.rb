@@ -3,11 +3,11 @@ Spree::Image.class_eval do
   has_attached_file :attachment,
                     :styles => {
                         :micro => '40x40#', # thumbs under image
-                        :mini => '75x40#', # thumbs under image
-                        :small => '235x120#', # images on category view
+                        :mini => '75x75#', # thumbs under image
+                        :small => '235x235#', # images on category view
                         :basket_icon => '124x84#', # images on category view
-                        :product => '470x260#', # full product image
-                        :large => ['1000x750#',:jpg] # light box image
+                        :product => '400x400#', # full product image
+                        :large => ['1000x1000#',:jpg] # light box image
                     },
                     :default_style => :product,
                     :storage => :s3,
@@ -23,11 +23,11 @@ Spree::Image.class_eval do
                         #:product => "-resize 520x300 -background white -gravity center -extent 520x300 -quality 92 -strip -colorspace RGB",
                         #:large => "-resize 1000x1000 -background white -gravity center -extent 1000x1000 -quality 92 -strip -colorspace RGB",
                         :micro => "-background transparent -gravity center -extent 40x40 -strip",
-                        :mini => "-background transparent -gravity center -extent 75x40 -strip",
-                        :small => "-background transparent -gravity center -extent 235x120 -strip",
+                        :mini => "-background transparent -gravity center -extent 75x75 -strip",
+                        :small => "-background transparent -gravity center -extent 235x235 -strip",
                         :basket_icon => "-background transparent -gravity center -extent 124x84 -strip",
-                        :product => "-background transparent -gravity center -extent 470x260 -strip",
-                        :large => "-background transparent -gravity center -extent 1000x750 -strip"
+                        :product => "-background transparent -gravity center -extent 400x400 -strip",
+                        :large => "-background transparent -gravity center -extent 1000x1000 -strip"
                     }
 
   # Load user defined paperclip settings

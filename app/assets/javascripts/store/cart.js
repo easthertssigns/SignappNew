@@ -30,16 +30,29 @@ $(function () {
 
 
     if (location.href.indexOf("/checkout/delivery") != -1) {
-        $('.checkout .progressBar .grid_4.billing').removeClass('current').addClass('prev');
+        $('.checkout .progressBar .grid_4.billing').removeClass('current').addClass('complete');
         $('.checkout .progressBar .grid_4.shipping').addClass('current');
     }
 
     if (location.href.indexOf("/checkout/payment") != -1) {
-        $('.checkout .progressBar .grid_4.billing').removeClass('current');
-        $('.checkout .progressBar .grid_4.shipping').addClass('prev');
+        $('.checkout .progressBar .grid_4.billing').removeClass('current').addClass('complete');
+        $('.checkout .progressBar .grid_4.shipping').addClass('current');
+       // $('.checkout .progressBar .grid_4.payment').addClass('current');
+    }
+
+    if (location.href.indexOf("/orders") != -1) {
+        $('.checkout .progressBar .grid_4.billing').removeClass('current').addClass('complete');
+        $('.checkout .progressBar .grid_4.shipping').addClass('complete');
         $('.checkout .progressBar .grid_4.payment').addClass('current');
     }
 
-    $('#order_bill_address_attributes_country_id, #order_ship_address_attributes_country_id').select2();
+     if ($('#order_bill_address_attributes_country_id').length) {
+         $('#order_bill_address_attributes_country_id, #order_ship_address_attributes_country_id').select2();
+     }
+
+    if ($('#payment-methods').length) {
+         $('#payment-methods select').select2();
+     }
+
 
 });

@@ -1,22 +1,51 @@
-<fieldset id="order_summary" data-hook>
-  <legend><%= t(:order) + " #" + @order.number %></legend>
-  <h1><%= accurate_title %></h1>
+<div class="blueBackground checkout">
 
-<div id="order" data-hook>
-  <% if params.has_key? :checkout_complete %>
-    <h1><%= t(:thank_you_for_your_order) %></h1>
-  <% end %>
-  <%= render :partial => 'spree/shared/order_details', :locals => { :order => @order } %>
+  <div class="progressBar">
+    <div class="grid_4 billing current"><span>Billing & Delivery</span></div>
+    <div class="grid_4 shipping"><span>Shipping</span></div>
+    <div class="grid_4 payment"><span>Checkout & Payment</span></div>
+    <div class="clearfix"></div>
+  </div>
 
-  <br class="clear" />
 
-  <p data-hook="links">
-    <%= link_to t(:back_to_store), spree.root_path, :class => "button" %>
-    <% unless params.has_key? :checkout_complete %>
-      <% if try_spree_current_user && respond_to?(:spree_account_path) %>
-        <%= link_to t(:my_account), spree_account_path, :class => "button" %>
-      <% end %>
-    <% end %>
-  </p>
+  <div class="container_12">
+    <div class="container_960">
+
+
+
+      <fieldset id="order_summary" data-hook>
+        <legend style="display: none;"><%= t(:order) + " #" + @order.number %></legend>
+        <h1 class="checkout_title" data-hook="checkout_title"> <%= accurate_title %></h1>
+
+        <div id="order" data-hook>
+          <% if params.has_key? :checkout_complete %>
+              <h1><%= t(:thank_you_for_your_order) %></h1>
+          <% end %>
+
+
+          <div class="order-summery"> <legend> Order Summery </legend> </div>
+
+          <%= render :partial => 'spree/shared/order_details', :locals => {:order => @order} %>
+
+          <br class="clear"/>
+
+
+
+          <div class="form-buttons" data-hook="buttons" style="border-top: none; text-align: left;">
+            <p data-hook="links">
+              <%= link_to t(:back_to_store), spree.root_path, :class => "button red" %>
+              <% unless params.has_key? :checkout_complete %>
+                  <% if try_spree_current_user && respond_to?(:spree_account_path) %>
+                      <%= link_to t(:my_account), spree_account_path, :class => "button" %>
+                  <% end %>
+              <% end %>
+            </p>
+
+          </div>
+
+        </div>
+      </fieldset>
+
+    </div>
+  </div>
 </div>
-</fieldset>

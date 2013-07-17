@@ -210,17 +210,17 @@
   }
   .product-image {
     background: $bright-blue;
-    height: 120px;
+    height: 235px;
     overflow: hidden;
     position: relative;
     width: 235px;
     .imageOverlay {
       background: $dark-blue-grey;
       color: $white;
-      height: 100px;
+      height: 215px;
       padding: 10px;
       position: absolute;
-      top: 120px;
+      top: 235px;
       width: 215px;
       a {
         color: $white;
@@ -313,6 +313,7 @@
   padding: 30px;
   position: relative;
   width: 900px;
+  min-height: 400px;
   h2 {
     font-size: 0.875em;
     text-transform: uppercase;
@@ -324,11 +325,11 @@
   .imageColumn {
     float: left;
     margin-right: 30px;
-    width: 470px;
+    width: 400px;
     #main-image {
-      height: 260px;
+      height: 400px;
       margin-bottom: 10px;
-      width: 470px;
+      width: 400px;
       overflow: hidden;
       .gallery_image {
         opacity: 0;
@@ -354,7 +355,7 @@
     float: left;
     margin-right: 20px;
     padding-right: 20px;
-    width: 209px;
+    width: 279px;
     p:first-child {
       font-weight: bold;
     }
@@ -824,12 +825,14 @@
     height: 10px;
     border: 1px solid #2B3E42;
     padding: 10px;
+    font-size: 12px;
   }
   input[type=text].error, input[type=tel].error {
     border: 1px solid #db4464;
   }
   .select2-container {
     width: 250px;
+    font-size: 12px;
     .select2-choice {
       height: 31px;
       line-height: 31px;
@@ -862,6 +865,8 @@
       }
       input[type=checkbox] {
         margin-left: -70px;
+        position: relative;
+        top: -2px;
       }
       #use_billing {
         font-size: 18px;
@@ -875,6 +880,41 @@
     padding: 20px 0;
     border-top: 1px solid $darkest-blue-grey;
     text-align: right;
+    position: relative;
+
+    .payment-methods {
+      position: absolute;
+      left: 0;
+      top: 20px;
+      h4 {
+        font-size: 18px;
+        text-transform: uppercase;
+        text-align: left;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+      .card {
+        background: url("footer-sprite.png") no-repeat;
+        display: block;
+        float: left;
+        height: 26px;
+        margin: 0 4px 30px 0;
+        width: 42px;
+        &.visa {
+          background-position: 0 -54px;
+        }
+        &.mastercard {
+          background-position: 0 -90px;
+        }
+        &.maestro {
+          background-position: 0 -126px;
+        }
+        &.paypal {
+          background-position: 0 -162px;
+        }
+      }
+    }
+
     a {
       color: $white;
     }
@@ -882,51 +922,258 @@
       height: 30px;
       font-weight: 500;
       letter-spacing: 0;
-      padding: 0 20px;
+      padding: 2px 20px;
       letter-spacing: 0;
+      font-size: 14px;
+    }
+    input[type=submit] {
+      height: 40px;
     }
   }
 
- .progressBar {
-   position: relative;
-   border-top: 2px solid $darkest-blue-grey;
-   border-bottom: 2px solid $darkest-blue-grey;
-   margin-bottom: 30px;
-   font-size: 18px;
-   color: $white;
-   background: #21c2d4;
+  .progressBar {
+    position: relative;
+    border-top: 2px solid $darkest-blue-grey;
+    border-bottom: 2px solid $darkest-blue-grey;
+    margin-bottom: 30px;
+    font-size: 18px;
+    color: $white;
+    background: #21c2d4;
 
-   .grid_4 {
-     margin: 0;
-     padding: 18px 0;
-     width: 30%;
-     background: url('progress-arrow.png') top right no-repeat;
-   }
+    .grid_4 {
+      margin: 0;
+      padding: 18px 0;
+      width: 30%;
+      background: url('progress-arrow.png') top right no-repeat;
+    }
     .grid_4.billing {
       text-align: right;
       padding-right: 5%;
-   }
-   .grid_4.shipping {
-     text-align: center;
-   }
-   .grid_4.payment {
-     text-align: left;
-     padding-left: 5%;
-     background: none;
-   }
+    }
+    .grid_4.shipping {
+      text-align: center;
+    }
+    .grid_4.payment {
+      text-align: left;
+      padding-left: 5%;
+      background: none;
+    }
+
+    .grid_4.current {
+      background: #3fcc74 url('progress-current-arrow.png') top right no-repeat;
+    }
 
 
-   .grid_4.current {
-     background:#3fcc74 url('progress-current-arrow.png') top right no-repeat;
-   }
-   .grid_4.current.payment {
-     background:#3fcc74;
-   }
+    .grid_4.current.payment {
+      background: #3fcc74;
+    }
+    .grid_4.prev {
+      background: #21c2d4 url('progress-current-arrow2.png') top right no-repeat;
+    }
 
-   .grid_4.prev {
-     background: #21c2d4 url('progress-current-arrow2.png') top right no-repeat;
-   }
+    .grid_4.complete {
+      background: #3fcc74 url('progress-complete-arrow.png') top right no-repeat;
+    }
 
- }
 
+  }
+
+  #subtotal-shipping {
+    position: relative;
+    border-top: 1px solid $darkest-blue-grey;
+    border-right: 1px solid $darkest-blue-grey;
+    label {
+      font-size: 18px;
+      color: $white;
+      text-transform: uppercase;
+      padding: 15px 0;
+    }
+    .total-figure {
+      float: right;
+      border-left: 1px solid $darkest-blue-grey;
+      text-align: center;
+      font-size: 18px;
+      font-weight: 600;
+      width: 180px;
+      padding: 15px 0;
+    }
+  }
+  #shipping_method {
+    position: relative;
+    border-top: 1px solid $darkest-blue-grey;
+    padding-top: 20px;
+    padding-left: 30px;
+    float: left;
+    width: 748px;
+    border-right: 1px solid $darkest-blue-grey;
+    h5 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    #methods {
+      position: relative;
+
+      label {
+        display: block;
+        margin-bottom: 15px;
+        width: 30%;
+
+        span {
+          float: right;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+  .shipping-options {
+    border-right: 1px solid $darkest-blue-grey;
+  }
+  #shipping-amount {
+    float: right;
+    border-top: 1px solid $darkest-blue-grey;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    width: 180px;
+    padding-top: 65px;
+  }
+
+  #total-with-shipping {
+    position: relative;
+    background: $darkest-blue-grey;
+
+    label {
+      font-size: 14px;
+      color: $white;
+      padding: 15px 0;
+      padding-left: 20px;
+    }
+
+    #Total-include-shipping {
+      float: right;
+      border-left: 1px solid $mid-blue;
+      text-align: center;
+      font-size: 18px;
+      font-weight: 600;
+      width: 180px;
+      padding-top: 65px;
+      color: $white;
+      padding: 15px 0;
+    }
+  }
+
+  #payment {
+    padding-top: 20px;
+    border-top: 1px solid $darkest-blue-grey;
+    h5 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+  }
+  #payment-methods {
+    position: relative;
+    padding-top: 20px;
+    border-top: 1px solid $darkest-blue-grey;
+    .select2-container {
+      width: 124px;
+    }
+    img {
+      margin-bottom: 20px;
+    }
+    a {
+      color: $darkest-blue-grey;
+    }
+  }
+  #order {
+    position: relative;
+
+    .order-summery {
+      padding:15px 0;
+      border-top: 1px solid $darkest-blue-grey;
+      border-right: 1px solid $darkest-blue-grey;
+
+      legend {
+        margin-bottom: 0;
+      }
+    }
+
+    table {
+      width: 100%;
+
+      #line-items tr {
+        border-top: 1px solid $darkest-blue-grey;
+        border-bottom: 1px solid $darkest-blue-grey;
+        border-right: 1px solid $darkest-blue-grey;
+
+        td {
+          padding:10px 20px;
+          width: 80%;
+          &.total {
+            width: 20%;
+            text-align: center;
+            font-size: 18px;
+            border-left: 1px solid $darkest-blue-grey;
+            vertical-align: middle;
+          }
+          strong {
+            margin-bottom: 10px;
+            display: block;
+          }
+        }
+
+        &.order-total {
+
+          td {
+          background: $darkest-blue-grey;
+            color: $white;
+            &.total {
+              border-left: 1px solid $mid-blue;
+            }
+          }
+        }
+      }
+    }
+
+    .steps-data {
+      padding-top: 40px;
+
+      .grid_6 {
+        border-top: 1px solid $darkest-blue-grey;
+        border-bottom: 1px solid $darkest-blue-grey;
+        padding: 20px 0;
+        h6 {
+            margin-bottom: 10px;
+            display: block;
+            font-size: 18px;
+        }
+        .address {
+          line-height: 22px;
+        }
+      }
+
+    }
+  }
+
+  #errorExplanation {
+    position: relative;
+    margin-bottom: 20px;
+    background:  #db4464;
+    padding: 20px;
+    h2 {
+      margin-bottom: 10px;
+      font-size: 24px;
+      font-weight: 500;
+    }
+    h2, p {
+      color: $white;
+    }
+    ul {
+      li {
+        color: $white;
+      }
+    }
+  }
 }

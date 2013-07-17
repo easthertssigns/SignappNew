@@ -11,6 +11,7 @@ Spree.config do |config|
   config.site_name = "SignApp"
   config[:address_requires_state] = false
   config.default_country_id = 213
+  config.logo = "/assets/header-logo.png"
 end
 
 #Spree.user_class = "Spree::LegacyUser"
