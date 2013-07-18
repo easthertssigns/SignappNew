@@ -8,9 +8,9 @@
 <div id="heroContainer" class="loading">
   <div id="heroSlider">
     <% get_home_page_slides.each do |slide| %>
-            <div class="heroSlide" style="background-image: url('<%=  slide.background.url %>');">
-              <h2><%= slide.banner_text %></h2>
-            </div>
+        <div class="heroSlide" style="background-image: url('<%=  slide.background.url %>');">
+          <h2><%= slide.banner_text %></h2>
+        </div>
     <% end %>
   </div>
   <div id="heroControls">
@@ -61,116 +61,16 @@
   <a href="/how-does-customisation-works" class="howDoesCustomisationWork">How does customisation work?</a>
 
   <div class="signCarousel" id="signCarousel">
-    <div class="imageTile"><img src="/assets/home-tile-01.jpg"/>
 
-      <div class="infoPanel"><p>Lorem ipsum dolor sit amet</p><a href="#" class="button red">Customise this sign</a>
-      </div>
-    </div>
-    <div class="imageTile"><img src="/assets/home-tile-02.jpg"/>
+    <% get_product_list.each do |p| %>
+        <div class="imageTile">
+          <%= product_image(p, :itemprop => "image") %>
+          <div class="infoPanel"><p><%= p.name %></p>
+            <a href="<%= '/products/' + p.permalink %>" class="button red">Customise this sign</a>
+          </div>
+        </div>
+    <% end %>
 
-      <div class="infoPanel"><p>Lorem ipsum dolor sit amet</p><a href="#" class="button red">Customise this sign</a>
-      </div>
-    </div>
-    <div class="imageTile"><img src="/assets/home-tile-03.jpg"/>
-
-      <div class="infoPanel"><p>Lorem ipsum dolor sit amet</p><a href="#" class="button red">Customise this sign</a>
-      </div>
-    </div>
-    <div class="imageTile"><img src="/assets/home-tile-04.jpg"/>
-
-      <div class="infoPanel"><p>Lorem ipsum dolor sit amet</p><a href="#" class="button red">Customise this sign</a>
-      </div>
-    </div>
-    <div class="imageTile"><img src="/assets/home-tile-05.jpg"/>
-
-      <div class="infoPanel"><p>Lorem ipsum dolor sit amet</p><a href="#" class="button red">Customise this sign</a>
-      </div>
-    </div>
-    <div class="imageTile"><img src="/assets/home-tile-06.jpg"/>
-
-      <div class="infoPanel"><p>Lorem ipsum dolor sit amet</p><a href="#" class="button red">Customise this sign</a>
-      </div>
-    </div>
-    <div class="imageTile"><img src="/assets/home-tile-07.jpg"/>
-
-      <div class="infoPanel"><p>Lorem ipsum dolor sit amet</p><a href="#" class="button red">Customise this sign</a>
-      </div>
-    </div>
-    <div class="imageTile"><img src="/assets/home-tile-08.jpg"/>
-
-      <div class="infoPanel"><p>Lorem ipsum dolor sit amet</p><a href="#" class="button red">Customise this sign</a>
-      </div>
-    </div>
-    <div class="imageTile"><img src="/assets/home-tile-09.jpg"/>
-
-      <div class="infoPanel"><p>Lorem ipsum dolor sit amet</p><a href="#" class="button red">Customise this sign</a>
-      </div>
-    </div>
-    <div class="imageTile"><img src="/assets/home-tile-10.jpg"/>
-
-      <div class="infoPanel"><p>Lorem ipsum dolor sit amet</p><a href="#" class="button red">Customise this sign</a>
-      </div>
-    </div>
-    <div class="imageTile"><img src="/assets/home-tile-11.jpg"/>
-
-      <div class="infoPanel"><p>Lorem ipsum dolor sit amet</p><a href="#" class="button red">Customise this sign</a>
-      </div>
-    </div>
-    <div class="imageTile"><img src="/assets/home-tile-12.jpg"/>
-
-      <div class="infoPanel"><p>Lorem ipsum dolor sit amet</p><a href="#" class="button red">Customise this sign</a>
-      </div>
-    </div>
-    <div class="imageTile"><img src="/assets/home-tile-13.jpg"/>
-
-      <div class="infoPanel"><p>Lorem ipsum dolor sit amet</p><a href="#" class="button red">Customise this sign</a>
-      </div>
-    </div>
-    <div class="imageTile"><img src="/assets/home-tile-14.jpg"/>
-
-      <div class="infoPanel"><p>Lorem ipsum dolor sit amet</p><a href="#" class="button red">Customise this sign</a>
-      </div>
-    </div>
-    <div class="imageTile"><img src="/assets/home-tile-15.jpg"/>
-
-      <div class="infoPanel"><p>Lorem ipsum dolor sit amet</p><a href="#" class="button red">Customise this sign</a>
-      </div>
-    </div>
-    <div class="imageTile"><img src="/assets/home-tile-16.jpg"/>
-
-      <div class="infoPanel"><p>Lorem ipsum dolor sit amet</p><a href="#" class="button red">Customise this sign</a>
-      </div>
-    </div>
-    <div class="imageTile"><img src="/assets/home-tile-17.jpg"/>
-
-      <div class="infoPanel"><p>Lorem ipsum dolor sit amet</p><a href="#" class="button red">Customise this sign</a>
-      </div>
-    </div>
-    <div class="imageTile"><img src="/assets/home-tile-18.jpg"/>
-
-      <div class="infoPanel"><p>Lorem ipsum dolor sit amet</p><a href="#" class="button red">Customise this sign</a>
-      </div>
-    </div>
-    <div class="imageTile"><img src="/assets/home-tile-19.jpg"/>
-
-      <div class="infoPanel"><p>Lorem ipsum dolor sit amet</p><a href="#" class="button red">Customise this sign</a>
-      </div>
-    </div>
-    <div class="imageTile"><img src="/assets/home-tile-20.jpg"/>
-
-      <div class="infoPanel"><p>Lorem ipsum dolor sit amet</p><a href="#" class="button red">Customise this sign</a>
-      </div>
-    </div>
-    <div class="imageTile"><img src="/assets/home-tile-21.jpg"/>
-
-      <div class="infoPanel"><p>Lorem ipsum dolor sit amet</p><a href="#" class="button red">Customise this sign</a>
-      </div>
-    </div>
-    <div class="imageTile"><img src="/assets/home-tile-22.jpg"/>
-
-      <div class="infoPanel"><p>Lorem ipsum dolor sit amet</p><a href="#" class="button red">Customise this sign</a>
-      </div>
-    </div>
   </div>
   <div class="arrowControl prev">
     <div class="arrow"></div>
