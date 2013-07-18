@@ -3,7 +3,7 @@ module Refinery
     class HomePageSlider < Refinery::Core::BaseModel
       self.table_name = 'refinery_home_page_sliders'
 
-      attr_accessible :banner_text, :display, :background_id, :position
+      attr_accessible :banner_text, :display, :background_id, :position, :show_text
 
       acts_as_indexed :fields => [:banner_text]
 

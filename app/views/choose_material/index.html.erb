@@ -8,6 +8,7 @@
     <%= javascript_include_tag('jquery.easing.1.3') %>
     <%= javascript_include_tag('jquery-css-transform') %>
     <%= javascript_include_tag('jquery-animate-css-rotate-scale') %>
+    <%= javascript_include_tag 'store' %>
 <% end %>
 
 <script type="text/javascript">
@@ -26,12 +27,16 @@
         $("#taxon-sort-<%= taxon.id %>").click(function (e) {
             $('#source').quicksand($('#dest-<%= taxon.id %> li'), {
                 adjustHeight: 'dynamic',
-                useScaling: true
+                useScaling: true,
+                enhancement: productHover
             });
+
             e.preventDefault();
             $(this).parent('li').siblings().children('a').removeClass('current');
             $(this).addClass('current');
         });
+
+
         <% end %>
     });
 </script>

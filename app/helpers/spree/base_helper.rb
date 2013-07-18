@@ -223,6 +223,12 @@ module Spree
       products
     end
 
+
+    def get_featured_product_list
+      products = Spree::Product.where(:featured_product => true).all
+      products
+    end
+
     def get_sign_graphics
       sign_graphics = SignGraphic.all
     end

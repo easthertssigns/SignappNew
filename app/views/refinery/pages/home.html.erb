@@ -8,8 +8,10 @@
 <div id="heroContainer" class="loading">
   <div id="heroSlider">
     <% get_home_page_slides.each do |slide| %>
-        <div class="heroSlide" style="background-image: url('<%=  slide.background.url %>');">
-          <h2><%= slide.banner_text %></h2>
+        <div class="heroSlide" style="background-image: url('<%= slide.background.url %>');">
+          <% if slide.show_text %>
+              <h2><%= slide.banner_text %></h2>
+          <% end %>
         </div>
     <% end %>
   </div>
@@ -62,11 +64,11 @@
 
   <div class="signCarousel" id="signCarousel">
 
-    <% get_product_list.each do |p| %>
+    <% get_featured_product_list.each do |p| %>
         <div class="imageTile">
           <%= product_image(p, :itemprop => "image") %>
           <div class="infoPanel"><p><%= p.name %></p>
-            <a href="<%=spree.product_url(p) %>" class="button red">Customise this sign</a>
+            <a href="<%= spree.product_url(p) %>" class="button red">Customise this sign</a>
           </div>
         </div>
     <% end %>

@@ -9,14 +9,7 @@ $(function () {
             $(this).text($this.data('initialText'));
         });
 
-    $('.product-image').hover(
-        function () {
-            $('.imageOverlay', this).stop().animate({top:0});
-        },
-        function () {
-            $('.imageOverlay', this).stop().animate({top:235});
-        }
-    );
+    productHover();
 
     $('.priceWrapper .price').html(function () {
         var text = $(this).text().split(".");
@@ -24,10 +17,10 @@ $(function () {
         return text.join(".") + (text.length > 0 ? "<sup>." + last + "</sup>" : last);
     });
 
-    function format(shape) {
-        if (!shape.id) return shape.text; // optgroup
-        return "<img class='shape' src='/assets/shapes/" + shape.id.toLowerCase() + ".png'/>" + shape.text;
-    }
+//    function format(shape) {
+//        if (!shape.id) return shape.text; // optgroup
+//        return "<img class='shape' src='/assets/shapes/" + shape.id.toLowerCase() + ".png'/>" + shape.text;
+//    }
 
     //$("#shapeSelect").select2({
     //    width:'resolve',
@@ -42,3 +35,16 @@ $(function () {
     //});
 
 });
+
+
+function productHover() {
+
+    $('.product-image').hover(
+        function () {
+            $('.imageOverlay', this).stop().animate({top:0});
+        },
+        function () {
+            $('.imageOverlay', this).stop().animate({top:235});
+        }
+    );
+}

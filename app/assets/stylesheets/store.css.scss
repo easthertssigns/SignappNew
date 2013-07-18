@@ -141,7 +141,35 @@
 .taxon-listing ul {
   min-height: 281px;
 }
-
+.taxon-listing {
+  .getInspired {
+    background: $mid-blue url("store/icon-get-inspired.png") no-repeat center 25px;
+    border-radius: 3px;
+    color: $darkest-blue-grey;
+    float: left;
+    height: 252px;
+    padding: 0 1%;
+    text-align: center;
+    text-transform: uppercase;
+    width: 510px;
+    h3 {
+      color: $cream;
+      font-size: 2.250em;
+      margin: 120px 0 0.250em;
+      text-shadow: 1px 1px 0 $darkest-blue-grey;
+    }
+    h4 {
+      font-size: 1.000em;
+      font-weight: bold;
+      margin-bottom: 0.500em;
+    }
+    p {
+      line-height: 1.500em;
+      margin: 0 auto;
+      width: 410px;
+    }
+  }
+}
 .product-listing li, .taxon-listing .taxon {
   color: $dark-blue-grey;
   float: left;
