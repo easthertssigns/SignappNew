@@ -27,8 +27,7 @@
         $("#taxon-sort-<%= taxon.id %>").click(function (e) {
             $('#source').quicksand($('#dest-<%= taxon.id %> li'), {
                 adjustHeight: 'dynamic',
-                useScaling: true,
-                enhancement: productHover
+                useScaling: true
             });
 
             e.preventDefault();

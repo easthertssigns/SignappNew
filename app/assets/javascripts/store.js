@@ -38,13 +38,12 @@ $(function () {
 
 
 function productHover() {
-
-    $('.product-image').hover(
-        function () {
-            $('.imageOverlay', this).stop().animate({top:0});
-        },
-        function () {
-            $('.imageOverlay', this).stop().animate({top:235});
-        }
-    );
+    $('.product-image').live({
+            mouseenter:function(){
+                    $('.imageOverlay', this).stop().animate({top:0});
+                },
+            mouseleave:function(){
+                    $('.imageOverlay', this).stop().animate({top:235});
+                }
+        });
 }

@@ -418,6 +418,35 @@
     right: 78px;
     width: 44px;
   }
+
+  #product-properties {
+    position: relative;
+
+    tr {
+      td {
+        height: 25px;
+        padding-left: 45px;
+        padding-top: 10px;
+        padding-bottom: 5px;
+        font-size: 0.75em;
+
+        &.weather {
+          background: url("store/product-characteristics.png") no-repeat 0 0;
+        }
+        &.engraved {
+          background: url("store/product-characteristics.png") no-repeat 0 -44px;
+        }
+      }
+    }
+  }
+  .sizeGuideLink {
+    font-size: 12px;
+    text-transform: uppercase;
+    background: url("store/store-materials-sprite.png") no-repeat 0 2px;
+    padding-left: 20px;
+    display: inline-block;
+    margin-bottom: 40px;
+  }
 }
 
 .productOptions {

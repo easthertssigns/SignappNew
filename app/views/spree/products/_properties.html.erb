@@ -1,0 +1,13 @@
+<% unless @product_properties.empty? %>
+    <h2>Characteristics</h2>
+  <table id="product-properties" class="table-display" data-hook width="100%">
+    <tbody>
+      <% for product_property in @product_properties 
+        css_class = cycle('even', 'odd') %>
+        <tr class="<%= css_class %>">
+          <td class="<%= product_property.property.name.downcase! %>"><%= product_property.value %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

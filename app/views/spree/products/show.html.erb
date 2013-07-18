@@ -74,26 +74,20 @@
                 }
             });
 
-
-            $('#shapeSelect').select2({
-            });
-
-            <!--<% get_sign_shapes_for_product(@product).each do |shape| %>-->
-//                function format(shape) {
+           <!--<% get_sign_shapes_for_product(@product).each do |shape| %>-->
+//               function format(shape) {
 //                    return '<img src=<%= shape.svg_file.url(:mini) %>/>' + shape.text;
-//                }
+//               }
             <!--<% end %>-->
+
 //            $('#shapeSelect').select2({
 //                formatResult: format,
 //                formatSelection: format
 //            });
 
 
-            $('#sizeSelect').select2({
-
-            });
-
-
+            $('#shapeSelect').select2();
+            $('#sizeSelect').select2();
         });
 
         function get_calculated_price_of_sign() {
@@ -141,13 +135,11 @@
           <div itemprop="description" data-hook="description">
             <%= simple_format(@product.description) rescue t(:product_has_no_description) %>
           </div>
-          <h2>Characteristics</h2>
-
           <div data-hook="product_properties">
             <%= render :partial => 'properties' %>
           </div>
         </div>
-        <%= render :partial => 'taxons' %>
+        <%#= render :partial => 'taxons' %>
       </div>
       <div class="priceColumn">
         <h2>Base price</h2>
@@ -159,9 +151,11 @@
         </div>
         <h3>Based on dimensions:</h3>
 
-        <p><strong>Shape: </strong><span id="displayShape">Rectangle</span></p>
+        <p><strong>Shape: </strong><span id="displayShape">Not Selected</span></p>
 
-        <p><strong>Size: </strong><span id="displaySize">29.7 cm X 21 cm (A4)</span></p>
+        <p><strong>Size: </strong><span id="displaySize">Not Selected</span></p>
+
+        <%= link_to 'View The Size Guide', '/product-size-guide', :class => 'sizeGuideLink' %>
 
         <h3>Note:</h3>
 
@@ -206,10 +200,10 @@
                 </div>
                 <div class="step two">
                   <select id="sizeSelect" name="sizeSelect">
-                    <option value="custom">Custom</option>
+
                     <% get_sign_sizes_for_product(@product).each do |size| %>
                         <option value="<%= size.width %>|<%= size.height %>"><%= size.title %></option>
-                    <% end %>
+                    <% end %> <option value="custom">Custom</option>
                   </select>
 
                   <%= hidden_field_tag "width", 0 %>

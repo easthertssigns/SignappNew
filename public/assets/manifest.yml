@@ -239,6 +239,8 @@ store/icon-choose-a-material.png: store/icon-choose-a-material-8127ba4f354ae1247
 store/icon-choose-a-material/index.png: store/icon-choose-a-material-8127ba4f354ae124725792d31b060f09.png
 store/icon-get-inspired.png: store/icon-get-inspired-470b8b20a7e8a8a1732df4ab3f5d23e5.png
 store/icon-get-inspired/index.png: store/icon-get-inspired-470b8b20a7e8a8a1732df4ab3f5d23e5.png
+store/product-characteristics.png: store/product-characteristics-9aaffc4739abe1738cbc62a9fb2b7faf.png
+store/product-characteristics/index.png: store/product-characteristics-9aaffc4739abe1738cbc62a9fb2b7faf.png
 store/product-white-tip.png: store/product-white-tip-dce65d5cddf5bf0b3b1a8b58f074bcf2.png
 store/product-white-tip/index.png: store/product-white-tip-dce65d5cddf5bf0b3b1a8b58f074bcf2.png
 store/shape-and-size-arrow.png: store/shape-and-size-arrow-86db2ad748bd4625567fed5584ccf5bd.png
@@ -275,14 +277,14 @@ upper-shadow.png: upper-shadow-45bb4171f7864d0bf0d4ad04581c19ba.png
 upper-shadow/index.png: upper-shadow-45bb4171f7864d0bf0d4ad04581c19ba.png
 admin/all.js: admin/all-5545032806dc735140e897ce7e4b06da.js
 admin/all/index.js: admin/all-5545032806dc735140e897ce7e4b06da.js
-application.js: application-50a360f6e36abb91b711dc05f8205933.js
-application/index.js: application-50a360f6e36abb91b711dc05f8205933.js
+application.js: application-55bbba175940ccdf1f7dee6211b6db35.js
+application/index.js: application-55bbba175940ccdf1f7dee6211b6db35.js
 store/all.js: store/all-3e9fb18aafb2679b848140cca23f85f8.js
 store/all/index.js: store/all-3e9fb18aafb2679b848140cca23f85f8.js
 admin/all.css: admin/all-769a04d7012f780093992ce3f40c128f.css
 admin/all/index.css: admin/all-769a04d7012f780093992ce3f40c128f.css
-application.css: application-85d6c2f8195e12e6f7d757c7a4665106.css
-application/index.css: application-85d6c2f8195e12e6f7d757c7a4665106.css
+application.css: application-5478bfe95640498ed578be28cd78c3d6.css
+application/index.css: application-5478bfe95640498ed578be28cd78c3d6.css
 home.css: home-a80db29321735b59a85c63c7d577907f.css
 home/index.css: home-a80db29321735b59a85c63c7d577907f.css
 store/all.css: store/all-14df051a7f6ad520b0a45404ad8cf95a.css
