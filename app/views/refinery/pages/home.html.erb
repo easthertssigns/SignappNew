@@ -66,7 +66,7 @@
         <div class="imageTile">
           <%= product_image(p, :itemprop => "image") %>
           <div class="infoPanel"><p><%= p.name %></p>
-            <a href="<%= '/products/' + p.permalink %>" class="button red">Customise this sign</a>
+            <a href="<%=spree.product_url(p) %>" class="button red">Customise this sign</a>
           </div>
         </div>
     <% end %>
