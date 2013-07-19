@@ -63,8 +63,11 @@ module Refinery
         find_page('/members/login')
       end
 
-      def welcome
-        find_page('/members/welcome')
+      def index
+        @member = current_refinery_user
+        @saved_signs = SignData.all(:conditions => ["account_id = ?", current_refinery_user.id.to_s])
+        @orders = Spree::Order.all(:conditions => ["user_id = ?", current_refinery_user.id.to_s])
+        render :action => 'index'
       end
 
       def activate
@@ -78,7 +81,7 @@ module Refinery
 
       private
 
-    protected
+      protected
 
       def redirect?
         if current_refinery_user.nil?

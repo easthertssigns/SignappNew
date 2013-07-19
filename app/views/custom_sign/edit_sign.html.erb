@@ -206,6 +206,8 @@
 <script src="/assets/aligning_guidelines"></script>
 <script src="/assets/centering_guidelines"></script>
 <script>
+
+
     (function () {
 
         var canvas = new fabric.Canvas('my-canvas');
@@ -216,8 +218,11 @@
         // Update the two variables below with usable area size
         var canvasWidth = ($(window).width() - 120);
         var canvasHeight = ($(window).height() - 300);
-        var SignWidth = <%= @sign_data.width %>;
-        var SignHeight = <%= @sign_data.height %>;
+        var SignWidth = 100;
+        SignWidth = <%= @sign_data.width %>;
+        var SignHeight = 100;
+        SignHeight = <%= @sign_data.height %>;
+        alert(SignHeight);
 
         if (SignWidth / canvasWidth  > SignHeight / canvasHeight)
         {
@@ -229,12 +234,17 @@
         }
 
 
+
+
         var canvasScale = 1.0;
 
         var placeholderText = 'Click me and start typing...';
 
         canvas.setWidth(canvasWidth);
         canvas.setHeight(canvasHeight);
+
+        // alert(canvasWidth);
+        // alert(canvasHeight);
 
         //this is where the background image is set. Need to think about how to store and recall this.
         <% background_image = get_background_image_for_product(@sign_data.spree_product_id) %>
@@ -247,6 +257,8 @@
         <%
         else
                 %>
+
+
         var bg_image_url = '<%= background_image.attachment.url(:product) %>';
                canvas.setBackgroundImage(bg_image_url, function () {
                //canvas.setBackgroundImage('/assets/customisation/brass.jpg', function () {
@@ -255,9 +267,12 @@
         <%
         end
         %>
-        canvas.renderAll();
 
-        canvas.clear();
+
+
+        //canvas.renderAll();
+
+        //canvas.clear();
 
         $('<textarea rows="1" cols="1" id="textArea"></textarea>').appendTo('.canvas-container');
 
