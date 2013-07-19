@@ -5,6 +5,9 @@
     <%= javascript_include_tag('select2.min', 'jquery-ui-1.8.23.custom.min', 'store/magiczoom') %>
 
     <script type="text/javascript" language="javascript">
+
+        var shape_data = [];
+
         $(document).ready(function () {
             $("#sizeSelect").change(function () {
                 var selectedSize = $("#sizeSelect").val();
@@ -74,19 +77,35 @@
                 }
             });
 
-           <!--<% get_sign_shapes_for_product(@product).each do |shape| %>-->
-//               function format(shape) {
-//                    return '<img src=<%= shape.svg_file.url(:mini) %>/>' + shape.text;
-//               }
-            <!--<% end %>-->
+            // Add data to the shapes array;
 
-//            $('#shapeSelect').select2({
-//                formatResult: format,
-//                formatSelection: format
-//            });
+            <% get_sign_shapes_for_product(@product).each do |shape| %>
+            shape_data.push(['<%= shape.name %>', '<%= shape.svg_file.url(:mini) %>']);
+            <% end %>
 
 
-            $('#shapeSelect').select2();
+            function format_shape(shape) {
+                // get the shape that matches
+
+                var el = null;
+                var src = "";
+                var text = "";
+                $.each(shape_data, function (index, element) {
+                    console.log("matching shapes ::: ");
+                    console.log(element);
+                    console.log(shape);
+                    if (element[0] == shape.text.trim()) {
+                        src = element[1];
+                        text = element[0];
+                    }
+                });
+                return '<img src="' + src +  '"/>' + text;
+            }
+            $('#shapeSelect').select2({
+                formatResult: format_shape,
+                formatSelection: format_shape
+            });
+            // $('#shapeSelect').select2();
             $('#sizeSelect').select2();
         });
 
@@ -191,9 +210,11 @@
                     <% end %>
                   </select>
 
-                  <!--<% get_sign_shapes_for_product(@product).each do |shape| %>-->
+                  <!--
+                  <% get_sign_shapes_for_product(@product).each do |shape| %>-->
                       <!--<div><%= image_tag shape.svg_file.url(:mini) %> <%= shape.name %></div>-->
-                  <!--<% end %>-->
+                      <!--
+                  <% end %>-->
 
 
                   <div class="arrow"></div>
@@ -203,7 +224,8 @@
 
                     <% get_sign_sizes_for_product(@product).each do |size| %>
                         <option value="<%= size.width %>|<%= size.height %>"><%= size.title %></option>
-                    <% end %> <option value="custom">Custom</option>
+                    <% end %>
+                    <option value="custom">Custom</option>
                   </select>
 
                   <%= hidden_field_tag "width", 0 %>
