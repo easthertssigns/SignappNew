@@ -1,7 +1,17 @@
 <% if Spree::Promotion.count > 0 %>
-<div class="five columns alpha offset-by-nine coupon-code-field">
-  <%= order_form.label :coupon_code, 'Add a Promo Code' %><br />
-  <%= order_form.text_field :coupon_code, :size => 10 %>
-  <%= order_form.submit 'Apply Code', :class => 'cream' %>
-</div>
+    <div class="five columns alpha offset-by-nine coupon-code-field">
+      <div class="left-container">
+        <%= order_form.label :coupon_code, 'Add a Promo Code' %>
+        <br/>
+        <%= order_form.text_field :coupon_code, :size => 10 %>
+        <%= order_form.submit 'Apply Code', :class => 'cream' %>
+      </div>
+
+      <div class="adjustments-container">
+        <%= render "spree/orders/adjustments" unless @order.adjustments.eligible.blank? %>
+      </div>
+
+      <div class="clearfix"></div>
+    </div>
+
 <% end %>

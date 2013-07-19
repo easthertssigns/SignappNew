@@ -6,7 +6,7 @@
   </div>
   <div id="subtotal-shipping"><label>SubTotal</label>
 
-    <div class="total-figure"> <%= Spree::Money.new @order.item_total %></div>
+    <div class="total-figure"> <%= @order.display_total %></div>
   </div>
   <div class="shipping-options">
     <fieldset id='shipping_method' data-hook>
@@ -38,7 +38,7 @@
   </div>
   <div id="total-with-shipping"><label>Total (with shipping included)</label>
 
-    <div id="Total-include-shipping"> £32</div>
+    <div id="Total-include-shipping"> &pound<span>32</span></div>
   </div>
 
   <div class="form-buttons" data-hook="buttons">
@@ -62,13 +62,14 @@
 
     <script>
         $(function () {
-           item_total = <%= @order.item_total%>;
+           item_total = <%= @order.total %>;
+
            var shippingValue =  $('#methods label input:checked').next().next('i').text();
            var selectedShippingValue = $('#methods label input:checked').next('span').text();
 
            var subTotalWithShipping = parseFloat(item_total) + parseFloat(shippingValue);
            $('#shipping-amount').text(selectedShippingValue);
-           $('#Total-include-shipping').text(subTotalWithShipping.toFixed(2));
+           $('#Total-include-shipping span').text(subTotalWithShipping.toFixed(2));
             $('.checkout #shipping_method #methods label').click(function() {
 
                 var newShippingValue =  $(this).find('i').text();
@@ -79,7 +80,7 @@
 
                 $('#shipping-amount').text(newSelectedShippingValue);
 
-                $('#Total-include-shipping').text(totalShippingIncluded.toFixed(2));
+                $('#Total-include-shipping span').text(totalShippingIncluded.toFixed(2));
             });
         });
     </script>

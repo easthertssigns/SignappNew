@@ -141,6 +141,7 @@
 .taxon-listing ul {
   min-height: 281px;
 }
+
 .taxon-listing {
   .getInspired {
     background: $mid-blue url("store/icon-get-inspired.png") no-repeat center 25px;
@@ -170,6 +171,7 @@
     }
   }
 }
+
 .product-listing li, .taxon-listing .taxon {
   color: $dark-blue-grey;
   float: left;
@@ -658,6 +660,22 @@
 
 }
 
+.select2-result-label {
+  img {
+    margin-right: 5px;
+    position: relative;
+    top: 3px;
+  }
+}
+
+.select2-container .select2-choice span {
+  img {
+    margin-right: 5px;
+    position: relative;
+    top: 3px;
+  }
+}
+
 .relatedProducts h4 {
   color: $cream;
   font-weight: bold;
@@ -764,26 +782,40 @@
 
   .coupon-code-field {
     position: relative;
-    padding: 20px 0;
     border-top: 1px solid #2B3E42;
     border-right: 1px solid #2B3E42;
 
-    label {
-      font-size: 18px;
-      text-transform: uppercase;
-      margin-bottom: 15px;
-      color: $white;
-      display: inline-block;
-    }
+    .left-container {
+      float: left;
+      padding-bottom: 20px;
+      label {
+        font-size: 18px;
+        text-transform: uppercase;
+        padding-top: 20px;
+        margin-bottom: 15px;
+        color: $white;
+        display: inline-block;
+      }
 
-    input[type=text] {
-      width: 230px;
-      height: 10px;
-      border: 1px solid #2B3E42;
-      padding: 10px;
+      input[type=text] {
+        width: 230px;
+        height: 10px;
+        border: 1px solid #2B3E42;
+        padding: 10px;
+      }
+      input[type=submit] {
+        height: 30px;
+      }
     }
-    input[type=submit] {
-      height: 30px;
+    .adjustments-container {
+      float: right;
+      padding: 85px 20px 20px 20px;
+      border-left: 1px solid $darkest-blue-grey;
+      display: inline-block;
+      font-size: 18px;
+      width: 165px;
+      text-align: center;
+      font-weight: 600;
     }
   }
   #subtotal {
@@ -803,8 +835,9 @@
       display: inline-block;
       font-size: 18px;
       color: $white;
-      width: 166px;
+      width: 165px;
       text-align: center;
+      font-weight: 600;
     }
   }
 
@@ -1020,7 +1053,6 @@
       background: #3fcc74 url('progress-current-arrow.png') top right no-repeat;
     }
 
-
     .grid_4.current.payment {
       background: #3fcc74;
     }
@@ -1031,7 +1063,6 @@
     .grid_4.complete {
       background: #3fcc74 url('progress-complete-arrow.png') top right no-repeat;
     }
-
 
   }
 
@@ -1148,7 +1179,7 @@
     position: relative;
 
     .order-summery {
-      padding:15px 0;
+      padding: 15px 0;
       border-top: 1px solid $darkest-blue-grey;
       border-right: 1px solid $darkest-blue-grey;
 
@@ -1166,7 +1197,7 @@
         border-right: 1px solid $darkest-blue-grey;
 
         td {
-          padding:10px 20px;
+          padding: 10px 20px;
           width: 80%;
           &.total {
             width: 20%;
@@ -1176,15 +1207,13 @@
             vertical-align: middle;
           }
           strong {
-            margin-bottom: 10px;
             display: block;
           }
         }
 
         &.order-total {
-
           td {
-          background: $darkest-blue-grey;
+            background: $darkest-blue-grey;
             color: $white;
             &.total {
               border-left: 1px solid $mid-blue;
@@ -1202,9 +1231,9 @@
         border-bottom: 1px solid $darkest-blue-grey;
         padding: 20px 0;
         h6 {
-            margin-bottom: 10px;
-            display: block;
-            font-size: 18px;
+          margin-bottom: 10px;
+          display: block;
+          font-size: 18px;
         }
         .address {
           line-height: 22px;
@@ -1217,7 +1246,7 @@
   #errorExplanation {
     position: relative;
     margin-bottom: 20px;
-    background:  #db4464;
+    background: #db4464;
     padding: 20px;
     h2 {
       margin-bottom: 10px;
