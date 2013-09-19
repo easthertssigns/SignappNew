@@ -14,7 +14,7 @@ end
 
 gem 'spree', '~> 1.2.0'
 #gem 'spree_i18n', :git => 'git://github.com/spree/spree_i18n.git'
-gem 'spree-refinerycms-authentication', :git => 'git://github.com/snorripall/spree-refinery-authentication.git'
+gem 'spree-refinerycms-authentication', :git => 'git://github.com/adrianmacneil/spree-refinery-authentication.git'
 gem 'spree_promo'
 # gem "spree_auth"
 # gem 'spree_flexi_variants', :git => 'https://github.com/jsqu99/spree_flexi_variants.git'
@@ -29,7 +29,7 @@ end
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
+  gem 'sass-rails', '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
@@ -58,12 +58,12 @@ gem 'awesome_nested_set'
 # gem 'debugger'
 
 # Refinery CMS
-gem 'refinerycms', '~> 2.0.0'
+gem 'refinerycms'
 
 # Specify additional Refinery CMS Extensions here (all optional):
-gem 'refinerycms-memberships', '2.0.3', :git => 'git://github.com/rbriank/refinerycms_membership.git'
-gem 'refinerycms-inquiries', '~> 2.0.0'
-#gem 'refinerycms-mailchimp', :github => 'Wirelab/refinerycms-mailchimp', :branch => 'refinery-2.0'
+gem 'refinerycms-memberships', :git => 'git://github.com/rbriank/refinerycms_membership.git'
+gem 'refinerycms-inquiries'
+# gem 'refinerycms-mailchimp', :github => 'Wirelab/refinerycms-mailchimp', :branch => 'refinery-2.0'
 # gem 'refinerycms-i18n', '~> 2.0.0'
 # gem 'refinerycms-blog', '~> 2.0.0'
 # gem 'refinerycms-search', '~> 2.0.0'

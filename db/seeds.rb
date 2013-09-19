@@ -19,9 +19,9 @@ Refinery::Memberships::Engine.load_seed
 Refinery::Inquiries::Engine.load_seed
 
 # Added by Refinery CMS Recipes extension
-Refinery::Mailchimp::Engine.load_seed
+#Refinery::Mailchimp::Engine.load_seed
 # Added by Refinery CMS Recipes extension
-Refinery::Mailchimp::Engine.load_seed
+#Refinery::Mailchimp::Engine.load_seed
 
 
 Spree::Core::Engine.load_seed if defined?(Spree::Core)
