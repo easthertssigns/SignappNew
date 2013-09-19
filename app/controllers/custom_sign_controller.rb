@@ -1,20 +1,18 @@
 class CustomSignController < ApplicationController
   def save_sign
+
     @message = ""
     if params[:id].nil?
       #create new custom sign
       @new_sign = SignData.new
       @new_sign.base_product_id = params[:product_id]
-
       @new_sign.height = params[:height].to_i
       @new_sign.width = params[:width].to_i
-
       @new_sign.shape_id = params[:shapeSelect].to_i
-
       @new_sign.price = params[:calculated_price].to_f
-
       @new_sign.account_id = params[:spree_user_id]
       @new_sign.sign_data = params[:custom_data]
+
       unless params[:name].nil?
         @new_sign.name = params[:name]
       end

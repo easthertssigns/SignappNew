@@ -1,35 +1,35 @@
 <% content_for :body_content_left do %>
     <%= render :partial => 'message' %>
-    <%= raw @page.content_for(:body_above) if @page %>
-    <%= raw @page.content_for(:body) if @page %>
-    <div id="member">
-      <%#= render :partial => "static_account" %>
-      <%#= render :partial => "static_profile" %>
-      <%#= render :partial => "static_organization" %>
-    </div>
-    <%= link_to t('.edit_profile'), edit_members_path %>
-    <%= raw @page.content_for(:body_below) if @page %>
+  <%=raw @page.content_for(:body_above) if @page %>
+  <%=raw @page.content_for(:body) if @page %>
+  <div id="member">
+    <%= render :partial => "static_account" %>
+    <%= render :partial => "static_profile" %>
+    <%= render :partial => "static_organization" %>
+  </div>
+  <%= link_to t('.edit_profile'), edit_members_path %>
+  <%=raw @page.content_for(:body_below) if @page %>
     <div>
       <div>Your Saved Signs</div>
       <div>
         <% if @saved_signs.count > 0 %>
-            <% @saved_signs.each do |s| %>
+          <% @saved_signs.each do |s| %>
                 <% if (s.deleted_by_user.nil? || s.deleted_by_user == false) && (s.deleted_by_admin.nil? || s.deleted_by_admin == false) %>
                     <%= render "saved_sign_thumb", :s => s %>
                 <% end %>
-            <% end %>
+          <% end %>
         <% else %>
             You have no signs saved.
         <% end %>
       </div>
       <div>Your Orders</div>
-      <% if @orders.count > 0 %>
+        <% if @orders.count > 0 %>
           <% @orders.each do |order| %>
-              <%= render "order_thumb", :order => order %>
+            <%= render "order_thumb", :order => order %>
           <% end %>
-      <% else %>
+        <% else %>
           <div>You haven't made any orders yet.</div>
-      <% end %>
+        <% end %>
     </div>
     <%= form_tag '/custom_sign/delete_saved_sign', :id => 'delete_sign_form' do -%>
         <input type="hidden" id="custom_sign_id" name="custom_sign_id" value="">
@@ -47,19 +47,15 @@
       <div>
         <div>Change Your Password</div>
         <%= form_for @member, :as => :member, :url => '/members' do |f| %>
-            <div>
-              <%= f.label :password, "New Password" %>
-              <br/>
-              <%= f.password_field :password %>
-              <br/>
-            </div>
-            <div>
-              <%= f.label :password_confirmation, "Confirm New Password" %>
-              <br/>
-              <%= f.password_field :password_confirmation %>
-              <br/>
-            </div>
-            <div><%= f.button "Save Changes" %></div>
+          <div>
+            <%= f.label :password, "New Password" %><br/>
+            <%= f.password_field :password %><br/>
+          </div>
+          <div>
+            <%= f.label :password_confirmation, "Confirm New Password" %><br/>
+            <%= f.password_field :password_confirmation %><br/>
+          </div>
+          <div><%= f.button "Save Changes" %></div>
         <% end %>
       </div>
       <div>
@@ -69,14 +65,14 @@
 <% end %>
 <%= render :partial => "/refinery/content_page", :locals => {:hide_sections => [:bodybelow, :bodyabove]} %>
 <script language="javascript" type="text/javascript">
-    function submit_delete_sign(id) {
-        var confirmed = confirm("Are you sure you want to delete this sign?");
-        if (confirmed == true) {
-            $("#custom_sign_id").val(id);
-            $("#delete_sign_form").submit();
-        }
-        else {
-            $("#custom_sign_id").val("");
-        }
-    }
+  function submit_delete_sign(id){
+      var confirmed = confirm("Are you sure you want to delete this sign?");
+      if (confirmed == true){
+          $("#custom_sign_id").val(id);
+          $("#delete_sign_form").submit();
+      }
+      else{
+          $("#custom_sign_id").val("");
+      }
+  }
 </script>
