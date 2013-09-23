@@ -163,3 +163,9 @@ Spree::Core::Engine.routes.draw do
     resources :sign_products
   end
 end
+
+Spree::Core::Engine.routes.prepend do
+  namespace :admin do
+    match "get_mailing_list_csv" => "overview#get_mailing_list_csv"
+  end
+end

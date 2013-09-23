@@ -12,6 +12,8 @@ module Spree
     before_filter :associate_user
     rescue_from Spree::Core::GatewayError, :with => :rescue_from_spree_gateway_error
 
+    before_filter :mailing_list_checked, :only => [:update]
+
     respond_to :html
 
     # Updates the order and advances to the next state (when possible.)
@@ -69,6 +71,20 @@ module Spree
       def completion_route
         order_path(@order)
       end
+
+
+    def mailing_list_checked
+      if params[:state] == "address" && params[:action] == "update"
+        if params[:mailing_list_email] == "yes"
+          # add to mailing list
+          if MailingList.where(:email => @order.email.downcase).count == 0
+            # add to mailing list
+            result = "You have been added to the mailing list"
+            MailingList.create(:email => @order.email.downcase, :name => @order.full_name)
+          end
+        end
+      end
+    end
 
       def object_params
         # For payment step, filter order parameters to produce the expected nested attributes for a single payment and its source, discarding attributes for payment methods other than the one selected

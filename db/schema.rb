@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130923105623) do
+ActiveRecord::Schema.define(:version => 20130923150009) do
 
   create_table "custom_signs", :force => true do |t|
     t.integer  "spree_user_id"
@@ -43,6 +43,13 @@ ActiveRecord::Schema.define(:version => 20130923105623) do
 
   add_index "customer_accounts", ["email"], :name => "index_customer_accounts_on_email", :unique => true
   add_index "customer_accounts", ["reset_password_token"], :name => "index_customer_accounts_on_reset_password_token", :unique => true
+
+  create_table "mailing_list", :force => true do |t|
+    t.string   "email"
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "refinery_home_page_sliders", :force => true do |t|
     t.string   "banner_text"

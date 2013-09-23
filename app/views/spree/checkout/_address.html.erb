@@ -93,6 +93,9 @@
               <%= bill_form.text_field :zipcode, :class => 'required' %>
             </p>
 
+            <p class="field" style="text-align: right; padding: 10px 35px 10px 0;">
+               * Require fields
+            </p>
 
             <% if Spree::Config[:alternative_billing_phone] %>
                 <p class="field" id="baltphone">
@@ -103,7 +106,6 @@
 
           </div>
            <div class="clearfix"></div>
-
         </div>
     <% end %>
   </fieldset>
@@ -195,11 +197,18 @@
               </p>
           <% end %>
         </div>
+
     <% end %>
   </fieldset>
 
 </div>
-<hr class="clear"/>
+<div class="clear"> </div>
+
+<div class="mailing-list">
+  <label>Join our mailing list to receive special offers and updates!<%= check_box_tag 'mailing_list_email', 'yes', false  %> </label>
+
+</div>
+
 <div class="form-buttons" data-hook="buttons">
 
   <div class="payment-methods">
