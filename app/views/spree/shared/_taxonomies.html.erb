@@ -1,7 +1,13 @@
 <ul id="taxonomies" class="sidebar-item" data-hook>
   <li>Filter by:</li>
-  <% get_taxonomies.each do |taxonomy| %>
-      <%= taxons_tree(taxonomy.root, @taxon, Spree::Config[:max_level_in_taxons_menu] || 1) %>
+  <% if @taxon && @taxon.parent %>
+      <% @taxon.parent.children.map do |taxon| %>
+          <li><%= link_to(taxon.name, seo_url(taxon)) %></li>
+      <% end %>
+  <% else %>
+      <% @taxon.children.map do |taxon| %>
+          <li><%= link_to(taxon.name, seo_url(taxon)) %></li>
+      <% end %>
   <% end %>
 </ul>
 <% if @taxon && @taxon.parent %>
