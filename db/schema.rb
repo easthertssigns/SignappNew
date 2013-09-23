@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130718101443) do
+ActiveRecord::Schema.define(:version => 20130923150009) do
 
   create_table "custom_signs", :force => true do |t|
     t.integer  "spree_user_id"
@@ -43,6 +43,13 @@ ActiveRecord::Schema.define(:version => 20130718101443) do
 
   add_index "customer_accounts", ["email"], :name => "index_customer_accounts_on_email", :unique => true
   add_index "customer_accounts", ["reset_password_token"], :name => "index_customer_accounts_on_reset_password_token", :unique => true
+
+  create_table "mailing_list", :force => true do |t|
+    t.string   "email"
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "refinery_home_page_sliders", :force => true do |t|
     t.string   "banner_text"
@@ -77,6 +84,23 @@ ActiveRecord::Schema.define(:version => 20130718101443) do
   end
 
   add_index "refinery_inquiries_inquiries", ["id"], :name => "index_refinery_inquiries_inquiries_on_id"
+
+  create_table "refinery_mailchimp_campaigns", :force => true do |t|
+    t.string   "subject"
+    t.string   "mailchimp_campaign_id"
+    t.string   "mailchimp_list_id"
+    t.string   "mailchimp_template_id"
+    t.string   "from_email"
+    t.string   "from_name"
+    t.text     "body"
+    t.datetime "sent_at"
+    t.datetime "scheduled_at"
+    t.boolean  "auto_tweet",            :default => false
+    t.datetime "created_at",                               :null => false
+    t.datetime "updated_at",                               :null => false
+  end
+
+  add_index "refinery_mailchimp_campaigns", ["id"], :name => "index_refinery_mailchimp_campaigns_on_id"
 
   create_table "refinery_membership_email_part_translations", :force => true do |t|
     t.integer  "refinery_membership_email_part_id"
