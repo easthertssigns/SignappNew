@@ -22,16 +22,16 @@
                     <div class="product-name">
                       <%= link_to truncate(product.name, :length => 15), product, :class => 'info', :itemprop => "name", :title => product.name %>
                     </div>
-                    <div class="product-gallery">
-                      Gallery
-                    </div>
+                    <!--<div class="product-gallery">-->
+                    <!--Gallery-->
+                    <!--</div>-->
                     <div class="clearfix"></div>
                     <div class="product-image">
                       <%= link_to small_image(product, :itemprop => "image"), product, :itemprop => 'url' %>
-                      <div class="imageOverlay">
-                        <p><%= truncate(product.description, :length => 100) %></p>
-                        <%= link_to "Take a look at the " + product.name + " gallery", product %>
-                      </div>
+                      <%= link_to product, :class => "imageOverlay" do %>
+                          <p><%= truncate(product.description, :length => 100) %></p>
+                          <!--<p class="link">Take a look at the <%= product.name %> gallery</p>-->
+                      <% end %>
                     </div>
                     <div class="materialFeatures">
                       <div class="feature weatherProof" title="Weather Proof"></div>
@@ -40,7 +40,7 @@
                     </div>
                     <!--<span class="price selling" itemprop="price"><%#= number_to_currency product.price %></span>-->
                   </div>
-                  <%= link_to "Choose " + truncate(product.name, :length => 20), product, :class => 'choose-button', :itemprop => "name", :title => product.name %>
+                  <%= link_to "Choose " + truncate(product.name, :length => 20, :separator => ' '), product, :class => 'choose-button', :itemprop => "name", :title => product.name %>
                 </li>
             <% end %>
         <% end %>
