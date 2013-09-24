@@ -1384,8 +1384,13 @@ footer {
   padding: 10px;
   text-align: center;
   background: #47cb77;
+  border-radius: 3px;
   color: $white;
-  &.error {
+  margin-bottom: 40px;
+  a {
+    color: white;
+  }
+  &.flash_alert {
    background: #db4464;
   }
 }
