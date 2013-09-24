@@ -6,6 +6,8 @@
     </div>
 <% else %>
     <% @product.images.each do |i| %>
-        <div class="gallery_image"><%= link_to image_tag(i.attachment.url(:product)), i.attachment.url(:large), :class => "MagicZoom", :rel => "zoom-position: inner; zoom-fade: true; zoom-width: 1000; zoom-height: 1000; zoom-window-effect: false; hint: false" %></div>
+        <% unless @product.editor_background_image_id == i.id %>
+            <div class="gallery_image"><%= link_to image_tag(i.attachment.url(:product)), i.attachment.url(:large), :class => "MagicZoom", :rel => "zoom-position: inner; zoom-fade: true; zoom-width: 1000; zoom-height: 1000; zoom-window-effect: false; hint: false" %></div>
+        <% end %>
     <% end %>
 <% end %>

@@ -3,7 +3,9 @@
     <div id="thumbnails" data-hook>
       <ul class="dot_nav" id="product-thumbnails" class="thumbnails inline" data-hook>
         <% product.images.each do |i| %>
-            <li class="tmb-all" id="tmb-<%= i.id.to_s %>"><%= image_tag(i.attachment.url(:mini)) %></li>
+            <% unless product.editor_background_image_id == i.id %>
+                <li class="tmb-all" id="tmb-<%= i.id.to_s %>"><%= image_tag(i.attachment.url(:mini)) %></li>
+            <% end %>
         <% end %>
       </ul>
     </div>
