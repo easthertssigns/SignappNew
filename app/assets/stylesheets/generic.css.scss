@@ -657,6 +657,10 @@ section h1, aside {
         padding: 5px 5px 6px;
         width: 288px;
       }
+      input[type=text].error,input[type=email].error, input[type=password].error {
+          color: #ffffff;
+          background: #db4464;
+      }
       button {
         height: 33px;
         line-height: 33px;

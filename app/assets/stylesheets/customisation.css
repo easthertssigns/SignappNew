@@ -41,7 +41,7 @@ html, body {
 
 #tourOverlay {
     background: rgba(22, 32, 34, 0.9);
-    display: block;
+    display: none;
     height: 100%;
     lef: 0;
     position: absolute;
@@ -130,6 +130,10 @@ html, body {
     height: 33px;
     line-height: 33px;
     padding: 0 18px 0 40px;
+    -webkit-transition: none;
+    -moz-transition: none;
+    -o-transition:  none;
+    transition:  none;
 }
 
 .majorFunctions .button.addText {
@@ -154,12 +158,12 @@ html, body {
 }
 
 .majorFunctions .button.addShape:hover {
-    background-position: 0 -94px;
+    background-position: 0 -95px;
 }
 
 .majorFunctions .button.addBorder {
     background-color: #03C2D6;
-    background-position: 0 -138px;
+    background-position: 0 -137px;
 }
 
 .majorFunctions .button.addBorder:hover {

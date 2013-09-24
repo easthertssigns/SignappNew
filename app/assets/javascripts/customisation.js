@@ -10,30 +10,29 @@ $(window).load(function () {
         $('#addText, #addShape, #addBorder, .priceWrapper, #addToBasket').removeClass('overlay');
         $('#tourOverlay').fadeOut();
     }
-
-    $(this).joyride({
-        tipContent:'#tourSteps',
-        postRideCallback:hideTourOverlay
-    });
-
-    $('#joyRidePopup0 .button').click(function () {
-        $('#addText').removeClass('overlay');
+    $( "#joyRidePopup0 .button").live( "click", function() {
+          $('#addText').removeClass('overlay');
         $('#addShape').addClass('overlay');
     });
-
-    $('#joyRidePopup1 .button').click(function () {
+    $('#joyRidePopup1 .button').live( "click", function() {
         $('#addShape').removeClass('overlay');
         $('#addBorder').addClass('overlay');
     });
-
-    $('#joyRidePopup2 .button').click(function () {
+    $('#joyRidePopup2 .button').live( "click", function() {
         $('#addBorder').removeClass('overlay');
         $('.priceWrapper, #addToBasket').addClass('overlay');
+    });
+
+    $('#startTutorial').click(function () {
+        $('#tourOverlay').fadeIn();
+        $(this).joyride({
+        tipContent:'#tourSteps',
+        postRideCallback:hideTourOverlay
+        });
     });
 });
 
 $(function () {
-
     $(window).resize(function () {
         var canvasWrapperHeight = $(window).height() - 131;
         var canvasMargin = $('.canvas-container').css("margin-left");

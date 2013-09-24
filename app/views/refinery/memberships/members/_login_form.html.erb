@@ -38,23 +38,23 @@
 
           <div class="field">
             <%= label_tag "Your Email" %>
-            <%= f.text_field(:email) %>
+            <%= f.text_field :email, :class => 'required email' %>
           </div>
           <div class="field">
             <%= label_tag "Create a Password" %>
-            <%= f.password_field(:password) %>
+            <%= f.password_field :password, :class => 'required' %>
           </div>
           <div class="field">
             <%= label_tag "Confirm Your Password" %>
-            <%= f.password_field(:password_confirmation) %>
+            <%= f.password_field :password_confirmation, :class => 'required' %>
           </div>
           <div class="field">
             <%= label_tag "First Name" %>
-            <%= f.text_field(:first_name) %>
+            <%= f.text_field :first_name %>
           </div>
           <div class="field">
             <%= label_tag "Last Name" %>
-            <%= f.text_field(:last_name) %>
+            <%= f.text_field :last_name %>
           </div>
           <div class="field"><%= button_tag "Create My Account", :class => "floatRight" %></div>
     <% end %>

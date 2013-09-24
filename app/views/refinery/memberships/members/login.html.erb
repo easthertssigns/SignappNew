@@ -2,11 +2,29 @@
     <div class="blueBackground">
       <div class="container_12">
         <%= raw @page.content_for(:body_above) if @page %>
-          <%= render :partial => 'message' %>
-          <%= render :partial => 'login_form' %>
+        <%= render :partial => 'message' %>
+        <%= render :partial => 'login_form' %>
         <%= raw @page.content_for(:body_below) if @page %>
       </div>
     </div>
 <% end %>
 
 <%= render :partial => "/refinery/content_page", :locals => {:hide_sections => [:bodybelow, :bodyabove]} %>
+
+
+<%= javascript_include_tag 'jquery-validate' %>
+<script>
+    $(function () {
+        $('#new_member').validate({
+            errorPlacement: function () {
+                //element.addClass('error');
+            },
+            highlight: function (element) {
+                $(element).addClass('error');
+            },
+            unhighlight: function (element) {
+                $(element).removeClass('error');
+            }
+        });
+    })
+</script>

@@ -11,7 +11,7 @@
 
     <div class="function">Start Again</div>
     <div class="function" id="clearCanvas">Clear Canvas</div>
-    <div class="function">Quick Tutorial</div>
+    <div class="function" id="startTutorial">Quick Tutorial</div>
     <% if current_refinery_user %>
         <div class="function" id="saveCanvas">Save</div>
         <div class="function" id="loadCanvas">Load</div>
@@ -222,7 +222,7 @@
         SignWidth = <%= @sign_data.width %>;
         var SignHeight = 100;
         SignHeight = <%= @sign_data.height %>;
-        alert(SignHeight);
+       // alert(SignHeight);
 
         if (SignWidth / canvasWidth  > SignHeight / canvasHeight)
         {
@@ -292,9 +292,9 @@
             //serialize the custom sign data
             //add this to the form field
             json = JSON.stringify(canvas);
-            alert(json);
+           // alert(json);
             var svg_data = canvas.toSVG();
-            alert(svg_data);
+           // alert(svg_data);
             var custom_data = $.base64.encode(json);
             $("#sign_data").val(custom_data);
             $("#svg_data").val(svg_data);
