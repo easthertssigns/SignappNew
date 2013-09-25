@@ -64,7 +64,7 @@ class CustomSignController < ApplicationController
       @sign.deleted_by_user = true
       @sign.save
     end
-    redirect_to "/members/profile"
+    redirect_to "/members/welcome"
   end
 
   def load_sign_ajax

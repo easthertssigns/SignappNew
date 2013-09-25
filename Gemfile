@@ -10,7 +10,6 @@ gem 'jquery-rails'
 
 group :development, :test do
   gem 'sqlite3'
-  gem 'pg'
   gem 'better_errors'
   gem 'binding_of_caller'
 end
@@ -24,7 +23,7 @@ gem 'spree_promo'
 gem 'spree_related_products', :git => 'git://github.com/spree/spree_related_products.git', :branch => '1-2-stable'
 # gem 'spree_minicart' #, '~> 1.1.0'
 # gem 'refinerycms-home_sliders', :path => 'vendor/extensions'
-gem 'spree_html_email', :git => 'git://github.com/campbell/spree-html-email.git'
+#gem 'spree_html_email', :git => 'git://github.com/campbell/spree-html-email.git'
 group :production do
   gem 'fog'
 end

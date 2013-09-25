@@ -8,7 +8,7 @@
           <% end -%>
 
         </section>
-        <section>
+        <section id="login_section">
           <h3>SignApp Account</h3>
 
           <div class="field">
@@ -23,13 +23,43 @@
             <%= button_tag "Log In", :class => "floatRight" %>
           </div>
           <div class="field">
-            <%= link_to "Forgotten your password?", "#", :class => "forgotten-your-password" %>
+            <%= link_to "Forgotten your password?", "#", :class => "forgotten-your-password", :onclick => "show_password_reminder_form();" %>
           </div>
           <%= hidden_field_tag :redirect, params[:redirect] %>
           <%= hidden_field_tag :member_login, true %>
           <div class="clearfix"></div>
         </section>
     <% end %>
+    <section id="password_reminder_section">
+      <div class="hidden">
+        <%= form_for Refinery::User.new, :as => :member, :url => "/members/password" do |f| -%>
+            <h3>Forgotten your password?</h3>
+
+            <div>
+              <%= label_tag "Your Email" %>
+              <br/>
+              <%= f.text_field(:login) %>
+            </div>
+
+            <div><%= button_tag "Send my reminder" %></div>
+            <a href="/members/login">back to login</a>
+        <% end -%>
+      </div>
+    </section>
+    <section id="password_reminder_thankyou">
+      <div class="hidden">
+
+        <h3>Forgotten your password?</h3>
+
+        <div>
+          <h3>Thanks.</h3>
+
+          <p>Your reminder is on its way. Check your emails inbox, if you cant find it try the spam folder.</p>
+        </div>
+
+        <a href="/members/login">back to login</a>
+      </div>
+    </section>
   </div>
 </div>
 <div class="grid_6">
@@ -66,3 +96,7 @@
   </div>
 </div>
 <div class="clearfix"></div>
+<script>
+
+
+</script>

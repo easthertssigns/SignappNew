@@ -17,7 +17,9 @@
         <div class="function" id="loadCanvas">Load</div>
     <% end %>
   </div>
-       <div style="position: absolute; top: 90px; color: white; left: 50px; display: none;">Canvas Size : Width : <%= (params[:width].to_f)/10 %>cm X Height : <%= (params[:height].to_f)/10 %>cm</div>
+  <div style="position: absolute; top: 90px; color: white; left: 50px; display: none;">Canvas Size : Width
+    : <%= (params[:width].to_f)/10 %>cm X Height : <%= (params[:height].to_f)/10 %>cm
+  </div>
   <canvas id="my-canvas" width="600" height="600"></canvas>
 
   <!--Object buttons-->
@@ -70,7 +72,7 @@
           <option></option>
           <optgroup label="Misc">
             <% get_sign_graphics.each do |g| %>
-              <option value="<%= g.id %>"><%= g.title %></option>
+                <option value="<%= g.id %>"><%= g.title %></option>
             <% end %>
           </optgroup>
           <optgroup label="Animals">
@@ -208,11 +210,8 @@
 
 <script>
 
-// added to fix de-authentication when posting ajax : Doug
-    $(document).ajaxSend(function(e, xhr, options) {
-        var token = $("meta[name='csrf-token']").attr("content");
-        xhr.setRequestHeader("X-CSRF-Token", token);
-    });
+    // added to fix de-authentication when posting ajax : Doug
+
 
     (function () {
 
@@ -228,18 +227,14 @@
         SignWidth = <%= @sign_data.width %>;
         var SignHeight = 100;
         SignHeight = <%= @sign_data.height %>;
-       // alert(SignHeight);
+        // alert(SignHeight);
 
-        if (SignWidth / canvasWidth  > SignHeight / canvasHeight)
-        {
-            canvasHeight = (canvasWidth /  SignWidth) * SignHeight;
+        if (SignWidth / canvasWidth > SignHeight / canvasHeight) {
+            canvasHeight = (canvasWidth / SignWidth) * SignHeight;
         }
-        else
-        {
-            canvasWidth = (canvasHeight /  SignHeight) * SignWidth;
+        else {
+            canvasWidth = (canvasHeight / SignHeight) * SignWidth;
         }
-
-
 
 
         var canvasScale = 1.0;
@@ -257,19 +252,19 @@
         <%
         if background_image.nil?
            %>
-            canvas.setBackgroundImage('/assets/customisation/brass.jpg', function () {
-                        canvas.renderAll();
-            });
+        canvas.setBackgroundImage('/assets/customisation/brass.jpg', function () {
+            canvas.renderAll();
+        });
         <%
         else
                 %>
 
 
         var bg_image_url = '<%= background_image.attachment.url(:product) %>';
-               canvas.setBackgroundImage(bg_image_url, function () {
-               //canvas.setBackgroundImage('/assets/customisation/brass.jpg', function () {
-                   canvas.renderAll();
-               });
+        canvas.setBackgroundImage(bg_image_url, function () {
+            //canvas.setBackgroundImage('/assets/customisation/brass.jpg', function () {
+            canvas.renderAll();
+        });
         <%
         end
         %>
@@ -283,7 +278,7 @@
         $('<textarea rows="1" cols="1" id="textArea"></textarea>').appendTo('.canvas-container');
 
         $("#sign_data").val('<%= @sign_data.sign_data %>');
-        if ($("#sign_data").val() != ''){
+        if ($("#sign_data").val() != '') {
             //alert("Saved sign loaded!");
             var jsn = $.base64.decode($("#sign_data").val());
             canvas.loadFromJSON(jsn);
@@ -294,13 +289,13 @@
         }
 
 
-        $("#addToBasket").click(function(){
+        $("#addToBasket").click(function () {
             //serialize the custom sign data
             //add this to the form field
             json = JSON.stringify(canvas);
-           // alert(json);
+            // alert(json);
             var svg_data = canvas.toSVG();
-           // alert(svg_data);
+            // alert(svg_data);
             var custom_data = $.base64.encode(json);
             $("#sign_data").val(custom_data);
             $("#svg_data").val(svg_data);
@@ -312,13 +307,14 @@
             $.ajax({
                 type: "POST",
                 url: "/custom_sign/save_sign",
-                data: { id: id, sign_data: custom_data, svg_data: svg_data, account_id: account_id, name: name, description: description, calculated_price: calculated_price }
-            }).done(function( msg ) {
-                //alert( "Data Saved: " + msg );
-                $("#customSignForm").attr("action", "/orders/populate");
-                //submit the form to the basket
-                $("#customSignForm").submit();
-            });
+                data: { authenticity_token: $("meta[name='csrf-token']").attr("content"), id: id, sign_data: custom_data, svg_data: svg_data, account_id: account_id, name: name, description: description, calculated_price: calculated_price }
+            }).done(function (msg) {
+                        //alert( "Data Saved: " + msg );
+                        $("#customSignForm").prepend("<input type='hidden' name='authenticity_token' value='" + $("meta[name='csrf-token']").attr("content") + "'>")
+                        $("#customSignForm").attr("action", "/orders/populate");
+                        //submit the form to the basket
+                        $("#customSignForm").submit();
+                    });
             //change submit path of the form
             //$("#customSignForm").attr("action", "/orders/populate");
             //submit the form to the basket
@@ -332,32 +328,32 @@
             $("#sign_data").val(custom_data);
             $("#svg_data").val(svg_data);
             //this is where custom_sign/save_sign is called
-            $.fancybox.open({href:'/custom_sign/save_dialog',
-                title:'Save Custom Sign',
-                type:'iframe',
-                autoSize:'false',
-                minWidth:'640px',
-                minHeight:'480px',
-                maxWidth:'640px',
-                maxHeight:'480px',
-                width:'640px',
-                height:'480px'});
+            $.fancybox.open({href: '/custom_sign/save_dialog',
+                title: 'Save Custom Sign',
+                type: 'iframe',
+                autoSize: 'false',
+                minWidth: '640px',
+                minHeight: '480px',
+                maxWidth: '640px',
+                maxHeight: '480px',
+                width: '640px',
+                height: '480px'});
             //$.fancybox.open( {href : '/assets/feature-image-1.jpg', title : 'Save Custom Sign', type : 'iframe', width : '640px', height : '480px'} );
             //jQuery.ajax("/custom_sign/save_sign?custom_data=" + $.base64.encode(json));
         });
 
         $("#loadCanvas").click(function () {
             //canvas.loadFromJSON(json);
-            $.fancybox.open({href:'/custom_sign/load_sign_list/<%= session[:account_id].nil? ? "0" : session[:account_id].id.to_s %>',
-                title:'Save Custom Sign',
-                type:'iframe',
-                autoSize:'false',
-                minWidth:'640px',
-                minHeight:'480px',
-                maxWidth:'640px',
-                maxHeight:'480px',
-                width:'640px',
-                height:'480px'});
+            $.fancybox.open({href: '/custom_sign/load_sign_list/<%= session[:account_id].nil? ? "0" : session[:account_id].id.to_s %>',
+                title: 'Save Custom Sign',
+                type: 'iframe',
+                autoSize: 'false',
+                minWidth: '640px',
+                minHeight: '480px',
+                maxWidth: '640px',
+                maxHeight: '480px',
+                width: '640px',
+                height: '480px'});
         });
 
         $('#addText').click(function () {
@@ -368,16 +364,16 @@
             var fontFamily = $('#fontFamily').val();
             var color = $('.showPaletteOnly').val();
             var text = new fabric.Text(placeholderText, {
-                fontFamily:fontFamily,
-                fill:color,
-                left:canvasWidth / 2,
-                top:canvasHeight / 2
+                fontFamily: fontFamily,
+                fill: color,
+                left: canvasWidth / 2,
+                top: canvasHeight / 2
             });
             canvas.add(text.scale(canvasScale));
             text.hasRotatingPoint = true;
             text.set({
-                borderColor:'cyan',
-                cornerColor:'cyan'
+                borderColor: 'cyan',
+                cornerColor: 'cyan'
             })
         });
 
@@ -399,7 +395,7 @@
                 canvas.__onMouseUp(e);
                 if (activeObject && activeObject.type === 'text') {
                     var currentText = activeObject.getText();
-                    canvas.fire('object:mouseup', { target:activeObject }, e);
+                    canvas.fire('object:mouseup', { target: activeObject }, e);
                     $('#textArea').focus().val(currentText);
                     if (currentText == placeholderText) {
                         $('#textArea').val('');
@@ -419,7 +415,7 @@
         });
 
         canvas.observe('selection:cleared', function (e) {
-            $('#textArea').val('').css({'display':'none'});
+            $('#textArea').val('').css({'display': 'none'});
         });
 
         canvas.observe('object:selected', function (e) {
@@ -429,65 +425,65 @@
                 var activeObjectFontFamily = canvas.getActiveObject().fontFamily;
                 $('#fontFamily').val(activeObjectFontFamily).trigger("change");
                 $('#textArea').val(activeObject.text).css({
-                    '-webkit-transform':'rotate(' + activeObject.theta * 180 / Math.PI + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
-                    '-moz-transform':'rotate(' + activeObject.theta * 180 / Math.PI + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
-                    '-0-transform':'rotate(' + activeObject.theta * 180 / Math.PI + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
-                    '-ms-transform':'rotate(' + activeObject.theta * 180 / Math.PI + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
+                    '-webkit-transform': 'rotate(' + activeObject.theta * 180 / Math.PI + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
+                    '-moz-transform': 'rotate(' + activeObject.theta * 180 / Math.PI + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
+                    '-0-transform': 'rotate(' + activeObject.theta * 180 / Math.PI + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
+                    '-ms-transform': 'rotate(' + activeObject.theta * 180 / Math.PI + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
 //                    display:'block',
-                    fontFamily:activeObject.fontFamily,
-                    fontSize:activeObject.fontSize,
-                    height:activeObject.height,
-                    left:activeObject.left - activeObject.width / 2,
-                    lineHeight:activeObject.lineHeight,
-                    textAlign:activeObject.textAlign,
-                    top:activeObject.top - activeObject.height / 2,
-                    width:activeObject.width
+                    fontFamily: activeObject.fontFamily,
+                    fontSize: activeObject.fontSize,
+                    height: activeObject.height,
+                    left: activeObject.left - activeObject.width / 2,
+                    lineHeight: activeObject.lineHeight,
+                    textAlign: activeObject.textAlign,
+                    top: activeObject.top - activeObject.height / 2,
+                    width: activeObject.width
                 });
                 canvas.observe('object:modified', function () {
                     $('#textArea').css({
-                        '-webkit-transform':'rotate(' + activeObject.theta * 180 / Math.PI + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
-                        display:'block',
-                        height:activeObject.height,
-                        left:activeObject.left - activeObject.width / 2,
-                        top:activeObject.top - activeObject.height / 2,
-                        width:activeObject.width
+                        '-webkit-transform': 'rotate(' + activeObject.theta * 180 / Math.PI + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
+                        display: 'block',
+                        height: activeObject.height,
+                        left: activeObject.left - activeObject.width / 2,
+                        top: activeObject.top - activeObject.height / 2,
+                        width: activeObject.width
                     });
                 });
                 canvas.observe('object:moving', function () {
                     $('#textArea').css({
-                        display:'none'
+                        display: 'none'
                     });
                 });
                 canvas.observe('object:scaling', function () {
                     $('#textArea').css({
-                        display:'none'
+                        display: 'none'
                     });
                 });
                 canvas.observe('object:rotating', function () {
                     $('#textArea').css({
-                        display:'none'
+                        display: 'none'
                     });
                 });
                 canvas.observe('after:render', function () {
                     $('#textArea').css({
-                        fontFamily:activeObject.fontFamily,
-                        fontStyle:activeObject.fontStyle,
-                        fontWeight:activeObject.fontWeight,
-                        height:activeObject.height,
-                        left:activeObject.left - activeObject.width / 2,
-                        textAlign:activeObject.textAlign,
-                        textDecoration:activeObject.textDecoration,
-                        top:activeObject.top - activeObject.height / 2,
-                        width:activeObject.width
+                        fontFamily: activeObject.fontFamily,
+                        fontStyle: activeObject.fontStyle,
+                        fontWeight: activeObject.fontWeight,
+                        height: activeObject.height,
+                        left: activeObject.left - activeObject.width / 2,
+                        textAlign: activeObject.textAlign,
+                        textDecoration: activeObject.textDecoration,
+                        top: activeObject.top - activeObject.height / 2,
+                        width: activeObject.width
                     });
                     if (activeObject.fontFamily === 'PacificoRegular') {
                         $('#textArea').css({
-                            marginTop:activeObject.scaleY * 0.25 + 'em'
+                            marginTop: activeObject.scaleY * 0.25 + 'em'
                         });
                     }
                     else {
                         $('#textArea').css({
-                            marginTop:0
+                            marginTop: 0
                         })
                     }
                 });
@@ -647,12 +643,12 @@
         $('#cloneActiveObject').click(function () {
             var activeObject = canvas.getActiveObject(), activeGroup = canvas.getActiveGroup();
             if (activeObject) {
-                var clonedObject = activeObject.clone().set({ top:activeObject.get('top') + 10, left:activeObject.get('left') + 10, hasRotatingPoint:true });
+                var clonedObject = activeObject.clone().set({ top: activeObject.get('top') + 10, left: activeObject.get('left') + 10, hasRotatingPoint: true });
                 canvas.add(clonedObject);
                 canvas.setActiveObject(clonedObject);
                 clonedObject.set({
-                    borderColor:'cyan',
-                    cornerColor:'cyan'
+                    borderColor: 'cyan',
+                    cornerColor: 'cyan'
                 })
             }
             else if (activeGroup) {
@@ -661,11 +657,11 @@
                 var clones = [];
                 selection.forEach(function (v, i) {
                     var clone = v.clone();
-                    clone.set({ top:v.get('top') + 10,
-                        left:v.get('left') + 10,
-                        hasRotatingPoint:true,
-                        borderColor:'cyan',
-                        cornerColor:'cyan'
+                    clone.set({ top: v.get('top') + 10,
+                        left: v.get('left') + 10,
+                        hasRotatingPoint: true,
+                        borderColor: 'cyan',
+                        cornerColor: 'cyan'
                     });
                     canvas.add(clone);
                     clone.setActive(true);
@@ -714,8 +710,8 @@
                 obj.setCoords();
                 obj.hasRotatingPoint = true;
                 obj.set({
-                    borderColor:'cyan',
-                    cornerColor:'cyan'
+                    borderColor: 'cyan',
+                    cornerColor: 'cyan'
                 })
             });
         });
@@ -729,11 +725,11 @@
             ['V', borderInset],
             ['H', borderInset]
         ], {
-            fill:'',
-            height:canvasHeight,
-            selectable:false,
-            stroke:'black',
-            width:canvasWidth
+            fill: '',
+            height: canvasHeight,
+            selectable: false,
+            stroke: 'black',
+            width: canvasWidth
         });
 
         var borderDouble = new fabric.Path([
@@ -748,11 +744,11 @@
             ['V', scallopDepth],
             ['H', scallopDepth]
         ], {
-            fill:'',
-            height:canvasHeight,
-            selectable:false,
-            stroke:'black',
-            width:canvasWidth
+            fill: '',
+            height: canvasHeight,
+            selectable: false,
+            stroke: 'black',
+            width: canvasWidth
         });
 
         var borderScalloped = new fabric.Path([
@@ -766,11 +762,11 @@
             ['Q', scallopX, scallopDepth, scallopX, borderInset],
             ['H', scallopDepth]
         ], {
-            fill:'',
-            height:canvasHeight,
-            selectable:false,
-            stroke:'black',
-            width:canvasWidth
+            fill: '',
+            height: canvasHeight,
+            selectable: false,
+            stroke: 'black',
+            width: canvasWidth
         });
 
         $('#borderSelect').change(function () {
@@ -800,19 +796,19 @@
         });
 
         $("#borderThicknessSlider").slider({
-            value:1,
-            min:1,
-            max:10,
-            step:1,
-            slide:function (event, ui) {
+            value: 1,
+            min: 1,
+            max: 10,
+            step: 1,
+            slide: function (event, ui) {
                 borderSingle.set({
-                    strokeWidth:ui.value
+                    strokeWidth: ui.value
                 });
                 borderDouble.set({
-                    strokeWidth:ui.value
+                    strokeWidth: ui.value
                 });
                 borderScalloped.set({
-                    strokeWidth:ui.value
+                    strokeWidth: ui.value
                 });
                 canvas.renderAll();
             }
@@ -831,11 +827,11 @@
                 $.ajax({
                     url: "/custom_sign/reset_sign_data_ajax",
                     data: { id: <%= @sign_data.based_on.to_s %> }
-                }).done(function(result){
-                    $("#sign_data").val(result.sign_data);
-                    var jsn = $.base64.decode($("#sign_data").val());
-                    canvas.loadFromJSON(jsn);
-                });
+                }).done(function (result) {
+                            $("#sign_data").val(result.sign_data);
+                            var jsn = $.base64.decode($("#sign_data").val());
+                            canvas.loadFromJSON(jsn);
+                        });
             }
             $(disabledTools).addClass('disabled');
         });
@@ -843,138 +839,138 @@
 
         //Top Left Screw Hole
         var topLeftScrewHoleShadow = new fabric.Circle({
-            left:20,
-            top:18,
-            fill:'#000',
-            radius:10,
-            opacity:0.5,
-            selectable:false
+            left: 20,
+            top: 18,
+            fill: '#000',
+            radius: 10,
+            opacity: 0.5,
+            selectable: false
         });
         var topLeftScrewHoleHighlight = new fabric.Circle({
-            left:20,
-            top:21,
-            fill:'#fff',
-            radius:10,
-            opacity:0.5,
-            selectable:false
+            left: 20,
+            top: 21,
+            fill: '#fff',
+            radius: 10,
+            opacity: 0.5,
+            selectable: false
         });
         var topLeftScrewHole = new fabric.Circle({
-            left:20,
-            top:20,
-            radius:10,
-            selectable:false
+            left: 20,
+            top: 20,
+            radius: 10,
+            selectable: false
         });
         topLeftScrewHole.setGradientFill(canvas.getContext(), {
-            x1:0,
-            y1:0,
-            x2:0,
-            y2:topLeftScrewHole.height,
-            colorStops:{
-                0:'#000',
-                1:'#25393b'
+            x1: 0,
+            y1: 0,
+            x2: 0,
+            y2: topLeftScrewHole.height,
+            colorStops: {
+                0: '#000',
+                1: '#25393b'
             }
         });
         //Top Right Screw Hole
         var topRightScrewHoleShadow = new fabric.Circle({
-            left:canvasWidth - 20,
-            top:18,
-            fill:'#000',
-            radius:10,
-            opacity:0.5,
-            selectable:false
+            left: canvasWidth - 20,
+            top: 18,
+            fill: '#000',
+            radius: 10,
+            opacity: 0.5,
+            selectable: false
         });
         var topRightScrewHoleHighlight = new fabric.Circle({
-            left:canvasWidth - 20,
-            top:21,
-            fill:'#fff',
-            radius:10,
-            opacity:0.5,
-            selectable:false
+            left: canvasWidth - 20,
+            top: 21,
+            fill: '#fff',
+            radius: 10,
+            opacity: 0.5,
+            selectable: false
         });
         var topRightScrewHole = new fabric.Circle({
-            left:canvasWidth - 20,
-            top:20,
-            radius:10,
-            selectable:false
+            left: canvasWidth - 20,
+            top: 20,
+            radius: 10,
+            selectable: false
         });
         topRightScrewHole.setGradientFill(canvas.getContext(), {
-            x1:0,
-            y1:0,
-            x2:0,
-            y2:topRightScrewHole.height,
-            colorStops:{
-                0:'#000',
-                1:'#25393b'
+            x1: 0,
+            y1: 0,
+            x2: 0,
+            y2: topRightScrewHole.height,
+            colorStops: {
+                0: '#000',
+                1: '#25393b'
             }
         });
         //Bottom Right Screw Hole
         var bottomRightScrewHoleShadow = new fabric.Circle({
-            left:canvasWidth - 20,
-            top:canvasHeight - 22,
-            fill:'#000',
-            radius:10,
-            opacity:0.5,
-            selectable:false
+            left: canvasWidth - 20,
+            top: canvasHeight - 22,
+            fill: '#000',
+            radius: 10,
+            opacity: 0.5,
+            selectable: false
         });
         var bottomRightScrewHoleHighlight = new fabric.Circle({
-            left:canvasWidth - 20,
-            top:canvasHeight - 19,
-            fill:'#fff',
-            radius:10,
-            opacity:0.5,
-            selectable:false
+            left: canvasWidth - 20,
+            top: canvasHeight - 19,
+            fill: '#fff',
+            radius: 10,
+            opacity: 0.5,
+            selectable: false
         });
         var bottomRightScrewHole = new fabric.Circle({
-            left:canvasWidth - 20,
-            top:canvasHeight - 20,
-            radius:10,
-            selectable:false
+            left: canvasWidth - 20,
+            top: canvasHeight - 20,
+            radius: 10,
+            selectable: false
         });
         bottomRightScrewHole.setGradientFill(canvas.getContext(), {
-            x1:0,
-            y1:0,
-            x2:0,
-            y2:bottomRightScrewHole.height,
-            colorStops:{
-                0:'#000',
-                1:'#25393b'
+            x1: 0,
+            y1: 0,
+            x2: 0,
+            y2: bottomRightScrewHole.height,
+            colorStops: {
+                0: '#000',
+                1: '#25393b'
             }
         });
         //Bottom Left Screw Hole
         var bottomLeftScrewHoleShadow = new fabric.Circle({
-            left:20,
-            top:canvasHeight - 22,
-            fill:'#000',
-            radius:10,
-            opacity:0.5,
-            selectable:false
+            left: 20,
+            top: canvasHeight - 22,
+            fill: '#000',
+            radius: 10,
+            opacity: 0.5,
+            selectable: false
         });
         var bottomLeftScrewHoleHighlight = new fabric.Circle({
-            left:20,
-            top:canvasHeight - 19,
-            fill:'#fff',
-            radius:10,
-            opacity:0.5,
-            selectable:false
+            left: 20,
+            top: canvasHeight - 19,
+            fill: '#fff',
+            radius: 10,
+            opacity: 0.5,
+            selectable: false
         });
         var bottomLeftScrewHole = new fabric.Circle({
-            left:20,
-            top:canvasHeight - 20,
-            radius:10,
-            selectable:false
+            left: 20,
+            top: canvasHeight - 20,
+            radius: 10,
+            selectable: false
         });
         bottomLeftScrewHole.setGradientFill(canvas.getContext(), {
-            x1:0,
-            y1:0,
-            x2:0,
-            y2:bottomLeftScrewHole.height,
-            colorStops:{
-                0:'#000',
-                1:'#25393b'
+            x1: 0,
+            y1: 0,
+            x2: 0,
+            y2: bottomLeftScrewHole.height,
+            colorStops: {
+                0: '#000',
+                1: '#25393b'
             }
         });
 
-        var screwHoles = new fabric.Group([topLeftScrewHoleShadow, topLeftScrewHoleHighlight, topLeftScrewHole, topRightScrewHoleShadow, topRightScrewHoleHighlight, topRightScrewHole, bottomRightScrewHoleShadow, bottomRightScrewHoleHighlight, bottomRightScrewHole, bottomLeftScrewHoleShadow, bottomLeftScrewHoleHighlight, bottomLeftScrewHole], {selectable:false});
+        var screwHoles = new fabric.Group([topLeftScrewHoleShadow, topLeftScrewHoleHighlight, topLeftScrewHole, topRightScrewHoleShadow, topRightScrewHoleHighlight, topRightScrewHole, bottomRightScrewHoleShadow, bottomRightScrewHoleHighlight, bottomRightScrewHole, bottomLeftScrewHoleShadow, bottomLeftScrewHoleHighlight, bottomLeftScrewHole], {selectable: false});
         $('#toggleScrewHoles').toggle(function () {
             canvas.add(screwHoles.scale(canvasScale)).centerObject(screwHoles).sendToBack(screwHoles);
             $(this).addClass("active");
@@ -984,27 +980,27 @@
         });
 
         var leftMargin = new fabric.Line([40, 0, 40, canvasHeight], {
-            fill:'cyan',
-            opacity:0.5,
-            selectable:false
+            fill: 'cyan',
+            opacity: 0.5,
+            selectable: false
         });
         var topMargin = new fabric.Line([0, 40, canvasWidth, 40], {
-            fill:'cyan',
-            opacity:0.5,
-            selectable:false
+            fill: 'cyan',
+            opacity: 0.5,
+            selectable: false
         });
         var rightMargin = new fabric.Line([canvasWidth - 40, 0, canvasWidth - 40, canvasHeight], {
-            fill:'cyan',
-            opacity:0.5,
-            selectable:false
+            fill: 'cyan',
+            opacity: 0.5,
+            selectable: false
         });
         var bottomMargin = new fabric.Line([0, canvasHeight - 40, canvasWidth, canvasHeight - 40], {
-            fill:'cyan',
-            opacity:0.5,
-            selectable:false
+            fill: 'cyan',
+            opacity: 0.5,
+            selectable: false
         });
 
-        var margins = new fabric.Group([leftMargin, topMargin, rightMargin, bottomMargin], {selectable:false});
+        var margins = new fabric.Group([leftMargin, topMargin, rightMargin, bottomMargin], {selectable: false});
 
         $('#toggleMargins').toggle(function () {
             canvas.add(margins.scale(canvasScale)).centerObject(margins).sendToBack(margins);
@@ -1132,7 +1128,8 @@
         });
 
         <% if !params["id"].nil? %>
-        //jQuery.ajax("/custom_sign/load_sign_ajax?saved_sign_id=" + <%=params["id"]%>);
+        //jQuery.ajax("/custom_sign/load_sign_ajax?saved_sign_id=" +
+        <%=params["id"]%>);
         $("#sign_data").val('<%= @sign_data.sign_data %>');
         alert($("#sign_data").val());
         var jsn = $.base64.decode($("#sign_data").val());

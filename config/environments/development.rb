@@ -14,10 +14,10 @@ SignappNew::Application.configure do
   config.action_controller.perform_caching = false
 
   # Don't care if the mailer can't send
-  config.action_mailer.raise_delivery_errors = false
-  config.action_mailer.delivery_method = :sendmail
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.delivery_method = :smtp
   config.action_mailer.perform_deliveries = true
-  config.action_mailer.default_url_options = { :host => "signapp.co.uk" }
+  #config.action_mailer.default_url_options = { :host => "signapp.co.uk" }
 
 
   # Print deprecation notices to the Rails logger
@@ -44,14 +44,15 @@ SignappNew::Application.configure do
 
   config.assets.compile = true
 
+  ActionMailer::Base.default :from => 'auto@wearealight.com'
 
   ActionMailer::Base.smtp_settings = {
       :address              => "smtp.gmail.com",
       :port                 => 587,
-      :domain               => "wearealight.com",
-      :user_name            => "auto@wearealight.com",
-      :password             => "1qazFloP",
-      :authentication       => "plain",
+      :domain               => 'wearealight.com',
+      :user_name            => 'auto@wearealight.com',
+      :password             => '1qazFloP',
+      :authentication       => 'plain',
       :enable_starttls_auto => true
   }
 

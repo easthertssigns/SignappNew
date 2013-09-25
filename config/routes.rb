@@ -164,8 +164,15 @@ Spree::Core::Engine.routes.draw do
   end
 end
 
+
+
 Spree::Core::Engine.routes.prepend do
   namespace :admin do
     match "get_mailing_list_csv" => "overview#get_mailing_list_csv"
   end
+end
+
+Refinery::Core::Engine.routes.prepend do
+  match "/members/password_reset" => "memberships/members#password_reset"
+  match "/members/password" => "memberships/members#password"
 end

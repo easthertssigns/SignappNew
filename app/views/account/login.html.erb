@@ -1,39 +1,76 @@
 <!--<h1>Create a new SignApp Account</h1>-->
 <div>
-    <%= form_tag(:controller => "account", :action => "login") do -%>
-    <h3>Log in</h3>
-    <div>Login with Facebook button here</div>
-    <h3>SignApp Account</h3>
-    <div>
-        <%= label_tag "Your Email" %><br/>
+  <%= form_tag(:controller => "account", :action => "login") do -%>
+      <h3>Log in</h3>
+
+      <div>Login with Facebook button here</div>
+      <h3>SignApp Account</h3>
+
+      <div>
+        <%= label_tag "Your Email" %>
+        <br/>
         <%= text_field_tag(:email) %>
-    </div>
-    <div>
-        <%= label_tag "Your Password" %><br/>
+      </div>
+      <div>
+        <%= label_tag "Your Password" %>
+        <br/>
         <%= password_field_tag(:password) %>
-    </div>
-    <div><%= button_tag "Log in" %></div>
-    <a href="">Forgotten your password?</a>
+      </div>
+      <div><%= button_tag "Log in" %></div>
+      <a href="">Forgotten your password?</a>
+  <% end -%>
+  <div class="hidden">
+    <%= form_tag(:controller => "account", :action => "login") do -%>
+        <h3>Forgotten your password?</h3>
+
+        <div>
+          <%= label_tag "Your Email" %>
+          <br/>
+          <%= text_field_tag(:email) %>
+        </div>
+
+        <div><%= button_tag "Send my reminder" %></div>
+        <a href="">back to login</a>
     <% end -%>
+  </div>
+  <div class="hidden">
+    <%= form_tag(:controller => "account", :action => "login") do -%>
+        <h3>Forgotten your password?</h3>
+
+        <div>
+          <h3>Thanks.</h3>
+
+          <p>Your reminder is on its way. Check your emails inbox, if you cant find it try the spam folder.</p>
+        </div>
+
+        <div><%= button_tag "Send my reminder" %></div>
+        <a href="">back to login</a>
+    <% end -%>
+  </div>
 </div>
 <div>
-    <%= form_tag(:controller => "account", :action => "create") do -%>
-    <h3>Create an Account</h3>
-    <h3>Lets get started</h3>
-    <div>
-        <%= label_tag "Your Email" %><br/>
+  <%= form_tag(:controller => "account", :action => "create") do -%>
+      <h3>Create an Account</h3>
+
+      <h3>Lets get started</h3>
+
+      <div>
+        <%= label_tag "Your Email" %>
+        <br/>
         <%= text_field_tag(:email) %>
-    </div>
-    <div>
-        <%= label_tag "Create a Password" %><br/>
+      </div>
+      <div>
+        <%= label_tag "Create a Password" %>
+        <br/>
         <%= password_field_tag(:password) %>
-    </div>
-    <div>
-        <%= label_tag "Confirm Your Password" %><br/>
+      </div>
+      <div>
+        <%= label_tag "Confirm Your Password" %>
+        <br/>
         <%= password_field_tag(:confirm_password) %>
-    </div>
-    <div><%= button_tag "Create My Account" %></div>
-    <% end -%>
+      </div>
+      <div><%= button_tag "Create My Account" %></div>
+  <% end -%>
 </div>
 
 <% if current_refinery_user %>

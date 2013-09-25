@@ -15,6 +15,17 @@
 <%= javascript_include_tag 'jquery-validate' %>
 <script>
     $(function () {
+        // hide password reminder and thankyou
+        <% if flash[:info] == "Password Reset Email Send" %>
+        $("#login_section").hide();
+        $("#password_reminder_section").hide();
+        $("#password_reminder_thankyou").show();
+        <% else %>
+        $("#login_section").show();
+        $("#password_reminder_section").hide();
+        $("#password_reminder_thankyou").hide();
+        <% end %>
+
         $('#new_member').validate({
             errorPlacement: function () {
                 //element.addClass('error');
@@ -27,4 +38,9 @@
             }
         });
     })
+
+    function show_password_reminder_form() {
+        $("#login_section").hide();
+        $("#password_reminder_section").show();
+    }
 </script>
