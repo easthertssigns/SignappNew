@@ -18,20 +18,6 @@
       <%= f.label :phone %>
       <%= f.text_field :phone %>&nbsp;
     </li>
-    <li>
-      <%= f.label :fax %>
-      <%= f.text_field :fax %>&nbsp;
-    </li>
-    <% if !f.object.new_record? %>
-    <li>
-      <%= f.label :membership_level %>
-      <% if @is_admin %>
-        <%= f.text_field :membership_level %>&nbsp;
-      <% else %>
-        <%= @member.roles.collect(&:title).join(', ') %>&nbsp;
-      <% end %>
-    </li>
-    <% end %>
   </ol>
 </div>
 </div>

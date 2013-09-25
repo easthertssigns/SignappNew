@@ -3,7 +3,10 @@
     <%= form_for Refinery::User.new, :as => :refinery_user, :url => refinery_user_session_path do |f| %>
         <h2>Log in</h2>
         <section class="log-in-with-facebook">
-          <%= link_to "Log in with Facebook", "#", :class => "log-in-with-facebook-button" %>
+          <%- Refinery::User.omniauth_providers.each do |provider| %>
+              <%= link_to "Log in with #{provider.to_s.titleize}", omniauth_authorize_path("refinery_user", provider), :class => "log-in-with-facebook-button" %>
+          <% end -%>
+
         </section>
         <section>
           <h3>SignApp Account</h3>

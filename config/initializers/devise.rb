@@ -2,6 +2,16 @@
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
 
+  require "omniauth-facebook"
+
+  #test
+  config.omniauth :facebook, "1390754917822603", "c4faa668837acf0d995bbf09d69cfd17"
+
+  #live
+  #config.omniauth :facebook, "", ""
+
+  config.router_name = :main_app
+
   # config.authentication_keys = [:email]
   #config.router_name = :spree
 

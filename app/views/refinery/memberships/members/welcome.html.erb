@@ -5,7 +5,6 @@
   </div>
   <div class="container_12">
     <div class="container_960">
-
       <%= raw @page.content_for(:body_above) if @page %>
       <%= raw @page.content_for(:body) if @page %>
       <div id="member">
@@ -34,13 +33,13 @@
           </div>
           <div style="margin-top: 5px;"><h2>Your Orders</h2></div>
           <div class="companyInfomartion">
-          <% if @orders && @orders.count > 0 %>
-              <% @orders.each do |order| %>
-                  <%= render "order_thumb", :order => order %>
-              <% end %>
-          <% else %>
-              <div>You haven't made any orders yet.</div>
-          <% end %>
+            <% if current_refinery_user.get_complete_orders.count > 0 %>
+                <% current_refinery_user.get_complete_orders.each do |order| %>
+                    <%= render "order_thumb", :order => order %>
+                <% end %>
+            <% else %>
+                <div>You haven't made any orders yet.</div>
+            <% end %>
           </div>
         </div>
       </div>

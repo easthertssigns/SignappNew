@@ -83,12 +83,18 @@
       </nav>
     </div>
     <div class="grid_4">
-          <div class="floatRight">
-            <ul class="subNav">
-              <li><a href="#">Log In</a></li>
-            </ul>
-            <%= render :partial => 'spree/shared/minicart' %>
-          </div>
-        </div>
+      <div class="floatRight">
+        <ul class="subNav">
+          <% if current_refinery_user %>
+              <li>
+                <%= link_to "Log Out", "/refinery/logout" %>
+              </li>
+          <% else %>
+              <li><a href="/members/login">Log In / Register</a></li>
+          <% end %>
+        </ul>
+        <%= render :partial => 'spree/shared/minicart' %>
+      </div>
+    </div>
   </div>
 </header>

@@ -3,10 +3,6 @@ Refinery::User.class_eval do
     SignData.where("account_id = ?", id)
   end
 
-  def get_complete_orders
-    Spree::Order.complete.where("user_id = ?", id)
-  end
-
   def self.find_for_facebook_oauth(auth, signed_in_resource=nil)
     user = Refinery::Memberships::Member.where(:provider => auth.provider, :uid => auth.uid).first
     unless user
