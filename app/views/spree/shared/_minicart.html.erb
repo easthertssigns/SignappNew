@@ -14,7 +14,7 @@
       </div>
       <div class="basket" id="basketTab">
         <div class="tip"></div>
-        <a href="#">Basket <span>(<%= get_current_order.item_count %>)</span></a>
+        <a href="#">Basket (<span><%= get_current_order.item_count %></span>)</a>
       </div>
   <% else %>
       <div class="basketDropDown" id="basketDropDown" data-hook="outside_minicart_form">
@@ -52,7 +52,7 @@
       <%= render :partial => 'spree/shared/error_messages', :locals => {:target => @order} %>
       <div class="basket full" id="basketTab">
         <div class="tip"></div>
-        <a href="#">Basket <span>(<%= get_current_order.item_count %>)</span></a>
+        <a href="#">Basket (<span><%= get_current_order.item_count %></span>)</a>
       </div>
   <% end %>
   <% end %>

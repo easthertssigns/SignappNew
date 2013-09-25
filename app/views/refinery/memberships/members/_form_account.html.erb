@@ -1,19 +1,22 @@
-<div>
-  <div></div>
+<div class="pageContent">
   <h2>Account</h2>
-  <ol>
-    <li>
-      <%= f.required_label :email %>
-      <%= f.text_field :email %>&nbsp;
-    </li>
-    <%= "<li><span class='preview'>#{t('members.form.blank_password_keeps_current', :scope => 'refinery.memberships')}</span></li>".html_safe if @member.persisted? %>
-    <li>
-      <%= f.required_label :password %>
-      <%= f.password_field :password, :autocomplete => 'off' %>&nbsp;
-    </li>
-    <li>
-      <%= f.required_label :password_confirmation %>
-      <%= f.password_field :password_confirmation, :autocomplete => 'off' %>&nbsp;
-    </li>
-  </ol>
+
+  <div class="companyInfomartion">
+    <ol>
+      <li>
+        <%= f.required_label :email %>
+        <%= f.text_field :email %>&nbsp;
+      </li>
+      <%= "<li><span class='preview'>#{t('members.form.blank_password_keeps_current', :scope => 'refinery.memberships')}</span></li>".html_safe if @member.persisted? %>
+      <li>
+        <%= f.required_label :password %>
+        <%= f.password_field :password, :autocomplete => 'off' %>&nbsp;
+      </li>
+      <li>
+        <%= f.required_label :password_confirmation %>
+        <%= f.password_field :password_confirmation, :autocomplete => 'off' %>&nbsp;
+      </li>
+    </ol>
+
+  </div>
 </div>

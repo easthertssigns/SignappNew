@@ -55,7 +55,7 @@ $(function () {
     $('#fontFamily').select2({
         formatResult:fontFamily,
         formatSelection:fontFamily,
-        minimumResultsForSearch:1000,
+        minimumResultsForSearch:5,
         width:"element"
     });
 
@@ -67,7 +67,7 @@ $(function () {
     $('#shapeSelect').select2({
         formatResult:shapeSelect,
         formatSelection:shapeSelect,
-        minimumResultsForSearch:1000,
+        minimumResultsForSearch:5,
         placeholder:"Select a Shape",
         width:"element"
     });

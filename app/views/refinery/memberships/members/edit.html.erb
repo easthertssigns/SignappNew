@@ -6,22 +6,14 @@
   </div>
   <div class="container_12">
     <div class="container_960">
-      <div class="grid_7">
-        <div class="pageContent">
-
-
-          <div id="edit-member-form">
-            <%= render :partial => 'form',
-                       :locals => {
-                               :url => members_path} %>
-          </div>
-        </div>
+      <div id="edit-member-form">
+        <%= render :partial => 'form',
+                   :locals => {
+                           :url => members_path} %>
       </div>
-
     </div>
   </div>
 </div>
 <%= raw @page.content_for(:body_below) if @page %>
-
 <%= render :partial => "/refinery/content_page", :locals => {:hide_sections => [:bodybelow, :bodyabove]} %>
 

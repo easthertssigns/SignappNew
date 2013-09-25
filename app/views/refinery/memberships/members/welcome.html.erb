@@ -1,7 +1,7 @@
 <%= render :partial => 'message' %>
 <div class="genericlayout blueBackground contact">
   <div class="pageTitle">
-    <h1>Welcome</h1>
+    <h1>My Account</h1>
   </div>
   <div class="container_12">
     <div class="container_960">
@@ -49,31 +49,22 @@
       <div class="grid_5 ">
         <div class="pageContent">
           <div>
-            <h2>Connect With Facebook</h2></div>
-          <div class="companyInfomartion">
-            <div>By Linking with your Facebook account you can easily share your designed signs on your timeline.</div>
-            <div>[facebook link to go here]</div>
-          </div>
+            <h2>Change Your Password</h2></div>
           <div  style="margin-top: 5px;" class="companyInfomartion">
-            <div>Change Your Password</div>
             <%= form_for @member, :as => :member, :url => '/members' do |f| %>
                 <div>
                   <%= f.label :password, "New Password" %>
-                  <br/>
                   <%= f.password_field :password %>
-                  <br/>
                 </div>
                 <div>
                   <%= f.label :password_confirmation, "Confirm New Password" %>
-                  <br/>
                   <%= f.password_field :password_confirmation %>
-                  <br/>
                 </div>
-                <div><%= f.button "Save Changes" %></div>
+                <div class="alignRight"><%= f.button "Save Changes" %></div>
             <% end %>
           </div>
           <div style="margin-top: 5px;" class="companyInfomartion">
-            <%= link_to "Change Your Delivery Details", edit_members_path %>
+            <%= link_to "Change Your Details", edit_members_path, :class => 'button' %>
           </div>
         </div>
       </div>

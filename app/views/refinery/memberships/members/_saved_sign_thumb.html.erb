@@ -1,16 +1,21 @@
-<div>
-  <div>[sign image]</div>
-  <div><%= s.name %></div>
-  <% unless s.description.blank? %>
-  <div><%= s.description %></div>
-  <% end %>
-  <div>Created on <%= s.created_at.strftime("%d %B %Y") %> </div>
-  <div><%= s.price %></div>
-  <div>Preview | <a href="/orders/add_saved_sign_to_basket?id=<%= s.id %>">Add to Basket</a> | Post On Facebook | <a href="javascript:submit_delete_sign(<%= s.id %>)">Delete</a></div>
-  <div><a href="/custom_sign/edit_sign?id=<%= s.id %>">EDIT</a></div>
+<div class="saveOrderitem clearfix">
 
+  <div class="image"></div>
+  <div class="signDetails">
+    <h3><%= s.name %></h3>
+    <% unless s.description.blank? %>
+        <%= s.description %>
+    <% end %>
+   <p> Created on <%= s.created_at.strftime("%d %B %Y") %> - <b><%= s.price %></b> </p>
+    <p> Preview | <a href="/orders/add_saved_sign_to_basket?id=<%= s.id %>">
+    Add to Basket</a> | Post On Facebook | <a href="javascript:submit_delete_sign(<%= s.id %>)">Delete</a>
+     </p>
+  </div>
+  <div class="editSign">
+    <a href="/custom_sign/edit_sign?id=<%= s.id %>" class="button">EDIT</a>
+  </div>
   <%= form_tag '/custom_sign/delete_saved_sign', :id => 'delete_sign_form' do -%>
-      <input type="hidden" id="custom_sign_id" name="custom_sign_id" value="">
-      <input type="hidden" id="user_id" name="user_id" value="<%= @current_refinery_user.id %>">
-  <% end -%>
+        <input type="hidden" id="custom_sign_id" name="custom_sign_id" value="">
+        <input type="hidden" id="user_id" name="user_id" value="<%= @current_refinery_user.id %>">
+    <% end -%>
 </div>

@@ -319,7 +319,7 @@ header {
     float: left;
     font-size: 0.875em;
     font-weight: bold;
-    margin-right: 155px;
+    margin-right: 150px;
     position: relative;
     text-transform: uppercase;
     z-index: 20;
@@ -342,6 +342,26 @@ header {
       text-decoration: none;
       &:hover {
         color: $mid-blue;
+      }
+      &.loginLink {
+        background: $red;
+        color: #ffffff;
+        margin-right: 10px;
+        border:none;
+        height: 32px;
+        &:hover {
+          background: darken($red, 10%);
+        }
+      }
+      &.accountLink {
+        background: $green;
+        color: #ffffff;
+        margin-right: 15px;
+        border:none;
+        height: 32px;
+        &:hover {
+          background: darken($green, 10%);
+        }
       }
     }
   }
@@ -1356,12 +1376,38 @@ footer {
       text-transform: uppercase;
     }
     .companyInfomartion {
-      background: $light-blue;
+      background: $pale-blue;
       -webkit-border-radius: 3px;
       -moz-border-radius: 3px;
       border-radius: 3px;
       padding: 20px;
       font-size: 12px;
+      label {
+        display: block;
+        line-height: 12px;
+        margin-bottom: 0.55em;
+        text-transform: uppercase;
+        font-size: 12px;
+      }
+      input[type="password"], input[type="text"] {
+        border: 1px solid #517075;
+        margin-bottom: 0.75em;
+        padding: 5px 5px 6px;
+        width: 320px;
+        height: 20px;
+      }
+      .preview {
+        display: inline-block;
+        margin-bottom: 10px;
+      }
+      .alignRight {
+        text-align: right;
+        button {
+          height: 35px;
+          padding: 0 20px;
+          font-size: 14px;
+        }
+      }
       h3 {
         color: $white;
         text-shadow: 1px 1px 0 #2d3f42;
@@ -1372,6 +1418,56 @@ footer {
       }
       p {
         font-size: 12px;
+        margin: 0 0 5px;
+        line-height: 18px;
+      }
+      table {
+        a {
+          font-size: 14px;
+        }
+      }
+      .saveOrderitem {
+        padding: 15px 0;
+        border-top: 1px solid $mid-blue;
+        &:first-child {
+          border: none;
+        }
+        h3 {
+          font-size: 18px;
+          color: #2B3E42;
+          text-transform: none;
+          text-shadow: none;
+        }
+        .image {
+          width: 100px;
+          height: 60px;
+          background: url("no-sign-image.png") no-repeat;
+          float: left;
+          margin-right: 10px;
+        }
+        .signDetails {
+          float: left;
+        }
+        .editSign {
+          float: right;
+          a {
+            font-size: 14px;
+            padding: 0 20px;
+          }
+        }
+
+      }
+    }
+    &.profile {
+      margin-top: 20px;
+    }
+    &.actions {
+      margin: 20px 1%;
+      text-align: right;
+      input[type=submit], .button {
+        display: inline-block;
+        padding: 0 20px;
+        font-size: 14px;
       }
     }
   }
