@@ -9,4 +9,8 @@
   <div>Preview | <a href="/orders/add_saved_sign_to_basket?id=<%= s.id %>">Add to Basket</a> | Post On Facebook | <a href="javascript:submit_delete_sign(<%= s.id %>)">Delete</a></div>
   <div><a href="/custom_sign/edit_sign?id=<%= s.id %>">EDIT</a></div>
 
+  <%= form_tag '/custom_sign/delete_saved_sign', :id => 'delete_sign_form' do -%>
+      <input type="hidden" id="custom_sign_id" name="custom_sign_id" value="">
+      <input type="hidden" id="user_id" name="user_id" value="<%= @current_refinery_user.id %>">
+  <% end -%>
 </div>

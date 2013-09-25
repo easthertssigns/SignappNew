@@ -1,72 +1,86 @@
-<% content_for :body_content_left do %>
-    <%= render :partial => 'message' %>
-    <%= raw @page.content_for(:body_above) if @page %>
-    <%= raw @page.content_for(:body) if @page %>
-    <div id="member">
-      <%#= render :partial => "static_account" %>
-      <%#= render :partial => "static_profile" %>
-      <%#= render :partial => "static_organization" %>
-    </div>
-    <%= link_to t('.edit_profile'), edit_members_path %>
-    <%= raw @page.content_for(:body_below) if @page %>
-    <div>
-      <div>Your Saved Signs</div>
-      <div>
-        <% if @saved_signs.count > 0 %>
-            <% @saved_signs.each do |s| %>
-                <% if (s.deleted_by_user.nil? || s.deleted_by_user == false) && (s.deleted_by_admin.nil? || s.deleted_by_admin == false) %>
-                    <%= render "saved_sign_thumb", :s => s %>
-                <% end %>
-            <% end %>
-        <% else %>
-            You have no signs saved.
-        <% end %>
-      </div>
-      <div>Your Orders</div>
-      <% if @orders.count > 0 %>
-          <% @orders.each do |order| %>
-              <%= render "order_thumb", :order => order %>
-          <% end %>
-      <% else %>
-          <div>You haven't made any orders yet.</div>
-      <% end %>
-    </div>
-    <%= form_tag '/custom_sign/delete_saved_sign', :id => 'delete_sign_form' do -%>
-        <input type="hidden" id="custom_sign_id" name="custom_sign_id" value="">
-        <input type="hidden" id="user_id" name="user_id" value="<%= @member.id %>">
-    <% end -%>
+<%= render :partial => 'message' %>
+<div class="genericlayout blueBackground contact">
+  <div class="pageTitle">
+    <h1>Welcome</h1>
+  </div>
+  <div class="container_12">
+    <div class="container_960">
 
-<% end %>
-<% content_for :body_content_right do %>
-    <div>
-      <div>Connect With Facebook</div>
-      <div>
-        <div>By Linking with your Facebook account you can easily share your designed signs on your timeline.</div>
-        <div>[facebook link to go here]</div>
+      <%= raw @page.content_for(:body_above) if @page %>
+      <%= raw @page.content_for(:body) if @page %>
+      <div id="member">
+        <%#= render :partial => "static_account" %>
+        <%#= render :partial => "static_profile" %>
+        <%#= render :partial => "static_organization" %>
       </div>
-      <div>
-        <div>Change Your Password</div>
-        <%= form_for @member, :as => :member, :url => '/members' do |f| %>
-            <div>
-              <%= f.label :password, "New Password" %>
-              <br/>
-              <%= f.password_field :password %>
-              <br/>
-            </div>
-            <div>
-              <%= f.label :password_confirmation, "Confirm New Password" %>
-              <br/>
-              <%= f.password_field :password_confirmation %>
-              <br/>
-            </div>
-            <div><%= f.button "Save Changes" %></div>
-        <% end %>
+
+      <%= raw @page.content_for(:body_below) if @page %>
+
+      <div class="grid_7">
+        <div class="pageContent">
+          <div>
+            <h2>Your Saved Signs</h2></div>
+          <div class="companyInfomartion">
+            <% @saved_signs = current_refinery_user.get_saved_signs %>
+            <% if @saved_signs && @saved_signs.count > 0 %>
+                <% @saved_signs.each do |s| %>
+                    <% if (s.deleted_by_user.nil? || s.deleted_by_user == false) && (s.deleted_by_admin.nil? || s.deleted_by_admin == false) %>
+                        <%= render "saved_sign_thumb", :s => s %>
+                    <% end %>
+                <% end %>
+            <% else %>
+                You have no signs saved.
+            <% end %>
+          </div>
+          <div style="margin-top: 5px;"><h2>Your Orders</h2></div>
+          <div class="companyInfomartion">
+          <% if @orders && @orders.count > 0 %>
+              <% @orders.each do |order| %>
+                  <%= render "order_thumb", :order => order %>
+              <% end %>
+          <% else %>
+              <div>You haven't made any orders yet.</div>
+          <% end %>
+          </div>
+        </div>
       </div>
-      <div>
-        Change Your Delivery Details
+
+
+      <div class="grid_5 ">
+        <div class="pageContent">
+          <div>
+            <h2>Connect With Facebook</h2></div>
+          <div class="companyInfomartion">
+            <div>By Linking with your Facebook account you can easily share your designed signs on your timeline.</div>
+            <div>[facebook link to go here]</div>
+          </div>
+          <div  style="margin-top: 5px;" class="companyInfomartion">
+            <div>Change Your Password</div>
+            <%= form_for @member, :as => :member, :url => '/members' do |f| %>
+                <div>
+                  <%= f.label :password, "New Password" %>
+                  <br/>
+                  <%= f.password_field :password %>
+                  <br/>
+                </div>
+                <div>
+                  <%= f.label :password_confirmation, "Confirm New Password" %>
+                  <br/>
+                  <%= f.password_field :password_confirmation %>
+                  <br/>
+                </div>
+                <div><%= f.button "Save Changes" %></div>
+            <% end %>
+          </div>
+          <div style="margin-top: 5px;" class="companyInfomartion">
+            <%= link_to "Change Your Delivery Details", edit_members_path %>
+          </div>
+        </div>
       </div>
     </div>
-<% end %>
+  </div>
+  <div class="clear"></div>
+</div>
 <%= render :partial => "/refinery/content_page", :locals => {:hide_sections => [:bodybelow, :bodyabove]} %>
 <script language="javascript" type="text/javascript">
     function submit_delete_sign(id) {

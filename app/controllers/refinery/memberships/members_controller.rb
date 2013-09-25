@@ -14,6 +14,12 @@ module Refinery
         @orders = Spree::Order.all(:conditions => ["user_id = ?", current_refinery_user.id.to_s])
       end
 
+      def overview
+        @member = current_refinery_user
+        @saved_signs = SignData.all(:conditions => ["account_id = ?", current_refinery_user.id.to_s])
+        @orders = Spree::Order.all(:conditions => ["user_id = ?", current_refinery_user.id.to_s])
+      end
+
       def new
         @member = Member.new
       end
@@ -38,7 +44,7 @@ module Refinery
           flash[:notice] = t('successful', :scope => 'members.update', :email => @member.email)
           MembershipMailer.deliver_member_profile_updated(@member).deliver unless @member.has_role?(:admin)
           sign_in(Refinery::Memberships::Member.find(@member.id))
-          redirect_to profile_members_path
+          redirect_to "/members/welcome"
         else
           render :action => 'edit'
         end
@@ -68,6 +74,13 @@ module Refinery
         @saved_signs = SignData.all(:conditions => ["account_id = ?", current_refinery_user.id.to_s])
         @orders = Spree::Order.all(:conditions => ["user_id = ?", current_refinery_user.id.to_s])
         render :action => 'index'
+      end
+
+      def welcome
+        @member = current_refinery_user
+        @saved_signs = SignData.all(:conditions => ["account_id = ?", current_refinery_user.id.to_s])
+        @orders = Spree::Order.all(:conditions => ["user_id = ?", current_refinery_user.id.to_s])
+        render :action => 'welcome'
       end
 
       def activate

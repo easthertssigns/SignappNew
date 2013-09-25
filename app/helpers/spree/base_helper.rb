@@ -203,7 +203,9 @@ module Spree
       product = Spree::Product.find product_id
       image = nil
       if !product.editor_background_image_id.nil?
-        image = Spree::Asset.find product.editor_background_image_id
+        if Spree::Asset.where("id = ?", product.editor_background_image_id).count > 0
+          image = Spree::Asset.find product.editor_background_image_id
+        end
       end
       image
     end

@@ -2,6 +2,10 @@ class AccountController < ApplicationController
   # before_filter :authenticate_customer_account!
 
   def overview
+    @member = current_refinery_user
+    @saved_signs = SignData.all(:conditions => ["account_id = ?", current_refinery_user.id.to_s])
+    @orders = Spree::Order.all(:conditions => ["user_id = ?", current_refinery_user.id.to_s])
+    render :action => 'overview'
   end
 
   def sign_in

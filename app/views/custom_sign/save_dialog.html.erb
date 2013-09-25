@@ -1,6 +1,11 @@
 <% content_for :javascript_includes do %>
     <script language="javascript" type="text/javascript">
-      $(document).ready(function(){
+        $(document).ajaxSend(function(e, xhr, options) {
+            var token = $("meta[name='csrf-token']").attr("content");
+            xhr.setRequestHeader("X-CSRF-Token", token);
+        });
+
+        $(document).ready(function(){
           $("#sign_data_id").val(parent.$("#sign_data_id").val());
           $("#sign_data").val(parent.$("#sign_data").val());
           $("#svg_data").val(parent.$("#svg_data").val());
@@ -11,7 +16,9 @@
           //alert(parent.$("#sign_data").val());
 
           $("#save_button").click(function(){
-              //alert("save button clicked");
+              var token = $("meta[name='csrf-token']").attr("content");
+              alert(token);
+              // alert("saving sign");
               var id = $("#sign_data_id").val();
               var sign_data = $("#sign_data").val();
               var svg_data = $("#svg_data").val();
@@ -46,5 +53,5 @@
     <input type="hidden" name="account_id" id="account_id" value="">
     <input type="hidden" name="calculated_price" id="calculated_price" value="">
   </div>
-  <div><input type="button" id="save_button" value="Save"></div>
+  <div><input type="button" id="save_button" value="Save">Save this Sign</div>
 </form>

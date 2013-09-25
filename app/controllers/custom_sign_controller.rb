@@ -10,7 +10,7 @@ class CustomSignController < ApplicationController
       @new_sign.width = params[:width].to_i
       @new_sign.shape_id = params[:shapeSelect].to_i
       @new_sign.price = params[:calculated_price].to_f
-      @new_sign.account_id = params[:spree_user_id]
+      @new_sign.account_id = params[:account_id]
       @new_sign.sign_data = params[:custom_data]
 
       unless params[:name].nil?
@@ -18,6 +18,7 @@ class CustomSignController < ApplicationController
       end
 
       @new_sign.save
+      raise "sign saved"
       @message = "Custom Sign Created"
     else
       #load, modify and save existing custom sign
@@ -28,10 +29,12 @@ class CustomSignController < ApplicationController
       @current_sign.name = params[:name]
       @current_sign.description = params[:description]
       @current_sign.account_id = params[:account_id]
+      @current_sign.save
       svg_data = params[:svg_data]
       File.open("#{Rails.root}/tmp/" + params[:id].to_s + ".svg", 'w') {|f| f.write(svg_data)}
       @current_sign.image = File.open("#{Rails.root}/tmp/" + params[:id].to_s + ".svg", 'r')
       @current_sign.save
+      raise params.to_yaml + "SignData ID : " + params[:id]
       @message = "Custom Sign Saved"
     end
     respond_to do |format|

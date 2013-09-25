@@ -652,12 +652,12 @@ ActiveRecord::Schema.define(:version => 20130923150009) do
   add_index "spree_pending_promotions", ["user_id"], :name => "index_spree_pending_promotions_on_user_id"
 
   create_table "spree_preferences", :force => true do |t|
-    t.string   "name",       :limit => 100
-    t.integer  "owner_id",   :limit => 30
-    t.string   "owner_type", :limit => 50
-    t.text     "value",      :limit => 255
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
+    t.string   "name"
+    t.integer  "owner_id"
+    t.string   "owner_type"
+    t.text     "value"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
     t.string   "key"
     t.string   "value_type"
   end
@@ -954,16 +954,16 @@ ActiveRecord::Schema.define(:version => 20130923150009) do
   end
 
   create_table "spree_users", :force => true do |t|
-    t.string   "crypted_password",          :limit => 128
-    t.string   "salt",                      :limit => 128
+    t.string   "crypted_password"
+    t.string   "salt"
     t.string   "email"
     t.string   "remember_token"
     t.string   "remember_token_expires_at"
     t.string   "persistence_token"
     t.string   "single_access_token"
     t.string   "perishable_token"
-    t.integer  "login_count",                              :default => 0, :null => false
-    t.integer  "failed_login_count",                       :default => 0, :null => false
+    t.integer  "login_count",                             :default => 0, :null => false
+    t.integer  "failed_login_count",                      :default => 0, :null => false
     t.datetime "last_request_at"
     t.datetime "current_login_at"
     t.datetime "last_login_at"
@@ -972,8 +972,8 @@ ActiveRecord::Schema.define(:version => 20130923150009) do
     t.string   "login"
     t.integer  "ship_address_id"
     t.integer  "bill_address_id"
-    t.datetime "created_at",                                              :null => false
-    t.datetime "updated_at",                                              :null => false
+    t.datetime "created_at",                                             :null => false
+    t.datetime "updated_at",                                             :null => false
     t.string   "openid_identifier"
     t.string   "spree_api_key",             :limit => 48
   end

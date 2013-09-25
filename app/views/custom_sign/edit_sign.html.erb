@@ -205,8 +205,14 @@
 </ol>
 <script src="/assets/aligning_guidelines"></script>
 <script src="/assets/centering_guidelines"></script>
+
 <script>
 
+// added to fix de-authentication when posting ajax : Doug
+    $(document).ajaxSend(function(e, xhr, options) {
+        var token = $("meta[name='csrf-token']").attr("content");
+        xhr.setRequestHeader("X-CSRF-Token", token);
+    });
 
     (function () {
 
@@ -1127,9 +1133,9 @@
 
         <% if !params["id"].nil? %>
         //jQuery.ajax("/custom_sign/load_sign_ajax?saved_sign_id=" + <%=params["id"]%>);
-        $("#custom_data").val(<%= @sign_data.sign_data %>);
-        alert($("#custom_data").val());
-        var jsn = $.base64.decode($("#custom_data").val());
+        $("#sign_data").val('<%= @sign_data.sign_data %>');
+        alert($("#sign_data").val());
+        var jsn = $.base64.decode($("#sign_data").val());
         canvas.loadFromJSON(jsn);
         <% end %>
 
