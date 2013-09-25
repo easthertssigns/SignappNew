@@ -1,5 +1,5 @@
 class SignData < ActiveRecord::Base
-  attr_accessible :description, :height, :base_product_id, :price, :name, :shape_id, :show_as_product, :account_id, :width, :sign_data, :sharing_key, :image
+  attr_accessible :description, :height, :spree_product_id, :price, :name, :shape_id, :show_as_product, :account_id, :width, :sign_data, :sharing_key, :image
   has_attached_file :image,
                     :styles => {
                         :extra_large => ["300x300", :jpg],
