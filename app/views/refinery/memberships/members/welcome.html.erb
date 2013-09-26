@@ -49,7 +49,7 @@
         <div class="pageContent">
           <div>
             <h2>Change Your Password</h2></div>
-          <div  style="margin-top: 5px;" class="companyInfomartion">
+          <div style="margin-top: 5px;" class="companyInfomartion">
             <%= form_for @member, :as => :member, :url => '/members' do |f| %>
                 <div>
                   <%= f.label :password, "New Password" %>
@@ -83,4 +83,8 @@
             $("#custom_sign_id").val("");
         }
     }
+
+    $(document).ready(function () {
+
+    });
 </script>

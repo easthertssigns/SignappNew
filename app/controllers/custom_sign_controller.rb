@@ -32,7 +32,7 @@ class CustomSignController < ApplicationController
       @current_sign.save
       svg_data = params[:svg_data]
       # Saving sign as thumb is locking up the server
-      #File.open("#{Rails.root}/tmp/" + params[:id].to_s + ".svg", 'w') {|f| f.write(svg_data)}
+      File.open("#{Rails.root}/tmp/" + params[:id].to_s + ".svg", 'w') {|f| f.write(svg_data)}
       #@current_sign.image = File.open("#{Rails.root}/tmp/" + params[:id].to_s + ".svg", 'r')
       #@current_sign.save
       #raise params.to_yaml + "SignData ID : " + params[:id]

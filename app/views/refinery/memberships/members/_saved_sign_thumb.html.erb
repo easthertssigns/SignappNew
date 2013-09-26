@@ -1,6 +1,8 @@
 <div class="saveOrderitem clearfix">
 
-  <div class="image"></div>
+  <div class="image svg_data_viewbox">
+      <%= raw s.get_local_svg %>
+  </div>
   <div class="signDetails">
     <h3><%= s.name %></h3>
     <% unless s.description.blank? %>

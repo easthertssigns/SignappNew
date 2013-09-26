@@ -12,4 +12,29 @@ class SignData < ActiveRecord::Base
                     :bucket => "signapp-prod",
                     :url => '/spree/products/:id/:style/:basename.:extension',
                     :path => ':rails_root/public/spree/products/:id/:style/:basename.:extension'
+
+  def get_local_svg
+    # try and get the SVG file and read it
+
+
+    f = File.open("#{Rails.root}/tmp/#{id}.svg")
+    @doc = Nokogiri::XML(f)
+    f.close
+
+    svg = @doc.at_css "svg"
+
+    width = svg["width"].to_i
+    svg.attributes["width"].remove
+
+    height = svg["height"].to_i
+    svg.attributes["height"].remove
+
+    svg["viewBox"] = "0 0 #{width} #{height}"
+
+    svg["width"] = "100"
+    svg["height"] = "60"
+
+    @doc.to_s
+  end
 end
+
