@@ -260,7 +260,7 @@ module Spree
     end
     
     def add_variant(variant, quantity = 1, sign_data)
-      current_item = find_line_item_by_variant(variant)
+      current_item = find_line_item_by_variant_sign_data(variant, sign_data)
       if current_item
         current_item.quantity += quantity
         current_item.save
@@ -313,6 +313,10 @@ module Spree
 
     def find_line_item_by_variant(variant)
       line_items.detect { |line_item| line_item.variant_id == variant.id }
+    end
+
+    def find_line_item_by_variant_sign_data(variant, sign_data)
+      line_items.detect { |line_item| line_item.variant_id == variant.id && sign_data.id == line_item.sign_data_id}
     end
 
     def ship_total

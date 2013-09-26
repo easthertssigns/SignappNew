@@ -293,7 +293,7 @@
             //serialize the custom sign data
             //add this to the form field
             json = JSON.stringify(canvas);
-            // alert(json);
+             alert(json);
             var svg_data = canvas.toSVG();
             // alert(svg_data);
             var custom_data = $.base64.encode(json);
@@ -304,12 +304,14 @@
             var name = $("#name").val();
             var description = $("#description").val();
             var calculated_price = $("#calculated_price").val();
+
+            alert("about to post sign to basket");
             $.ajax({
                 type: "POST",
                 url: "/custom_sign/save_sign",
                 data: { authenticity_token: $("meta[name='csrf-token']").attr("content"), id: id, sign_data: custom_data, svg_data: svg_data, account_id: account_id, name: name, description: description, calculated_price: calculated_price }
             }).done(function (msg) {
-                        //alert( "Data Saved: " + msg );
+                        alert( "Data Saved: " + msg );
                         $("#customSignForm").prepend("<input type='hidden' name='authenticity_token' value='" + $("meta[name='csrf-token']").attr("content") + "'>")
                         $("#customSignForm").attr("action", "/orders/populate");
                         //submit the form to the basket
