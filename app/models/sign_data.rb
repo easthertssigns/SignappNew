@@ -1,5 +1,5 @@
 class SignData < ActiveRecord::Base
-  attr_accessible :description, :height, :spree_product_id, :price, :name, :shape_id, :show_as_product, :account_id, :width, :sign_data, :sharing_key, :image
+  attr_accessible :description, :height, :spree_product_id, :price, :name, :shape_id, :show_as_product, :account_id, :width, :sign_data, :sharing_key, :image, :svg_data
   has_attached_file :image,
                     :styles => {
                         :extra_large => ["300x300", :jpg],
@@ -15,26 +15,103 @@ class SignData < ActiveRecord::Base
 
   def get_local_svg
     # try and get the SVG file and read it
+    if svg_data
+      @doc = Nokogiri::XML(svg_data)
+
+      svg = @doc.at_css "svg"
 
 
-    f = File.open("#{Rails.root}/tmp/#{id}.svg")
-    @doc = Nokogiri::XML(f)
-    f.close
+      width = svg["width"].to_i
+      height = svg["height"].to_i
 
-    svg = @doc.at_css "svg"
+      # add clipping path?!?!?!
 
-    width = svg["width"].to_i
-    svg.attributes["width"].remove
+      #<defs>
+      #  <clipPath id="signClip">
+      #  <rect x="0" y ="0" width="150" height="150" style="fill:black;stroke:pink;stroke-width:5;fill-opacity:0; stroke-opacity:1"/>
+      #  </clipPath>
+      #</defs>
 
-    height = svg["height"].to_i
-    svg.attributes["height"].remove
+      defs = Nokogiri::XML::Node.new "defs", @doc
+      clip_path = Nokogiri::XML::Node.new "clipPath", @doc
+      rect = Nokogiri::XML::Node.new "rect", @doc
 
-    svg["viewBox"] = "0 0 #{width} #{height}"
+      rect["x"] = 0
+      rect["y"] = 0
+      rect["width"] = width
+      rect["height"] = height
+      #rect["style"] = "fill:black;stroke:pink;stroke-width:5;fill-opacity:0; stroke-opacity:1"
 
-    svg["width"] = "100"
-    svg["height"] = "60"
+      clip_path["id"] = "signClip"
+      #clip_path["clipPathUnits"] = "objectBoundingBox"
 
-    @doc.to_s
+      g = @doc.at_css "g"
+
+      @doc.css("g").each do |node|
+        t = node["transform"]
+
+        translate_match = false
+        scale_match = false
+
+        neg_t = ""
+
+        # match translate
+        if t =~ /translate\((-?[0-9]\d*(\.\d+)?) (-?[0-9]\d*(\.\d+)?)\)/
+          matches = t.match /translate\((-?[0-9]\d*(\.\d+)?) (-?[0-9]\d*(\.\d+)?)\)/
+          #raise matches[0]
+
+          tmp = matches[0].gsub! 'translate(', ''
+          tmp = tmp.gsub! ')', ''
+
+          nums = tmp.split
+
+          neg_t = "translate(" + (-nums[0].to_f).to_s + " " + (-nums[1].to_f).to_s + ")"
+        end
+
+        # match scale
+        if t =~ /scale\((-?[0-9]\d*(\.\d+)?) (-?[0-9]\d*(\.\d+)?)\)/
+          matches = t.match /scale\((-?[0-9]\d*(\.\d+)?) (-?[0-9]\d*(\.\d+)?)\)/
+
+          tmp = matches[0].gsub! 'scale(', ''
+          tmp = tmp.gsub! ')', ''
+
+          nums = tmp.split
+
+          if neg_t.length > 0
+            neg_t += " "
+          end
+          neg_t += "scale(" + (-nums[0].to_f).to_s + " " + (-nums[1].to_f).to_s + ")"
+        end
+
+        #raise neg_t + " > " + t
+
+        # <use xlink:href="#words" transform="translate(110,0)" style="clip-path: url(#circularPath);"/>
+        use = Nokogiri::XML::Node.new "use", @doc
+
+        #use[""]
+      end
+
+
+      g["clip-path"] = "url(#signClip)"
+      g["overflow"] = "hidden"
+      svg["overflow"] = "hidden"
+
+      clip_path.add_child(rect)
+      defs.add_child(clip_path)
+
+      svg.add_child(defs)
+
+      #g.attributes["transform"].remove
+
+      svg["width"] = 500
+      svg["height"] = 300
+
+      svg["viewBox"] = "0 0 #{width} #{height}"
+
+      g["viewBox"] = "0 0 #{width} #{height}"
+
+      @doc.to_s
+    end
   end
 end
 

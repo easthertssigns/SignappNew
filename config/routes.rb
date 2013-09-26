@@ -42,6 +42,7 @@ SignappNew::Application.routes.draw do
   match "custom_sign/reset_sign_data_ajax" => "custom_sign#reset_sign_data_ajax"
   match "custom_sign/get_graphic_url_ajax" => "custom_sign#get_graphic_url_ajax"
   match "custom_sign/write_file" => "custom_sign#write_file"
+  match "custom_sign/get_sign_svg/:id" => "custom_sign#get_sign_svg"
 
   match "admin/sign_products/product_not_found" => "spree/admin/sign_products#product_not_found"
 

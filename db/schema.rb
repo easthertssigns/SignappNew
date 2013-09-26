@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130925120716) do
+ActiveRecord::Schema.define(:version => 20130926103933) do
 
   create_table "custom_signs", :force => true do |t|
     t.integer  "spree_user_id"
@@ -357,6 +357,7 @@ ActiveRecord::Schema.define(:version => 20130925120716) do
     t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
+    t.text     "svg_data"
   end
 
   create_table "sign_data_to_categories", :force => true do |t|

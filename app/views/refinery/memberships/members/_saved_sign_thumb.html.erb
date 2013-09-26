@@ -1,7 +1,10 @@
 <div class="saveOrderitem clearfix">
 
+  <!--<div class="image svg_data_viewbox">-->
+    <!--<%= raw s.get_local_svg %>-->
+  <!--</div>-->
   <div class="image svg_data_viewbox">
-      <%= raw s.get_local_svg %>
+    <img src="/custom_sign/get_sign_svg/<%= s.id.to_s %>.svg">
   </div>
   <div class="signDetails">
     <h3><%= s.name %></h3>

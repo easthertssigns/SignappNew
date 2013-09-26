@@ -26,16 +26,18 @@ class CustomSignController < ApplicationController
       @current_sign = SignData.find params[:id]
       @current_sign.price = params[:calculated_price].to_f
       @current_sign.sign_data = params[:sign_data]
+      #raise params[:svg_data]
+      @current_sign.svg_data = params[:svg_data]
       @current_sign.name = params[:name]
       @current_sign.description = params[:description]
       @current_sign.account_id = params[:account_id]
       @current_sign.save
-      svg_data = params[:svg_data]
-      # Saving sign as thumb is locking up the server
-      File.open("#{Rails.root}/tmp/" + params[:id].to_s + ".svg", 'w') {|f| f.write(svg_data)}
-      #@current_sign.image = File.open("#{Rails.root}/tmp/" + params[:id].to_s + ".svg", 'r')
-      #@current_sign.save
-      #raise params.to_yaml + "SignData ID : " + params[:id]
+      #svg_data = params[:svg_data]
+      ## Saving sign as thumb is locking up the server
+      #File.open("#{Rails.root}/tmp/" + params[:id].to_s + ".svg", 'w') {|f| f.write(svg_data)}
+      ##@current_sign.image = File.open("#{Rails.root}/tmp/" + params[:id].to_s + ".svg", 'r')
+      ##@current_sign.save
+      ##raise params.to_yaml + "SignData ID : " + params[:id]
       @message = "Custom Sign Saved"
     end
     respond_to do |format|
@@ -59,6 +61,18 @@ class CustomSignController < ApplicationController
     @sign.destroy
   end
 
+  def get_sign_svg
+    @sign = SignData.find params[:id]
+
+    if @sign.svg_data
+      respond_to do |format|
+        format.svg {
+          render :inline => @sign.get_local_svg
+        }
+      end
+    end
+  end
+
   def delete_saved_sign
     @sign = SignData.first(:conditions => ["id = ? AND account_id = ? ", params[:custom_sign_id], current_refinery_user.id.to_i])
     unless @sign.nil?
@@ -77,13 +91,13 @@ class CustomSignController < ApplicationController
 
   def reset_sign_data_ajax
     @sign_data = SignData.find params[:id]
-    render :json => { :sign_data => @sign_data.sign_data, :price => @sign_data.price }
+    render :json => {:sign_data => @sign_data.sign_data, :price => @sign_data.price}
   end
 
   def get_graphic_url_ajax
-    sign_graphic = SignGraphic. find params[:id]
+    sign_graphic = SignGraphic.find params[:id]
     image_path = sign_graphic.svg_file.url(:original)
-    render :json => { :image_path => image_path }
+    render :json => {:image_path => image_path}
   end
 
   def load_sign_list
@@ -161,7 +175,7 @@ class CustomSignController < ApplicationController
 
     calculated_price = (total_sign_area * base_price).to_f
 
-    render :json => { :result => calculated_price, :base_price => base_price }
+    render :json => {:result => calculated_price, :base_price => base_price}
   end
 
 end

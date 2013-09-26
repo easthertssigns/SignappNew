@@ -269,9 +269,71 @@
         end
         %>
 
+        fabric.loadSVGFromURL('/assets/test_mask.svg', function(objects, options) {
+            var mask = fabric.util.groupSVGElements(objects, options);
+
+            mask.scaleX = canvas.width / mask.width;
+            mask.scaleY = canvas.width / mask.width;
+
+            mask.top = canvas.height / 2;
+            mask.left = canvas.width / 2 ;
 
 
-        //canvas.renderAll();
+
+
+            alert(canvas.width.toString());
+
+            alert(mask.height.toString());
+
+//            var shadow = {
+//                color: 'rgba(0,0,0,0.6)',
+//                blur: 20,
+//                offsetX: 10,
+//                offsetY: 10,
+//                opacity: 0.6,
+//                fillShadow: true,
+//                strokeShadow: true
+//            }
+//
+//            mask.setShadow(shadow);
+
+            canvas.clipTo = function (ctx) {
+              mask.render(ctx);
+            }
+
+            canvas.renderAll();
+
+//            fabric.Image.fromURL('path/to/image.png', function(img) {
+//                img.set({
+//                    left: 250,
+//                    top: 250,
+//                    clipTo: function (ctx) {
+//                        logo.render(ctx);
+//                    }
+//                });
+//
+//                canvas.add(img);
+//
+//            });
+        });
+
+        canvas.clipTo = function (ctx) {
+            var p = "M652.736,218c0-1,0.005-0.825,0.005-0.862c0-46.91-121.698-85.313-271.818-85.313 c-150.122,0-271.821,38.591-271.821,85.501c0,0.038,0.004-0.325,0.004,0.675H88v265h596V218H652.736z";
+
+            var p2 = "M0.438,0.438c0,0,3.719,1.469,5.141,0.875s-0.234,5.25-0.234,5.25L1.016,7.047L0.359,2.375L0.438,0.438z";
+            var path = new fabric.Path(p2, {
+                fill : '#000000',
+                left: 100,
+                top:100
+            });
+
+            path.render(ctx);
+//            ctx.arc(300, 300, 200, 0, Math.PI*2, true);
+//            alert(path.toString());
+
+        };
+
+        canvas.renderAll();
 
         //canvas.clear();
 
@@ -293,7 +355,7 @@
             //serialize the custom sign data
             //add this to the form field
             json = JSON.stringify(canvas);
-             alert(json);
+            alert(json);
             var svg_data = canvas.toSVG();
             // alert(svg_data);
             var custom_data = $.base64.encode(json);
@@ -311,7 +373,7 @@
                 url: "/custom_sign/save_sign",
                 data: { authenticity_token: $("meta[name='csrf-token']").attr("content"), id: id, sign_data: custom_data, svg_data: svg_data, account_id: account_id, name: name, description: description, calculated_price: calculated_price }
             }).done(function (msg) {
-                        alert( "Data Saved: " + msg );
+                        alert("Data Saved: " + msg);
                         $("#customSignForm").prepend("<input type='hidden' name='authenticity_token' value='" + $("meta[name='csrf-token']").attr("content") + "'>")
                         $("#customSignForm").attr("action", "/orders/populate");
                         //submit the form to the basket
@@ -1131,7 +1193,8 @@
 
         <% if !params["id"].nil? %>
         //jQuery.ajax("/custom_sign/load_sign_ajax?saved_sign_id=" +
-        <%=params["id"]%>);
+        <%=params["id"]%>)
+        ;
         $("#sign_data").val('<%= @sign_data.sign_data %>');
         alert($("#sign_data").val());
         var jsn = $.base64.decode($("#sign_data").val());
