@@ -229,6 +229,9 @@
         SignHeight = <%= @sign_data.height %>;
         // alert(SignHeight);
 
+        // track the change activity on canvas
+        var canvas_track_changes = false;
+
         if (SignWidth / canvasWidth > SignHeight / canvasHeight) {
             canvasHeight = (canvasWidth / SignWidth) * SignHeight;
         }
@@ -247,43 +250,61 @@
         // alert(canvasWidth);
         // alert(canvasHeight);
 
+        canvas.backgroundImageStretch = true;
+
+        var bg_image_url = '';
+
         //this is where the background image is set. Need to think about how to store and recall this.
         <% background_image = get_background_image_for_product(@sign_data.spree_product_id) %>
-        <%
-        if background_image.nil?
-           %>
-        canvas.setBackgroundImage('/assets/customisation/brass.jpg', function () {
-            canvas.renderAll();
-        });
-        <%
-        else
-                %>
+        <% if background_image.nil? %>
 
+//        canvas.setBackgroundImage('/assets/customisation/brass_test.jpg', function () {
+////            canvas.item(0).scaleToWidth(canvas.getWidth());
+//            canvas.renderAll();
+//        });
 
-        var bg_image_url = '<%= background_image.attachment.url(:product) %>';
+        bg_image_url = '/assets/customisation/brass_test.jpg';
+
+        <% else %>
+
+        bg_image_url = '<%= background_image.attachment.url(:product) %>';
         canvas.setBackgroundImage(bg_image_url, function () {
             //canvas.setBackgroundImage('/assets/customisation/brass.jpg', function () {
             canvas.renderAll();
         });
-        <%
-        end
-        %>
 
-        fabric.loadSVGFromURL('/assets/test_mask.svg', function(objects, options) {
+        <% end %>
+
+        fabric.Image.fromURL(bg_image_url, function (oImg) {
+            if ((canvas.width / canvas.height) > (oImg.width / oImg.height)) {
+                oImg.scaleToWidth(canvas.getWidth());
+            }
+            else {
+                // portrait
+                oImg.scaleToHeight(canvas.getHeight());
+            }
+
+            oImg.top = canvas.height / 2;
+            oImg.left = canvas.width / 2;
+
+            oImg.selectable = false;
+            canvas.add(oImg);
+        });
+
+        // set the mask for the sign
+        fabric.loadSVGFromURL('/assets/test_mask.svg', function (objects, options) {
             var mask = fabric.util.groupSVGElements(objects, options);
 
             mask.scaleX = canvas.width / mask.width;
             mask.scaleY = canvas.width / mask.width;
 
             mask.top = canvas.height / 2;
-            mask.left = canvas.width / 2 ;
+            mask.left = canvas.width / 2;
 
 
-
-
-            alert(canvas.width.toString());
-
-            alert(mask.height.toString());
+//            alert(canvas.width.toString());
+//
+//            alert(mask.height.toString());
 
 //            var shadow = {
 //                color: 'rgba(0,0,0,0.6)',
@@ -298,7 +319,7 @@
 //            mask.setShadow(shadow);
 
             canvas.clipTo = function (ctx) {
-              mask.render(ctx);
+                mask.render(ctx);
             }
 
             canvas.renderAll();
@@ -317,23 +338,26 @@
 //            });
         });
 
-        canvas.clipTo = function (ctx) {
-            var p = "M652.736,218c0-1,0.005-0.825,0.005-0.862c0-46.91-121.698-85.313-271.818-85.313 c-150.122,0-271.821,38.591-271.821,85.501c0,0.038,0.004-0.325,0.004,0.675H88v265h596V218H652.736z";
-
-            var p2 = "M0.438,0.438c0,0,3.719,1.469,5.141,0.875s-0.234,5.25-0.234,5.25L1.016,7.047L0.359,2.375L0.438,0.438z";
-            var path = new fabric.Path(p2, {
-                fill : '#000000',
-                left: 100,
-                top:100
-            });
-
-            path.render(ctx);
-//            ctx.arc(300, 300, 200, 0, Math.PI*2, true);
-//            alert(path.toString());
-
-        };
+//        canvas.clipTo = function (ctx) {
+//            var p = "M652.736,218c0-1,0.005-0.825,0.005-0.862c0-46.91-121.698-85.313-271.818-85.313 c-150.122,0-271.821,38.591-271.821,85.501c0,0.038,0.004-0.325,0.004,0.675H88v265h596V218H652.736z";
+//
+//            var p2 = "M0.438,0.438c0,0,3.719,1.469,5.141,0.875s-0.234,5.25-0.234,5.25L1.016,7.047L0.359,2.375L0.438,0.438z";
+//            var path = new fabric.Path(p2, {
+//                fill: '#000000',
+//                left: 100,
+//                top: 100
+//            });
+//
+//            path.render(ctx);
+////            ctx.arc(300, 300, 200, 0, Math.PI*2, true);
+////            alert(path.toString());
+//
+//        };
 
         canvas.renderAll();
+
+        // setup complete
+
 
         //canvas.clear();
 
@@ -367,7 +391,7 @@
             var description = $("#description").val();
             var calculated_price = $("#calculated_price").val();
 
-            alert("about to post sign to basket");
+            // alert("about to post sign to basket");
             $.ajax({
                 type: "POST",
                 url: "/custom_sign/save_sign",
@@ -585,6 +609,7 @@
             var activeObject = canvas.getActiveObject();
             if (canvas.getActiveObject()) {
                 activeObject.fill = fillColor;
+                // canvas.fire('object:modified', { target: canvas.getActiveObject() });
             }
             canvas.renderAll();
         });
@@ -1074,32 +1099,81 @@
             $(this).removeClass("active");
         });
 
-        /*        (function () {
-         var undoStack = [];
-         var redoStack = [];
-         var currentState = [];
+        (function () {
+            var undoStack = [];
+            var redoStack = [];
+            var currentState = [];
 
-         canvas.observe('object:modified', function () {
-         obj = fabric.Object.saveState;
-         undoStack.push(obj);
-         alert("Undo: " + undoStack.length);
-         alert("Redo: " + redoStack.length);
-         });
 
-         $('#undo').click(function undo() {
-         redoStack.push(obj);
-         canvas.renderAll(undoStack.pop(obj));
-         alert("Undo: " + undoStack.length);
-         alert("Redo: " + redoStack.length);
-         });
+            canvas.observe('object:modified', function () {
+                if (canvas_track_changes) {
+                    var obj = JSON.stringify(canvas);
+                    undoStack.push(obj);
+                     alert('modified');
+//                alert("Undo: " + undoStack.length);
+//                alert("Redo: " + redoStack.length);
+                }
 
-         $('#redo').click(function redo() {
-         undoStack.push(obj);
-         canvas.renderAll(redoStack.pop(obj));
-         alert("Undo: " + undoStack.length);
-         alert("Redo: " + redoStack.length);
-         });
-         })();*/
+            });
+
+            canvas.observe('object:added', function () {
+                if (canvas_track_changes) {
+                    var obj = JSON.stringify(canvas);
+                    undoStack.push(obj);
+                    alert('created');
+//                alert("Undo: " + undoStack.length);
+//                alert("Redo: " + redoStack.length);
+                }
+            });
+
+            canvas.observe('object:removed', function () {
+
+                if (canvas_track_changes) {
+                    var obj = JSON.stringify(canvas);
+                    undoStack.push(obj);
+                    alert('removed');
+//                alert("Undo: " + undoStack.length);
+//                alert("Redo: " + redoStack.length);
+                }
+            });
+
+
+            $('#undo').click(function undo() {
+
+                canvas_track_changes = false;
+
+                //alert("starting to load from json, disable change tracking");
+
+                var obj = JSON.stringify(canvas);
+                redoStack.push(obj);
+
+                canvas.loadFromJSON(undoStack.pop());
+                //canvas = undoStack.pop();
+                canvas.renderAll();
+
+                //alert("fnished to load from json, enable change tracking");
+
+
+                // alert("Undo Click : " + undoStack.length);
+//                alert("Redo: " + redoStack.length);
+            });
+
+            $('#redo').click(function redo() {
+
+                canvas_track_changes = false;
+
+                //alert("starting to load from json, disable change tracking");
+
+                var obj = JSON.stringify(canvas);
+                undoStack.push(obj);
+
+                canvas.loadFromJSON(redoStack.pop());
+                //canvas = undoStack.pop();
+                canvas.renderAll();
+            });
+
+            canvas_track_changes = true;
+        })();
 
         $('#zoomIn').click(function () {
             if (canvasScale < 3.375) {
