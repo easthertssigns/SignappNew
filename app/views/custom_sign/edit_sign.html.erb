@@ -20,7 +20,9 @@
   <div style="position: absolute; top: 90px; color: white; left: 50px; display: none;">Canvas Size : Width
     : <%= (params[:width].to_f)/10 %>cm X Height : <%= (params[:height].to_f)/10 %>cm
   </div>
-  <canvas id="my-canvas" width="600" height="600"></canvas>
+
+    <canvas style="z-index: 10;" id="my-canvas" width="600" height="600"></canvas>
+
 
   <!--Object buttons-->
   <div class="majorFunctions" id="majorFunctions">
@@ -297,6 +299,11 @@
 
             mask.scaleX = canvas.width / mask.width;
             mask.scaleY = canvas.width / mask.width;
+
+            // objects[0].setShadow({ color: 'rgba(0,0,0,0.3)' });
+
+            // alert("mask objects count : " + objects[0]["shadow"].toString());
+//            objects[0].setShadow({ color: 'rgba(0,0,0,0.3)' });
 
             mask.top = canvas.height / 2;
             mask.left = canvas.width / 2;
@@ -1109,7 +1116,7 @@
                 if (canvas_track_changes) {
                     var obj = JSON.stringify(canvas);
                     undoStack.push(obj);
-                     alert('modified');
+                    alert('modified');
 //                alert("Undo: " + undoStack.length);
 //                alert("Redo: " + redoStack.length);
                 }
