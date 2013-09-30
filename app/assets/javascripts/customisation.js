@@ -87,6 +87,7 @@ $(function () {
 
     $('.showPaletteOnly').spectrum({
         showPaletteOnly:true,
+        clickoutFiresChange: false,
         palette:[
             ['#ff8080', '#ffff80', '#80ff80', '#00ff80', '#80ffff', '#0080ff', '#ff80c0', '#ff80ff'],
             ['#ff0000', '#ffff00', '#80ff00', '#00ff40', '#00ffff', '#0080c0', '#8080c0', '#ff00ff'],
