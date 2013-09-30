@@ -10,15 +10,16 @@ $(window).load(function () {
         $('#addText, #addShape, #addBorder, .priceWrapper, #addToBasket').removeClass('overlay');
         $('#tourOverlay').fadeOut();
     }
-    $( "#joyRidePopup0 .button").live( "click", function() {
-          $('#addText').removeClass('overlay');
+
+    $("#joyRidePopup0 .button").live("click", function () {
+        $('#addText').removeClass('overlay');
         $('#addShape').addClass('overlay');
     });
-    $('#joyRidePopup1 .button').live( "click", function() {
+    $('#joyRidePopup1 .button').live("click", function () {
         $('#addShape').removeClass('overlay');
         $('#addBorder').addClass('overlay');
     });
-    $('#joyRidePopup2 .button').live( "click", function() {
+    $('#joyRidePopup2 .button').live("click", function () {
         $('#addBorder').removeClass('overlay');
         $('.priceWrapper, #addToBasket').addClass('overlay');
     });
@@ -26,8 +27,8 @@ $(window).load(function () {
     $('#startTutorial').click(function () {
         $('#tourOverlay').fadeIn();
         $(this).joyride({
-        tipContent:'#tourSteps',
-        postRideCallback:hideTourOverlay
+            tipContent: '#tourSteps',
+            postRideCallback: hideTourOverlay
         });
     });
 });
@@ -42,9 +43,9 @@ $(function () {
     });
 
     $('#toolPalette').draggable({
-        containment:'#canvasZoomWrapper',
-        handle:'#grabHandle',
-        scroll:false
+        containment: '#canvasZoomWrapper',
+        handle: '#grabHandle',
+        scroll: false
     });
 
     function fontFamily(fontFamily) {
@@ -53,10 +54,10 @@ $(function () {
     }
 
     $('#fontFamily').select2({
-        formatResult:fontFamily,
-        formatSelection:fontFamily,
-        minimumResultsForSearch:5,
-        width:"element"
+        formatResult: fontFamily,
+        formatSelection: fontFamily,
+        minimumResultsForSearch: 5,
+        width: "element"
     });
 
     function shapeSelect(shape) {
@@ -65,11 +66,11 @@ $(function () {
     }
 
     $('#shapeSelect').select2({
-        formatResult:shapeSelect,
-        formatSelection:shapeSelect,
-        minimumResultsForSearch:5,
-        placeholder:"Select a Shape",
-        width:"element"
+        formatResult: shapeSelect,
+        formatSelection: shapeSelect,
+        minimumResultsForSearch: 5,
+        placeholder: "Select a Shape",
+        width: "element"
     });
 
 //    function borderSelect(border) {
@@ -80,15 +81,15 @@ $(function () {
     $('#borderSelect').select2({
 //        formatResult:borderSelect,
 //        formatSelection:borderSelect,
-        minimumResultsForSearch:1000,
-        placeholder:"Select a Border",
-        width:"element"
+        minimumResultsForSearch: 1000,
+        placeholder: "Select a Border",
+        width: "element"
     });
 
     $('.showPaletteOnly').spectrum({
-        showPaletteOnly:true,
+        showPaletteOnly: true,
         clickoutFiresChange: false,
-        palette:[
+        palette: [
             ['#ff8080', '#ffff80', '#80ff80', '#00ff80', '#80ffff', '#0080ff', '#ff80c0', '#ff80ff'],
             ['#ff0000', '#ffff00', '#80ff00', '#00ff40', '#00ffff', '#0080c0', '#8080c0', '#ff00ff'],
             ['#804040', '#ff8040', '#00ff00', '#008080', '#004080', '#8080ff', '#800040', '#ff0080'],
@@ -109,16 +110,17 @@ $(function () {
     var footerHeight = $('#footerWrapper').outerHeight();
 
     $('#footerWrapper').css({
-        bottom:-footerHeight
+        bottom: -footerHeight
     });
 
     $('#footerTab').toggle(
         function () {
-            $('#footerWrapper').animate({bottom:0});
+            $('#footerWrapper').animate({bottom: 0});
         },
         function () {
-            $('#footerWrapper').animate({bottom:-footerHeight});
+            $('#footerWrapper').animate({bottom: -footerHeight});
         }
     )
 
 });
+
