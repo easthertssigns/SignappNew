@@ -4,35 +4,132 @@
   <title></title>
   <style type="text/css">
       body {
-          width: 100% !important;
-          background-color: #FEFEFE !important;
-          letter-spacing: normal !important;
-          word-spacing: 0px !important;
-          margin-top: 0 !important;
-          padding-top: 0 !important;
-          margin-right: 0 !important;
-          padding-right: 0 !important;
-          margin-bottom: 0 !important;
-          padding-bottom: 0 !important;
-          margin-left: 0 !important;
-          padding-left: 0 !important;
-          text-shadow: none !important;
-          color: #ffffff !important;
-          font-size: 12px !important;
-          line-height: 17px !important;
-          font-family: Arial, "Helvetica Neue", Helvetica, sans-serif !important;
+          background: #2FC1D2;
+          color: #222222;
+          font-family: sans-serif;
       }
 
       a {
-          color: #f5d42d;
+          color: #222222;
+          font-weight: bold;
+      }
+
+      h1, h2, h3, h4 {
+          color: #2FC1D2;
+          font-weight: bold;
       }
 
       h1 {
-          line-height: 30px;
+          font-size: 22px;
+          margin: 10px 0;
+      }
+
+      p {
+          margin: 10px 0;
+      }
+
+      #wrapper {
+          background: white;
+          box-shadow: 4px 5px 4px #666655;
+          margin: 0px auto 30px;
+          padding: 20px 40px 40px;
+          width: 600px;
+      }
+
+      footer {
+          font-size: 11px;
       }
 
       table {
+          border: 1px solid #cccccc;
+          border-bottom-color: #aaaaaa;
           border-collapse: collapse;
+          border-right-color: #aaaaaa;
+          display: table;
+          margin-bottom: 5px;
+          width: 100%;
+      }
+
+      table .number {
+          min-width: 45px;
+          text-align: right;
+      }
+
+      table th {
+          background: #2FC1D2;
+          color: white;
+          font-weight: bold;
+          padding: 7px 10px;
+          text-shadow: #222222 1px 1px 0px;
+      }
+
+      table tr.alt td {
+          background: #eeeeee;
+      }
+
+      table td {
+          border-bottom: 1px solid #dddddd;
+          padding: 6px 10px;
+      }
+
+      table td.name {
+          min-width: 180px;
+      }
+
+      table td.title, table td.subtotal {
+          font-weight: bold;
+      }
+
+      table.split td {
+          width: 50%;
+      }
+
+      #order_total {
+          font-weight: bold;
+      }
+
+      #subtotal-row td, #order-total td {
+          border-top: solid 1px #aaaaaa;
+      }
+
+      #addresses {
+          width: 600px;
+      }
+
+      #addresses .address {
+          width: 292px;
+      }
+
+      #addresses .address#billing {
+          float: left;
+      }
+
+      #addresses .address#shipping {
+          float: right;
+      }
+      .address {
+          border: 1px solid #cccccc;
+          border-bottom-color: #aaaaaa;
+          border-right-color: #aaaaaa;
+          margin: 10px 0;
+      }
+
+      .address h2 {
+          background: #2FC1D2;
+          color: white;
+          display: block;
+          font-size: 16px;
+          margin: 0;
+          padding: 8px;
+          text-shadow: #222222 1px 1px 0px;
+      }
+
+      .address .details {
+          padding: 10px;
+      }
+
+      .address .full-name {
+          font-weight: bold;
       }
   </style>
 </head>
@@ -40,15 +137,10 @@
 
 <%= Refinery::Memberships::MembershipEmailPart['email_header'].body.html_safe %>
 
-<table width="600" cellspacing="0" cellpadding="0" border="0" style="border-collapse: collapse; border-spacing: 0; margin: 0px 0 0; padding: 0px 0 0; border: 0;">
-  <tbody>
+<table id="order_details">
+  <tbody id="line-items">
   <tr>
-    <td width="50" style="background-color: #2F2F2F">&nbsp;</td>
-    <td width="500" style="background-color: #2F2F2F; color: #ffffff;">
-      <%= @email.interpolated_body(@member).html_safe %>
-      <br> <br>
-    </td>
-    <td width="50" style="background-color: #2F2F2F">&nbsp;</td>
+    <td><%= @email.interpolated_body(@member).html_safe %></td>
   </tr>
   </tbody>
 </table>
@@ -56,5 +148,6 @@
 <% if Refinery::Memberships::MembershipEmailPart['email_footer'] && Refinery::Memberships::MembershipEmailPart['email_footer'].body %>
     <%= Refinery::Memberships::MembershipEmailPart['email_footer'].body.html_safe %>
 <% end %>
+
 </body>
 </html>
