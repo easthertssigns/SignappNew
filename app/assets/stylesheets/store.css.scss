@@ -400,6 +400,7 @@
     width: 150px;
     .priceWrapper {
       margin-bottom: 20px;
+      word-break: break-word;
       .price {
         color: $green;
         font-size: 1.813em;
@@ -496,11 +497,14 @@
     margin: 0 -8px;
     padding: 8px;
     width: 100%;
+    &.bottom {
+      margin-top: 10px;
+    }
   }
   .step {
     float: left;
     position: relative;
-    width: 220px;
+    width: 300px;
     .arrow {
       background: url('store/shape-and-size-arrow.png') no-repeat 0 0;
       display: block;
@@ -510,22 +514,30 @@
       top: 10px;
       width: 10px;
     }
-    &.one select, &.two select {
-      width: 195px;
+    &.rightFloat {
+      float: right;
     }
-
-    &.one .select2-container, &.two .select2-container {
-      width: 195px;
+    &.priceLabel {
+      margin-left: 400px;
     }
-
+    &.one select, &.two select, &.three select {
+      width: 275px;
+    }
+    &.one .select2-container, &.two .select2-container, &.three .select2-container {
+      width: 275px;
+    }
     &.one .select2-container .shape, .select2-results .shape {
       height: 20px;
       margin: 0 8px 2px 0;
       vertical-align: middle;
       width: 20px
     }
-    &.three {
-      width: 190px;
+    &.basePrice {
+      width: 300px;
+      text-align: right;
+      padding-right: 30px;
+    }
+    &.basePrice {
       .priceWrapper {
         margin-top: 5px;
         .price {
