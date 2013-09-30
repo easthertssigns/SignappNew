@@ -4,6 +4,7 @@
 <% content_for :javascripts do %>
     <%= javascript_include_tag('select2.min', 'spectrum', 'customisation', 'fabric', 'jquery-base64-min', 'jquery-fancybox-pack', 'jquery-ui-1.8.23.custom.min', 'jquery.qtip.min', 'modernizr.mq', 'jquery.joyride-1.0.5') %>
 <% end %>
+<%= params.to_yaml %>
 <div id="loadingOverlay"></div>
 <div id="tourOverlay"></div>
 <div id="canvasZoomWrapper">
@@ -212,6 +213,12 @@
 
 <script>
 
+    var undoStack = [];
+    var redoStack = [];
+    var currentState = [];
+    var canvas_track_changes = false;
+    var ignor_last_action = true;
+
     // added to fix de-authentication when posting ajax : Doug
 
 
@@ -232,7 +239,7 @@
         // alert(SignHeight);
 
         // track the change activity on canvas
-        var canvas_track_changes = false;
+
 
         if (SignWidth / canvasWidth > SignHeight / canvasHeight) {
             canvasHeight = (canvasWidth / SignWidth) * SignHeight;
@@ -256,8 +263,10 @@
 
         var bg_image_url = '';
 
+
         //this is where the background image is set. Need to think about how to store and recall this.
-        <% background_image = get_background_image_for_product(@sign_data.spree_product_id) %>
+        <% background_image = @sign_data.get_background_image %>
+
         <% if background_image.nil? %>
 
 //        canvas.setBackgroundImage('/assets/customisation/brass_test.jpg', function () {
@@ -276,6 +285,11 @@
         });
 
         <% end %>
+
+        canvas_track_changes = false;
+        console.log('canvas_track_changes : ' + canvas_track_changes );
+
+        ignor_last_action = true;
 
         fabric.Image.fromURL(bg_image_url, function (oImg) {
             if ((canvas.width / canvas.height) > (oImg.width / oImg.height)) {
@@ -345,26 +359,14 @@
 //            });
         });
 
-//        canvas.clipTo = function (ctx) {
-//            var p = "M652.736,218c0-1,0.005-0.825,0.005-0.862c0-46.91-121.698-85.313-271.818-85.313 c-150.122,0-271.821,38.591-271.821,85.501c0,0.038,0.004-0.325,0.004,0.675H88v265h596V218H652.736z";
-//
-//            var p2 = "M0.438,0.438c0,0,3.719,1.469,5.141,0.875s-0.234,5.25-0.234,5.25L1.016,7.047L0.359,2.375L0.438,0.438z";
-//            var path = new fabric.Path(p2, {
-//                fill: '#000000',
-//                left: 100,
-//                top: 100
-//            });
-//
-//            path.render(ctx);
-////            ctx.arc(300, 300, 200, 0, Math.PI*2, true);
-////            alert(path.toString());
-//
-//        };
+        canvas_track_changes = true;
+        console.log('canvas_track_changes : ' + canvas_track_changes );
 
         canvas.renderAll();
 
         // setup complete
 
+        SetupCanvasEventHooks(canvas);
 
         //canvas.clear();
 
@@ -615,14 +617,17 @@
             var fillColor = $(this).val();
             var activeObject = canvas.getActiveObject();
             if (canvas.getActiveObject() && (fillColor != activeObject.fill)) {
-
-                console.log(e);
-                alert("Color Change Fire (" + activeObject.fill + " " + fillColor + ") ");
-                activeObject.fill = fillColor;
-                canvas.fire('object:modified', { target: canvas.getActiveObject() });
-
+                if (fillColor == "#000" && activeObject.fill == "#000000") {
+                    // alert("black match : " + fillColor);
+                }
+                else {
+                    canvas.fire('object:modified', { target: canvas.getActiveObject() });
+                    //alert("Color Change Fire (" + activeObject.fill + " " + fillColor + ") ");
+                    activeObject.fill = fillColor;
+                    canvas.renderAll();
+                }
             }
-            canvas.renderAll();
+
         });
 
         $('#borderColor').change(function () {
@@ -813,7 +818,11 @@
                 obj.set({
                     borderColor: 'cyan',
                     cornerColor: 'cyan'
-                })
+                });
+
+                // call modified
+                canvas.fire('object:modified', { target: obj });
+
             });
         });
 
@@ -947,6 +956,7 @@
             opacity: 0.5,
             selectable: false
         });
+
         var topLeftScrewHoleHighlight = new fabric.Circle({
             left: 20,
             top: 21,
@@ -955,12 +965,14 @@
             opacity: 0.5,
             selectable: false
         });
+
         var topLeftScrewHole = new fabric.Circle({
             left: 20,
             top: 20,
             radius: 10,
             selectable: false
         });
+
         topLeftScrewHole.setGradientFill(canvas.getContext(), {
             x1: 0,
             y1: 0,
@@ -971,6 +983,7 @@
                 1: '#25393b'
             }
         });
+
         //Top Right Screw Hole
         var topRightScrewHoleShadow = new fabric.Circle({
             left: canvasWidth - 20,
@@ -980,6 +993,7 @@
             opacity: 0.5,
             selectable: false
         });
+
         var topRightScrewHoleHighlight = new fabric.Circle({
             left: canvasWidth - 20,
             top: 21,
@@ -988,12 +1002,14 @@
             opacity: 0.5,
             selectable: false
         });
+
         var topRightScrewHole = new fabric.Circle({
             left: canvasWidth - 20,
             top: 20,
             radius: 10,
             selectable: false
         });
+
         topRightScrewHole.setGradientFill(canvas.getContext(), {
             x1: 0,
             y1: 0,
@@ -1004,6 +1020,7 @@
                 1: '#25393b'
             }
         });
+
         //Bottom Right Screw Hole
         var bottomRightScrewHoleShadow = new fabric.Circle({
             left: canvasWidth - 20,
@@ -1013,6 +1030,7 @@
             opacity: 0.5,
             selectable: false
         });
+
         var bottomRightScrewHoleHighlight = new fabric.Circle({
             left: canvasWidth - 20,
             top: canvasHeight - 19,
@@ -1021,12 +1039,14 @@
             opacity: 0.5,
             selectable: false
         });
+
         var bottomRightScrewHole = new fabric.Circle({
             left: canvasWidth - 20,
             top: canvasHeight - 20,
             radius: 10,
             selectable: false
         });
+
         bottomRightScrewHole.setGradientFill(canvas.getContext(), {
             x1: 0,
             y1: 0,
@@ -1037,6 +1057,7 @@
                 1: '#25393b'
             }
         });
+
         //Bottom Left Screw Hole
         var bottomLeftScrewHoleShadow = new fabric.Circle({
             left: 20,
@@ -1046,6 +1067,7 @@
             opacity: 0.5,
             selectable: false
         });
+
         var bottomLeftScrewHoleHighlight = new fabric.Circle({
             left: 20,
             top: canvasHeight - 19,
@@ -1054,12 +1076,14 @@
             opacity: 0.5,
             selectable: false
         });
+
         var bottomLeftScrewHole = new fabric.Circle({
             left: 20,
             top: canvasHeight - 20,
             radius: 10,
             selectable: false
         });
+
         bottomLeftScrewHole.setGradientFill(canvas.getContext(), {
             x1: 0,
             y1: 0,
@@ -1111,144 +1135,7 @@
             $(this).removeClass("active");
         });
 
-        (function () {
-            var undoStack = [];
-            var redoStack = [];
-            var currentState = [];
 
-
-            canvas.observe('object:modified', function () {
-                if (canvas_track_changes) {
-//                    var obj = JSON.stringify(canvas);
-
-                    // clear redo stack
-                    redoStack = [];
-
-                    var hist = [];
-
-                    $.each(canvas.getObjects(), function (i, e) {
-                        if (e.selectable) {
-                            hist.push(jQuery.extend(true, {}, e));
-                        }
-                    });
-
-                    undoStack.push(hist);
-                    //alert('modified');
-//                alert("Undo: " + undoStack.length);
-//                alert("Redo: " + redoStack.length);
-                }
-            });
-
-            canvas.observe('object:added', function () {
-                if (canvas_track_changes) {
-//                    var obj = JSON.stringify(canvas);
-
-                    redoStack = [];
-
-                    var hist = [];
-
-                    $.each(canvas.getObjects(), function (i, e) {
-                        if (e.selectable) {
-                            hist.push(jQuery.extend(true, {}, e));
-                        }
-                    });
-
-                    undoStack.push(hist);
-                    // alert('created');
-//                alert("Undo: " + undoStack.length);
-//                alert("Redo: " + redoStack.length);
-                }
-            });
-
-            canvas.observe('object:removed', function () {
-
-                if (canvas_track_changes) {
-//                    var obj = JSON.stringify(canvas);
-
-                    redoStack = [];
-
-                    var hist = [];
-
-                    $.each(canvas.getObjects(), function (i, e) {
-                        if (e.selectable) {
-                            hist.push(jQuery.extend(true, {}, e));
-                        }
-                    });
-
-                    undoStack.push(hist);
-                }
-            });
-
-            function CustomLoadFromHistory(prevObj) {
-                var toRemove = [];
-
-                $.each(canvas.getObjects(), function (i, e) {
-                    if (e.selectable) {
-                        toRemove.push(e);
-                    }
-                });
-
-                while (toRemove.length > 0) {
-                    canvas.remove(toRemove.pop());
-                }
-
-                $.each(prevObj, function (i, e) {
-                    if (e.selectable) {
-                        canvas.add(e); // add object
-                    }
-                });
-
-                canvas.renderAll();
-            }
-
-
-            $('#undo').click(function undo() {
-
-                canvas_track_changes = false;
-
-                alert(undoStack.length);
-                //alert("starting to load from json, disable change tracking");
-
-                var hist = [];
-
-                $.each(canvas.getObjects(), function (i, e) {
-                    if (e.selectable) {
-                        hist.push(jQuery.extend(true, {}, e));
-                    }
-                });
-
-                alert(undoStack.length);
-
-                redoStack.push(hist);
-
-                var prevObj = undoStack.pop();
-                CustomLoadFromHistory(prevObj);
-            });
-
-            $('#redo').click(function redo() {
-
-                if (redoStack.length == 0) {
-                    alert("nothing to re-do!")
-                }
-                else {
-                    canvas_track_changes = false;
-
-                    var hist = [];
-
-                    $.each(canvas.getObjects(), function (i, e) {
-                        if (e.selectable) {
-                            hist.push(jQuery.extend(true, {}, e));
-                        }
-                    });
-
-                    undoStack.push(hist);
-
-                    CustomLoadFromHistory(redoStack.pop());
-                }
-            });
-
-            canvas_track_changes = true;
-        })();
 
         $('#zoomIn').click(function () {
             if (canvasScale < 3.375) {
@@ -1352,5 +1239,159 @@
 
     })
             ();
+
+    function SetupCanvasEventHooks(canvas) {
+
+
+        canvas.observe('object:modified', function () {
+            if (canvas_track_changes && !ignor_last_action) {
+//                    var obj = JSON.stringify(canvas);
+
+                // clear redo stack
+                redoStack = [];
+
+                var hist = [];
+
+                $.each(canvas.getObjects(), function (i, e) {
+                    if (e.selectable) {
+                        hist.push(jQuery.extend(true, {}, e));
+                    }
+                });
+
+                undoStack.push(hist);
+                console.log(hist.length);
+                //alert('modified');
+                //alert("Undo added (modified): " + undoStack.length);
+//                alert("Redo: " + redoStack.length);
+            }
+            else
+            {
+            ignor_last_action = false;
+            }
+        });
+
+        canvas.observe('object:added', function () {
+            console.log("object:added");
+            if (canvas_track_changes && !ignor_last_action) {
+                console.log("object:added tracking changes");
+//                    var obj = JSON.stringify(canvas);
+
+                redoStack = [];
+
+                var hist = [];
+
+                $.each(canvas.getObjects(), function (i, e) {
+                    if (e.selectable) {
+                        hist.push(jQuery.extend(true, {}, e));
+                    }
+                });
+
+                // if (hist.length > 0) {
+                undoStack.push(hist);
+                //alert("Undo added (added) : " + undoStack.length);
+                // }
+
+                // alert('created');
+//                alert("Undo: " + undoStack.length);
+//                alert("Redo: " + redoStack.length);
+            }
+            else
+            {
+                ignor_last_action = false;
+            }
+        });
+
+        canvas.observe('object:removed', function () {
+
+            if (canvas_track_changes && !ignor_last_action) {
+//                    var obj = JSON.stringify(canvas);
+
+                redoStack = [];
+
+                var hist = [];
+
+                $.each(canvas.getObjects(), function (i, e) {
+                    if (e.selectable) {
+                        hist.push(jQuery.extend(true, {}, e));
+                    }
+                });
+
+                undoStack.push(hist);
+
+                //alert("Undo added (removed) : " + undoStack.length);
+            }
+            else
+            {
+                ignor_last_action = false;
+            }
+        });
+
+        function CustomLoadFromHistory(prevObj) {
+            var toRemove = [];
+
+            $.each(canvas.getObjects(), function (i, e) {
+                if (e.selectable) {
+                    toRemove.push(e);
+                }
+            });
+
+            while (toRemove.length > 0) {
+                canvas.remove(toRemove.pop());
+            }
+
+            $.each(prevObj, function (i, e) {
+                if (e.selectable) {
+                    canvas.add(e); // add object
+                }
+            });
+
+            canvas.renderAll();
+        }
+
+
+        $('#undo').click(function undo() {
+
+            canvas_track_changes = false;
+
+
+            var hist = [];
+
+            $.each(canvas.getObjects(), function (i, e) {
+                if (e.selectable) {
+                    hist.push(jQuery.extend(true, {}, e));
+                }
+            });
+
+
+            redoStack.push(hist);
+
+            var prevObj = undoStack.pop();
+            CustomLoadFromHistory(prevObj);
+        });
+
+        $('#redo').click(function redo() {
+
+            if (redoStack.length == 0) {
+                alert("nothing to re-do!")
+            }
+            else {
+                canvas_track_changes = false;
+
+                var hist = [];
+
+                $.each(canvas.getObjects(), function (i, e) {
+                    if (e.selectable) {
+                        hist.push(jQuery.extend(true, {}, e));
+                    }
+                });
+
+                undoStack.push(hist);
+
+                CustomLoadFromHistory(redoStack.pop());
+            }
+        });
+
+        canvas_track_changes = true;
+    }
 
 </script>

@@ -137,6 +137,7 @@ class CustomSignController < ApplicationController
     # Create new sign_data record
     @sign_data = SignData.new()
     @sign_data.spree_product_id = params[:product_id]
+    @sign_data.spree_variant_id = params[:variant_id]
 
     @sign_data.height = params[:height].to_i
     @sign_data.width = params[:width].to_i
