@@ -21,7 +21,7 @@
     : <%= (params[:width].to_f)/10 %>cm X Height : <%= (params[:height].to_f)/10 %>cm
   </div>
 
-    <canvas style="z-index: 10;" id="my-canvas" width="600" height="600"></canvas>
+  <canvas style="z-index: 10;" id="my-canvas" width="600" height="600"></canvas>
 
 
   <!--Object buttons-->
@@ -611,12 +611,16 @@
             }
         });
 
-        $('.showPaletteOnly').change(function () {
+        $('.showPaletteOnly').change(function (e) {
             var fillColor = $(this).val();
             var activeObject = canvas.getActiveObject();
-            if (canvas.getActiveObject()) {
+            if (canvas.getActiveObject() && (fillColor != activeObject.fill)) {
+
+                console.log(e);
+                alert("Color Change Fire (" + activeObject.fill + " " + fillColor + ") ");
                 activeObject.fill = fillColor;
-                // canvas.fire('object:modified', { target: canvas.getActiveObject() });
+                canvas.fire('object:modified', { target: canvas.getActiveObject() });
+
             }
             canvas.renderAll();
         });
@@ -804,6 +808,7 @@
                  ctx.shadowOffsetY = 1;*/
                 canvas.add(obj.scale(canvasScale)).centerObject(obj).renderAll();
                 obj.setCoords();
+                obj.fill = "#000000"
                 obj.hasRotatingPoint = true;
                 obj.set({
                     borderColor: 'cyan',
@@ -1114,20 +1119,42 @@
 
             canvas.observe('object:modified', function () {
                 if (canvas_track_changes) {
-                    var obj = JSON.stringify(canvas);
-                    undoStack.push(obj);
-                    alert('modified');
+//                    var obj = JSON.stringify(canvas);
+
+                    // clear redo stack
+                    redoStack = [];
+
+                    var hist = [];
+
+                    $.each(canvas.getObjects(), function (i, e) {
+                        if (e.selectable) {
+                            hist.push(jQuery.extend(true, {}, e));
+                        }
+                    });
+
+                    undoStack.push(hist);
+                    //alert('modified');
 //                alert("Undo: " + undoStack.length);
 //                alert("Redo: " + redoStack.length);
                 }
-
             });
 
             canvas.observe('object:added', function () {
                 if (canvas_track_changes) {
-                    var obj = JSON.stringify(canvas);
-                    undoStack.push(obj);
-                    alert('created');
+//                    var obj = JSON.stringify(canvas);
+
+                    redoStack = [];
+
+                    var hist = [];
+
+                    $.each(canvas.getObjects(), function (i, e) {
+                        if (e.selectable) {
+                            hist.push(jQuery.extend(true, {}, e));
+                        }
+                    });
+
+                    undoStack.push(hist);
+                    // alert('created');
 //                alert("Undo: " + undoStack.length);
 //                alert("Redo: " + redoStack.length);
                 }
@@ -1136,47 +1163,88 @@
             canvas.observe('object:removed', function () {
 
                 if (canvas_track_changes) {
-                    var obj = JSON.stringify(canvas);
-                    undoStack.push(obj);
-                    alert('removed');
-//                alert("Undo: " + undoStack.length);
-//                alert("Redo: " + redoStack.length);
+//                    var obj = JSON.stringify(canvas);
+
+                    redoStack = [];
+
+                    var hist = [];
+
+                    $.each(canvas.getObjects(), function (i, e) {
+                        if (e.selectable) {
+                            hist.push(jQuery.extend(true, {}, e));
+                        }
+                    });
+
+                    undoStack.push(hist);
                 }
             });
+
+            function CustomLoadFromHistory(prevObj) {
+                var toRemove = [];
+
+                $.each(canvas.getObjects(), function (i, e) {
+                    if (e.selectable) {
+                        toRemove.push(e);
+                    }
+                });
+
+                while (toRemove.length > 0) {
+                    canvas.remove(toRemove.pop());
+                }
+
+                $.each(prevObj, function (i, e) {
+                    if (e.selectable) {
+                        canvas.add(e); // add object
+                    }
+                });
+
+                canvas.renderAll();
+            }
 
 
             $('#undo').click(function undo() {
 
                 canvas_track_changes = false;
 
+                alert(undoStack.length);
                 //alert("starting to load from json, disable change tracking");
 
-                var obj = JSON.stringify(canvas);
-                redoStack.push(obj);
+                var hist = [];
 
-                canvas.loadFromJSON(undoStack.pop());
-                //canvas = undoStack.pop();
-                canvas.renderAll();
+                $.each(canvas.getObjects(), function (i, e) {
+                    if (e.selectable) {
+                        hist.push(jQuery.extend(true, {}, e));
+                    }
+                });
 
-                //alert("fnished to load from json, enable change tracking");
+                alert(undoStack.length);
 
+                redoStack.push(hist);
 
-                // alert("Undo Click : " + undoStack.length);
-//                alert("Redo: " + redoStack.length);
+                var prevObj = undoStack.pop();
+                CustomLoadFromHistory(prevObj);
             });
 
             $('#redo').click(function redo() {
 
-                canvas_track_changes = false;
+                if (redoStack.length == 0) {
+                    alert("nothing to re-do!")
+                }
+                else {
+                    canvas_track_changes = false;
 
-                //alert("starting to load from json, disable change tracking");
+                    var hist = [];
 
-                var obj = JSON.stringify(canvas);
-                undoStack.push(obj);
+                    $.each(canvas.getObjects(), function (i, e) {
+                        if (e.selectable) {
+                            hist.push(jQuery.extend(true, {}, e));
+                        }
+                    });
 
-                canvas.loadFromJSON(redoStack.pop());
-                //canvas = undoStack.pop();
-                canvas.renderAll();
+                    undoStack.push(hist);
+
+                    CustomLoadFromHistory(redoStack.pop());
+                }
             });
 
             canvas_track_changes = true;
