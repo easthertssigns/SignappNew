@@ -186,25 +186,26 @@
       <div class="clearfix"></div>
     </div>
     <div class="productOptions">
-      <% if @product.has_variants? %>
 
 
-          <% end %>
       <% if @product.is_material %>
           <h3>Choose your signs shape &amp; size</h3>
 
           <%= form_tag("/custom_sign/new_custom_sign", :method => :post) do %>
               <%= hidden_field_tag "product_id", @product.id %>
 
-              Choose your sign finish:
+              <% if @product.has_variants? %>
 
-              <select id="variantSelect" name="variant_id">
-                <option>Choose a finish</option>
-                <% @product.variants.each do |var| %>
-                    <option value="<%= var.id.to_s %>"><%= variant_options var %></option>
-                <% end %>
+                  Choose your sign finish:
 
-              </select>
+                  <select id="variantSelect" name="variant_id">
+                    <option>Choose a finish</option>
+                    <% @product.variants.each do |var| %>
+                        <option value="<%= var.id.to_s %>"><%= variant_options var %></option>
+                    <% end %>
+
+                  </select>
+              <% end %>
 
               <div class="labelsRow">
                 <div class="step one">
