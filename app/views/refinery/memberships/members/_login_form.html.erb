@@ -35,14 +35,12 @@
         <%= form_for Refinery::User.new, :as => :member, :url => "/members/password" do |f| -%>
             <h3>Forgotten your password?</h3>
 
-            <div>
+            <div class="field">
               <%= label_tag "Your Email" %>
-              <br/>
               <%= f.text_field(:login) %>
+              <%= button_tag "Send my reminder", :class => 'floatRight' %>
+              <a href="/members/login" class="button red" style="line-height: 32px; height: 32px;">back to login</a>
             </div>
-
-            <div><%= button_tag "Send my reminder" %></div>
-            <a href="/members/login">back to login</a>
         <% end -%>
       </div>
     </section>

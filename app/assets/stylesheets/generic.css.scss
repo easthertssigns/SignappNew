@@ -619,7 +619,7 @@ section h1, aside {
     -moz-border-radius: 3px;
     border-radius: 3px;
     margin-bottom: 5px;
-    padding: 30px 0;
+    padding: 41px 0 42px 0;
     a.log-in-with-facebook-button {
       background: url("button-facebook-authentication.png") repeat-x 0 0;
       border: 1px solid #224E82;
@@ -1491,6 +1491,9 @@ footer {
     color: white;
   }
   &.flash_alert {
+   background: #db4464;
+  }
+  &.flash_error {
    background: #db4464;
   }
 }
