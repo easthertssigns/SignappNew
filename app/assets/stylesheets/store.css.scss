@@ -758,8 +758,9 @@
 }
 
 .basketLeft {
-  border-top: 1px solid #2B3E42;
-
+  #outside_cart_form {
+    border-top: 1px solid #2B3E42;
+  }
   .line-item {
     border-right: 1px solid #2B3E42;
     border-bottom: 1px solid #2B3E42;
@@ -855,6 +856,7 @@
     .left-container {
       float: left;
       padding-bottom: 20px;
+      width: 574px;
       label {
         font-size: 18px;
         text-transform: uppercase;
@@ -880,7 +882,7 @@
       border-right: 1px solid $darkest-blue-grey;
       display: inline-block;
       font-size: 18px;
-      width: 165px;
+      width: 164px;
       text-align: center;
       font-weight: 600;
     }
@@ -892,7 +894,7 @@
       float: left;
       color: $white;
       font-size: 14px;
-      padding: 10px 20px;
+      padding: 12px 20px;
     }
     .order-total {
       float: right;
@@ -909,6 +911,12 @@
 
   #update-button {
     margin: 20px 0 0 0;
+    height: 40px;
+    line-height: 40px;
+  }
+  .continue.button {
+    height: 39px;
+    line-height: 39px;
   }
   #empty-cart {
     position: relative;
@@ -932,6 +940,8 @@
   #checkout-link {
     float: right;
     margin-top: 20px;
+    height: 40px;
+    line-height: 40px;
   }
 }
 

@@ -31,7 +31,7 @@ $(function () {
 
     if (location.href.indexOf("/checkout/delivery") != -1) {
         $('.checkout .progressBar .grid_4.billing').removeClass('current').addClass('complete');
-        $('.checkout .progressBar .grid_4.shipping').addClass('current');
+        //$('.checkout .progressBar .grid_4.shipping').addClass('current');
     }
 
     if (location.href.indexOf("/checkout/payment") != -1) {
