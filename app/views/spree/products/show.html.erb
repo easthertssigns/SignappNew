@@ -169,10 +169,13 @@
           <% end %>
         </div>
         <h3>Based on dimensions:</h3>
+
         <p><strong>Shape: </strong><span id="displayShape">Not Selected</span></p>
+
         <p><strong>Size: </strong><span id="displaySize">Not Selected</span></p>
         <%#= link_to 'View The Size Guide', '/product-size-guide', :class => 'sizeGuideLink' %>
         <h3>Note:</h3>
+
         <p>The final price or your sign will be affected by the amount of elements you add to your design but you will
           be able to see exactly how much each element will cost as you are adding them.</p>
       </div>
@@ -184,64 +187,11 @@
           <h3>Choose your signs shape &amp; size</h3>
           <%= form_tag("/custom_sign/new_custom_sign", :method => :post) do %>
               <%= hidden_field_tag "product_id", @product.id %>
-              <div class="labelsRow">
-                <div class="step one">
-                  <label for="shapeSelect">Shape</label>
-                </div>
-                <div class="step two">
-                  <label for="sizeSelect">Size</label>
-                </div>
-                <div class="step three">
-                  <label>Choose your sign finish</label>
-                </div>
-              </div>
-              <div class="inputsRow">
-                <div class="step one">
-                  <select id="shapeSelect" name="shapeSelect">
-                    <% get_sign_shapes_for_product(@product).each do |shape| %>
-                        <option value="<%= shape.id %>">
-                          <span><%= image_tag shape.svg_file.url(:mini) %></span> <%= shape.name %></option>
-                    <% end %>
-                  </select>
-                  <div class="arrow"></div>
-                </div>
-                <div class="step two">
-                  <select id="sizeSelect" name="sizeSelect">
-                    <% get_sign_sizes_for_product(@product).each do |size| %>
-                        <option value="<%= size.width %>|<%= size.height %>"><%= size.title %></option>
-                    <% end %>
-                    <option value="custom">Custom</option>
-                  </select>
-                  <%= hidden_field_tag "width", 0 %>
-                  <%= hidden_field_tag "height", 0 %>
-                  <%= hidden_field_tag "calculated_price", 0 %>
-                  <div class="arrow"></div>
-                </div>
-                <div class="step three">
-                  <% if @product.has_variants? %>
-                      <select id="variantSelect" name="variant_id">
-                        <option>Choose a finish</option>
-                        <% @product.variants.each do |var| %>
-                            <option value="<%= var.id.to_s %>"><%= variant_options var %></option>
-                        <% end %>
-                      </select>
-                  <% end %>
-                  <div class="arrow"></div>
-                </div>
-              </div>
-              <div class="inputsRow bottom">
-                <div class="step four rightFloat">
-                  <input type="submit" value="Ready? Let's design your sign!">
-                </div>
-                <div class="step basePrice rightFloat">
-                  <div class="priceWrapper">
-                    <% unless @product.price.nil? %>
-                        <span class="price" id="displayPrice"><%= Spree::Money.new @product.price %></span><span class="inclVAT"> Incl. VAT</span>
-                    <% end %>
-                  </div>
-                  <div class="arrow"></div>
-                </div>
-              </div>
+              <% if @product.has_variants? %>
+                  <%= render :partial => 'input_row_with_variants' %>
+              <% else %>
+                  <%= render :partial => 'input_row' %>
+              <% end %>
               <div class="clearfix"></div>
               <div id="custom_size_div" style="display: none">
                 <div><%= label_tag "Width (mm)" %> <%= text_field_tag "custom_width" %> <%= label_tag "Height (mm)" %> <%= text_field_tag "custom_height" %>
@@ -254,6 +204,7 @@
           <!--</div>-->
       <% else %>
           <h3>Buy this product</h3>
+
           <div class="button">
             <a href="/orders/add_saved_sign_to_basket?id=<%= @product.sign_data_id.to_s %>">Add to basket</a></div>
           <div class="button">

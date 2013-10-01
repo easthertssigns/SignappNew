@@ -505,6 +505,19 @@
     float: left;
     position: relative;
     width: 300px;
+    &.no-variants {
+      width: 220px;
+    }
+    &.no-variants {
+      &.three {
+        width: 195px;
+        .basePrice {
+          text-align: left;
+          width: 170px;
+          padding: 0;
+        }
+      }
+    }
     .arrow {
       background: url('store/shape-and-size-arrow.png') no-repeat 0 0;
       display: block;
@@ -526,16 +539,40 @@
     &.one .select2-container, &.two .select2-container, &.three .select2-container {
       width: 275px;
     }
+      &.one.no-variants .select2-container, &.two.no-variants .select2-container, &.three.no-variants .select2-container {
+        width: 195px;
+    }
     &.one .select2-container .shape, .select2-results .shape {
       height: 20px;
       margin: 0 8px 2px 0;
       vertical-align: middle;
       width: 20px
     }
+    &.one {
+      .arrow {
+        right: 0px;
+      }
+    }
+    &.two {
+      .select2-container {
+        margin-left: 12px;
+      }
+      .arrow {
+        right: -10px;
+      }
+    }
+    &.three {
+      .select2-container {
+        margin-left: 25px;
+      }
+    }
     &.basePrice {
       width: 300px;
       text-align: right;
-      padding-right: 30px;
+      padding-right: 40px;
+      .arrow {
+        right: 14px;
+      }
     }
     &.basePrice {
       .priceWrapper {

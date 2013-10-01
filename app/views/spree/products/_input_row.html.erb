@@ -1,0 +1,47 @@
+<div class="labelsRow">
+  <div class="step one no-variants">
+    <label for="shapeSelect">Shape</label>
+  </div>
+  <div class="step two no-variants">
+    <label for="sizeSelect">Size</label>
+  </div>
+  <div class="step three no-variants">
+    <label>Base Price</label>
+  </div>
+</div>
+<div class="inputsRow">
+  <div class="step one no-variants">
+    <select id="shapeSelect" name="shapeSelect">
+      <% get_sign_shapes_for_product(@product).each do |shape| %>
+          <option value="<%= shape.id %>">
+            <span><%= image_tag shape.svg_file.url(:mini) %></span> <%= shape.name %></option>
+      <% end %>
+    </select>
+    <div class="arrow"></div>
+  </div>
+  <div class="step two no-variants">
+    <select id="sizeSelect" name="sizeSelect">
+      <% get_sign_sizes_for_product(@product).each do |size| %>
+          <option value="<%= size.width %>|<%= size.height %>"><%= size.title %></option>
+      <% end %>
+      <option value="custom">Custom</option>
+    </select>
+    <%= hidden_field_tag "width", 0 %>
+    <%= hidden_field_tag "height", 0 %>
+    <%= hidden_field_tag "calculated_price", 0 %>
+    <div class="arrow"></div>
+  </div>
+  <div class="step three no-variants">
+    <div class="step basePrice rightFloat">
+      <div class="priceWrapper">
+        <% unless @product.price.nil? %>
+            <span class="price" id="displayPrice"><%= Spree::Money.new @product.price %></span><span class="inclVAT"> Incl. VAT</span>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="step four rightFloat">
+    <input type="submit" value="Ready? Let's design your sign!">
+  </div>
+
+</div>
