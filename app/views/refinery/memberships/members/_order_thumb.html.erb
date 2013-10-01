@@ -1,8 +1,7 @@
 <tr>
-
-  <td>Order No. <b><%= order.number %></b> </td>
-  <td>Order Total - <%= Spree::Money.new order.total %></td>
-  <td>Date: <%= order.created_at.strftime("%d %B %Y") %></td>
-  <td>Order Status: <%= order.shipment_state.nil? ? order.payment_state : order.shipment_state %></td>
+  <td><b><%= order.number %></b> </td>
+  <td><%= Spree::Money.new order.total %></td>
+  <td><%= order.created_at.strftime("%d %B %Y") %></td>
+  <td><%= order.shipment_state.nil? ? order.payment_state : order.shipment_state %></td>
   <td><a href="/orders/<%= order.number %>" class="button">Details</a></td>
 </tr>

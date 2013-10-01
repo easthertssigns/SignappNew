@@ -1115,6 +1115,10 @@ footer {
       font-size: 36px;
       letter-spacing: 0.05em;
     }
+    &.checkout {
+      margin-bottom: 0;
+      border-bottom: none !important;
+    }
   }
   h2, h3 {
     margin-bottom: 15px;
@@ -1213,7 +1217,10 @@ footer {
       margin-bottom: -7px;
       position: relative;
     }
-
+   &.checkout-layout {
+     background: #FFFFFF;
+     padding: 20px;
+   }
   }
   .defaultShadow {
     background: url("upper-shadow.png") repeat-x left top;
@@ -1425,6 +1432,20 @@ footer {
         a {
           font-size: 14px;
         }
+        thead {
+          tr {
+            th {
+              padding: 5px;
+              border-bottom: 3px solid #21919f;
+            }
+          }
+        }
+        tr {
+          td {
+            padding: 5px;
+            border-bottom: 1px solid #21919f;
+          }
+        }
       }
       .saveOrderitem {
         padding: 15px 0;
@@ -1468,6 +1489,10 @@ footer {
         display: inline-block;
         padding: 0 20px;
         font-size: 14px;
+      }
+      input[type=submit] {
+        line-height: 30px;
+        height: 30px;
       }
     }
   }

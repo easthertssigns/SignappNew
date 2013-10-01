@@ -1,6 +1,6 @@
 $(function () {
 
-    $(".line_item_quantity").after('<div class="inc qbutton cream button">+</div><div class="dec qbutton cream button">-</div>');
+    $(".line_item_quantity").after('<div class="inc qbutton blue button">+</div><div class="dec qbutton blue button">-</div>');
     $(".qbutton").click(function (event) {
         var $button = $(this);
         var oldValue = $(this).siblings(".line_item_quantity").val();

@@ -762,6 +762,7 @@
 
   .line-item {
     border-right: 1px solid #2B3E42;
+    border-bottom: 1px solid #2B3E42;
     .cart-item-image {
       width: 124px;
       height: 84px;
@@ -789,13 +790,13 @@
 
       .cart-item-price {
         float: left;
-        width: 150px;
+        width: 320px;
         font-size: 20px;
       }
 
       .cart-item-quantity {
         float: left;
-        width: 140px;
+        width: 110px;
 
         .quantity-container {
           position: relative;
@@ -851,9 +852,6 @@
 
   .coupon-code-field {
     position: relative;
-    border-top: 1px solid #2B3E42;
-    border-right: 1px solid #2B3E42;
-
     .left-container {
       float: left;
       padding-bottom: 20px;
@@ -861,8 +859,7 @@
         font-size: 18px;
         text-transform: uppercase;
         padding-top: 20px;
-        margin-bottom: 15px;
-        color: $white;
+        margin-bottom: 10px;
         display: inline-block;
       }
 
@@ -880,6 +877,7 @@
       float: right;
       padding: 85px 20px 20px 20px;
       border-left: 1px solid $darkest-blue-grey;
+      border-right: 1px solid $darkest-blue-grey;
       display: inline-block;
       font-size: 18px;
       width: 165px;
@@ -890,7 +888,6 @@
   #subtotal {
     position: relative;
     background: #2B3E42;
-
     h5 {
       float: left;
       color: $white;
@@ -915,8 +912,7 @@
   }
   #empty-cart {
     position: relative;
-    padding: 20px 0;
-
+    padding-bottom: 20px;
     .cream {
       float: left;
       height: 30px;
@@ -932,7 +928,10 @@
       letter-spacing: 0;
       padding: 0 20px;
     }
-
+  }
+  #checkout-link {
+    float: right;
+    margin-top: 20px;
   }
 }
 
@@ -940,7 +939,6 @@
   h4 {
     font-size: 16px;
     text-transform: uppercase;
-    color: $white;
     margin-bottom: 20px;
   }
 
@@ -958,18 +956,16 @@
   position: relative;
   .checkout_title {
     text-align: center;
-    color: $white;
     font-size: 36px;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0;
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.7);
+    margin-bottom: 0.5em;
   }
 
   legend {
     font-size: 18px;
     text-transform: uppercase;
-    color: $white;
     margin-bottom: 20px;
   }
   label {
@@ -1001,14 +997,12 @@
 
   .checkout_content {
     position: relative;
-
     .columns.alpha {
       float: left;
       width: 569px;
       border-top: 1px solid $darkest-blue-grey;
       border-right: 1px solid $darkest-blue-grey;
       padding-top: 20px;
-
       .splitColumn {
         width: 284px;
         float: left;
@@ -1020,16 +1014,15 @@
       width: 390px;
 
       #shipping {
-        padding-left: 100px;
+        padding-left: 50px;
       }
       input[type=checkbox] {
-        margin-left: -70px;
+        margin-left: -30px;
         position: relative;
         top: -2px;
       }
       #use_billing {
         font-size: 18px;
-        color: $white;
         margin-bottom: 20px;
       }
     }
@@ -1083,10 +1076,6 @@
         }
       }
     }
-
-    a {
-      color: $white;
-    }
     .red {
       height: 30px;
       font-weight: 500;
@@ -1102,9 +1091,9 @@
 
   .progressBar {
     position: relative;
+    margin-top: -2px;
     border-top: 2px solid $darkest-blue-grey;
     border-bottom: 2px solid $darkest-blue-grey;
-    margin-bottom: 30px;
     font-size: 18px;
     color: $white;
     background: #21c2d4;
@@ -1227,7 +1216,7 @@
       width: 180px;
       padding-top: 65px;
       color: $white;
-      padding: 15px 0;
+      padding: 14px 0;
     }
   }
 
@@ -1253,6 +1242,10 @@
     a {
       color: $darkest-blue-grey;
     }
+      li {
+        padding-left: 0;
+        text-indent: 0em !important;
+      }
   }
   #order {
     position: relative;

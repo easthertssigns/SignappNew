@@ -34,9 +34,20 @@
           <div style="margin-top: 5px;"><h2>Your Orders</h2></div>
           <div class="companyInfomartion">
             <% if current_refinery_user.get_complete_orders.count > 0 %>
-                <% current_refinery_user.get_complete_orders.each do |order| %>
-                    <%= render "order_thumb", :order => order %>
-                <% end %>
+                <table width="100%">
+                  <thead>
+                  <tr>
+                    <th>Order No</th>
+                    <th>Order Total</th>
+                    <th>Date</th>
+                    <th>Order Status</th>
+                    <th></th>
+                  </tr>
+                  </thead>
+                  <% current_refinery_user.get_complete_orders.each do |order| %>
+                      <%= render "order_thumb", :order => order %>
+                  <% end %>
+                </table>
             <% else %>
                 <div>You haven't made any orders yet.</div>
             <% end %>

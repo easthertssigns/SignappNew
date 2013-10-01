@@ -25,7 +25,7 @@ class SignData < ActiveRecord::Base
     end
 
     unless image
-      raise "no variant match"
+      #raise "no variant match"
     end
 
     if !image && spree_product_id && Spree::Product.where(:id => spree_product_id).count > 0
