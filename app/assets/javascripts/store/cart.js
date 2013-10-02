@@ -53,5 +53,4 @@ $(function () {
          $('#payment-methods select').select2();
      }
 
-
 });
