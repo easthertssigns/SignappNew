@@ -9,7 +9,6 @@
 <div id="tourOverlay"></div>
 <div id="canvasZoomWrapper">
   <div class="minorFunctions" id="minorFunctions">
-
     <div class="function">Start Again</div>
     <div class="function" id="clearCanvas">Clear Canvas</div>
     <div class="function" id="startTutorial">Quick Tutorial</div>
@@ -287,7 +286,7 @@
         <% end %>
 
         canvas_track_changes = false;
-        console.log('canvas_track_changes : ' + canvas_track_changes );
+        console.log('canvas_track_changes : ' + canvas_track_changes);
 
         ignor_last_action = true;
 
@@ -308,19 +307,24 @@
         });
 
         // set the mask for the sign
-        fabric.loadSVGFromURL('/assets/test_mask.svg', function (objects, options) {
-            var mask = fabric.util.groupSVGElements(objects, options);
 
-            mask.scaleX = canvas.width / mask.width;
-            mask.scaleY = canvas.width / mask.width;
+        var mask_svg_url = "<%= @sign_data.get_mask %>";
 
-            // objects[0].setShadow({ color: 'rgba(0,0,0,0.3)' });
+        if (mask_svg_url != "") {
+            alert(mask_svg_url);
+            fabric.loadSVGFromURL(mask_svg_url, function (objects, options) {
+                var mask = fabric.util.groupSVGElements(objects, options);
 
-            // alert("mask objects count : " + objects[0]["shadow"].toString());
+                mask.scaleX = canvas.width / mask.width;
+                mask.scaleY = canvas.height / mask.height;
+
+                // objects[0].setShadow({ color: 'rgba(0,0,0,0.3)' });
+
+                // alert("mask objects count : " + objects[0]["shadow"].toString());
 //            objects[0].setShadow({ color: 'rgba(0,0,0,0.3)' });
 
-            mask.top = canvas.height / 2;
-            mask.left = canvas.width / 2;
+                mask.top = canvas.height / 2;
+                mask.left = canvas.width / 2;
 
 
 //            alert(canvas.width.toString());
@@ -339,11 +343,11 @@
 //
 //            mask.setShadow(shadow);
 
-            canvas.clipTo = function (ctx) {
-                mask.render(ctx);
-            }
+                canvas.clipTo = function (ctx) {
+                    mask.render(ctx);
+                }
 
-            canvas.renderAll();
+                canvas.renderAll();
 
 //            fabric.Image.fromURL('path/to/image.png', function(img) {
 //                img.set({
@@ -357,10 +361,12 @@
 //                canvas.add(img);
 //
 //            });
-        });
+            });
+        }
+
 
         canvas_track_changes = true;
-        console.log('canvas_track_changes : ' + canvas_track_changes );
+        console.log('canvas_track_changes : ' + canvas_track_changes);
 
         canvas.renderAll();
 
@@ -1136,7 +1142,6 @@
         });
 
 
-
         $('#zoomIn').click(function () {
             if (canvasScale < 3.375) {
                 canvasScale = canvasScale * 1.5;
@@ -1264,9 +1269,8 @@
                 //alert("Undo added (modified): " + undoStack.length);
 //                alert("Redo: " + redoStack.length);
             }
-            else
-            {
-            ignor_last_action = false;
+            else {
+                ignor_last_action = false;
             }
         });
 
@@ -1295,8 +1299,7 @@
 //                alert("Undo: " + undoStack.length);
 //                alert("Redo: " + redoStack.length);
             }
-            else
-            {
+            else {
                 ignor_last_action = false;
             }
         });
@@ -1320,8 +1323,7 @@
 
                 //alert("Undo added (removed) : " + undoStack.length);
             }
-            else
-            {
+            else {
                 ignor_last_action = false;
             }
         });

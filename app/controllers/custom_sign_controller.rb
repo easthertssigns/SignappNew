@@ -73,6 +73,19 @@ class CustomSignController < ApplicationController
     end
   end
 
+  def get_sign_shape_svg
+    @sign_shape = SignBaseShape.find params[:id]
+
+    headers["Content-Type"] = "image/svg+xml"
+
+    respond_to do |format|
+      format.svg {
+        render :inline => @sign_shape.get_svg_file
+      }
+    end
+
+  end
+
   def delete_saved_sign
     @sign = SignData.first(:conditions => ["id = ? AND account_id = ? ", params[:custom_sign_id], current_refinery_user.id.to_i])
     unless @sign.nil?
@@ -133,7 +146,7 @@ class CustomSignController < ApplicationController
     redirect_to "/custom_sign/edit_sign?id=" + @sign_data.id.to_s
   end
 
-  def get_sign_shape_sizes   #This is the controller action called by your ajax
+  def get_sign_shape_sizes #This is the controller action called by your ajax
     sign_shape = SignBaseShape.find(params[:id])
 
     @sign_sizes = sign_shape.sign_sizes
