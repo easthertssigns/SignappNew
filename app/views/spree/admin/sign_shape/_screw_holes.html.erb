@@ -1,0 +1,39 @@
+<div>
+  <h2>Select Screw holes</h2>
+</div>
+<div style="position: relative; height: 150px; width: 600px;">
+  <div style="position: absolute; top: 0px; left: 0px;">
+    <%= form.check_box(:screw_hole_top_left) %>
+    <%= form.label :screw_hole_top_left, "Top Left" %>
+  </div>
+  <div style="position: absolute; top: 0px; left: 200px;">
+    <%= form.check_box(:screw_hole_top) %>
+    <%= form.label :screw_hole_top, "Top center" %>
+  </div>
+  <div style="position: absolute; top: 0px; left: 400px;">
+    <%= form.check_box(:screw_hole_top_right) %>
+    <%= form.label :screw_hole_top_right, "Top Right" %>
+  </div>
+
+  <div style="position: absolute; top: 50px; left: 0px;">
+    <%= form.check_box(:screw_hole_left) %>
+    <%= form.label :screw_hole_left, "Left" %>
+  </div>
+  <div style="position: absolute; top: 50px; left: 400px;">
+    <%= form.check_box(:screw_hole_right) %>
+    <%= form.label :screw_hole_right, "Right" %>
+  </div>
+  <div style="position: absolute; top: 100px; left: 0px;">
+    <%= form.check_box(:screw_hole_bottom_left) %>
+    <%= form.label :screw_hole_bottom_left, "Bottom Left" %>
+  </div>
+  <div style="position: absolute; top: 100px; left: 200px;">
+    <%= form.check_box(:screw_hole_bottom) %>
+    <%= form.label :screw_hole_bottom, "Bottom Center" %>
+  </div>
+  <div style="position: absolute; top: 100px; left: 400px;">
+    <%= form.check_box(:screw_hole_bottom_right) %>
+    <%= form.label :screw_hole_bottom_right, "Bottom Right" %>
+  </div>
+
+</div>

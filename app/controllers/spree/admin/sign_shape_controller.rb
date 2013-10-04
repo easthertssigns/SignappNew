@@ -28,6 +28,15 @@ module Spree
         #update the categories here - do I just delete them all and add new records every time, or do some sort of check?
         @sign_base_shape = SignBaseShape.find params[:id]
         @sign_base_shape.update_attributes(params[:sign_base_shape])
+
+        SignSize.all.each do |size|
+          if params["sign_size_#{size.id}"]
+            @sign_base_shape.add_size_if_not_added(size)
+          else
+            @sign_base_shape.remove_size_if_added(size)
+          end
+        end
+
         redirect_to "/admin/sign_shape"
       end
 

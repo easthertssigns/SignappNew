@@ -133,6 +133,14 @@ class CustomSignController < ApplicationController
     redirect_to "/custom_sign/edit_sign?id=" + @sign_data.id.to_s
   end
 
+  def get_sign_shape_sizes   #This is the controller action called by your ajax
+    sign_shape = SignBaseShape.find(params[:id])
+
+    @sign_sizes = sign_shape.sign_sizes
+    @custom_sign_size = sign_shape.custom_size
+    render :partial => "size_select"
+  end
+
   def new_custom_sign
     # Create new sign_data record
     @sign_data = SignData.new()

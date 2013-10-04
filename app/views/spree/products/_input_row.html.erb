@@ -19,13 +19,8 @@
     </select>
     <div class="arrow"></div>
   </div>
-  <div class="step two no-variants">
-    <select id="sizeSelect" name="sizeSelect">
-      <% get_sign_sizes_for_product(@product).each do |size| %>
-          <option value="<%= size.width %>|<%= size.height %>"><%= size.title %></option>
-      <% end %>
-      <option value="custom">Custom</option>
-    </select>
+  <div class="step two no-variants" id="size_container">
+    Choose a shape first!
     <%= hidden_field_tag "width", 0 %>
     <%= hidden_field_tag "height", 0 %>
     <%= hidden_field_tag "calculated_price", 0 %>
