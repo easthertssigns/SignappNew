@@ -1,0 +1,4 @@
+    <div>
+      <%= check_box_tag("sign_size_#{size.id}", "on", form.object.has_size(size.id)) %>
+      <%= form.label size.title %> (width : <%= size.width.to_s %>, height : <%= size.height %>, ratio : <%= (size.width.to_f / size.height.to_f).round(1).to_s %>)
+    </div>

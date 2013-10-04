@@ -1,18 +1,31 @@
 <h1>Edit Graphic</h1>
+<%= form_for @sign_base_shape, :url => "/admin/sign_shape/" + @sign_base_shape.id.to_s, :html => {:multipart => true}, :method => :put do |form| %>
 
-<%= form_for @sign_base_shape, :url => "/admin/sign_shape/" + @sign_base_shape.id.to_s, :html => { :multipart => true }, :method => :put do |form| %>
-    <div>
-      <%= form.label "Sign Shape Name" %>
-      <%= form.text_field :name %>
+    <div class="left">
+      <h2>Sign Details</h2>
+
+      <div>
+        <%= form.label "Sign Shape Name" %>
+        <%= form.text_field :name %>
+      </div>
+      <div>
+        <%= form.label "Description" %>
+      </div>
+      <div>
+        <%= form.text_area :description %>
+      </div>
+      <div>
+        <%= form.file_field :svg_file %>
+      </div>
+
+      <%= render :partial => 'screw_holes', :locals => {:form => form} %>
+      <div>
+        <%= form.submit "Save" %>
+      </div>
     </div>
-    <div>
-      <%= form.label "Description" %>
-      <%= form.text_area :description %>
+
+    <div class="right">
+      <%= render :partial => 'sign_sizes', :locals => {:form => form} %>
     </div>
-    <div>
-      <%= form.file_field :svg_file %>
-    </div>
-    <div>
-      <%= form.submit "Save" %>
-    </div>
+    <div style="clear: both;"></div>
 <% end %>

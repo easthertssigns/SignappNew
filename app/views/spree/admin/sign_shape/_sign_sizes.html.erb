@@ -1,0 +1,12 @@
+<div>
+  <h2>Select compatible sizes</h2>
+</div>
+<div>
+  <%= form.check_box(:custom_size) %>
+  <%= form.label :custom_size, "Allows custom sizes by customers" %>         <br><BR>
+</div>
+<div>
+  <% SignSize.all.each do |size| %>
+      <%= render :partial => 'sign_size', :locals => {:form => form, :size => size} %>
+  <% end %>
+</div>

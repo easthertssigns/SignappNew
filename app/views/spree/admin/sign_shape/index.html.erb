@@ -8,21 +8,29 @@
 </script>
 
 <a href="/admin/sign_shape/new" class="button" style="margin-bottom: 20px;"><span>Add new shape</span></a>
-
+         <br><BR><br>
+<p>Sign shapes are used as masks within the canvas editor. The shape should be uploaded as an SVG. The file should
+  contain a single SVG shape with only basic color fill, no stroke or effects. For consistency use the same color fill
+  each time as the SVG shape and color will be visible on the website.
+</p>
+<p>If you are using illustrator the file should be saved as SVG basic 1.1
+  and it should be one single shape. The shape should also fill the entire art board perfectly. Very large shapes could
+  be an issue when resizing so a good rule of thumb would be to limit mask shapes to 800px by 800px as a maximum.
+</p>
 
 <table class="index" id="listing_products">
   <% @sign_base_shapes.each do |shape| %>
       <tr>
         <td width="10%"><%= image_tag shape.svg_file.url(:thumb) %></td>
 
-       <td>
-         <a href="/admin/sign_shape/<%= shape.id %>/edit" class="edit">Edit</a> |
-         <form action="/admin/sign_shape/<%= shape.id %>" method="post" id="delete_form<%= shape.id %>" name="delete_form<%= shape.id %>" style="display: inline; ">
-         <input type="hidden" value="delete" name="_method">
-         <input type="hidden" id="graphic_id" name="graphic_id" value="<%= shape.id %>">
-         <a href="javascript:submitDeleteForm(<%= shape.id %>)" class="delete">Delete</a></form>
+        <td>
+          <a href="/admin/sign_shape/<%= shape.id %>/edit" class="edit">Edit</a> |
+          <form action="/admin/sign_shape/<%= shape.id %>" method="post" id="delete_form<%= shape.id %>" name="delete_form<%= shape.id %>" style="display: inline; ">
+            <input type="hidden" value="delete" name="_method">
+            <input type="hidden" id="graphic_id" name="graphic_id" value="<%= shape.id %>">
+            <a href="javascript:submitDeleteForm(<%= shape.id %>)" class="delete">Delete</a></form>
 
-       </td>
+        </td>
 
       </tr>
   <% end %>

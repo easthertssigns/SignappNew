@@ -9,7 +9,7 @@
         var shape_data = [];
 
         $(document).ready(function () {
-            $("#sizeSelect").change(function () {
+            $("#sizeSelect").live("change", function () {
                 var selectedSize = $("#sizeSelect").val();
                 if (selectedSize == "custom") {
                     //do stuff that shows text boxes for custom size
@@ -38,6 +38,20 @@
 
             $("#shapeSelect").change(function () {
                 var selectedShape = $("#shapeSelect").val();
+
+                $.get("/custom_sign/get_sign_shape_sizes?id=" + selectedShape, function(data, status){
+                    if(status=="success"){  //if your ajax is success
+                        // remove current size list, append new one
+                        $("#size_container .select2-container").remove();
+                        $("#sizeSelect").remove();
+
+                        // add the one from the request
+                        $("#size_container").prepend(data);
+
+                        $('#sizeSelect').select2();
+                    }
+                });
+
                 $("#displayShape").text($("#shapeSelect option[value='" + selectedShape + "']").text());
             });
 

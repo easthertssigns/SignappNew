@@ -44,6 +44,9 @@ SignappNew::Application.routes.draw do
   match "custom_sign/write_file" => "custom_sign#write_file"
   match "custom_sign/get_sign_svg/:id" => "custom_sign#get_sign_svg"
 
+  # retrieve
+  match "custom_sign/get_sign_shape_sizes" => "custom_sign#get_sign_shape_sizes"
+
   match "admin/sign_products/product_not_found" => "spree/admin/sign_products#product_not_found"
 
   match "admin/sign_shapes" => "spree/admin#sign_shapes"
