@@ -45,7 +45,6 @@ SignappNew::Application.configure do
   config.assets.compile = true
 
   ActionMailer::Base.default :from => 'auto@wearealight.com'
-
   ActionMailer::Base.smtp_settings = {
       :address              => "smtp.gmail.com",
       :port                 => 587,
@@ -55,4 +54,5 @@ SignappNew::Application.configure do
       :authentication       => 'plain',
       :enable_starttls_auto => true
   }
+
 end

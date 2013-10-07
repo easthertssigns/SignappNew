@@ -2,12 +2,11 @@
     <% stylesheet_link_tag('fixed_grid', 'select2', 'store/magiczoom') %>
 <% end %>
 <% content_for :javascripts do %>
-    <%= javascript_include_tag('select2.min', 'jquery-ui-1.8.23.custom.min', 'store/magiczoom') %>
+    <%= javascript_include_tag('select2.min', 'jquery-ui-1.8.23.custom.min', 'store/magiczoom', 'jquery-validate') %>
 
     <script type="text/javascript" language="javascript">
 
         var shape_data = [];
-
         $(document).ready(function () {
             $("#sizeSelect").live("change", function () {
                 var selectedSize = $("#sizeSelect").val();
@@ -38,20 +37,17 @@
 
             $("#shapeSelect").change(function () {
                 var selectedShape = $("#shapeSelect").val();
-
-                $.get("/custom_sign/get_sign_shape_sizes?id=" + selectedShape, function(data, status){
-                    if(status=="success"){  //if your ajax is success
+                $.get("/custom_sign/get_sign_shape_sizes?id=" + selectedShape, function (data, status) {
+                    if (status == "success") {  //if your ajax is success
                         // remove current size list, append new one
                         $("#size_container .select2-container").remove();
                         $("#sizeSelect").remove();
-
                         // add the one from the request
                         $("#size_container").prepend(data);
-
                         $('#sizeSelect').select2();
+                        $('.choose-shape,.select-alert-message').remove();
                     }
                 });
-
                 $("#displayShape").text($("#shapeSelect option[value='" + selectedShape + "']").text());
             });
 
@@ -99,7 +95,6 @@
 
             function format_shape(shape) {
                 // get the shape that matches
-
                 var el = null;
                 var src = "";
                 var text = "";
@@ -114,13 +109,26 @@
                 });
                 return '<img src="' + src + '"/>' + text;
             }
-
             $('#shapeSelect').select2({
+                placeholder: "Select a Shape",
                 formatResult: format_shape,
                 formatSelection: format_shape
+
             });
             // $('#shapeSelect').select2();
-            $('#sizeSelect, #variantSelect').select2();
+            $('#sizeSelect').select2();
+            $('#variantSelect').select2({
+                placeholder: "Choose your Sign"
+            });
+            $("form").submit(function (e) {
+                if ($('#shapeSelect').val() <= 0 || $('#variantSelect').val() <= 0) {
+                    $('.select-alert-message, .size-alert-message, .variant-alert-message').fadeIn(200);
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            });
         });
 
         function get_calculated_price_of_sign() {

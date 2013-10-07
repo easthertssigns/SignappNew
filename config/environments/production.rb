@@ -65,8 +65,6 @@ SignappNew::Application.configure do
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.perform_deliveries = true
-
-  # Update following details when smtp details received from client
   ActionMailer::Base.default :from => 'auto@wearealight.com'
   ActionMailer::Base.smtp_settings = {
       :address              => "smtp.gmail.com",
