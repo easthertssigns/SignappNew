@@ -15,6 +15,9 @@ class SignBaseShape < ActiveRecord::Base
                     },
                     :storage => :s3,
                     :s3_credentials => "#{Rails.root}/config/s3.yml",
+                    :s3_permissions => {
+                        :original => :public_read
+                    },
                     :bucket => "signapp-prod",
                     :url => '/spree/products/:id/:style/:basename.:extension',
                     :path => ':rails_root/public/spree/products/:id/:style/:basename.:extension'
@@ -33,6 +36,12 @@ class SignBaseShape < ActiveRecord::Base
     if sign_base_to_sizes.where(:sign_size_id => size.id).any?
       sign_base_to_sizes.where(:sign_size_id => size.id).delete_all
     end
+  end
+
+  def get_svg_file
+    require 'open-uri'
+
+    open(svg_file.url(:original)).read
   end
 
 end

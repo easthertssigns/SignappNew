@@ -41,6 +41,23 @@ class SignData < ActiveRecord::Base
     image
   end
 
+  def get_mask
+    result = nil
+
+    if shape_id
+      base_shape = SignBaseShape.find(shape_id)
+      if base_shape.svg_file.present?
+        result = "/custom_sign/#{shape_id}/get_sign_shape_svg.svg"
+      else
+        nil
+      end
+    else
+      nil
+    end
+
+    result
+  end
+
   def get_local_svg
     # try and get the SVG file and read it
     if svg_data
