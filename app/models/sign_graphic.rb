@@ -11,4 +11,5 @@ class SignGraphic < ActiveRecord::Base
                     :path => ':rails_root/public/spree/products/:id/:style/:basename.:extension'
 
   has_many :sign_graphic_categories
+
 end

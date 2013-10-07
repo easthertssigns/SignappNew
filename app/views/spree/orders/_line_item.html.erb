@@ -1,13 +1,13 @@
 <div class="<%= cycle('', 'alt') %> line-item">
   <div class="cart-item-image" data-hook="cart_item_image">
     <% if line_item.sign_data_id %>
-    <img style="width: 124px;" src="/custom_sign/get_sign_svg/<%= line_item.sign_data_id.to_s %>.svg">
-        <% else %>
-    <% if variant.images.length == 0 %>
-        <%= link_to small_image(variant.product), variant.product %>
+        <img style="max-width: 124px; max-height: 84px;;" src='/custom_sign/get_sign_svg/<%= line_item.sign_data_id.to_s %>.svg' />
     <% else %>
-        <%= link_to image_tag(variant.images.first.attachment.url(:original)), variant.product %>
-    <% end %>
+        <% if variant.images.length == 0 %>
+            <%= link_to small_image(variant.product), variant.product %>
+        <% else %>
+            <%= link_to image_tag(variant.images.first.attachment.url(:original)), variant.product %>
+        <% end %>
     <% end %>
   </div>
   <div class="cart-item-description" data-hook="cart_item_description">

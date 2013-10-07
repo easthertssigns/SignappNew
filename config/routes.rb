@@ -30,6 +30,8 @@ SignappNew::Application.routes.draw do
   match "admin/users/:user_id/:note_id/delete_note" => "spree/admin/users#delete_note"
   match "admin/users/:user_id/:note_id/edit_note" => "spree/admin/users#edit_note"
 
+  match "custom_sign/get_sign/:id" => "custom_sign#get_sign"
+
   match "custom_sign/save_sign" => "custom_sign#save_sign"
   match "custom_sign/save_dialog" => "custom_sign#save_dialog"
   match "custom_sign/load_sign_list/:user_id" => "custom_sign#load_sign_list"
@@ -45,6 +47,8 @@ SignappNew::Application.routes.draw do
   match "custom_sign/get_sign_svg/:id" => "custom_sign#get_sign_svg"
 
   # retrieve
+  match "custom_sign/get_custom_shape_svg/:id" => "custom_sign#get_custom_shape_svg"
+
   match "custom_sign/get_sign_shape_sizes" => "custom_sign#get_sign_shape_sizes"
   match "custom_sign/:id/get_sign_shape_svg" => "custom_sign#get_sign_shape_svg"
 

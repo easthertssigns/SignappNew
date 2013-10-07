@@ -227,12 +227,21 @@ module Spree
 
 
     def get_featured_product_list
-      products = Spree::Product.where(:featured_product => true).all
-      products
+      Spree::Product.where(:featured_product => true).all
+    end
+
+    def get_sign_graphics_for_category(id)
+      sgc = SignGraphicCategory.find(id)
+
+      sgc.sign_graphics.order(:title).all
     end
 
     def get_sign_graphics
-      sign_graphics = SignGraphic.all
+      SignGraphic.all
+    end
+
+    def get_sign_graphic_category
+      SignGraphicCategory.order(:category_name).all
     end
 
   end

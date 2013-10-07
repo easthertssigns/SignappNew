@@ -73,6 +73,18 @@ class CustomSignController < ApplicationController
     end
   end
 
+  def get_sign
+    @sign = SignData.find params[:id]
+
+    if @sign.svg_data
+      respond_to do |format|
+        format.svg {
+          render :inline => @sign.get_local_svg
+        }
+      end
+    end
+  end
+
   def get_sign_shape_svg
     @sign_shape = SignBaseShape.find params[:id]
 
@@ -81,6 +93,19 @@ class CustomSignController < ApplicationController
     respond_to do |format|
       format.svg {
         render :inline => @sign_shape.get_svg_file
+      }
+    end
+
+  end
+
+  def get_custom_shape_svg
+    @sign_graphic = SignGraphic.find params[:id]
+
+    headers["Content-Type"] = "image/svg+xml"
+
+    respond_to do |format|
+      format.svg {
+        render :inline => @sign_graphic.svg_file.to_file.read
       }
     end
 

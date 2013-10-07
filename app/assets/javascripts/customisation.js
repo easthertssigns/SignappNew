@@ -62,7 +62,17 @@ $(function () {
 
     function shapeSelect(shape) {
         if (!shape.id) return shape.text; // optgroup
-        return "<object data='/assets/svg/" + shape.id.toLowerCase() + ".svg'/>" + shape.text;
+        // alert(shape.id.replace("id_", ""));
+
+        if (!isNaN(shape.id.replace("id_", "")))
+        {
+            return "<object type='image/svg+xml' data='/custom_sign/get_custom_shape_svg/" + shape.id.toLowerCase().replace("id_", "") + ".svg'/>" + shape.text;
+        }
+        else
+        {
+            return "<object type='image/svg+xml' data='/assets/svg/" + shape.id.toLowerCase() + ".svg'/>" + shape.text;
+        }
+
     }
 
     $('#shapeSelect').select2({

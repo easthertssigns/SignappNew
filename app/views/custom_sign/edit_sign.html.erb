@@ -77,11 +77,13 @@
         <div class="arrow"></div>
         <select class="shapeSelect" id="shapeSelect">
           <option></option>
-          <optgroup label="Misc">
-            <% get_sign_graphics.each do |g| %>
-                <option value="<%= g.id %>"><%= g.title %></option>
-            <% end %>
-          </optgroup>
+          <% get_sign_graphic_category.each do |cat| %>
+              <optgroup label="<%= cat.category_name %>">
+                <% get_sign_graphics_for_category(cat.id).each do |g| %>
+                    <option value="id_<%= g.id %>"><%= g.title %></option>
+                <% end %>
+              </optgroup>
+          <% end %>
           <optgroup label="Animals">
             <option value="ant">Ant</option>
             <option value="bear">Bear</option>
@@ -807,7 +809,7 @@
                 activeObject.set({engraved: true});
                 console.log(activeObject);
 
-                if (activeObject.type == "path") {
+                if (activeObject.type == "path" || activeObject.type == "polygon" || activeObject.type == "rect" || activeObject.type == "circle" || activeObject.type == "ellipse" || activeObject.type == "triangle") {
                     activeObject.setColor("#000000");
                     activeObject.setOpacity("0.3");
 
@@ -974,7 +976,16 @@
 //                    })
 //                });
 //            });
+
+
             var svg = "/assets/svg/" + $(this).val() + ".svg";
+
+            // handel the uploads from admin
+            if (!isNaN($(this).val().replace("id_", ""))) {
+                svg = "/custom_sign/get_custom_shape_svg/" + $(this).val().toLowerCase().replace("id_", "") + ".svg"
+            }
+
+
             fabric.loadSVGFromURL(svg, function (objects, options) {
                 var obj = fabric.util.groupSVGElements(objects, options);
                 /*var ctx = canvas.getContext();
@@ -1699,23 +1710,23 @@
     }
 
     function applyMask() {
-        if (mask_svg_url != "") {
-            var tempContext = canvas.getContext("2d");
-
-            fabric.loadSVGFromURL(mask_svg_url, function (objects, options) {
-                var mask = fabric.util.groupSVGElements(objects, options);
-
-                mask.scaleX = canvas.width / mask.width;
-                mask.scaleY = canvas.height / mask.height;
-                mask.top = canvas.height / 2;
-                mask.left = canvas.width / 2;
-                canvas.clipTo = (function (ctx) {
-                    mask.render(ctx);
-                });
-
-                canvas.renderAll();
-
-            });
-        }
+//        if (mask_svg_url != "") {
+//            var tempContext = canvas.getContext("2d");
+//
+//            fabric.loadSVGFromURL(mask_svg_url, function (objects, options) {
+//                var mask = fabric.util.groupSVGElements(objects, options);
+//
+//                mask.scaleX = canvas.width / mask.width;
+//                mask.scaleY = canvas.height / mask.height;
+//                mask.top = canvas.height / 2;
+//                mask.left = canvas.width / 2;
+//                canvas.clipTo = (function (ctx) {
+//                    mask.render(ctx);
+//                });
+//
+//                canvas.renderAll();
+//
+//            });
+//        }
     }
 </script>
