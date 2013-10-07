@@ -99,6 +99,8 @@ $(function () {
         ]
     });
 
+    $(".sp-palette-container .sp-palette").append('<div class="testing-this sp-cf sp-palette-row sp-palette-row-selection">Engraved</div>');
+
     $('.priceWrapper .price').html(function () {
         var text = $(this).text().split(".");
         var last = text.pop();
