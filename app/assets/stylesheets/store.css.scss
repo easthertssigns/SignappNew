@@ -552,6 +552,12 @@
       .arrow {
         right: 0px;
       }
+      .select-alert-message {
+        padding: 10px 0 5px 0;
+        color: $red;
+        font-size: 12px;
+        display: none;
+      }
     }
     &.two {
       .select2-container {
@@ -560,10 +566,29 @@
       .arrow {
         right: -10px;
       }
+      .choose-shape {
+        color: $bright-blue;
+        text-transform: uppercase;
+        font-size: 12px;
+        padding: 10px;
+        display: block;
+      }
+      label {
+        margin-left: 12px;
+      }
     }
     &.three {
       .select2-container {
         margin-left: 25px;
+      }
+      label {
+        margin-left: 24px;
+      }
+      .variant-alert-message {
+        padding: 10px 0 5px 26px;
+        color: $red;
+        font-size: 12px;
+        display: none;
       }
     }
     &.basePrice {
