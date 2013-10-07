@@ -5,11 +5,12 @@
     <%= javascript_include_tag('select2.min', 'spectrum', 'customisation', 'fabric', 'jquery-base64-min', 'jquery-fancybox-pack', 'jquery-ui-1.8.23.custom.min', 'jquery.qtip.min', 'modernizr.mq', 'jquery.joyride-1.0.5') %>
 <% end %>
 <%= params.to_yaml %>
+
 <div id="loadingOverlay"></div>
 <div id="tourOverlay"></div>
 <div id="canvasZoomWrapper">
   <div class="minorFunctions" id="minorFunctions">
-    <div class="function">Start Again</div>
+    <div class="function" id="startagain">Start Again</div>
     <div class="function" id="clearCanvas">Clear Canvas</div>
     <div class="function" id="startTutorial">Quick Tutorial</div>
     <% if current_refinery_user %>
@@ -62,6 +63,10 @@
           </optgroup>
         </select>
         <input type="text" class="showPaletteOnly" value="#000000"/>
+
+        <div class="function engraved" id="textEngraved" title="No paint, only engraved">
+          Engraved, no paint
+        </div>
       </div>
     </div>
 
@@ -90,6 +95,10 @@
           </optgroup>
         </select>
         <input type="text" class="showPaletteOnly" value="#000000"/>
+
+        <div class="function engraved" id="shapeEngraved" title="No paint, only engraved">
+          Engraved, no paint
+        </div>
       </div>
     </div>
 
@@ -109,6 +118,10 @@
 
         <div id="borderThicknessSlider"></div>
         <input type="text" class="showPaletteOnly" id="borderColor" value="#000000"/>
+
+        <div class="function engraved" id="borderEngraved" title="No paint, only engraved">
+          Engraved, no paint
+        </div>
       </div>
     </div>
 
@@ -207,6 +220,9 @@
     <p><strong>Tip: </strong>If you want to edit some existing text, select it and use the tools that will appear here
       to change it's attributes.</p></li>
 </ol>
+<div style="display: none;">
+  <img id="engravedbg" src="/assets/engraved_bg.png">
+</div>
 <script src="/assets/aligning_guidelines"></script>
 <script src="/assets/centering_guidelines"></script>
 
@@ -217,13 +233,15 @@
     var currentState = [];
     var canvas_track_changes = false;
     var ignor_last_action = true;
+    var mask_svg_url = '';
+    var canvasMargin = $('.canvas-container').css("margin-left");
 
+    var canvas = null;
     // added to fix de-authentication when posting ajax : Doug
-
 
     (function () {
 
-        var canvas = new fabric.Canvas('my-canvas');
+        canvas = new fabric.Canvas('my-canvas');
 
         initAligningGuidelines(canvas);
         initCenteringGuidelines(canvas);
@@ -247,10 +265,8 @@
             canvasWidth = (canvasHeight / SignHeight) * SignWidth;
         }
 
-
         var canvasScale = 1.0;
-
-        var placeholderText = 'Click me and start typing...';
+        var placeholderText = 'Double click to change me...';
 
         canvas.setWidth(canvasWidth);
         canvas.setHeight(canvasHeight);
@@ -258,7 +274,7 @@
         // alert(canvasWidth);
         // alert(canvasHeight);
 
-        canvas.backgroundImageStretch = true;
+        // canvas.backgroundImageStretch = true;
 
         var bg_image_url = '';
 
@@ -280,6 +296,7 @@
         bg_image_url = '<%= background_image.attachment.url(:product) %>';
         canvas.setBackgroundImage(bg_image_url, function () {
             //canvas.setBackgroundImage('/assets/customisation/brass.jpg', function () {
+
             canvas.renderAll();
         });
 
@@ -292,15 +309,15 @@
 
         fabric.Image.fromURL(bg_image_url, function (oImg) {
             if ((canvas.width / canvas.height) > (oImg.width / oImg.height)) {
-                oImg.scaleToWidth(canvas.getWidth());
+                oImg.scaleToWidth(canvasWidth);
             }
             else {
                 // portrait
-                oImg.scaleToHeight(canvas.getHeight());
+                oImg.scaleToHeight(canvasHeight);
             }
 
-            oImg.top = canvas.height / 2;
-            oImg.left = canvas.width / 2;
+            oImg.top = canvasHeight / 2;
+            oImg.left = canvasWidth / 2;
 
             oImg.selectable = false;
             canvas.add(oImg);
@@ -308,67 +325,14 @@
 
         // set the mask for the sign
 
-        var mask_svg_url = "<%= @sign_data.get_mask %>";
+        mask_svg_url = "<%= @sign_data.get_mask %>";
 
-        if (mask_svg_url != "") {
-            alert(mask_svg_url);
-            fabric.loadSVGFromURL(mask_svg_url, function (objects, options) {
-                var mask = fabric.util.groupSVGElements(objects, options);
-
-                mask.scaleX = canvas.width / mask.width;
-                mask.scaleY = canvas.height / mask.height;
-
-                // objects[0].setShadow({ color: 'rgba(0,0,0,0.3)' });
-
-                // alert("mask objects count : " + objects[0]["shadow"].toString());
-//            objects[0].setShadow({ color: 'rgba(0,0,0,0.3)' });
-
-                mask.top = canvas.height / 2;
-                mask.left = canvas.width / 2;
-
-
-//            alert(canvas.width.toString());
-//
-//            alert(mask.height.toString());
-
-//            var shadow = {
-//                color: 'rgba(0,0,0,0.6)',
-//                blur: 20,
-//                offsetX: 10,
-//                offsetY: 10,
-//                opacity: 0.6,
-//                fillShadow: true,
-//                strokeShadow: true
-//            }
-//
-//            mask.setShadow(shadow);
-
-                canvas.clipTo = function (ctx) {
-                    mask.render(ctx);
-                }
-
-                canvas.renderAll();
-
-//            fabric.Image.fromURL('path/to/image.png', function(img) {
-//                img.set({
-//                    left: 250,
-//                    top: 250,
-//                    clipTo: function (ctx) {
-//                        logo.render(ctx);
-//                    }
-//                });
-//
-//                canvas.add(img);
-//
-//            });
-            });
-        }
-
+        applyMask();
 
         canvas_track_changes = true;
         console.log('canvas_track_changes : ' + canvas_track_changes);
 
-        canvas.renderAll();
+        //canvas.renderAll();
 
         // setup complete
 
@@ -472,12 +436,24 @@
                 left: canvasWidth / 2,
                 top: canvasHeight / 2
             });
-            canvas.add(text.scale(canvasScale));
+
             text.hasRotatingPoint = true;
             text.set({
                 borderColor: 'cyan',
-                cornerColor: 'cyan'
-            })
+                cornerColor: 'cyan',
+                fontWeight: "normal"
+            });
+
+
+            text.scale(canvasScale);
+
+            // make text selected
+            canvas.setActiveObject(text);
+
+            canvas.add(text);
+
+            canvas.renderAll();
+
         });
 
         $('#addShape').click(function () {
@@ -496,43 +472,37 @@
             var activeObject = canvas.getActiveObject();
             return function (e) {
                 canvas.__onMouseUp(e);
-                if (activeObject && activeObject.type === 'text') {
-                    var currentText = activeObject.getText();
-                    canvas.fire('object:mouseup', { target: activeObject }, e);
-                    $('#textArea').focus().val(currentText);
-                    if (currentText == placeholderText) {
-                        $('#textArea').val('');
-                    }
-                }
+//                if (activeObject && activeObject.type === 'text') {
+//                    var currentText = activeObject.getText();
+//                    if (currentText = "") {
+//                        currentText = " ";
+//                    }
+//
+//                    canvas.fire('object:mouseup', { target: activeObject }, e);
+//                    $('#textArea').focus().val(currentText);
+//                    if (currentText == placeholderText) {
+//                        $('#textArea').val('');
+//                    }
+//                }
             };
         })(canvas.setActiveObject);
 
-//        Set Tab key to deselect current text object if focus is in text area
-        $('#textArea').live('keyup', function (e) {
-            var keyCode = e.keyCode || e.which;
-            if (keyCode == 9) {
-                e.preventDefault();
-                canvas.deactivateAll().renderAll();
-                $('#textArea').val('').blur();
-            }
-        });
-
-        canvas.observe('selection:cleared', function (e) {
-            $('#textArea').val('').css({'display': 'none'});
-        });
-
-        canvas.observe('object:selected', function (e) {
+        function dblClickHandler() {
             var activeObject = canvas.getActiveObject();
-            var activeObjectFill = canvas.getActiveObject().fill;
+
             if (canvas.getActiveObject() && canvas.getActiveObject().type === 'text') {
                 var activeObjectFontFamily = canvas.getActiveObject().fontFamily;
                 $('#fontFamily').val(activeObjectFontFamily).trigger("change");
-                $('#textArea').val(activeObject.text).css({
-                    '-webkit-transform': 'rotate(' + activeObject.theta * 180 / Math.PI + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
-                    '-moz-transform': 'rotate(' + activeObject.theta * 180 / Math.PI + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
-                    '-0-transform': 'rotate(' + activeObject.theta * 180 / Math.PI + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
-                    '-ms-transform': 'rotate(' + activeObject.theta * 180 / Math.PI + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
-//                    display:'block',
+                $('#textArea').val(activeObject.text)
+
+                // console.log('-webkit-transform : rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')');
+
+                $('#textArea').css({
+                    '-webkit-transform': 'rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
+                    '-moz-transform': 'rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
+                    '-0-transform': 'rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
+                    '-ms-transform': 'rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
+                    display: 'block',
                     fontFamily: activeObject.fontFamily,
                     fontSize: activeObject.fontSize,
                     height: activeObject.height,
@@ -540,11 +510,13 @@
                     lineHeight: activeObject.lineHeight,
                     textAlign: activeObject.textAlign,
                     top: activeObject.top - activeObject.height / 2,
-                    width: activeObject.width
+                    width: activeObject.width,
+                    zIndex: 100
                 });
+
                 canvas.observe('object:modified', function () {
                     $('#textArea').css({
-                        '-webkit-transform': 'rotate(' + activeObject.theta * 180 / Math.PI + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
+                        '-webkit-transform': 'rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
                         display: 'block',
                         height: activeObject.height,
                         left: activeObject.left - activeObject.width / 2,
@@ -591,24 +563,133 @@
                     }
                 });
             }
-            $('.showPaletteOnly').spectrum("set", activeObjectFill);
+
+        }
+
+        fabric.util.addListener(fabric.document, 'dblclick', dblClickHandler);
+        // fabric.util.removeListener(canvas_ctx.upperCanvasEl, 'dblclick', dblClickHandler);
+
+//        Set Tab key to deselect current text object if focus is in text area
+        $('#textArea').live('keyup', function (e) {
+            var keyCode = e.keyCode || e.which;
+            if (keyCode == 9) {
+                e.preventDefault();
+
+                canvas.deactivateAll().renderAll();
+                $('#textArea').val('').blur();
+            }
+        });
+
+        canvas.observe('selection:cleared', function (e) {
+            $('#textArea').val('').css({'display': 'none'});
+        });
+
+        canvas.observe('object:selected', function (e) {
+            var activeObject = canvas.getActiveObject();
+            var activeObjectFill = canvas.getActiveObject().fill;
+            /*
+             if (canvas.getActiveObject() && canvas.getActiveObject().type === 'text') {
+             var activeObjectFontFamily = canvas.getActiveObject().fontFamily;
+             $('#fontFamily').val(activeObjectFontFamily).trigger("change");
+             $('#textArea').val(activeObject.text).css({
+             '-webkit-transform': 'rotate(' + activeObject.theta * 180 / Math.PI + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
+             '-moz-transform': 'rotate(' + activeObject.theta * 180 / Math.PI + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
+             '-0-transform': 'rotate(' + activeObject.theta * 180 / Math.PI + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
+             '-ms-transform': 'rotate(' + activeObject.theta * 180 / Math.PI + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
+             display: 'block',
+             fontFamily: activeObject.fontFamily,
+             fontSize: activeObject.fontSize,
+             height: activeObject.height,
+             left: activeObject.left - activeObject.width / 2,
+             lineHeight: activeObject.lineHeight,
+             textAlign: activeObject.textAlign,
+             top: activeObject.top - activeObject.height / 2,
+             width: activeObject.width,
+             zIndex: 100
+             });
+             canvas.observe('object:modified', function () {
+             $('#textArea').css({
+             '-webkit-transform': 'rotate(' + activeObject.theta * 180 / Math.PI + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
+             display: 'block',
+             height: activeObject.height,
+             left: activeObject.left - activeObject.width / 2,
+             top: activeObject.top - activeObject.height / 2,
+             width: activeObject.width
+             });
+             });
+             canvas.observe('object:moving', function () {
+             $('#textArea').css({
+             display: 'none'
+             });
+             });
+             canvas.observe('object:scaling', function () {
+             $('#textArea').css({
+             display: 'none'
+             });
+             });
+             canvas.observe('object:rotating', function () {
+             $('#textArea').css({
+             display: 'none'
+             });
+             });
+             canvas.observe('after:render', function () {
+             $('#textArea').css({
+             fontFamily: activeObject.fontFamily,
+             fontStyle: activeObject.fontStyle,
+             fontWeight: activeObject.fontWeight,
+             height: activeObject.height,
+             left: activeObject.left - activeObject.width / 2,
+             textAlign: activeObject.textAlign,
+             textDecoration: activeObject.textDecoration,
+             top: activeObject.top - activeObject.height / 2,
+             width: activeObject.width
+             });
+             if (activeObject.fontFamily === 'PacificoRegular') {
+             $('#textArea').css({
+             marginTop: activeObject.scaleY * 0.25 + 'em'
+             });
+             }
+             else {
+             $('#textArea').css({
+             marginTop: 0
+             })
+             }
+             });
+             }
+             */
+
+            if (!activeObject.get("engraved")) {
+                $('.showPaletteOnly').spectrum("set", activeObjectFill);
+            }
         });
 
         var textEl = $('#textArea');
         if (textEl) {
             textEl.keyup(function (e) {
                 var activeObject = canvas.getActiveObject();
-                if (activeObject) {
-                    if (!this.value) {
-                        canvas.discardActiveObject();
+                if (activeObject && activeObject.type == "text") {
+
+                    canvas.fire('object:modified', { target: canvas.getActiveObject() });
+
+                    if (this.value == "") {
+                        this.value = " ";
+                        this.setSelectionRange(0, 0);
                     }
-                    else {
-                        activeObject.text = this.value;
+                    else if (this.value.length == 2 && this.value[1] == " ") {
+                        this.value = this.value.substring(0, 1);
+                        this.setSelectionRange(1, 1);
                     }
+
+
+                    activeObject.text = this.value;
+
                     canvas.renderAll();
+                    // dfdf
+
                 }
             });
         }
+
 
         $('#fontFamily').change(function () {
             var fontFamily = $(this).val();
@@ -630,17 +711,28 @@
                     canvas.fire('object:modified', { target: canvas.getActiveObject() });
                     //alert("Color Change Fire (" + activeObject.fill + " " + fillColor + ") ");
                     activeObject.fill = fillColor;
+                    activeObject.setOpacity(1);
+                    activeObject.stroke = null;
                     canvas.renderAll();
+
                 }
             }
 
         });
 
         $('#borderColor').change(function () {
+//            canvas.fire('object:modified', { target: canvas.getActiveObject() });
+
             var strokeColor = $(this).val();
+
             borderSingle.stroke = strokeColor;
             borderDouble.stroke = strokeColor;
             borderScalloped.stroke = strokeColor;
+
+            borderSingle.opacity = 1;
+            borderDouble.opacity = 1;
+            borderScalloped.opacity = 1;
+
             canvas.renderAll();
         });
 
@@ -649,6 +741,7 @@
             if (activeObject && activeObject.type === 'text') {
                 activeObject.fontWeight = (activeObject.fontWeight == 'bold' ? '' : 'bold');
                 canvas.renderAll();
+                canvas.fire('object:modified', { target: canvas.getActiveObject() });
             }
         });
 
@@ -657,6 +750,7 @@
             if (activeObject && activeObject.type === 'text') {
                 activeObject.fontStyle = (activeObject.fontStyle == 'italic' ? '' : 'italic');
                 canvas.renderAll();
+                canvas.fire('object:modified', { target: canvas.getActiveObject() });
             }
         });
 
@@ -665,6 +759,7 @@
             if (activeObject && activeObject.type === 'text') {
                 activeObject.textDecoration = (activeObject.textDecoration == 'underline' ? '' : 'underline');
                 canvas.renderAll();
+                canvas.fire('object:modified', { target: canvas.getActiveObject() });
             }
         });
 
@@ -673,6 +768,7 @@
             if (activeObject && activeObject.type === 'text') {
                 activeObject.textDecoration = (activeObject.textDecoration == 'line-through' ? '' : 'line-through');
                 canvas.renderAll();
+                canvas.fire('object:modified', { target: canvas.getActiveObject() });
             }
         });
 
@@ -681,6 +777,7 @@
             if (activeObject && activeObject.type === 'text') {
                 activeObject.textAlign = 'left';
                 canvas.renderAll();
+                canvas.fire('object:modified', { target: canvas.getActiveObject() });
             }
         });
 
@@ -689,6 +786,7 @@
             if (activeObject && activeObject.type === 'text') {
                 activeObject.textAlign = 'center';
                 canvas.renderAll();
+                canvas.fire('object:modified', { target: canvas.getActiveObject() });
             }
         });
 
@@ -697,7 +795,64 @@
             if (activeObject && activeObject.type === 'text') {
                 activeObject.textAlign = 'right';
                 canvas.renderAll();
+                canvas.fire('object:modified', { target: canvas.getActiveObject() });
             }
+        });
+
+        $('#textEngraved, #shapeEngraved').click(function () {
+            var activeObject = canvas.getActiveObject();
+
+            if (activeObject) {
+
+                activeObject.set({engraved: true});
+                console.log(activeObject);
+
+                if (activeObject.type == "path") {
+                    activeObject.setColor("#000000");
+                    activeObject.setOpacity("0.3");
+
+//                    activeObject.setPatternFill({
+//                        source: $("#engravedbg").attr("src")
+//                    });
+
+                    activeObject.set({ strokeWidth: (1 / activeObject.scaleX ), stroke: 'rgba(0,0,0,1)', strokeDashArray: [3 / activeObject.scaleX, 2 / activeObject.scaleX] });
+
+                    canvas.renderAll();
+                    canvas.fire('object:modified', { target: canvas.getActiveObject() });
+                }
+
+                // text decoration
+                if (activeObject.type == "text") {
+                    activeObject.fill = "#000000";
+                    activeObject.opacity = "0.3";
+
+                    console.log(canvas.item(0)._element.src);
+                    // console.log(canvas.item(0).outerHTML());
+
+
+//                    activeObject.setPatternFill({
+//                        source: $("#engravedbg").attr("src")
+//                    });
+
+                    activeObject.set({ strokeWidth: (1 / activeObject.scaleX ), stroke: 'rgba(0,0,0,1)', strokeDashArray: [3 / activeObject.scaleX, 2 / activeObject.scaleX] });
+
+                    canvas.renderAll();
+                    canvas.fire('object:modified', { target: canvas.getActiveObject() });
+                }
+            }
+        });
+
+        $('#borderEngraved').click(function () {
+//            canvas.fire('object:modified', { target: canvas.getActiveObject() });
+            borderSingle.set({engraved: true}).setOpacity("0.3");
+            borderDouble.set({engraved: true}).setOpacity("0.3");
+            borderScalloped.set({engraved: true}).setOpacity("0.3");
+
+            borderSingle.stroke = "#000000";
+            borderDouble.stroke = "#000000";
+            borderScalloped.stroke = "#000000";
+
+            canvas.renderAll();
         });
 
         $('#flipX').click(function () {
@@ -732,7 +887,7 @@
 
         $('#sendToBack').click(function () {
             var activeObject = canvas.getActiveObject();
-            canvas.sendToBack(activeObject);
+            canvas.sendToBack(activeObject).bringForward((activeObject));
             canvas.renderAll();
         });
 
@@ -740,29 +895,39 @@
             var activeObject = canvas.getActiveObject(),
                     activeGroup = canvas.getActiveGroup();
             if (activeObject) {
+
+                canvas.fire('object:removed', { target: canvas.getActiveObject() });
                 canvas.remove(activeObject);
             }
             else if (activeGroup) {
                 var objectsInGroup = activeGroup.getObjects();
                 canvas.discardActiveGroup();
                 objectsInGroup.forEach(function (object) {
+                    canvas.fire('object:removed', { target: canvas.getActiveObject() });
                     canvas.remove(object);
                 });
             }
         });
 
         $('#cloneActiveObject').click(function () {
-            var activeObject = canvas.getActiveObject(), activeGroup = canvas.getActiveGroup();
+            var activeObject = canvas.getActiveObject();
+            var activeGroup = canvas.getActiveGroup();
+
             if (activeObject) {
-                var clonedObject = activeObject.clone().set({ top: activeObject.get('top') + 10, left: activeObject.get('left') + 10, hasRotatingPoint: true });
-                canvas.add(clonedObject);
-                canvas.setActiveObject(clonedObject);
-                clonedObject.set({
-                    borderColor: 'cyan',
-                    cornerColor: 'cyan'
-                })
+
+                var clonedObject = activeObject.clone(function (clone) {
+                    clone.set({ top: canvas.getActiveObject().get('top') + 10, left: canvas.getActiveObject().get('left') + 10, hasRotatingPoint: true });
+                    canvas.add(clone);
+                    canvas.setActiveObject(clone);
+                    clone.set({
+                        borderColor: 'cyan',
+                        cornerColor: 'cyan'
+                    });
+                    canvas.renderAll();
+                });
             }
             else if (activeGroup) {
+                alert("group");
                 var selection = activeGroup.getObjects();
                 canvas.deactivateAll();
                 var clones = [];
@@ -817,7 +982,12 @@
                  ctx.shadowBlur = 0;
                  ctx.shadowOffsetX = 0;
                  ctx.shadowOffsetY = 1;*/
-                canvas.add(obj.scale(canvasScale)).centerObject(obj).renderAll();
+                // set the position
+                obj.set('left', canvas.getCenter().left);
+                obj.set('top', canvas.getCenter().top);
+
+                obj.scale(canvasScale);
+
                 obj.setCoords();
                 obj.fill = "#000000"
                 obj.hasRotatingPoint = true;
@@ -826,8 +996,16 @@
                     cornerColor: 'cyan'
                 });
 
+                captureCurrentState();
+
+                canvas.add(obj);
+
+                canvas.setActiveObject(obj);
+                canvas.renderAll();
+
                 // call modified
-                canvas.fire('object:modified', { target: obj });
+
+                // canvas.fire('object:modified', { target: obj });
 
             });
         });
@@ -889,24 +1067,36 @@
             var borderSelect = $('#borderSelect option:selected').val();
 
             if (borderSelect == "noborder") {
+                ignor_last_action = true;
                 canvas.remove(borderSingle);
+                ignor_last_action = true;
                 canvas.remove(borderDouble);
+                ignor_last_action = true;
                 canvas.remove(borderScalloped);
             }
 
             else if (borderSelect == "single") {
-                canvas.add(borderSingle.scale(canvasScale)).centerObject(borderSingle).sendToBack(borderSingle);
+                ignor_last_action = true;
+                canvas.add(borderSingle.scale(canvasScale)).centerObject(borderSingle).sendToBack(borderSingle).bringForward(borderSingle);
+                ignor_last_action = true;
                 canvas.remove(borderDouble);
+                ignor_last_action = true;
                 canvas.remove(borderScalloped);
             }
             else if (borderSelect == "double") {
-                canvas.add(borderDouble.scale(canvasScale)).centerObject(borderDouble).sendToBack(borderDouble);
+                ignor_last_action = true;
+                canvas.add(borderDouble.scale(canvasScale)).centerObject(borderDouble).sendToBack(borderDouble).bringForward(borderDouble);
+                ignor_last_action = true;
                 canvas.remove(borderSingle);
+                ignor_last_action = true;
                 canvas.remove(borderScalloped);
             }
             else if (borderSelect == "scalloped") {
-                canvas.add(borderScalloped.scale(canvasScale)).centerObject(borderScalloped).sendToBack(borderScalloped);
+                ignor_last_action = true;
+                canvas.add(borderScalloped.scale(canvasScale)).centerObject(borderScalloped).sendToBack(borderScalloped).bringForward(borderScalloped);
+                ignor_last_action = true;
                 canvas.remove(borderSingle);
+                ignor_last_action = true;
                 canvas.remove(borderDouble);
             }
         });
@@ -926,16 +1116,58 @@
                 borderScalloped.set({
                     strokeWidth: ui.value
                 });
+
+                if (borderSingle.get("engraved")) {
+                    borderSingle.opacity = 0.3;
+                    borderDouble.opacity = 0.3;
+                    borderScalloped.opacity = 0.3;
+                }
+                else {
+                    borderSingle.opacity = 1;
+                    borderDouble.opacity = 1;
+                    borderScalloped.opacity = 1;
+                }
+
                 canvas.renderAll();
             }
         });
         <% if @sign_data.based_on.nil? %>
         $('#clearCanvas').click(function () {
             if (confirm('Are you sure?')) {
-                canvas.clear();
+                var toRemove = [];
+                $.each(canvas.getObjects(), function (i, e) {
+                    if (e.selectable) {
+                        toRemove.push(e);
+                    }
+                });
+
+                while (toRemove.length > 0) {
+                    canvas.remove(toRemove.pop());
+                }
             }
+
+
             $(disabledTools).addClass('disabled');
         });
+
+        $('#startagain').click(function () {
+            if (confirm('Are you sure?')) {
+                var toRemove = [];
+                $.each(canvas.getObjects(), function (i, e) {
+                    if (e.selectable) {
+                        toRemove.push(e);
+                    }
+                });
+
+                while (toRemove.length > 0) {
+                    canvas.remove(toRemove.pop());
+                }
+            }
+
+            $(disabledTools).addClass('disabled');
+        });
+
+
         <% else %>
         $('#clearCanvas').click(function () {
             if (confirm('Are you sure?')) {
@@ -953,33 +1185,18 @@
         });
         <% end %>
 
+        var in_by = 35;
+
+
         //Top Left Screw Hole
-        var topLeftScrewHoleShadow = new fabric.Circle({
-            left: 20,
-            top: 18,
-            fill: '#000',
-            radius: 10,
-            opacity: 0.5,
-            selectable: false
-        });
-
-        var topLeftScrewHoleHighlight = new fabric.Circle({
-            left: 20,
-            top: 21,
-            fill: '#fff',
-            radius: 10,
-            opacity: 0.5,
-            selectable: false
-        });
-
         var topLeftScrewHole = new fabric.Circle({
-            left: 20,
-            top: 20,
+            left: in_by,
+            top: in_by,
             radius: 10,
             selectable: false
         });
 
-        topLeftScrewHole.setGradientFill(canvas.getContext(), {
+        topLeftScrewHole.setGradient({
             x1: 0,
             y1: 0,
             x2: 0,
@@ -990,33 +1207,33 @@
             }
         });
 
-        //Top Right Screw Hole
-        var topRightScrewHoleShadow = new fabric.Circle({
-            left: canvasWidth - 20,
-            top: 18,
-            fill: '#000',
+        //Top Left Screw Hole
+        var topScrewHole = new fabric.Circle({
+            left: canvasWidth / 2,
+            top: in_by,
             radius: 10,
-            opacity: 0.5,
             selectable: false
         });
 
-        var topRightScrewHoleHighlight = new fabric.Circle({
-            left: canvasWidth - 20,
-            top: 21,
-            fill: '#fff',
-            radius: 10,
-            opacity: 0.5,
-            selectable: false
+        topScrewHole.setGradient({
+            x1: 0,
+            y1: 0,
+            x2: 0,
+            y2: topLeftScrewHole.height,
+            colorStops: {
+                0: '#000',
+                1: '#25393b'
+            }
         });
 
         var topRightScrewHole = new fabric.Circle({
-            left: canvasWidth - 20,
-            top: 20,
+            left: canvasWidth - in_by,
+            top: in_by,
             radius: 10,
             selectable: false
         });
 
-        topRightScrewHole.setGradientFill(canvas.getContext(), {
+        topRightScrewHole.setGradient({
             x1: 0,
             y1: 0,
             x2: 0,
@@ -1027,33 +1244,50 @@
             }
         });
 
-        //Bottom Right Screw Hole
-        var bottomRightScrewHoleShadow = new fabric.Circle({
-            left: canvasWidth - 20,
-            top: canvasHeight - 22,
-            fill: '#000',
+        var rightScrewHole = new fabric.Circle({
+            left: canvasWidth - in_by,
+            top: canvasHeight / 2,
             radius: 10,
-            opacity: 0.5,
             selectable: false
         });
 
-        var bottomRightScrewHoleHighlight = new fabric.Circle({
-            left: canvasWidth - 20,
-            top: canvasHeight - 19,
-            fill: '#fff',
+        rightScrewHole.setGradient({
+            x1: 0,
+            y1: 0,
+            x2: 0,
+            y2: topRightScrewHole.height,
+            colorStops: {
+                0: '#000',
+                1: '#25393b'
+            }
+        });
+
+        var leftScrewHole = new fabric.Circle({
+            left: in_by,
+            top: canvasHeight / 2,
             radius: 10,
-            opacity: 0.5,
             selectable: false
+        });
+
+        leftScrewHole.setGradient({
+            x1: 0,
+            y1: 0,
+            x2: 0,
+            y2: topRightScrewHole.height,
+            colorStops: {
+                0: '#000',
+                1: '#25393b'
+            }
         });
 
         var bottomRightScrewHole = new fabric.Circle({
-            left: canvasWidth - 20,
-            top: canvasHeight - 20,
+            left: canvasWidth - in_by,
+            top: canvasHeight - in_by,
             radius: 10,
             selectable: false
         });
 
-        bottomRightScrewHole.setGradientFill(canvas.getContext(), {
+        bottomRightScrewHole.setGradient({
             x1: 0,
             y1: 0,
             x2: 0,
@@ -1064,33 +1298,14 @@
             }
         });
 
-        //Bottom Left Screw Hole
-        var bottomLeftScrewHoleShadow = new fabric.Circle({
-            left: 20,
-            top: canvasHeight - 22,
-            fill: '#000',
-            radius: 10,
-            opacity: 0.5,
-            selectable: false
-        });
-
-        var bottomLeftScrewHoleHighlight = new fabric.Circle({
-            left: 20,
-            top: canvasHeight - 19,
-            fill: '#fff',
-            radius: 10,
-            opacity: 0.5,
-            selectable: false
-        });
-
         var bottomLeftScrewHole = new fabric.Circle({
-            left: 20,
-            top: canvasHeight - 20,
+            left: in_by,
+            top: canvasHeight - in_by,
             radius: 10,
             selectable: false
         });
 
-        bottomLeftScrewHole.setGradientFill(canvas.getContext(), {
+        bottomLeftScrewHole.setGradient({
             x1: 0,
             y1: 0,
             x2: 0,
@@ -1101,32 +1316,122 @@
             }
         });
 
-        var screwHoles = new fabric.Group([topLeftScrewHoleShadow, topLeftScrewHoleHighlight, topLeftScrewHole, topRightScrewHoleShadow, topRightScrewHoleHighlight, topRightScrewHole, bottomRightScrewHoleShadow, bottomRightScrewHoleHighlight, bottomRightScrewHole, bottomLeftScrewHoleShadow, bottomLeftScrewHoleHighlight, bottomLeftScrewHole], {selectable: false});
+        var bottomScrewHole = new fabric.Circle({
+            left: canvasWidth / 2,
+            top: canvasHeight - in_by,
+            radius: 10,
+            selectable: false
+        });
+
+        bottomLeftScrewHole.setGradient({
+            x1: 0,
+            y1: 0,
+            x2: 0,
+            y2: bottomLeftScrewHole.height,
+            colorStops: {
+                0: '#000',
+                1: '#25393b'
+            }
+        });
+
+
+        var outerScrewHoleTL = new fabric.Circle({
+            left: -20,
+            top: -20,
+            radius: 10,
+            selectable: false
+        });
+
+        var outerScrewHoleTR = new fabric.Circle({
+            left: canvasWidth + 20,
+            top: -20,
+            radius: 10,
+            selectable: false
+        });
+
+        var outerScrewHoleBL = new fabric.Circle({
+            left: -20,
+            top: canvasHeight + 20,
+            radius: 10,
+            selectable: false
+        });
+
+        var outerScrewHoleBR = new fabric.Circle({
+            left: canvasWidth + 20,
+            top: canvasHeight + 20,
+            radius: 10,
+            selectable: false
+        });
+
+
+        var screwholesarray = [];
+
+        <% if @sign_data.get_base_shape().screw_hole_bottom_left %>
+        screwholesarray.push(bottomLeftScrewHole);
+        <% end %>
+
+        <% if @sign_data.get_base_shape().screw_hole_bottom %>
+        screwholesarray.push(bottomScrewHole);
+        <% end %>
+
+        <% if @sign_data.get_base_shape().screw_hole_bottom_right %>
+        screwholesarray.push(bottomRightScrewHole);
+        <% end %>
+
+        <% if @sign_data.get_base_shape().screw_hole_left %>
+        screwholesarray.push(leftScrewHole);
+        <% end %>
+
+        <% if @sign_data.get_base_shape().screw_hole_right %>
+        screwholesarray.push(rightScrewHole);
+        <% end %>
+
+        <% if @sign_data.get_base_shape().screw_hole_top_left %>
+        screwholesarray.push(topLeftScrewHole);
+        <% end %>
+
+        <% if @sign_data.get_base_shape().screw_hole_top %>
+        screwholesarray.push(topScrewHole);
+        <% end %>
+
+        <% if @sign_data.get_base_shape().screw_hole_top_right %>
+        screwholesarray.push(topRightScrewHole);
+        <% end %>
+
+        // add screwhomes to llow centering to occur correctly
+        screwholesarray.push(outerScrewHoleBL);
+        screwholesarray.push(outerScrewHoleBR);
+        screwholesarray.push(outerScrewHoleTL);
+        screwholesarray.push(outerScrewHoleTR);
+
+        var screwHoles = new fabric.Group(screwholesarray, {selectable: false});
         $('#toggleScrewHoles').toggle(function () {
-            canvas.add(screwHoles.scale(canvasScale)).centerObject(screwHoles).sendToBack(screwHoles);
+            ignor_last_action = true;
+            canvas.add(screwHoles.scale(canvasScale)).centerObject(screwHoles);
             $(this).addClass("active");
         }, function () {
+            ignor_last_action = true;
             canvas.remove(screwHoles);
             $(this).removeClass("active");
         });
 
         var leftMargin = new fabric.Line([40, 0, 40, canvasHeight], {
-            fill: 'cyan',
+            stroke: 'cyan',
             opacity: 0.5,
             selectable: false
         });
         var topMargin = new fabric.Line([0, 40, canvasWidth, 40], {
-            fill: 'cyan',
+            stroke: 'cyan',
             opacity: 0.5,
             selectable: false
         });
         var rightMargin = new fabric.Line([canvasWidth - 40, 0, canvasWidth - 40, canvasHeight], {
-            fill: 'cyan',
+            stroke: 'cyan',
             opacity: 0.5,
             selectable: false
         });
         var bottomMargin = new fabric.Line([0, canvasHeight - 40, canvasWidth, canvasHeight - 40], {
-            fill: 'cyan',
+            stroke: 'cyan',
             opacity: 0.5,
             selectable: false
         });
@@ -1134,9 +1439,20 @@
         var margins = new fabric.Group([leftMargin, topMargin, rightMargin, bottomMargin], {selectable: false});
 
         $('#toggleMargins').toggle(function () {
-            canvas.add(margins.scale(canvasScale)).centerObject(margins).sendToBack(margins);
+            // margins.scale(canvasScale);
+
+            ignor_last_action = true;
+            canvas.add(margins);
+            ignor_last_action = true;
+            canvas.centerObject(margins);
+            ignor_last_action = true;
+            canvas.sendToBack(margins);
+            ignor_last_action = true;
+            canvas.bringForward(margins);
+
             $(this).addClass("active");
         }, function () {
+            ignor_last_action = true;
             canvas.remove(margins);
             $(this).removeClass("active");
         });
@@ -1167,10 +1483,12 @@
                     obj[i].setCoords();
                 }
             }
+            applyMask();
             canvas.renderAll();
             canvas.calcOffset();
-
             $('#canvasScale').text(Math.round(canvasScale * 100) + "%");
+            canvasMargin = $('.canvas-container').css("margin-left");
+            $('#toolPalette').css('right', (parseInt(canvasMargin, 10) - 93) + 'px');
 
         });
 
@@ -1199,9 +1517,13 @@
                     obj[i].setCoords();
                 }
             }
+            applyMask();
             canvas.renderAll();
 
             $('#canvasScale').text(Math.round(canvasScale * 100) + "%");
+
+            canvasMargin = $('.canvas-container').css("margin-left");
+            $('#toolPalette').css('right', (parseInt(canvasMargin, 10) - 93) + 'px');
         });
 
         var disabledTools = $('#deleteActiveObject, #cloneActiveObject, #bringForward, #sendBackwards, #flipY, #flipX');
@@ -1221,15 +1543,29 @@
             }
         });
 
+        canvas.observe('object:scaling', function () {
+            var engraved = false;
+
+            var activeObject = canvas.getActiveObject();
+
+            if (activeObject.get("engraved")) {
+                engraved = true;
+            }
+
+
+            // style fill and stroke up
+            if (engraved) {
+                activeObject.set({ strokeWidth: (1 / activeObject.scaleX ), stroke: 'rgba(0,0,0,1)', strokeDashArray: [3 / activeObject.scaleX, 2 / activeObject.scaleX]});
+                console.log("object scaling : " + engraved);
+            }
+        });
+
         canvas.observe('selection:created', function () {
             $(disabledTools).removeClass('disabled');
         });
 
         canvas.observe('selection:cleared', function () {
             $(disabledTools).addClass('disabled');
-            $('#addTextMenu').hide();
-            $('#addShapeMenu').hide();
-            $('#addBorderMenu').hide();
         });
 
         <% if !params["id"].nil? %>
@@ -1249,25 +1585,11 @@
 
 
         canvas.observe('object:modified', function () {
+            console.log("object:modified");
             if (canvas_track_changes && !ignor_last_action) {
-//                    var obj = JSON.stringify(canvas);
-
-                // clear redo stack
                 redoStack = [];
-
-                var hist = [];
-
-                $.each(canvas.getObjects(), function (i, e) {
-                    if (e.selectable) {
-                        hist.push(jQuery.extend(true, {}, e));
-                    }
-                });
-
-                undoStack.push(hist);
-                console.log(hist.length);
-                //alert('modified');
-                //alert("Undo added (modified): " + undoStack.length);
-//                alert("Redo: " + redoStack.length);
+                appendToUndoStack();
+                captureCurrentState();
             }
             else {
                 ignor_last_action = false;
@@ -1275,29 +1597,12 @@
         });
 
         canvas.observe('object:added', function () {
-            console.log("object:added");
+            console.log("object:added : " + canvas_track_changes + " " + !ignor_last_action);
             if (canvas_track_changes && !ignor_last_action) {
-                console.log("object:added tracking changes");
-//                    var obj = JSON.stringify(canvas);
 
                 redoStack = [];
-
-                var hist = [];
-
-                $.each(canvas.getObjects(), function (i, e) {
-                    if (e.selectable) {
-                        hist.push(jQuery.extend(true, {}, e));
-                    }
-                });
-
-                // if (hist.length > 0) {
-                undoStack.push(hist);
-                //alert("Undo added (added) : " + undoStack.length);
-                // }
-
-                // alert('created');
-//                alert("Undo: " + undoStack.length);
-//                alert("Redo: " + redoStack.length);
+                appendToUndoStack();
+                captureCurrentState();
             }
             else {
                 ignor_last_action = false;
@@ -1305,23 +1610,11 @@
         });
 
         canvas.observe('object:removed', function () {
-
+            console.log("object:removed");
             if (canvas_track_changes && !ignor_last_action) {
-//                    var obj = JSON.stringify(canvas);
-
                 redoStack = [];
-
-                var hist = [];
-
-                $.each(canvas.getObjects(), function (i, e) {
-                    if (e.selectable) {
-                        hist.push(jQuery.extend(true, {}, e));
-                    }
-                });
-
-                undoStack.push(hist);
-
-                //alert("Undo added (removed) : " + undoStack.length);
+                appendToUndoStack();
+                captureCurrentState();
             }
             else {
                 ignor_last_action = false;
@@ -1332,43 +1625,39 @@
             var toRemove = [];
 
             $.each(canvas.getObjects(), function (i, e) {
-                if (e.selectable) {
+                if (e.selectable || e.type != "image") {
                     toRemove.push(e);
                 }
             });
 
             while (toRemove.length > 0) {
+                ignor_last_action = true;
                 canvas.remove(toRemove.pop());
             }
 
             $.each(prevObj, function (i, e) {
-                if (e.selectable) {
+                if (e.selectable || e.type != "image") {
+                    ignor_last_action = true;
                     canvas.add(e); // add object
                 }
             });
 
             canvas.renderAll();
+
+            ignor_last_action = false;
         }
 
 
         $('#undo').click(function undo() {
+            if (undoStack.length == 0) {
+                alert("nothing to un-do!")
+            }
+            else {
 
-            canvas_track_changes = false;
-
-
-            var hist = [];
-
-            $.each(canvas.getObjects(), function (i, e) {
-                if (e.selectable) {
-                    hist.push(jQuery.extend(true, {}, e));
-                }
-            });
-
-
-            redoStack.push(hist);
-
-            var prevObj = undoStack.pop();
-            CustomLoadFromHistory(prevObj);
+                captureCurrentState();
+                appendToRedoStack();
+                CustomLoadFromHistory(undoStack.pop());
+            }
         });
 
         $('#redo').click(function redo() {
@@ -1377,18 +1666,8 @@
                 alert("nothing to re-do!")
             }
             else {
-                canvas_track_changes = false;
-
-                var hist = [];
-
-                $.each(canvas.getObjects(), function (i, e) {
-                    if (e.selectable) {
-                        hist.push(jQuery.extend(true, {}, e));
-                    }
-                });
-
-                undoStack.push(hist);
-
+                captureCurrentState();
+                appendToUndoStack();
                 CustomLoadFromHistory(redoStack.pop());
             }
         });
@@ -1396,4 +1675,47 @@
         canvas_track_changes = true;
     }
 
+    function appendToUndoStack() {
+        console.log("Adding to undo stack, size : " + undoStack.length.toString());
+        undoStack.push(currentState);
+    }
+
+    function appendToRedoStack() {
+        console.log("Adding to redo stack, size : " + redoStack.length.toString());
+        redoStack.push(currentState);
+    }
+
+    function captureCurrentState() {
+        // reset the redo stack
+        var hist = [];
+
+        $.each(canvas.getObjects(), function (i, e) {
+            if (e.selectable || e.type != "image") {
+                hist.push(jQuery.extend(true, {}, e));
+            }
+        });
+
+        currentState = hist;
+    }
+
+    function applyMask() {
+        if (mask_svg_url != "") {
+            var tempContext = canvas.getContext("2d");
+
+            fabric.loadSVGFromURL(mask_svg_url, function (objects, options) {
+                var mask = fabric.util.groupSVGElements(objects, options);
+
+                mask.scaleX = canvas.width / mask.width;
+                mask.scaleY = canvas.height / mask.height;
+                mask.top = canvas.height / 2;
+                mask.left = canvas.width / 2;
+                canvas.clipTo = (function (ctx) {
+                    mask.render(ctx);
+                });
+
+                canvas.renderAll();
+
+            });
+        }
+    }
 </script>

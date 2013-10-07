@@ -58,6 +58,16 @@ class SignData < ActiveRecord::Base
     result
   end
 
+  def get_base_shape
+    result = nil
+
+    if shape_id
+      result = SignBaseShape.find(shape_id)
+    end
+
+    result
+  end
+
   def get_local_svg
     # try and get the SVG file and read it
     if svg_data
