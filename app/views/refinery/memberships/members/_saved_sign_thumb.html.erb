@@ -1,6 +1,6 @@
 <div class="saveOrderitem clearfix">
   <div class="image svg_data_viewbox">
-    <img style="max-height: 50px; max-width: 100px;" src="/custom_sign/get_sign_svg/<%= s.id.to_s %>.svg">
+    <%= image_tag s.image.url(:thumb) %>
   </div>
   <div class="signDetails">
     <h3><%= s.name %></h3>

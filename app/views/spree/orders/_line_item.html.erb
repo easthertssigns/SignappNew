@@ -1,7 +1,7 @@
 <div class="<%= cycle('', 'alt') %> line-item">
   <div class="cart-item-image" data-hook="cart_item_image">
     <% if line_item.sign_data_id %>
-        <img style="max-width: 124px; max-height: 84px;;" src='/custom_sign/get_sign_svg/<%= line_item.sign_data_id.to_s %>.svg' />
+        <%= image_tag line_item.sign_data.image.url(:thumb) %>
     <% else %>
         <% if variant.images.length == 0 %>
             <%= link_to small_image(variant.product), variant.product %>

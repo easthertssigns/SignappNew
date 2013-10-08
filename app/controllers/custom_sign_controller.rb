@@ -1,8 +1,21 @@
 class CustomSignController < ApplicationController
   def save_sign
 
+
+
     @message = ""
     if params[:id].nil?
+
+      if params[:base64png]
+        # create png from string
+
+        File.open('testbase64.png', 'wb') do |f|
+          f.write(Base64.decode64(params[:base64png]))
+        end
+
+        raise "file saved!"
+      end
+
       #create new custom sign
       @new_sign = SignData.new
       @new_sign.spree_product_id = params[:product_id]
@@ -21,9 +34,32 @@ class CustomSignController < ApplicationController
       #raise "sign saved"
       @message = "Custom Sign Created"
     else
+      png_path = nil
+
+      @current_sign = SignData.find params[:id]
+
+      if params[:base64png]
+        # create png from string
+
+        str = params[:base64png].sub("data:image/png;base64,", "")
+
+        File.open(Rails.root + ('tmp/sign_thumb_' + params[:id] + ".png"), 'wb') do |f|
+          f.write(Base64.decode64(str))
+        end
+
+        @current_sign.image =
+
+        f = File.new(Rails.root + ('tmp/sign_thumb_' + params[:id] + ".png"))
+        @current_sign.image = f
+        f.close
+
+      end
+
+
+
       #load, modify and save existing custom sign
       #may have to save other details as well. Height and width aren't changeable as far as I understand, put price certainly is
-      @current_sign = SignData.find params[:id]
+
       @current_sign.price = params[:calculated_price].to_f
       @current_sign.sign_data = params[:sign_data]
       #raise params[:svg_data]
