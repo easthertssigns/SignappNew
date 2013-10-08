@@ -1710,23 +1710,23 @@
     }
 
     function applyMask() {
-//        if (mask_svg_url != "") {
-//            var tempContext = canvas.getContext("2d");
-//
-//            fabric.loadSVGFromURL(mask_svg_url, function (objects, options) {
-//                var mask = fabric.util.groupSVGElements(objects, options);
-//
-//                mask.scaleX = canvas.width / mask.width;
-//                mask.scaleY = canvas.height / mask.height;
-//                mask.top = canvas.height / 2;
-//                mask.left = canvas.width / 2;
-//                canvas.clipTo = (function (ctx) {
-//                    mask.render(ctx);
-//                });
-//
-//                canvas.renderAll();
-//
-//            });
-//        }
+        if (mask_svg_url != "") {
+            var tempContext = canvas.getContext("2d");
+
+            fabric.loadSVGFromURL(mask_svg_url, function (objects, options) {
+                var mask = fabric.util.groupSVGElements(objects, options);
+
+                mask.scaleX = canvas.width / mask.width;
+                mask.scaleY = canvas.height / mask.height;
+                mask.top = canvas.height / 2;
+                mask.left = canvas.width / 2;
+                canvas.clipTo = (function (ctx) {
+                    mask.render(ctx);
+                });
+
+                canvas.renderAll();
+
+            });
+        }
     }
 </script>
