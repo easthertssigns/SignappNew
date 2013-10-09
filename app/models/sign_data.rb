@@ -71,7 +71,7 @@ class SignData < ActiveRecord::Base
   def get_local_svg
     # try and get the SVG file and read it
     if svg_data
-            svg_data
+       svg_data
     end
   end
 

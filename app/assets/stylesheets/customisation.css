@@ -2,6 +2,18 @@ html, body {
     height: 100%;
 }
 
+#savingOverlay
+{
+    background: rgba(255, 255, 255, 0.9) url('loader.gif') no-repeat center center;
+    display: block;
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9999;
+}
+
 .footerWrapper {
     background: #fff;
     border-top: 3px solid #212F32;

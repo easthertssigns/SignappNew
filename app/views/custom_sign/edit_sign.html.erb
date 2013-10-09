@@ -195,6 +195,7 @@
     <input type="hidden" id="calculated_price" name="calculated_price" value="<%= @sign_data.price %>">
   </form>
 </div>
+<div id="savingOverlay"></div>
 <ol id="tourSteps">
   <li data-id="addText" data-text="Next - Create a shape"><h4>Add Text <span>(1 of 4)</span></h4>
 
@@ -240,11 +241,15 @@
     var canvasWidth = ($(window).width() - 120);
     var canvasHeight = ($(window).height() - 300);
     var screwholesarray = [];
+    var canvasScale = 1.0;
 
     var canvas = null;
+    var mask_object = null;
     // added to fix de-authentication when posting ajax : Doug
 
     (function () {
+
+        $("#savingOverlay").hide();
 
         canvas = new fabric.Canvas('my-canvas');
 
@@ -269,7 +274,7 @@
             canvasWidth = (canvasHeight / SignHeight) * SignWidth;
         }
 
-        var canvasScale = 1.0;
+
         var placeholderText = 'Double click to change me...';
 
         canvas.setWidth(canvasWidth);
@@ -305,31 +310,49 @@
             // add this to the form field
             // var json = JSON.stringify(canvas);
             // alert(json);
-            var svg_data = canvas.toSVG();
+
             // alert(svg_data);
-            var custom_data = getCanvasJSONCustom();
+            var custom_data = $.base64.encode(getCanvasJSONCustom());
             $("#sign_data").val(custom_data);
-            $("#svg_data").val(svg_data);
+            updateSVGfield();
+
             var id = $("#sign_data_id").val();
             var account_id = $("#account_id").val();
             var name = $("#name").val();
             var description = $("#description").val();
             var calculated_price = $("#calculated_price").val();
 
-            // alert("about to post sign to basket");
+            var post_data = {
+                authenticity_token: $("meta[name='csrf-token']").attr("content"),
+                id: id,
+                sign_data: custom_data,
+                base64png: canvas.toDataURL({multiplier: 1}),
+                svg_data: $("#svg_data").val(),
+                account_id: account_id,
+                name: name,
+                description: description,
+                calculated_price: calculated_price
+            };
+
+            // about to save sign : this may take a few moments
+            // add an overlay here / show state as saving
+            $("#savingOverlay").show();
             $.ajax({
                 type: "POST",
                 url: "/custom_sign/save_sign",
-                data: { authenticity_token: $("meta[name='csrf-token']").attr("content"), id: id, sign_data: custom_data, base64png: canvas.toDataURL({multiplier: 1}), svg_data: svg_data, account_id: account_id, name: name, description: description, calculated_price: calculated_price }
+                data: post_data
             }).done(function (msg) {
 
                         $("#customSignForm").prepend("<input type='hidden' name='authenticity_token' value='" + $("meta[name='csrf-token']").attr("content") + "'>")
-                        $("#customSignForm").attr("action", "/orders/populate");
-                        //submit the form to the basket
+                                .attr("action", "/orders/populate").submit();
+                        // submit the form to the basket
                         $("#customSignForm").submit();
+                        // remove saving state
+                        // $("#savingOverlay").hide();
                     }
             ).fail(function () {
-
+                        $("#savingOverlay").hide();
+                        alert("There was an error saving");
                     }
             );
             // change submit path of the form
@@ -339,11 +362,9 @@
         });
 
         $("#saveCanvas").click(function () {
-            json = JSON.stringify(canvas);
-            var svg_data = canvas.toSVG();
-            var custom_data = $.base64.encode(json);
-            $("#sign_data").val(custom_data);
-            $("#svg_data").val(svg_data);
+
+            $("#sign_data").val($.base64.encode(getCanvasJSONCustom()));
+            updateSVGfield();
             $("#base64png").val(canvas.toDataURL({multiplier: 1}));
             //this is where custom_sign/save_sign is called
             $.fancybox.open({href: '/custom_sign/save_dialog',
@@ -865,20 +886,41 @@
             var activeGroup = canvas.getActiveGroup();
 
             if (activeObject) {
+                alert('cloneing in progress');
 
+                // clone works differently for text and shape / group
+
+                // function handels path
                 var clonedObject = activeObject.clone(function (clone) {
                     clone.set({ top: canvas.getActiveObject().get('top') + 10, left: canvas.getActiveObject().get('left') + 10, hasRotatingPoint: true });
-                    canvas.add(clone);
-                    canvas.setActiveObject(clone);
                     clone.set({
                         borderColor: 'cyan',
                         cornerColor: 'cyan'
                     });
+                    canvas.add(clone);
+
+                    canvas.setActiveObject(clone);
+
                     canvas.renderAll();
                 });
+
+                // this will handel text
+                if (clonedObject) {
+                    clonedObject.set({ top: canvas.getActiveObject().get('top') + 10, left: canvas.getActiveObject().get('left') + 10, hasRotatingPoint: true });
+                    clonedObject.set({
+                        borderColor: 'cyan',
+                        cornerColor: 'cyan'
+                    });
+                    canvas.add(clonedObject);
+
+                    canvas.setActiveObject(clonedObject);
+
+                    canvas.renderAll();
+                }
+
+
             }
             else if (activeGroup) {
-                alert("group");
                 var selection = activeGroup.getObjects();
                 canvas.deactivateAll();
                 var clones = [];
@@ -1414,6 +1456,28 @@
                 canvas.renderAll();
 
             });
+
+            // add mask as canvas object, for when storing the SVG
+            fabric.loadSVGFromURL(mask_svg_url, function (objects, options) {
+                alert('sdf');
+                mask_object = fabric.util.groupSVGElements(objects, options);
+
+                mask_object.scaleX = canvas.width / mask_object.width;
+                mask_object.scaleY = canvas.height / mask_object.height;
+                mask_object.top = canvas.height / 2;
+                mask_object.left = canvas.width / 2;
+
+                // mask_object.set({ strokeWidth: (1 / mask_object.scaleX ), stroke: '#000000', strokeDashArray: [6 / mask_object.scaleX, 1 / mask_object.scaleX], fill: 'none', opacity: 0});
+                mask_object.set({ strokeWidth: (1 / mask_object.scaleX ), stroke: 'none', strokeDashArray: [6 / mask_object.scaleX, 1 / mask_object.scaleX], fill: 'none', opacity: 1});
+
+                canvas.add(mask_object).bringToFront(mask_object);
+
+                mask_object.selectable = false;
+
+                canvas.renderAll();
+                alert("sdfsdf");
+
+            });
         }
     }
 
@@ -1479,6 +1543,23 @@
         console.log('canvas_track_changes : ' + canvas_track_changes);
     }
 
+    function updateSVGfield() {
+        // show mask
+        canvas.bringToFront(mask_object);
+        mask_object.set({stroke: 1});
+
+        canvas.renderAll();
+
+        // get svg data
+        var svg_data = canvas.toSVG();
+        $("#svg_data").val(svg_data);
+
+        // hide mask
+        mask_object.set({stroke: "none"});
+
+        canvas.renderAll();
+    }
+
     function reloadSign() {
 //    alert("canvas objects : " + canvas.getObjects().length);
 
@@ -1504,6 +1585,16 @@
                         canvas.remove(toRemove.pop());
                     }
                 }
+
+                $.each(canvas.getObjects(), function (i, e) {
+                    if (e.selectable) {
+                        e.set({
+                            borderColor: 'cyan',
+                            cornerColor: 'cyan'
+                        });
+                    }
+                });
+
 
                 setupMargins();
                 setupScrewholes();
@@ -1534,12 +1625,15 @@
 
         console.log(json);
 
+        console.log(JSON.stringify(json));
+
         return JSON.stringify(json);
     }
 
     function setupScrewholes() {
         var in_by = 35;
 
+        screwholesarray = [];
 
         //Top Left Screw Hole
         var topLeftScrewHole = new fabric.Circle({
@@ -1756,9 +1850,11 @@
         screwholesarray.push(outerScrewHoleTR);
 
         var screwHoles = new fabric.Group(screwholesarray, {selectable: false});
+        console.log(screwHoles);
+
         $('#toggleScrewHoles').toggle(function () {
             ignor_last_action = true;
-            canvas.add(screwHoles.scale(canvasScale)).centerObject(screwHoles);
+            canvas.add(screwHoles.scale(canvasScale)).centerObject(screwHoles).bringToFront(screwHoles).sendBackwards(screwHoles);
             $(this).addClass("active");
         }, function () {
             ignor_last_action = true;

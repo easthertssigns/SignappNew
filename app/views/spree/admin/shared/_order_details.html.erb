@@ -10,7 +10,7 @@
     <% @order.line_items.each do |item| %>
       <tr data-hook="order_details_line_item_row">
         <td width="300"><%= item.variant.product.name %> <%= "(" + variant_options(item.variant) + ")" unless item.variant.option_values.empty? %>
-        <a href="/custom_sign/get_sign/<%= item.sign_data_id.to_s %>.svg">Get SVG</a>
+        <a href="/custom_sign/get_sign/<%= item.sign_data_id.to_s %>.svg" target="_blank">Get SVG</a>
         </td>
         <td class="price"><%= money item.price %></td>
         <td class="qty"><%= item.quantity %></td>
