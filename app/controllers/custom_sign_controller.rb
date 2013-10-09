@@ -1,8 +1,5 @@
 class CustomSignController < ApplicationController
   def save_sign
-
-
-
     @message = ""
     if params[:id].nil?
 
@@ -25,6 +22,8 @@ class CustomSignController < ApplicationController
       @new_sign.price = params[:calculated_price].to_f
       @new_sign.account_id = params[:account_id]
       @new_sign.sign_data = params[:custom_data]
+      @new_sign.deleted_by_admin = false
+      @new_sign.deleted_by_user = false
 
       unless params[:name].nil?
         @new_sign.name = params[:name]
@@ -34,8 +33,6 @@ class CustomSignController < ApplicationController
       #raise "sign saved"
       @message = "Custom Sign Created"
     else
-      png_path = nil
-
       @current_sign = SignData.find params[:id]
 
       if params[:base64png]
@@ -67,6 +64,10 @@ class CustomSignController < ApplicationController
       @current_sign.name = params[:name]
       @current_sign.description = params[:description]
       @current_sign.account_id = params[:account_id]
+
+      @current_sign.deleted_by_admin = false
+      @current_sign.deleted_by_user = false
+
       @current_sign.save
       #svg_data = params[:svg_data]
       ## Saving sign as thumb is locking up the server
@@ -158,6 +159,7 @@ class CustomSignController < ApplicationController
 
   def load_sign_ajax
     @custom_sign = SignData.find params[:saved_sign_id]
+
     respond_to do |format|
       format.js
     end

@@ -1,56 +1,60 @@
 <% content_for :javascript_includes do %>
     <script language="javascript" type="text/javascript">
-        $(document).ajaxSend(function(e, xhr, options) {
+        $(document).ajaxSend(function (e, xhr, options) {
             var token = $("meta[name='csrf-token']").attr("content");
             xhr.setRequestHeader("X-CSRF-Token", token);
         });
 
-        $(document).ready(function(){
-          $("#sign_data_id").val(parent.$("#sign_data_id").val());
-          $("#sign_data").val(parent.$("#sign_data").val());
-          $("#svg_data").val(parent.$("#svg_data").val());
-          $("#account_id").val(parent.$("#account_id").val());
-          $("#name").val(parent.$("#name").val());
-          $("#description").val(parent.$("#description").val());
-          $("#calculated_price").val(parent.$("#calculated_price").val());
-          //alert(parent.$("#sign_data").val());
+        $(document).ready(function () {
+            $("#sign_data_id").val(parent.$("#sign_data_id").val());
+            $("#sign_data").val(parent.$("#sign_data").val());
+            $("#svg_data").val(parent.$("#svg_data").val());
+            $("#base64png").val(parent.$("#base64png").val());
+            $("#account_id").val(parent.$("#account_id").val());
+            $("#name").val(parent.$("#name").val());
+            $("#description").val(parent.$("#description").val());
+            $("#calculated_price").val(parent.$("#calculated_price").val());
+            //alert(parent.$("#sign_data").val());
 
-          $("#save_button").click(function(){
-              var token = $("meta[name='csrf-token']").attr("content");
-              alert(token);
-              // alert("saving sign");
-              var id = $("#sign_data_id").val();
-              var sign_data = $("#sign_data").val();
-              var svg_data = $("#svg_data").val();
-              var account_id = $("#account_id").val();
-              var name = $("#name").val();
-              var description = $("#description").val();
-              var calculated_price = $("#calculated_price").val();
-              parent.$("#name").val($("#name").val());
-              parent.$("#description").val($("#description").val());
-              $.ajax({
-                  type: "POST",
-                  url: "/custom_sign/save_sign",
-                  data: { id: id, sign_data: sign_data, svg_data: svg_data, account_id: account_id, name: name, description: description, calculated_price: calculated_price }
-              }).done(function( msg ) {
-                  //alert( "Data Saved: " + msg );
-              });
-          });
-      });
+            $("#save_button").click(function () {
+                var token = $("meta[name='csrf-token']").attr("content");
+                // alert("saving sign");
+                var id = $("#sign_data_id").val();
+                var sign_data = $("#sign_data").val();
+                var svg_data = $("#svg_data").val();
+                var account_id = $("#account_id").val();
+                var name = $("#name").val();
+                var description = $("#description").val();
+                var base64png = $("#base64png").val();
+                var calculated_price = $("#calculated_price").val();
+                parent.$("#name").val($("#name").val());
+                parent.$("#description").val($("#description").val());
+                $.ajax({
+                    type: "POST",
+                    url: "/custom_sign/save_sign",
+                    data: { id: id, sign_data: sign_data, svg_data: svg_data, base64png: base64png, account_id: account_id, name: name, description: description, calculated_price: calculated_price }
+                }).done(function (msg) {
+                            //alert( "Data Saved: " + msg );
+                        });
+            });
+        });
     </script>
 <% end %>
 <form action="/custom_sign/save_sign_dummy">
   <div>Please enter a name for your saved design</div>
   <div><%= text_field_tag "name" %></div>
   <br/>
+
   <div>Please enter a description for your saved design (optional)</div>
   <div><%= text_area_tag "description" %></div>
   <br/>
+
   <div id="hiddenFields">
     <input type="hidden" name="sign_data_id" id="sign_data_id" value="">
     <input type="hidden" name="sign_data" id="sign_data" value="">
     <input type="hidden" name="svg_data" id="svg_data" value="">
     <input type="hidden" name="account_id" id="account_id" value="">
+    <input type="hidden" name="base64png" id="base64png" value="">
     <input type="hidden" name="calculated_price" id="calculated_price" value="">
   </div>
   <div><input type="button" id="save_button" value="Save">Save this Sign</div>

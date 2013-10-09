@@ -20,12 +20,10 @@
           <div>
             <h2>Your Saved Signs</h2></div>
           <div class="companyInfomartion">
-            <% @saved_signs = current_refinery_user.get_saved_signs %>
+            <% @saved_signs = current_refinery_user.get_saved_signs.where("deleted_by_user = ?", false) %>
             <% if @saved_signs && @saved_signs.count > 0 %>
                 <% @saved_signs.each do |s| %>
-                    <% if (s.deleted_by_user.nil? || s.deleted_by_user == false) && (s.deleted_by_admin.nil? || s.deleted_by_admin == false) %>
-                        <%= render "saved_sign_thumb", :s => s %>
-                    <% end %>
+                    <%= render "saved_sign_thumb", :s => s %>
                 <% end %>
             <% else %>
                 You have no signs saved.
@@ -58,21 +56,26 @@
 
       <div class="grid_5 ">
         <div class="pageContent">
-          <div>
-            <h2>Change Your Password</h2></div>
-          <div style="margin-top: 5px;" class="companyInfomartion">
-            <%= form_for @member, :as => :member, :url => '/members' do |f| %>
-                <div>
-                  <%= f.label :password, "New Password" %>
-                  <%= f.password_field :password %>
-                </div>
-                <div>
-                  <%= f.label :password_confirmation, "Confirm New Password" %>
-                  <%= f.password_field :password_confirmation %>
-                </div>
-                <div class="alignRight"><%= f.button "Save Changes" %></div>
-            <% end %>
-          </div>
+          <% if current_refinery_user.provider != "facebook" %>
+              <div>
+                <h2>Change Your Password</h2></div>
+              <div style="margin-top: 5px;" class="companyInfomartion">
+                <%= form_for @member, :as => :member, :url => '/members' do |f| %>
+                    <div>
+                      <%= f.label :password, "New Password" %>
+                      <%= f.password_field :password %>
+                    </div>
+                    <div>
+                      <%= f.label :password_confirmation, "Confirm New Password" %>
+                      <%= f.password_field :password_confirmation %>
+                    </div>
+                    <div class="alignRight"><%= f.button "Save Changes" %></div>
+                <% end %>
+              </div>
+          <% else %>
+              <div>
+                <h2>Your Details</h2></div>
+          <% end %>
           <div style="margin-top: 5px;" class="companyInfomartion">
             <%= link_to "Change Your Details", edit_members_path, :class => 'button' %>
           </div>
