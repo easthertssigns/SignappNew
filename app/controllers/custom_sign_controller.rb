@@ -46,12 +46,11 @@ class CustomSignController < ApplicationController
 
         @current_sign.image =
 
-        f = File.new(Rails.root + ('tmp/sign_thumb_' + params[:id] + ".png"))
+            f = File.new(Rails.root + ('tmp/sign_thumb_' + params[:id] + ".png"))
         @current_sign.image = f
         f.close
 
       end
-
 
 
       #load, modify and save existing custom sign
@@ -242,25 +241,54 @@ class CustomSignController < ApplicationController
     #raise "got this far"
     height = (params[:height].to_f)/10
     width = (params[:width].to_f)/10
+
+    # CM sq
     total_sign_area = width * height
 
+    width_to_small = false
+    width_to_large = false
+    height_to_small = false
+    height_to_large = false
+
     material = Spree::Product.find params[:product_id]
+
+    # checks im minimum and maximum
+    if height > material.master.maximum_height
+      height_to_large = true
+    elsif height < material.master.minimum_height
+      height_to_small = true
+    end
+
+    if width > material.master.maximum_width
+      width_to_large = true
+    elsif width < material.master.minimum_width
+      width_to_small = true
+    end
+
     base_price = material.price.to_f
+
     if !material.small_size_threshold.nil? && !material.small_size_price.nil?
       if total_sign_area < material.small_size_threshold
         base_price = material.small_size_price.to_f
       end
     end
+
     if !material.large_size_threshold.nil? && !material.large_size_price.nil?
       if total_sign_area > material.large_size_threshold
         base_price = material.large_size_price.to_f
       end
     end
 
-
     calculated_price = (total_sign_area * base_price).to_f
 
-    render :json => {:result => calculated_price, :base_price => base_price}
+    render :json => {
+        :result => calculated_price,
+        :base_price => base_price,
+        :width_to_small => width_to_small,
+        :width_to_large => width_to_large,
+        :height_to_small => height_to_small,
+        :height_to_large => height_to_large
+    }
   end
 
 end

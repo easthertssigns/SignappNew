@@ -21,55 +21,55 @@
     </div>
     <div class="right" data-hook="admin_product_form_right">
       <%= f.field_container :price do %>
-          <%= f.label :price, t(:master_price) + " per cm squared" %> <span class="required">*</span><br/>
+          <%= f.label :price, t(:master_price) + " per CM SQ (if the size is within bounds, and is not within the small or large CM SQ thresholds for size, this price will be used)" %> <span class="required">*</span><br/>
           <%= f.text_field :price, :value => number_to_currency(@product.price, :unit => '') %>
           <%= f.error_message_on :price %>
       <% end %>
 
       <%= f.field_container :small_size_price do %>
-          <%= f.label :small_size_price, "Small Size Price per cm squared" %>
+          <%= f.label :small_size_price, "Small Size Price per CM SQ (only applies of the total CM SQ is less than or equal to small size threshold)" %>
           <br/>
           <%= f.text_field :small_size_price, :value => number_to_currency(@product.small_size_price, :unit => '') %>
       <% end %>
 
       <%= f.field_container :small_size_threshold do %>
-          <%= f.label :small_size_threshold, "Small Size Threshold (cm squared)" %>
+          <%= f.label :small_size_threshold, "Small Size Threshold (total CM e.g. a 2CM x 3CM sign would be 6CM SQ)" %>
           <br/>
           <%= f.text_field :small_size_threshold, :value => @product.small_size_threshold %>
       <% end %>
 
       <%= f.field_container :large_size_price do %>
-          <%= f.label :large_size_price, "Large Size Price per cm squared" %>
+          <%= f.label :large_size_price, "Large Size Price per CM squared (only applies of the total CM SQ is greater than or equal to large size threshold)" %>
           <br/>
           <%= f.text_field :large_size_price, :value => number_to_currency(@product.large_size_price, :unit => '') %>
       <% end %>
 
       <%= f.field_container :large_size_threshold do %>
-          <%= f.label :large_size_threshold, "Large Size Threshold (cm squared)" %>
+          <%= f.label :large_size_threshold, "Large Size Threshold (total CM e.g. a 20CM x 30CM sign would be 600CM SQ)" %>
           <br/>
           <%= f.text_field :large_size_threshold, :value => @product.large_size_threshold %>
       <% end %>
 
       <%= f.field_container :minimum_width do %>
-          <%= f.label :minimum_width, "Minimum Width" %>
+          <%= f.label :minimum_width, "Minimum Width allowed (CM)" %>
           <br/>
           <%= f.text_field :minimum_width, :value => @product.minimum_width %>
       <% end %>
 
       <%= f.field_container :maximum_width do %>
-          <%= f.label :maximum_width, "Maximum Width" %>
+          <%= f.label :maximum_width, "Maximum Width allowed (CM)" %>
           <br/>
           <%= f.text_field :maximum_width, :value => @product.maximum_width %>
       <% end %>
 
       <%= f.field_container :minimum_height do %>
-          <%= f.label :minimum_height, "Minimum Height" %>
+          <%= f.label :minimum_height, "Minimum Height allowed (CM)" %>
           <br/>
           <%= f.text_field :minimum_height, :value => @product.minimum_height %>
       <% end %>
 
       <%= f.field_container :maximum_height do %>
-          <%= f.label :maximum_height, "Maximum Height" %>
+          <%= f.label :maximum_height, "Maximum Height allowed (CM)" %>
           <br/>
           <%= f.text_field :maximum_height, :value => @product.maximum_height %>
       <% end %>

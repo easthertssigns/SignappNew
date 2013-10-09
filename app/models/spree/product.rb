@@ -49,6 +49,7 @@ module Spree
     delegate_belongs_to :master, :sku, :price, :weight, :height, :width, :depth, :is_master,
                         :small_size_price, :large_size_price, :small_size_threshold, :large_size_threshold,
                         :minimum_width, :maximum_width, :minimum_height, :maximum_height
+
     delegate_belongs_to :master, :cost_price if Variant.table_exists? && Variant.column_names.include?('cost_price')
 
     after_create :set_master_variant_defaults

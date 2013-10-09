@@ -109,6 +109,7 @@
                 });
                 return '<img src="' + src + '"/>' + text;
             }
+
             $('#shapeSelect').select2({
                 placeholder: "Select a Shape",
                 formatResult: format_shape,
@@ -141,14 +142,37 @@
                 url: "/custom_sign/calculate_sign_base_price",
                 data: { width: width, height: height, product_id: product_id }
             }).done(function (result) {
-                        var thePrice = result.result.toFixed(2);
-                        $("#calculated_price").val(thePrice);
-                        var split_price = thePrice.split('.');
-                        var display_price = "£" + split_price[0] + "<sup>." + split_price[1] + "<sup>";
-                        //$("#displayPrice").text(result.result.toFixed(2));
-                        $("#displayPrice").html(display_price);
-                        $("#sidebarDisplayPrice").html(display_price);
-                        //alert("base price=" + result.base_price);
+                        if (result.width_to_small || result.width_to_large || result.height_to_small || result.height_to_large) {
+                            var msg = "";
+
+                            if (result.width_to_small) {
+                                msg += "\nThe width entered is too small.";
+                            }
+
+                            if (result.width_to_large) {
+                                msg += "\nThe width entered is too large.";
+                            }
+
+                            if (result.height_to_small) {
+                                msg += "\nThe height entered is too small.";
+                            }
+
+                            if (result.height_to_large) {
+                                msg += "\nThe height entered is too large.";
+                            }
+
+                            alert("The Size is invalid\n" + msg);
+                        }
+                        else {
+                            var thePrice = result.result.toFixed(2);
+                            $("#calculated_price").val(thePrice);
+                            var split_price = thePrice.split('.');
+                            var display_price = "£" + split_price[0] + "<sup>." + split_price[1] + "<sup>";
+                            //$("#displayPrice").text(result.result.toFixed(2));
+                            $("#displayPrice").html(display_price);
+                            $("#sidebarDisplayPrice").html(display_price);
+                            //alert("base price=" + result.base_price);
+                        }
                     });
         }
     </script>
@@ -216,6 +240,10 @@
               <% end %>
               <div class="clearfix"></div>
               <div id="custom_size_div" style="display: none">
+                <div>This sign can be any size between <%= @product.master.minimum_width * 10 %>mm
+                  x <%= @product.master.minimum_height * 10 %>mm and <%= @product.master.maximum_width * 10 %>mm
+                  x <%= @product.master.maximum_height * 10 %>mm
+                </div>
                 <div><%= label_tag "Width (mm)" %> <%= text_field_tag "custom_width" %> <%= label_tag "Height (mm)" %> <%= text_field_tag "custom_height" %>
                   <input type="button" id="custom_size_button" value="Set Size"></div>
               </div>
