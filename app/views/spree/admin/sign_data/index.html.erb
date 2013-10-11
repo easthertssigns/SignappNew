@@ -1,21 +1,28 @@
 <h1>Saved Signs</h1>
-<label for="taxonomy_id">Material Type</label>
-<select id="taxonomy_id" name="taxonomy_id">
-  <option>Please Select</option>
-  <% get_material_types.each do |m| %>
-      <option value="<%= m.id %>"><%= m.name %></option>
-  <% end %>
-</select>
-
-<div id="select_product_list">
-  <label for="taxon_id">Material</label>
-  <select id="taxon_id" name="taxon_id">
-    <option>Please Select</option>
-    <% get_product_list.each do |p| %>
-        <option value="<%= p.id %>"><%= p.name %></option>
+<form>
+  <label for="taxonomy_id">Material Type</label>
+  <select id="taxonomy_id" name="taxonomy_id" onchange="getTaxons();">
+    <option value="">Please Select</option>
+    <% Spree::Taxonomy.all.each do |m| %>
+        <option value="<%= m.id %>" <%= params["taxonomy_id"] == m.id.to_s ? "selected" : "" %>><%= m.name %></option>
     <% end %>
   </select>
-</div>
+
+  <div id="select_taxon">
+
+  </div>
+
+  <div id="search_container">
+    <label for="query">Text Search</label>
+    <%= text_field_tag "query", params["query"] %>
+  </div>
+
+  <div id="submit_container">
+    <%= submit_tag "go" %>
+  </div>
+</form>
+
+
 <div id="sign_results">
   <% if @signs.count > 0 %>
       <table class="index">
@@ -57,40 +64,32 @@
                   </td>
                   <td>
                     <a href="/admin/sign_data/<%= s.id %>"> Details</a> |
-                    <a href="javascript:delete_sign(<%= s.id %>)">Delete</a>
+                    <a href="javascript:delete_sign(<%= s.id %>)">Create Product</a>
                   </td>
                 </tr>
             <% end %>
         <% end %>
         </tbody>
       </table>
+      <% else %>
+  <h2>Sorry! No customized signs for your search</h2>
   <% end %>
 </div>
 
 
 <script language="javascript" type="text/javascript">
     $(document).ready(function () {
-        $("#material_type").change(function () {
-            var material_type_id = $("#material_type").val();
-            $.ajax({
-                url: "/admin/sign_data/filter_product_list_ajax",
-                data: { material_type_id: material_type_id }
-            }).done(function (result) {
-                        $("#select_product_list").html(result.list);
-                        $("#sign_results").html(result.results);
-                    });
-        });
-
-        $("#taxonomy_id").live('change', function () {
-            var material_id = $("#material").val();
-            $.ajax({
-                url: "/admin/sign_data/filter_results_ajax",
-                data: { material: material_id }
-            }).done(function (result) {
-                        //$("#select_product_list").html(result.list);
-                        $("#sign_results").html(result.results);
-                    });
-        });
+//        $("#taxonomy_id").change(function () {
+//            var taxonomy_id = $("#taxonomy_id").val();
+//            $.ajax({
+//                url: "/admin/sign_data/get_taxons_for_taxonomy",
+//                data: { taxonomy_id: taxonomy_id }
+//            }).done(function (result) {
+//                        $("#select_product_list").html(result.list);
+//                        $("#sign_results").html(result.results);
+//                    });
+//        });
+        getTaxons();
     });
 
     function delete_sign(id) {
@@ -108,6 +107,28 @@
                 data: { material: material_id }
             }).done(function (result) {
                         $("#sign_results").html(result.results);
+                    });
+        }
+    }
+
+    function getTaxons() {
+        var taxonomy_id = $("#taxonomy_id").val();
+        var taxon_id = '<%= params["taxon_id"] %>';
+
+        var data = { taxonomy_id: taxonomy_id};
+
+        if (taxon_id != '') {
+            data.taxon_id = taxon_id;
+        }
+
+        if (taxonomy_id != "") {
+            $.ajax({
+                url: "/admin/sign_data/get_taxons_for_taxonomy",
+                data: data
+            }).done(function (result) {
+                        //$("#select_product_list").html(result.list);
+                        $("#select_taxon").empty();
+                        $("#select_taxon").html(result);
                     });
         }
     }

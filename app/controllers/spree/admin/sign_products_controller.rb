@@ -21,6 +21,7 @@ module Spree
       end
 
       def create
+        require "open-uri"
         #sign_data_id is for the original sign_data record
         #this needs to be duplicated to a new sign_data record
         #then a new product is created with the
@@ -38,11 +39,17 @@ module Spree
         new_sign_data.sign_data = sign_data.sign_data
         new_sign_data.spree_product_id = sign_data.spree_product_id
         new_sign_data.width = sign_data.width
+        new_sign_data.image = open(sign_data.image.url)
         new_sign_data.save
 
         @product = Spree::Product.new
         @product.sign_data_id = new_sign_data.id
-        @product.name = new_sign_data.name
+
+        #@product.name = new_sign_data.name
+        #if @product.name.blank?
+          @product.name = "NEW PRODUCT FROM SIGN"
+        #end
+
         @product.description = new_sign_data.description
         @product.available_on = Time.now
         @product.is_product = true
@@ -50,11 +57,12 @@ module Spree
         @product.is_featured = false
         @product.price = new_sign_data.price
         @product.is_master = true
-        #raise @product.to_yaml
-        @product.save
-        raise "saved"
-        #how to set the taxonomy? Try this first and see what happens though
-        redirect_to "/admin/sign_products"
+                                     #raise @product.to_yaml
+        unless @product.save
+          raise @product.errors.to_yaml
+        end
+                                     #how to set the taxonomy? Try this first and see what happens though
+        redirect_to "/admin/products/#{@product.permalink}/edit"
       end
 
       def edit

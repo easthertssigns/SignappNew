@@ -1,0 +1,24 @@
+<label for="taxon_id">Material</label>
+<select id="taxon_id" name="taxon_id">
+  <option value="">All</option>
+  <% if @taxonomy %>
+      <% @taxonomy.taxons.where(:parent_id => nil).each do |t| %>
+          <option value="<%= t.id %>" <%= @taxon_id_selected == t.id.to_s ? "selected" : "" %>><%= t.name %></option>
+          <% t.children.each do |t2| %>
+              <option value="<%= t2.id %>" <%= @taxon_id_selected == t2.id.to_s ? "selected" : "" %>>- <%= t2.name %></option>
+              <% t2.children.each do |t3| %>
+                  <option value="<%= t3.id %>" <%= @taxon_id_selected == t3.id.to_s ? "selected" : "" %>>-- <%= t3.name %></option>
+                  <% t3.children.each do |t4| %>
+                      <option value="<%= t4.id %>" <%= @taxon_id_selected == t4.id.to_s ? "selected" : "" %>>--- <%= t4.name %></option>
+                      <% t4.children.each do |t5| %>
+                          <option value="<%= t5.id %>" <%= @taxon_id_selected == t5.id.to_s ? "selected" : "" %>>---- <%= t5.name %></option>
+                          <% t5.children.each do |t6| %>
+                              <option value="<%= t6.id %>" <%= @taxon_id_selected == t6.id.to_s ? "selected" : "" %>>----- <%= t6.name %></option>
+                          <% end %>
+                      <% end %>
+                  <% end %>
+              <% end %>
+          <% end %>
+      <% end %>
+  <% end %>
+</select>

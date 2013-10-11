@@ -9,7 +9,7 @@ module Spree
           @taxonomy = Spree::Taxonomy.find(params[:taxonomy_id])
         end
 
-        @signs = SignData.all(:conditions => "account_id IS NOT NULL")
+        @signs = SignData.search_admin(params["taxon_id"], params["query"])
       end
 
       def show
@@ -32,6 +32,13 @@ module Spree
         @filtered_products = material_type.products.sort_by &:name
         @filtered_signs = SignData.all(:conditions => ['account_id IS NOT NULL AND spree_product_id IN (?)', product_id_array])
         render :json => {:list => render_to_string(:partial => 'filter_product_list_ajax'), :results => render_to_string(:partial => 'filtered_sign_results')}
+      end
+
+      def get_taxons_for_taxonomy
+        #raise params.to_yaml
+        @taxonomy = Spree::Taxonomy.find params[:taxonomy_id]
+        @taxon_id_selected = params["taxon_id"]
+        render :partial => "get_taxons_for_taxonomy"
       end
 
       def set_show_as_product_ajax

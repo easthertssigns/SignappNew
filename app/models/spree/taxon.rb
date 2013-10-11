@@ -55,5 +55,8 @@ module Spree
       ancestor_chain + "#{name}"
     end
 
+    def children
+      Spree::Taxon.where(:parent_id => id)
+    end
   end
 end

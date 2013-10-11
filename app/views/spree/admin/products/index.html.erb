@@ -3,10 +3,10 @@
 <div class="toolbar" data-hook="toolbar">
   <ul class="actions">
     <li id="new_product_link">
-      <%= button_link_to t(:new_product), new_object_url, { :remote => true, :icon => 'add', :id => 'admin_new_product' } %>
+      <%= button_link_to t(:new_product), new_object_url, {:remote => true, :icon => 'add', :id => 'admin_new_product'} %>
     </li>
   </ul>
-  <br class="clear" />
+  <br class="clear"/>
 </div>
 
 <h1><%= t(:listing_products) %></h1>
@@ -16,16 +16,24 @@
 <table class="index" id="listing_products">
   <tr data-hook="admin_products_index_headers">
     <th><%= t(:sku) %></th>
-    <th><%= sort_link @search,:name, t(:name), { :default_order => "desc" }, {:title => 'admin_products_listing_name_title'} %></th>
-    <th><%= sort_link @search,:master_price, t(:master_price), {}, {:title => 'admin_products_listing_price_title'} %></th>
+    <th>Type</th>
+    <th><%= sort_link @search, :name, t(:name), {:default_order => "desc"}, {:title => 'admin_products_listing_name_title'} %></th>
+    <th><%= sort_link @search, :master_price, t(:master_price), {}, {:title => 'admin_products_listing_price_title'} %></th>
     <th>Display on Menu</th>
     <th>Featured</th>
     <th data-hook="admin_products_index_header_actions"></th>
   </tr>
-<% @collection.each do |product| %>
-  <% if product.is_material %>
+  <% @collection.each do |product| %>
+
       <tr <%= "style='color: red;'" if product.deleted? %> id="<%= spree_dom_id product %>" data-hook="admin_products_index_rows">
         <td><%= product.sku rescue '' %></td>
+        <td>
+          <% if product.is_material %>
+              Material
+          <% elsif product.is_product %>
+              Product
+          <% end %>
+        </td>
         <td><%= link_to product.try(:name), edit_admin_product_path(product) %></td>
         <td><%= money(product.price) rescue '' %></td>
         <td><%= product.show_in_menu %></td>
@@ -38,40 +46,52 @@
           <%= link_to_delete product unless product.deleted? %>
         </td>
       </tr>
+
   <% end %>
-<% end %>
 </table>
 <%= paginate @collection %>
 
 <% content_for :sidebar do %>
-  <div data-hook="admin_products_sidebar">
-    <%= search_form_for [:admin, @search] do |f| %>
-      <div class="box">
-        <h3><%= t(:search) %></h3>
+    <div data-hook="admin_products_sidebar">
+      <%= search_form_for [:admin, @search] do |f| %>
+          <div class="box">
+            <h3><%= t(:search) %></h3>
 
-        <%- locals = {:f => f} %>
-        <div data-hook="admin_products_index_search">
-          <p>
-            <%= f.label :name_cont, t(:name) %><br />
-            <%= f.text_field :name_cont, :size => 15 %>
-          </p>
-          <p>
-            <%= f.label :variants_including_master_sku_cont, t(:sku) %><br />
-            <%= f.text_field :variants_including_master_sku_cont, :size => 15 %>
-          </p>
-          <p>
-            <%= f.label :deleted_at_null, t(:show_deleted) %><br />
-            <%= f.check_box :deleted_at_null, {:checked => params[:q][:deleted_at_null].blank?}, '', '1' %>
-          </p>
-        </div>
+            <%- locals = {:f => f} %>
+            <div data-hook="admin_products_index_search">
+              <p>
+                <%= f.label :name_cont, t(:name) %><br/>
+                <%= f.text_field :name_cont, :size => 15 %>
+              </p>
 
-        <div data-hook="admin_products_index_search_buttons">
-          <p class="form-buttons">
-            <%= button t(:search) %>
-          </p>
-        </div>
-      </div>
-    <% end %>
-  </div>
+              <p>
+                <%= f.label :variants_including_master_sku_cont, t(:sku) %><br/>
+                <%= f.text_field :variants_including_master_sku_cont, :size => 15 %>
+              </p>
+
+              <p>
+                <%= f.label :is_material, t(:materials_only) %><br/>
+                <%= f.check_box :is_material_true, {:checked => !params[:q][:is_material_true].blank?}, '1', '' %>
+              </p>
+
+              <p>
+                <%= f.label :is_product, t(:products_from_custom_designs_only) %><br/>
+                <%= f.check_box :is_product_true, {:checked => !params[:q][:is_product_true].blank?}, '1', '' %>
+              </p>
+
+              <p>
+                <%= f.label :deleted_at_null, t(:show_deleted) %><br/>
+                <%= f.check_box :deleted_at_null, {:checked => params[:q][:deleted_at_null].blank?}, '', '1' %>
+              </p>
+            </div>
+
+            <div data-hook="admin_products_index_search_buttons">
+              <p class="form-buttons">
+                <%= button t(:search) %>
+              </p>
+            </div>
+          </div>
+      <% end %>
+    </div>
 <% end %>
 

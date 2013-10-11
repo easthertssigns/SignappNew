@@ -2,99 +2,118 @@
   <div class="clearfix">
     <div class="left" data-hook="admin_product_form_left">
       <%= f.field_container :name do %>
-          <%= f.label :name, t(:name) %> <span class="required">*</span><br />
+          <%= f.label :name, t(:name) %> <span class="required">*</span><br/>
           <%= f.text_field :name, :class => 'fullwidth title' %>
           <%= f.error_message_on :name %>
       <% end %>
 
       <%= f.field_container :permalink do %>
-          <%= f.label :permalink, t(:permalink) %> <span class="required">*</span><br />
+          <%= f.label :permalink, t(:permalink) %> <span class="required">*</span><br/>
           <%= f.text_field :permalink, :class => 'fullwidth title' %>
           <%= f.error_message_on :permalink %>
       <% end %>
 
       <%= f.field_container :description do %>
-          <%= f.label :description, t(:description) %><br />
+          <%= f.label :description, t(:description) %>
+          <br/>
           <%= f.text_area :description, {:cols => 60, :rows => 4, :class => 'fullwidth'} %>
           <%= f.error_message_on :description %>
       <% end %>
     </div>
     <div class="right" data-hook="admin_product_form_right">
+      <% if @product.is_product && @product.sign_data_id %>
+          <lable>Sign Editor Options</lable>
+          <p>When editing a sign for customers to buy, you need to simply save the sign, the thumbnail and sign data
+            will be updated. Then you can close the window</p>
+          <div><%= image_tag SignData.find(@product.sign_data_id ).image.url(:medium) %></div>
+          <a href="/custom_sign/edit_sign?id=<%= @product.sign_data_id.to_s %>" target="_blank">Edit Sign in Editor
+            (Opens in new window)</a>
+      <% end %>
+
       <%= f.field_container :price do %>
-          <%= f.label :price, t(:master_price) + " per CM SQ (if the size is within bounds, and is not within the small or large CM SQ thresholds for size, this price will be used)" %> <span class="required">*</span><br/>
+          <%= f.label :price, t(:master_price) + " per CM SQ (if the size is within bounds, and is not within the small or large CM SQ thresholds for size, this price will be used)" %>
+          <span class="required">*</span><br/>
           <%= f.text_field :price, :value => number_to_currency(@product.price, :unit => '') %>
           <%= f.error_message_on :price %>
       <% end %>
 
-      <%= f.field_container :small_size_price do %>
-          <%= f.label :small_size_price, "Small Size Price per CM SQ (only applies of the total CM SQ is less than or equal to small size threshold)" %>
-          <br/>
-          <%= f.text_field :small_size_price, :value => number_to_currency(@product.small_size_price, :unit => '') %>
+      <% if @product.is_material %>
+          <%= f.field_container :small_size_price do %>
+              <%= f.label :small_size_price, "Small Size Price per CM SQ (only applies of the total CM SQ is less than or equal to small size threshold)" %>
+              <br/>
+              <%= f.text_field :small_size_price, :value => number_to_currency(@product.small_size_price, :unit => '') %>
+          <% end %>
+
+          <%= f.field_container :small_size_threshold do %>
+              <%= f.label :small_size_threshold, "Small Size Threshold (total CM e.g. a 2CM x 3CM sign would be 6CM SQ)" %>
+              <br/>
+              <%= f.text_field :small_size_threshold, :value => @product.small_size_threshold %>
+          <% end %>
+
+          <%= f.field_container :large_size_price do %>
+              <%= f.label :large_size_price, "Large Size Price per CM squared (only applies of the total CM SQ is greater than or equal to large size threshold)" %>
+              <br/>
+              <%= f.text_field :large_size_price, :value => number_to_currency(@product.large_size_price, :unit => '') %>
+          <% end %>
+
+          <%= f.field_container :large_size_threshold do %>
+              <%= f.label :large_size_threshold, "Large Size Threshold (total CM e.g. a 20CM x 30CM sign would be 600CM SQ)" %>
+              <br/>
+              <%= f.text_field :large_size_threshold, :value => @product.large_size_threshold %>
+          <% end %>
+
+          <%= f.field_container :minimum_width do %>
+              <%= f.label :minimum_width, "Minimum Width allowed (CM)" %>
+              <br/>
+              <%= f.text_field :minimum_width, :value => @product.minimum_width %>
+          <% end %>
+
+          <%= f.field_container :maximum_width do %>
+              <%= f.label :maximum_width, "Maximum Width allowed (CM)" %>
+              <br/>
+              <%= f.text_field :maximum_width, :value => @product.maximum_width %>
+          <% end %>
+
+          <%= f.field_container :minimum_height do %>
+              <%= f.label :minimum_height, "Minimum Height allowed (CM)" %>
+              <br/>
+              <%= f.text_field :minimum_height, :value => @product.minimum_height %>
+          <% end %>
+
+          <%= f.field_container :maximum_height do %>
+              <%= f.label :maximum_height, "Maximum Height allowed (CM)" %>
+              <br/>
+              <%= f.text_field :maximum_height, :value => @product.maximum_height %>
+          <% end %>
+
       <% end %>
 
-      <%= f.field_container :small_size_threshold do %>
-          <%= f.label :small_size_threshold, "Small Size Threshold (total CM e.g. a 2CM x 3CM sign would be 6CM SQ)" %>
-          <br/>
-          <%= f.text_field :small_size_threshold, :value => @product.small_size_threshold %>
-      <% end %>
-
-      <%= f.field_container :large_size_price do %>
-          <%= f.label :large_size_price, "Large Size Price per CM squared (only applies of the total CM SQ is greater than or equal to large size threshold)" %>
-          <br/>
-          <%= f.text_field :large_size_price, :value => number_to_currency(@product.large_size_price, :unit => '') %>
-      <% end %>
-
-      <%= f.field_container :large_size_threshold do %>
-          <%= f.label :large_size_threshold, "Large Size Threshold (total CM e.g. a 20CM x 30CM sign would be 600CM SQ)" %>
-          <br/>
-          <%= f.text_field :large_size_threshold, :value => @product.large_size_threshold %>
-      <% end %>
-
-      <%= f.field_container :minimum_width do %>
-          <%= f.label :minimum_width, "Minimum Width allowed (CM)" %>
-          <br/>
-          <%= f.text_field :minimum_width, :value => @product.minimum_width %>
-      <% end %>
-
-      <%= f.field_container :maximum_width do %>
-          <%= f.label :maximum_width, "Maximum Width allowed (CM)" %>
-          <br/>
-          <%= f.text_field :maximum_width, :value => @product.maximum_width %>
-      <% end %>
-
-      <%= f.field_container :minimum_height do %>
-          <%= f.label :minimum_height, "Minimum Height allowed (CM)" %>
-          <br/>
-          <%= f.text_field :minimum_height, :value => @product.minimum_height %>
-      <% end %>
-
-      <%= f.field_container :maximum_height do %>
-          <%= f.label :maximum_height, "Maximum Height allowed (CM)" %>
-          <br/>
-          <%= f.text_field :maximum_height, :value => @product.maximum_height %>
-      <% end %>
 
       <%= f.field_container :cost_price do %>
-          <%= f.label :cost_price, t(:cost_price) %><br />
+          <%= f.label :cost_price, t(:cost_price) %>
+          <br/>
           <%= f.text_field :cost_price, :value => number_to_currency(@product.cost_price, :unit => '') %>
           <%= f.error_message_on :cost_price %>
       <% end %>
 
       <%= f.field_container :available_on do %>
-          <%= f.label :available_on, t(:available_on) %><br />
+          <%= f.label :available_on, t(:available_on) %>
+          <br/>
           <%= f.error_message_on :available_on %>
           <%= f.text_field :available_on, :class => 'datepicker' %>
       <% end %>
 
       <% unless @product.has_variants? %>
           <%= f.field_container :sku do %>
-              <%= f.label :sku, t(:sku) %><br />
+              <%= f.label :sku, t(:sku) %>
+              <br/>
               <%= f.text_field :sku, :size => 16 %>
           <% end %>
 
           <% if Spree::Config[:track_inventory_levels] %>
               <%= f.field_container :on_hand do %>
-                  <%= f.label :on_hand, t(:on_hand) %><br />
+                  <%= f.label :on_hand, t(:on_hand) %>
+                  <br/>
                   <%= f.number_field :on_hand, :min => 0 %>
               <% end %>
           <% end %>
@@ -120,28 +139,30 @@
       <% end %>
 
       <%= f.field_container :shipping_categories do %>
-          <%= f.label :shipping_category_id, t(:shipping_categories) %><br />
-          <%= f.collection_select(:shipping_category_id, @shipping_categories, :id, :name, { :include_blank => true }, { 'style' => 'width:200px' }) %>
+          <%= f.label :shipping_category_id, t(:shipping_categories) %>
+          <br/>
+          <%= f.collection_select(:shipping_category_id, @shipping_categories, :id, :name, {:include_blank => true}, {'style' => 'width:200px'}) %>
           <%= f.error_message_on :shipping_category %>
       <% end %>
 
       <%= f.field_container :tax_category do %>
-          <%= f.label :tax_category_id, t(:tax_category) %><br />
-          <%= f.collection_select(:tax_category_id, @tax_categories, :id, :name, { :include_blank => true }, { 'style' => 'width:200px' }) %>
+          <%= f.label :tax_category_id, t(:tax_category) %>
+          <br/>
+          <%= f.collection_select(:tax_category_id, @tax_categories, :id, :name, {:include_blank => true}, {'style' => 'width:200px'}) %>
           <%= f.error_message_on :tax_category %>
       <% end %>
 
       <%= f.field_container :show_in_menu do %>
 
           <%= f.check_box :show_in_menu %> <%= f.label :show_in_menu, "When ticked, this product will be visible on mega menu" %>
-          <p> </p>
+          <p></p>
 
       <% end %>
 
       <%= f.field_container :featured_product do %>
 
           <%= f.check_box :featured_product %> <%= f.label :featured_product, "When ticked, this product will be visible on homepage" %>
-          <p> </p>
+          <p></p>
 
       <% end %>
 
@@ -152,24 +173,29 @@
 
 
   <%= f.field_container :taxons do %>
-      <%= f.label :taxon_ids, t(:taxons) %><br />
+      <%= f.label :taxon_ids, t(:taxons) %>
+      <br/>
       <%= f.select :taxon_ids, taxon_options_for(@product), {}, :class => "select2", :multiple => true %>
   <% end %>
 
   <%= f.field_container :option_types do %>
-      <%= f.label :option_type_ids, t(:option_types) %><br />
+      <%= f.label :option_type_ids, t(:option_types) %>
+      <br/>
       <%= f.select :option_type_ids, option_types_options_for(@product), {}, :class => "select2", :multiple => true %>
   <% end %>
 
   <h2><%= t(:metadata) %></h2>
+
   <div data-hook="admin_product_form_meta">
     <%= f.field_container :meta_keywords do %>
-        <%= f.label :meta_keywords, t(:meta_keywords) %><br />
+        <%= f.label :meta_keywords, t(:meta_keywords) %>
+        <br/>
         <%= f.text_field :meta_keywords, :class => 'fullwidth' %>
     <% end %>
 
     <%= f.field_container :meta_description do %>
-        <%= f.label :meta_description, t(:meta_description) %><br />
+        <%= f.label :meta_description, t(:meta_description) %>
+        <br/>
         <%= f.text_field :meta_description, :class => 'fullwidth' %>
     <% end %>
   </div>
@@ -180,7 +206,9 @@
 <script>
 
     $("#product_taxon_ids").select2({
-        formatSelection: function(item) { return item.text.split(' -> ').slice(-1)[0] }
+        formatSelection: function (item) {
+            return item.text.split(' -> ').slice(-1)[0]
+        }
     });
 
     $("#product_option_type_ids").select2();

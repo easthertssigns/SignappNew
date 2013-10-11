@@ -15,6 +15,34 @@ class SignData < ActiveRecord::Base
                     :url => '/spree/products/:id/:style/:basename.:extension',
                     :path => ':rails_root/public/spree/products/:id/:style/:basename.:extension'
 
+  belongs_to :product, :class_name => 'Spree::Product', :foreign_key => :spree_product_id, :primary_key => :id
+
+  def self.search_admin(taxon_id = nil, query = nil)
+
+    result = []
+
+    conditions = "account_id IS NOT NULL"
+
+    SignData.where(conditions).order("created_at DESC").each do |r|
+      if taxon_id && !taxon_id.blank?
+        if r.product
+          if r.product.taxons.where("id = ?", taxon_id).count > 0
+
+            if query && !query.blank? && ((r.name.include? query.downcase) || (r.description.include? query.downcase))
+              result << r
+            elsif !query || query.blank?
+              result << r
+            end
+          end
+        end
+      else
+        result << r
+      end
+    end
+
+    result
+  end
+
   def get_background_image
     image = nil
     if spree_variant_id
@@ -71,7 +99,7 @@ class SignData < ActiveRecord::Base
   def get_local_svg
     # try and get the SVG file and read it
     if svg_data
-       svg_data
+      svg_data
     end
   end
 
