@@ -28,6 +28,7 @@ Refinery::Memberships::MembersController.class_eval do
       redirect_to session[:return_to] || welcome_members_path
     else
       @member.errors.delete(:username) # this is set to email
+      flash[:error] = "#{@member.errors.first[0]} #{@member.errors.first[1]}"
       render :action => :login
     end
   end

@@ -944,72 +944,51 @@
         });
 
         $('#shapeSelect').change(function () {
-//            var svg = "";
-//            $.ajax({
-//                url: "/custom_sign/get_graphic_url_ajax",
-//                data: { id: $(this).val() }
-//            }).done(function(result){
-//                svg = result.image_path;
-//                alert(svg);
-//                fabric.loadSVGFromURL(svg, function (objects, options) {
-//                    var obj = fabric.util.groupSVGElements(objects, options);
-//                    /*var ctx = canvas.getContext();
-//                     ctx.shadowColor = "rgba(255,255,255,0.75)";
-//                     ctx.shadowBlur = 0;
-//                     ctx.shadowOffsetX = 0;
-//                     ctx.shadowOffsetY = 1;*/
-//                    canvas.add(obj.scale(canvasScale)).centerObject(obj).renderAll();
-//                    obj.setCoords();
-//                    obj.hasRotatingPoint = true;
-//                    obj.set({
-//                        borderColor:'cyan',
-//                        cornerColor:'cyan'
-//                    })
-//                });
-//            });
+            if ($(this).val() != "") {
+                var svg = "/assets/svg/" + $(this).val() + ".svg";
+
+                // handel the uploads from admin
+                if (!isNaN($(this).val().replace("id_", ""))) {
+                    svg = "/custom_sign/get_custom_shape_svg/" + $(this).val().toLowerCase().replace("id_", "") + ".svg"
+                }
 
 
-            var svg = "/assets/svg/" + $(this).val() + ".svg";
+                fabric.loadSVGFromURL(svg, function (objects, options) {
+                    var obj = fabric.util.groupSVGElements(objects, options);
+                    /*var ctx = canvas.getContext();
+                     ctx.shadowColor = "rgba(255,255,255,0.75)";
+                     ctx.shadowBlur = 0;
+                     ctx.shadowOffsetX = 0;
+                     ctx.shadowOffsetY = 1;*/
+                    // set the position
+                    obj.set('left', canvas.getCenter().left);
+                    obj.set('top', canvas.getCenter().top);
 
-            // handel the uploads from admin
-            if (!isNaN($(this).val().replace("id_", ""))) {
-                svg = "/custom_sign/get_custom_shape_svg/" + $(this).val().toLowerCase().replace("id_", "") + ".svg"
-            }
+                    obj.scale(canvasScale);
 
+                    obj.setCoords();
+                    obj.fill = "#000000"
+                    obj.hasRotatingPoint = true;
+                    obj.set({
+                        borderColor: 'cyan',
+                        cornerColor: 'cyan'
+                    });
 
-            fabric.loadSVGFromURL(svg, function (objects, options) {
-                var obj = fabric.util.groupSVGElements(objects, options);
-                /*var ctx = canvas.getContext();
-                 ctx.shadowColor = "rgba(255,255,255,0.75)";
-                 ctx.shadowBlur = 0;
-                 ctx.shadowOffsetX = 0;
-                 ctx.shadowOffsetY = 1;*/
-                // set the position
-                obj.set('left', canvas.getCenter().left);
-                obj.set('top', canvas.getCenter().top);
+                    captureCurrentState();
 
-                obj.scale(canvasScale);
+                    canvas.add(obj);
 
-                obj.setCoords();
-                obj.fill = "#000000"
-                obj.hasRotatingPoint = true;
-                obj.set({
-                    borderColor: 'cyan',
-                    cornerColor: 'cyan'
+                    canvas.setActiveObject(obj);
+                    canvas.renderAll();
+
+                    // call modified
+
+                    // canvas.fire('object:modified', { target: obj });
+
+                    // set $(this).val() to nothing
+                    $("#shapeSelect").select2("val", "");
                 });
-
-                captureCurrentState();
-
-                canvas.add(obj);
-
-                canvas.setActiveObject(obj);
-                canvas.renderAll();
-
-                // call modified
-
-                // canvas.fire('object:modified', { target: obj });
-
-            });
+            }
         });
 
         var borderInset = 50, scallopDepth = 70, borderX = canvasWidth - borderInset, borderY = canvasHeight - borderInset, scallopX = canvasWidth - scallopDepth, scallopY = canvasHeight - scallopDepth;
