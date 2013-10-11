@@ -1,73 +1,114 @@
 <h1>Saved Signs</h1>
-<label>Material Type</label>
-<select id="material_type">
+<label for="taxonomy_id">Material Type</label>
+<select id="taxonomy_id" name="taxonomy_id">
   <option>Please Select</option>
   <% get_material_types.each do |m| %>
-     <option value="<%= m.id %>"><%= m.name%></option>
+      <option value="<%= m.id %>"><%= m.name %></option>
   <% end %>
 </select>
+
 <div id="select_product_list">
-  <label>Material</label>
-<select id="material" name="material">
-<option>Please Select</option>
-<% get_product_list.each do |p| %>
-  <option value="<%= p.id %>"><%= p.name %></option>
-<% end %>
-</select>
+  <label for="taxon_id">Material</label>
+  <select id="taxon_id" name="taxon_id">
+    <option>Please Select</option>
+    <% get_product_list.each do |p| %>
+        <option value="<%= p.id %>"><%= p.name %></option>
+    <% end %>
+  </select>
 </div>
 <div id="sign_results">
-    <% @signs.each do |s| %>
-      <% unless s.deleted_by_admin? %>
-      <div>
-        <a href="/admin/sign_data/<%= s.id %>"><%= s.name %></a> <%= s.description %> <%= get_spree_product(s.spree_product_id).name %> <%= s.deleted_by_user = true ? "(Deleted by User)" : "" %><br>
-        <a href="/admin/sign_data/<%= s.id %>">Details</a> | Copy and Edit | <a href="javascript:delete_sign(<%= s.id %>)">Delete</a>
-      </div>
-      <% end %>
-    <% end %>
+  <% if @signs.count > 0 %>
+      <table class="index">
+        <tbody>
+        <tr>
+          <th>Thumb</th>
+          <th>View SVG</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Base product</th>
+          <th>User Deleted</th>
+          <th>Options</th>
+        </tr>
+
+        <% @signs.each do |s| %>
+            <% unless s.deleted_by_admin? %>
+                <tr>
+                  <td>
+                    <% if s.image_file_name %>
+                        <%= image_tag s.image.url(:thumb) %>
+                    <% else %>
+                        no thumb
+                    <% end %>
+                  </td>
+                  <td>
+                    <a href="/custom_sign/get_sign/<%= s.id.to_s %>.svg" target="_blank">Get SVG</a>
+                  </td>
+                  <td>
+                    <%= s.name.blank? ? "unnamed" : s.name %>
+                  </td>
+                  <td>
+                    <%= s.description %>
+                  </td>
+                  <td>
+                    <%= get_spree_product(s.spree_product_id).name %>
+                  </td>
+                  <td>
+                    <%= s.deleted_by_user ? "yes" : "no" %>
+                  </td>
+                  <td>
+                    <a href="/admin/sign_data/<%= s.id %>"> Details</a> |
+                    <a href="javascript:delete_sign(<%= s.id %>)">Delete</a>
+                  </td>
+                </tr>
+            <% end %>
+        <% end %>
+        </tbody>
+      </table>
+  <% end %>
 </div>
 
 
 <script language="javascript" type="text/javascript">
-  $(document).ready(function(){
-      $("#material_type").change(function(){
-          var material_type_id = $("#material_type").val();
-          $.ajax({
-            url: "/admin/sign_data/filter_product_list_ajax",
-            data: { material_type_id: material_type_id }
-          }).done(function(result){
-            $("#select_product_list").html(result.list);
-            $("#sign_results").html(result.results);
-          });
-      });
+    $(document).ready(function () {
+        $("#material_type").change(function () {
+            var material_type_id = $("#material_type").val();
+            $.ajax({
+                url: "/admin/sign_data/filter_product_list_ajax",
+                data: { material_type_id: material_type_id }
+            }).done(function (result) {
+                        $("#select_product_list").html(result.list);
+                        $("#sign_results").html(result.results);
+                    });
+        });
 
-      $("#material").live('change', function(){
-          var material_id = $("#material").val();
-          $.ajax({
-            url: "/admin/sign_data/filter_results_ajax",
-            data: { material: material_id }
-          }).done(function(result){
-                //$("#select_product_list").html(result.list);
-                $("#sign_results").html(result.results);
-          });
-      });
-  });
+        $("#taxonomy_id").live('change', function () {
+            var material_id = $("#material").val();
+            $.ajax({
+                url: "/admin/sign_data/filter_results_ajax",
+                data: { material: material_id }
+            }).done(function (result) {
+                        //$("#select_product_list").html(result.list);
+                        $("#sign_results").html(result.results);
+                    });
+        });
+    });
 
-  function delete_sign(id){
-      var confirmed = confirm('Are you sure you want to delete this sign?');
-      if (confirmed == true){
-          $.ajax({
-              url: "/admin/sign_data/delete_sign",
-              data: { id: id }
-          }).done(function(result){
-              //do nothing
-          });
-          var material_id = $("#material").val();
-          $.ajax({
-              url: "/admin/sign_data/filter_results_ajax",
-              data: { material: material_id }
-          }).done(function(result){
-              $("#sign_results").html(result.results);
-          });
-      }
-  }
+    function delete_sign(id) {
+        var confirmed = confirm('Are you sure you want to delete this sign?');
+        if (confirmed == true) {
+            $.ajax({
+                url: "/admin/sign_data/delete_sign",
+                data: { id: id }
+            }).done(function (result) {
+                        //do nothing
+                    });
+            var material_id = $("#material").val();
+            $.ajax({
+                url: "/admin/sign_data/filter_results_ajax",
+                data: { material: material_id }
+            }).done(function (result) {
+                        $("#sign_results").html(result.results);
+                    });
+        }
+    }
 </script>

@@ -215,12 +215,12 @@ module Spree
     end
 
     def get_material_types
-      materials = Spree::Taxon.all(:conditions => ["parent_id = ?", 1])
+      materials = Spree::Taxon.all(:conditions => ["parent_id IS NULL"])
       materials = materials.sort_by &:name
     end
 
     def get_product_list
-      products = Spree::Product.all
+      products = Spree::Product.all(:conditions => ["deleted_at IS NULL"])
       products = products.sort_by &:name
       products
     end

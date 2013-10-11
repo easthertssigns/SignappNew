@@ -5,7 +5,11 @@ module Spree
       layout "spree/layouts/admin"
 
       def index
-          @signs = SignData.all(:conditions => "account_id IS NOT NULL")
+        if params[:taxonomy_id]
+          @taxonomy = Spree::Taxonomy.find(params[:taxonomy_id])
+        end
+
+        @signs = SignData.all(:conditions => "account_id IS NOT NULL")
       end
 
       def show

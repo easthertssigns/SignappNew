@@ -87,6 +87,9 @@
         <ul class="subNav">
           <% if current_refinery_user %>
               <li>
+                <%= link_to "My Account", "/members/welcome", :class => 'accountLink' %>
+              </li>
+              <li>
                 <%= link_to "Log Out", "/refinery/logout" %>
               </li>
           <% else %>
