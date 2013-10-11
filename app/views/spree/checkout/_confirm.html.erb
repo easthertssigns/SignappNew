@@ -1,12 +1,18 @@
-<fieldset id="order_details" data-hook>
-  <div class="clear"></div>
-  <legend><%= t(@order.state, :scope => :order_state).titleize %></legend>
-  <%= render :partial => 'spree/shared/order_details', :locals => { :order => @order } %>
-</fieldset>
+<div class="checkout">
+  <div class="row" data-hook="checkout_header">
+    <h1 class="checkout_title" data-hook="checkout_title">
+      <%= t(@order.state, :scope => :order_state).titleize %>
+    </h1>
+  </div>
+  <fieldset id="order_details" data-hook>
+    <div class="clear"></div>
+    <%= render :partial => 'spree/shared/order_details', :locals => {:order => @order} %>
+  </fieldset>
 
-<br />
+  <br/>
 
-<div class="form-buttons" data-hook="buttons">
-  <%= submit_tag t(:place_order), :class => 'continue button primary' %>
-  <script>disableSaveOnClick();</script>
+  <div class="form-buttons" data-hook="buttons">
+    <%= submit_tag t(:place_order), :class => 'continue button primary' %>
+    <script>disableSaveOnClick();</script>
+  </div>
 </div>

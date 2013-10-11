@@ -15,7 +15,7 @@
       <tr class="total">
         <td><strong><%= adjustment.label %></strong>
           <% if @order.has_step?("delivery") %>
-              <div class="columns alpha four">
+              <div class="columns four">
               <div class="delivery">
                   <%#= order.shipping_method.name %>
                 </div>
@@ -47,7 +47,7 @@
 <div class="row steps-data">
   <% if order.has_step?("address") %>
       <div class="grid_6">
-        <h6><%= t(:shipping_address) %> <%= link_to "(#{t(:edit)})", checkout_state_path(:address) unless @order.completed? %></h6>
+        <h6><%= t(:shipping_address) %> <%= link_to "#{t(:edit)}", checkout_state_path(:address), :class => 'button cream' unless @order.completed? %></h6>
         <div class="address">
           <%= order.ship_address.firstname %> <%= order.ship_address.lastname %>
           <br/>
@@ -65,7 +65,7 @@
         </div>
       </div>
       <div class="grid_6">
-        <h6><%= t(:billing_address) %> <%= link_to "(#{t(:edit)})", checkout_state_path(:address) unless @order.completed? %></h6>
+        <h6><%= t(:billing_address) %> <%= link_to "#{t(:edit)}", checkout_state_path(:address), :class => 'button cream' unless @order.completed? %></h6>
         <div class="address">
           <%= order.bill_address.firstname %> <%= order.bill_address.lastname %>
           <br/>
