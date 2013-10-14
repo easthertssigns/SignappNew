@@ -33,6 +33,7 @@ SignappNew::Application.routes.draw do
   match "custom_sign/get_sign/:id" => "custom_sign#get_sign"
 
   match "custom_sign/save_sign" => "custom_sign#save_sign"
+  match "custom_sign/customise_sign/:id" => "custom_sign#customise_sign"
   match "custom_sign/save_dialog" => "custom_sign#save_dialog"
   match "custom_sign/load_sign_list/:user_id" => "custom_sign#load_sign_list"
   match "custom_sign/load_sign_ajax" => "custom_sign#load_sign_ajax"

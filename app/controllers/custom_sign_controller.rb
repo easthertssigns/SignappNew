@@ -144,6 +144,35 @@ class CustomSignController < ApplicationController
         render :inline => @sign_graphic.svg_file.to_file.read
       }
     end
+  end
+
+  def customise_sign
+    # get sign from database
+
+
+    # duplicate to new ID and redirect to edit sign
+
+    sign_data = SignData.find params[:id]
+
+    new_sign_data = SignData.new
+    new_sign_data.account_id = spree_current_user ? spree_current_user.id : nil #this wants fixing at some point
+    new_sign_data.description = sign_data.description
+    new_sign_data.height = sign_data.height
+    new_sign_data.name = sign_data.name
+    new_sign_data.price = sign_data.price
+    new_sign_data.shape_id = sign_data.shape_id
+    new_sign_data.sign_data = sign_data.sign_data
+    new_sign_data.spree_product_id = sign_data.spree_product_id
+    new_sign_data.width = sign_data.width
+    new_sign_data.image = open(sign_data.image.url)
+    new_sign_data.svg_data = sign_data.svg_data
+    new_sign_data.show_as_product = false
+    new_sign_data.spree_variant_id = sign_data.spree_variant_id
+
+    new_sign_data.save
+
+    # redirect to edit in sign editor
+    redirect_to "/custom_sign/edit_sign?id=" + new_sign_data.id.to_s
 
   end
 

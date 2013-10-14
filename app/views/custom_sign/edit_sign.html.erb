@@ -526,6 +526,10 @@
             var activeObject = canvas.getActiveObject();
 
             if (canvas.getActiveObject() && canvas.getActiveObject().type === 'text') {
+
+                console.log("vertical pos: " + (parseInt(activeObject.top) + parseInt(activeObject.height / 2)));
+                console.log("canvas height: " + (parseInt(canvas.height)));
+
                 var activeObjectFontFamily = canvas.getActiveObject().fontFamily;
                 $('#fontFamily').val(activeObjectFontFamily).trigger("change");
                 $('#textArea').val(activeObject.text);
@@ -535,9 +539,9 @@
                 if (IsFireFox()) {
                     $('#textArea').css({
                         display: 'block',
-                        left: activeObject.left - activeObject.width / 2,
-                        top: activeObject.top + activeObject.height / 2 + 10,
-                        width: activeObject.width,
+                        left: activeObject.left - (activeObject.width * activeObject.scaleX) / 2,
+                        //top: activeObject.top + activeObject.height / 2 + 10,
+                        width: activeObject.width * activeObject.scaleX,
                         height: (activeObject.text.split("\n").length + 1) * 12,
                         zIndex: 100,
                         backgroundColor: "#ffffff",
@@ -545,6 +549,18 @@
                         textAlign: activeObject.textAlign,
                         textDecoration: activeObject.textDecoration
                     }).focus();
+
+                    if (parseInt(activeObject.top) + parseInt(activeObject.height * activeObject.scaleX / 2) > parseInt(canvas.height / 2))
+                    {
+                        $('#textArea').css({
+                            top: parseInt(activeObject.top) - parseInt(activeObject.height * activeObject.scaleX / 2) - 20 - $('#textArea').height()
+                        });
+                    }
+                    else {
+                        $('#textArea').css({
+                            top: parseInt(activeObject.top) + parseInt(activeObject.height * activeObject.scaleX / 2) + 10
+                        });
+                    }
                 }
                 else {
 
@@ -557,7 +573,7 @@
                         fontFamily: activeObject.fontFamily,
                         fontSize: activeObject.fontSize,
                         height: activeObject.height,
-                        left: activeObject.left - activeObject.width / 2,
+                        left: activeObject.left - (activeObject.width) / 2,
                         lineHeight: activeObject.lineHeight,
                         textAlign: activeObject.textAlign,
                         top: activeObject.top - activeObject.height / 2,
@@ -570,16 +586,31 @@
 
                 canvas.observe('object:modified', function () {
                     if (IsFireFox()) {
-                        console.log((activeObject.text.split("\n").length + 1) * 12);
+
+                        console.log("vertical pos: " + (parseInt(activeObject.top) + parseInt(activeObject.height / 2)));
+                        console.log("canvas height: " + (parseInt(canvas.height)));
+
                         $('#textArea').css({
                             '-webkit-transform': 'rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
                             height: ($("#textArea").val().split("\n").length + 1) * 12,
-                            left: activeObject.left - activeObject.width / 2,
-                            top: activeObject.top + activeObject.height / 2 + 10,
-                            width: activeObject.width,
+                            left: activeObject.left - (activeObject.width * activeObject.scaleX) / 2,
+                            width: activeObject.width * activeObject.scaleX,
                             textAlign: activeObject.textAlign,
                             textDecoration: activeObject.textDecoration
                         });
+
+                        // CHECK IF THE TEXT OBJECT IS GREATER THAN 50% below top
+                        if (parseInt(activeObject.top) + parseInt(activeObject.height * activeObject.scaleX / 2) > parseInt(canvas.height / 2))
+                        {
+                            $('#textArea').css({
+                                top: parseInt(activeObject.top) - parseInt(activeObject.height * activeObject.scaleX / 2) - 20 - $('#textArea').height()
+                            });
+                        }
+                        else {
+                            $('#textArea').css({
+                                top: parseInt(activeObject.top) + parseInt(activeObject.height * activeObject.scaleX / 2) + 10
+                            });
+                        }
                     }
                     else {
 
@@ -587,7 +618,7 @@
                             '-webkit-transform': 'rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
                             display: 'block',
                             height: activeObject.height,
-                            left: activeObject.left - activeObject.width / 2,
+                            left: activeObject.left  - (activeObject.width / 2),
                             top: activeObject.top - activeObject.height / 2,
                             width: activeObject.width
                         });
@@ -613,12 +644,24 @@
                     if (IsFireFox()) {
                         $('#textArea').css({
                             height: (activeObject.text.split("\n").length + 1) * 12,
-                            left: activeObject.left - activeObject.width / 2,
+                            left: activeObject.left - (activeObject.width * activeObject.scaleX) / 2,
                             textAlign: activeObject.textAlign,
                             textDecoration: activeObject.textDecoration,
-                            top: activeObject.top + activeObject.height / 2 + 10,
-                            width: activeObject.width
+                            //top: activeObject.top + activeObject.height / 2 + 10,
+                            width: activeObject.width * activeObject.scaleX
                         });
+
+                        if (activeObject.top + (activeObject.height * activeObject.scaleX / 2) > canvas.height / 2)
+                        {
+                            $('#textArea').css({
+                                top: parseInt(activeObject.top) - parseInt(activeObject.height * activeObject.scaleX / 2) - 20 - $('#textArea').height()
+                            });
+                        }
+                        else {
+                            $('#textArea').css({
+                                top: activeObject.top + activeObject.height * activeObject.scaleX / 2 + 10
+                            });
+                        }
                     }
                     else {
                         $('#textArea').css({
@@ -1924,7 +1967,6 @@
     function SetupBorder(settings) {
 
 
-
         if (borderSingle == null) {
             console.log("setting up borders");
             console.log(settings);
@@ -1985,7 +2027,6 @@
         if (settings != null) {
 
             console.log("applying settings");
-
 
 
             if (settings.style == "noborder") {

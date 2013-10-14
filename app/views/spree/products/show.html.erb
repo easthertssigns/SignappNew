@@ -258,7 +258,7 @@
           <div class="button">
             <a href="/orders/add_saved_sign_to_basket?id=<%= @product.sign_data_id.to_s %>">Add to basket</a></div>
           <div class="button">
-            <a href="/custom_sign/edit_sign_from_product?id=<%= @product.sign_data_id.to_s %>">Customise this sign</a>
+            <a href="/custom_sign/customise_sign/<%= @product.sign_data_id.to_s %>">Customise this sign</a>
           </div>
       <% end %>
     </div>
