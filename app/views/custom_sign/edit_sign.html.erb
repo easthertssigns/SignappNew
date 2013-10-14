@@ -243,11 +243,30 @@
     var screwholesarray = [];
     var canvasScale = 1.0;
 
+    var borderSingle = null;
+    var borderDouble = null;
+    var borderScalloped = null;
+
     var canvas = null;
     var mask_object = null;
     // added to fix de-authentication when posting ajax : Doug
 
+    var textUpdateOnce = null;
+
+    function canvasUpdate() {
+        canvas.renderAll();
+        cancelTextRefreshTimer()
+    }
+
+    function cancelTextRefreshTimer() {
+        clearInterval(textUpdateOnce);
+    }
+
+
     (function () {
+
+        $("#redo").addClass('disabled');
+        $("#undo").addClass('disabled');
 
         $("#savingOverlay").hide();
 
@@ -292,6 +311,39 @@
 
         addBackingImage();
         addMask();
+
+        // setup slider beore loading sign (since it may have a border
+        $("#borderThicknessSlider").slider({
+            value: 1,
+            min: 1,
+            max: 10,
+            step: 1,
+            slide: function (event, ui) {
+                borderSingle.set({
+                    strokeWidth: ui.value
+                });
+                borderDouble.set({
+                    strokeWidth: ui.value
+                });
+                borderScalloped.set({
+                    strokeWidth: ui.value
+                });
+
+                if (borderSingle.get("engraved")) {
+                    borderSingle.opacity = 0.3;
+                    borderDouble.opacity = 0.3;
+                    borderScalloped.opacity = 0.3;
+                }
+                else {
+                    borderSingle.opacity = 1;
+                    borderDouble.opacity = 1;
+                    borderScalloped.opacity = 1;
+                }
+
+                canvas.renderAll();
+            }
+        });
+
 
         // loads sign if applicable
         reloadSign();
@@ -415,22 +467,27 @@
             });
 
             text.hasRotatingPoint = true;
+
             text.set({
                 borderColor: 'cyan',
                 cornerColor: 'cyan',
                 fontWeight: "normal"
             });
 
-
             text.scale(canvasScale);
-
-            // make text selected
             canvas.setActiveObject(text);
 
+            // make text selected
             canvas.add(text);
 
-            canvas.renderAll();
 
+            // add timed event to refresh on first text eleemnt added
+            if (textUpdateOnce == null) {
+                textUpdateOnce = setInterval(function () {
+                    canvasUpdate()
+                }, 100);
+            }
+            canvas.renderAll();
         });
 
         $('#addShape').click(function () {
@@ -661,6 +718,7 @@
             if (activeObject && activeObject.type === 'text') {
                 activeObject.fontFamily = (activeObject.fill == fontFamily ? '' : fontFamily);
                 canvas.renderAll();
+
             }
         });
 
@@ -672,12 +730,12 @@
                     // alert("black match : " + fillColor);
                 }
                 else {
-                    canvas.fire('object:modified', { target: canvas.getActiveObject() });
                     //alert("Color Change Fire (" + activeObject.fill + " " + fillColor + ") ");
                     activeObject.fill = fillColor;
                     activeObject.setOpacity(1);
                     activeObject.stroke = null;
                     canvas.renderAll();
+                    canvas.fire('object:modified', { target: canvas.getActiveObject() });
 
                 }
             }
@@ -686,7 +744,6 @@
 
         $('#borderColor').change(function () {
 //            canvas.fire('object:modified', { target: canvas.getActiveObject() });
-
             var strokeColor = $(this).val();
 
             borderSingle.stroke = strokeColor;
@@ -698,6 +755,7 @@
             borderScalloped.opacity = 1;
 
             canvas.renderAll();
+            canvas.fire('object:modified', { target: borderSingle });
         });
 
         $('#textBold').click(function () {
@@ -712,6 +770,7 @@
         $('#textItalic').click(function () {
             var activeObject = canvas.getActiveObject();
             if (activeObject && activeObject.type === 'text') {
+                console.log(activeObject.fontStyle);
                 activeObject.fontStyle = (activeObject.fontStyle == 'italic' ? '' : 'italic');
                 canvas.renderAll();
                 canvas.fire('object:modified', { target: canvas.getActiveObject() });
@@ -878,7 +937,7 @@
             var activeGroup = canvas.getActiveGroup();
 
             if (activeObject) {
-                alert('cloneing in progress');
+                // alert('cloneing in progress');
 
                 // clone works differently for text and shape / group
 
@@ -983,58 +1042,8 @@
             }
         });
 
-        var borderInset = 50, scallopDepth = 70, borderX = canvasWidth - borderInset, borderY = canvasHeight - borderInset, scallopX = canvasWidth - scallopDepth, scallopY = canvasHeight - scallopDepth;
+        SetupBorder();
 
-        var borderSingle = new fabric.Path([
-            ['M', borderInset, borderInset],
-            ['V', borderY],
-            ['H', borderX],
-            ['V', borderInset],
-            ['H', borderInset]
-        ], {
-            fill: '',
-            height: canvasHeight,
-            selectable: false,
-            stroke: 'black',
-            width: canvasWidth
-        });
-
-        var borderDouble = new fabric.Path([
-            ['M', borderInset, borderInset],
-            ['V', borderY],
-            ['H', borderX],
-            ['V', borderInset],
-            ['H', borderInset],
-            ['M', scallopDepth, scallopDepth],
-            ['V', canvasHeight - scallopDepth],
-            ['H', canvasWidth - scallopDepth],
-            ['V', scallopDepth],
-            ['H', scallopDepth]
-        ], {
-            fill: '',
-            height: canvasHeight,
-            selectable: false,
-            stroke: 'black',
-            width: canvasWidth
-        });
-
-        var borderScalloped = new fabric.Path([
-            ['M', scallopDepth, borderInset],
-            ['Q', scallopDepth, scallopDepth, borderInset, scallopDepth],
-            ['V', scallopY],
-            ['Q', scallopDepth, scallopY, scallopDepth, canvasHeight - borderInset],
-            ['H', scallopX],
-            ['Q', scallopX, scallopY, canvasWidth - borderInset, scallopY],
-            ['V', scallopDepth],
-            ['Q', scallopX, scallopDepth, scallopX, borderInset],
-            ['H', scallopDepth]
-        ], {
-            fill: '',
-            height: canvasHeight,
-            selectable: false,
-            stroke: 'black',
-            width: canvasWidth
-        });
 
         $('#borderSelect').change(function () {
             var borderSelect = $('#borderSelect option:selected').val();
@@ -1074,36 +1083,7 @@
             }
         });
 
-        $("#borderThicknessSlider").slider({
-            value: 1,
-            min: 1,
-            max: 10,
-            step: 1,
-            slide: function (event, ui) {
-                borderSingle.set({
-                    strokeWidth: ui.value
-                });
-                borderDouble.set({
-                    strokeWidth: ui.value
-                });
-                borderScalloped.set({
-                    strokeWidth: ui.value
-                });
 
-                if (borderSingle.get("engraved")) {
-                    borderSingle.opacity = 0.3;
-                    borderDouble.opacity = 0.3;
-                    borderScalloped.opacity = 0.3;
-                }
-                else {
-                    borderSingle.opacity = 1;
-                    borderDouble.opacity = 1;
-                    borderScalloped.opacity = 1;
-                }
-
-                canvas.renderAll();
-            }
-        });
         <% if @sign_data.based_on.nil? %>
         $('#clearCanvas').click(function () {
             if (confirm('Are you sure?')) {
@@ -1251,7 +1231,7 @@
 
             var activeObject = canvas.getActiveObject();
 
-            if (activeObject.get("engraved")) {
+            if (activeObject && activeObject.get("engraved")) {
                 engraved = true;
             }
 
@@ -1355,31 +1335,37 @@
 
             canvas.renderAll();
 
+            captureCurrentState();
+
             ignor_last_action = false;
         }
 
 
         $('#undo').click(function undo() {
-            if (undoStack.length == 0) {
-                alert("nothing to un-do!")
-            }
-            else {
-
+            if (undoStack.length > 0) {
                 captureCurrentState();
                 appendToRedoStack();
                 CustomLoadFromHistory(undoStack.pop());
+                $("#redo").removeClass("disabled");
+            }
+
+            if (undoStack.length == 0) {
+                $("#undo").addClass("disabled");
             }
         });
 
         $('#redo').click(function redo() {
 
-            if (redoStack.length == 0) {
-                alert("nothing to re-do!")
-            }
-            else {
+            if (redoStack.length > 0) {
                 captureCurrentState();
                 appendToUndoStack();
                 CustomLoadFromHistory(redoStack.pop());
+
+                $("#undo").removeClass("disabled");
+            }
+
+            if (redoStack.length == 0) {
+                $("#redo").addClass("disabled");
             }
         });
 
@@ -1389,14 +1375,23 @@
     function appendToUndoStack() {
         console.log("Adding to undo stack, size : " + undoStack.length.toString());
         undoStack.push(currentState);
+        $("#undo").removeClass("disabled");
+        $("#redo").addClass("disabled");
     }
 
     function appendToRedoStack() {
         console.log("Adding to redo stack, size : " + redoStack.length.toString());
         redoStack.push(currentState);
+        if (undoStack.length == 0) {
+            $("#undo").addClass("disabled");
+        }
+
+        $("#redo").removeClass("disabled");
     }
 
     function captureCurrentState() {
+        console.log("current state captured");
+//        alert("captured");
         // reset the redo stack
         var hist = [];
 
@@ -1428,6 +1423,7 @@
 
             });
 
+
             // add mask as canvas object, for when storing the SVG
             fabric.loadSVGFromURL(mask_svg_url, function (objects, options) {
                 mask_object = fabric.util.groupSVGElements(objects, options);
@@ -1440,9 +1436,11 @@
                 // mask_object.set({ strokeWidth: (1 / mask_object.scaleX ), stroke: '#000000', strokeDashArray: [6 / mask_object.scaleX, 1 / mask_object.scaleX], fill: 'none', opacity: 0});
                 mask_object.set({ strokeWidth: (1 / mask_object.scaleX ), stroke: 'none', strokeDashArray: [6 / mask_object.scaleX, 1 / mask_object.scaleX], fill: 'transparent', opacity: 1});
 
-                canvas.add(mask_object).bringToFront(mask_object);
-
                 mask_object.selectable = false;
+
+                ignor_last_action = true;
+                console.log("Adding mask");
+                canvas.add(mask_object).bringToFront(mask_object);
 
                 canvas.renderAll();
                 //
@@ -1510,7 +1508,7 @@
 
         applyMask();
 
-        canvas_track_changes = true;
+        //canvas_track_changes = true;
         console.log('canvas_track_changes : ' + canvas_track_changes);
     }
 
@@ -1539,7 +1537,13 @@
         if ($("#sign_data").val() != '') {
             //alert("Saved sign loaded!");
             var jsn = $.base64.decode($("#sign_data").val());
-            // console.log(jsn);
+            // console.log(jQuery.parseJSON( jsn ).border);
+
+
+//            $.each(jsn["objects"], function(e, i){
+//                                             console.log(e);
+//            });
+
             canvas.loadFromJSON(jsn, function () {
                 var toRemove = [];
 
@@ -1549,7 +1553,7 @@
                     }
                 });
 
-                //alert("object count : " + canvas.getObjects().length);
+                // alert("object count : " + canvas.getObjects().length);
 
                 if (toRemove.length > 0) {
                     while (toRemove.length > 0) {
@@ -1570,13 +1574,22 @@
                 setupMargins();
                 setupScrewholes();
 
-                addBackingImage();
+                //addBackingImage();
                 addMask();
 
 
                 //alert("object count : " + canvas.getObjects().length);
                 canvas.renderAll();
+
+                textUpdateOnce = setInterval(function () {
+                    canvasUpdate();
+                }, 500);
             });
+
+            // address border element
+
+            SetupBorder(jQuery.parseJSON(jsn).border);
+
 
 //        alert("canvas objects : " + canvas.getObjects().length);
 
@@ -1586,7 +1599,15 @@
     }
 
     function getCanvasJSONCustom() {
-        var json = {objects: [], background: ""};
+
+        var json = {
+            objects: [],
+            background: "",
+            border: {
+                style: $('#borderSelect option:selected').val(),
+                color: $("#borderColor").val(),
+                engraved: !!(borderSingle.engraved == true),
+                width: borderSingle.strokeWidth }};
 
         $.each(canvas.getObjects(), function (i, e) {
             if (e.selectable) {
@@ -1888,8 +1909,10 @@
         var str = canvas.toDataURL({multiplier: 1});
 
         // show object selection
-        canvas.setActiveObject(obj);
-        canvas.renderAll();
+        if (obj != null) {
+            canvas.setActiveObject(obj);
+            canvas.renderAll();
+        }
 
         return str;
     }
@@ -1897,4 +1920,172 @@
     function IsFireFox() {
         return !!navigator.userAgent.match(/firefox/i);
     }
+
+    function SetupBorder(settings) {
+
+
+
+        if (borderSingle == null) {
+            console.log("setting up borders");
+            console.log(settings);
+            var borderInset = 50, scallopDepth = 70, borderX = canvasWidth - borderInset, borderY = canvasHeight - borderInset, scallopX = canvasWidth - scallopDepth, scallopY = canvasHeight - scallopDepth;
+
+            borderSingle = new fabric.Path([
+                ['M', borderInset, borderInset],
+                ['V', borderY],
+                ['H', borderX],
+                ['V', borderInset],
+                ['H', borderInset]
+            ], {
+                fill: '',
+                height: canvasHeight,
+                selectable: false,
+                stroke: 'black',
+                width: canvasWidth
+            });
+
+            borderDouble = new fabric.Path([
+                ['M', borderInset, borderInset],
+                ['V', borderY],
+                ['H', borderX],
+                ['V', borderInset],
+                ['H', borderInset],
+                ['M', scallopDepth, scallopDepth],
+                ['V', canvasHeight - scallopDepth],
+                ['H', canvasWidth - scallopDepth],
+                ['V', scallopDepth],
+                ['H', scallopDepth]
+            ], {
+                fill: '',
+                height: canvasHeight,
+                selectable: false,
+                stroke: 'black',
+                width: canvasWidth
+            });
+
+            borderScalloped = new fabric.Path([
+                ['M', scallopDepth, borderInset],
+                ['Q', scallopDepth, scallopDepth, borderInset, scallopDepth],
+                ['V', scallopY],
+                ['Q', scallopDepth, scallopY, scallopDepth, canvasHeight - borderInset],
+                ['H', scallopX],
+                ['Q', scallopX, scallopY, canvasWidth - borderInset, scallopY],
+                ['V', scallopDepth],
+                ['Q', scallopX, scallopDepth, scallopX, borderInset],
+                ['H', scallopDepth]
+            ], {
+                fill: '',
+                height: canvasHeight,
+                selectable: false,
+                stroke: 'black',
+                width: canvasWidth
+            });
+        }
+
+        if (settings != null) {
+
+            console.log("applying settings");
+
+
+
+            if (settings.style == "noborder") {
+                //$("#borderSelect").select2().val(settings.style);
+                //$("#borderThicknessSlider").slider('value', settings.width.toString());
+
+                console.log(settings.style);
+                // remove all
+                ignor_last_action = true;
+                canvas.remove(borderSingle);
+                ignor_last_action = true;
+                canvas.remove(borderDouble);
+                ignor_last_action = true;
+                canvas.remove(borderScalloped);
+            }
+
+            if (settings.style == "single") {
+                $("#borderSelect").select2().val(settings.style);
+                $("#borderThicknessSlider").slider('value', settings.width.toString());
+
+                console.log(settings.style);
+                // remove all
+                ignor_last_action = true;
+                canvas.add(borderSingle.scale(canvasScale)).centerObject(borderSingle).sendToBack(borderSingle).bringForward(borderSingle);
+                ignor_last_action = true;
+                canvas.remove(borderDouble);
+                ignor_last_action = true;
+                canvas.remove(borderScalloped);
+            }
+
+            if (settings.style == "double") {
+                $("#borderSelect").select2().val(settings.style);
+                $("#borderThicknessSlider").slider('value', settings.width.toString());
+
+                console.log(settings.style);
+                // remove all
+                canvas.remove(borderSingle);
+                ignor_last_action = true;
+                canvas.add(borderDouble.scale(canvasScale)).centerObject(borderDouble).bringToFront(borderDouble)// sendToBack(borderDouble).bringForward(borderDouble);
+                ignor_last_action = true;
+                canvas.remove(borderScalloped);
+                ignor_last_action = true;
+            }
+
+            if (settings.style == "scalloped") {
+                $("#borderSelect").select2().val(settings.style);
+                $("#borderThicknessSlider").slider('value', settings.width.toString());
+
+                console.log(settings.style);
+                // remove all
+                ignor_last_action = true;
+                canvas.remove(borderSingle);
+                ignor_last_action = true;
+                canvas.remove(borderDouble);
+                ignor_last_action = true;
+                canvas.add(borderScalloped.scale(canvasScale)).centerObject(borderScalloped).sendToBack(borderScalloped).bringForward(borderScalloped);
+
+            }
+
+            borderSingle.set({
+                strokeWidth: settings.width
+            });
+            borderDouble.set({
+                strokeWidth: settings.width
+            });
+            borderScalloped.set({
+                strokeWidth: settings.width
+            });
+
+            if (settings.engraved) {
+                // set the border color
+
+                borderSingle.stroke = "#000000";
+                borderDouble.stroke = "#000000";
+                borderScalloped.stroke = "#000000";
+
+                borderSingle.opacity = 0.3;
+                borderDouble.opacity = 0.3;
+                borderScalloped.opacity = 0.3;
+            }
+            else {
+                // set the border color
+
+                $("#shapeSelect").select2("val", settings.color);
+
+                $("#borderColor").val(settings.color);
+
+                borderSingle.stroke = settings.color;
+                borderDouble.stroke = settings.color;
+                borderScalloped.stroke = settings.color;
+
+                borderSingle.opacity = 1;
+                borderDouble.opacity = 1;
+                borderScalloped.opacity = 1;
+            }
+
+            canvas.renderAll();
+
+        }
+    }
+
+
 </script>
