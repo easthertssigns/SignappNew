@@ -12,7 +12,12 @@
   </div>
   <div class="cart-item-description" data-hook="cart_item_description">
     <h4><%= link_to variant.product.name, product_path(variant.product) %></h4>
-    <%= variant.options_text %>
+    <% unless variant.is_master %>
+        <%= line_item.sign_data.variant.options_text %>
+    <% end %>
+    <% if line_item.sign_data_id %>
+        Size : <%= line_item.sign_data.width %>mm X <%= line_item.sign_data.height %>mm
+    <% end %>
     <% if @order.insufficient_stock_lines.include? line_item %>
       <span class="out-of-stock">
         <%= variant.in_stock? ? t(:insufficient_stock, :on_hand => variant.on_hand) : t(:out_of_stock) %><br/>

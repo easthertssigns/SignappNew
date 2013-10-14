@@ -60,7 +60,7 @@
             <option value="PermanentMarkerRegular">Permanent Marker</option>
           </optgroup>
         </select>
-        <input type="text" class="showPaletteOnly" value="#000000"/>
+        <input type="text" class="showPaletteOnly" value="#000000" id="textColor"/>
 
         <div class="function engraved" id="textEngraved" title="No paint, only engraved">
           Engraved, no paint
@@ -94,7 +94,7 @@
             <option value="squirrel">Squirrel</option>
           </optgroup>
         </select>
-        <input type="text" class="showPaletteOnly" value="#000000"/>
+        <input type="text" class="showPaletteOnly" value="#000000" id="shapeColor"/>
 
         <div class="function engraved" id="shapeEngraved" title="No paint, only engraved">
           Engraved, no paint
@@ -251,6 +251,11 @@
 
         $("#savingOverlay").hide();
 
+        $("#addBorder").on("click", function () {
+            // deselect active object
+            canvas.deactivateAll().renderAll();
+        });
+
         canvas = new fabric.Canvas('my-canvas');
 
         initAligningGuidelines(canvas);
@@ -326,7 +331,7 @@
                 authenticity_token: $("meta[name='csrf-token']").attr("content"),
                 id: id,
                 sign_data: custom_data,
-                base64png: canvas.toDataURL({multiplier: 1}),
+                base64png: GetBase64PNG(),
                 svg_data: $("#svg_data").val(),
                 account_id: account_id,
                 name: name,
@@ -365,7 +370,7 @@
 
             $("#sign_data").val($.base64.encode(getCanvasJSONCustom()));
             updateSVGfield();
-            $("#base64png").val(canvas.toDataURL({multiplier: 1}));
+            $("#base64png").val(GetBase64PNG());
             //this is where custom_sign/save_sign is called
             $.fancybox.open({href: '/custom_sign/save_dialog',
                 title: 'Save Custom Sign',
@@ -401,7 +406,7 @@
             $('#addBorderMenu').hide();
             var textValue = $('#textArea').val();
             var fontFamily = $('#fontFamily').val();
-            var color = $('.showPaletteOnly').val();
+            var color = $('#textColor').val();
             var text = new fabric.Text(placeholderText, {
                 fontFamily: fontFamily,
                 fill: color,
@@ -457,6 +462,7 @@
 //                    }
 //                }
             };
+
         })(canvas.setActiveObject);
 
         function dblClickHandler() {
@@ -465,36 +471,71 @@
             if (canvas.getActiveObject() && canvas.getActiveObject().type === 'text') {
                 var activeObjectFontFamily = canvas.getActiveObject().fontFamily;
                 $('#fontFamily').val(activeObjectFontFamily).trigger("change");
-                $('#textArea').val(activeObject.text)
+                $('#textArea').val(activeObject.text);
 
                 // console.log('-webkit-transform : rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')');
 
-                $('#textArea').css({
-                    '-webkit-transform': 'rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
-                    '-moz-transform': 'rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
-                    '-0-transform': 'rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
-                    '-ms-transform': 'rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
-                    display: 'block',
-                    fontFamily: activeObject.fontFamily,
-                    fontSize: activeObject.fontSize,
-                    height: activeObject.height,
-                    left: activeObject.left - activeObject.width / 2,
-                    lineHeight: activeObject.lineHeight,
-                    textAlign: activeObject.textAlign,
-                    top: activeObject.top - activeObject.height / 2,
-                    width: activeObject.width,
-                    zIndex: 100
-                });
+                if (IsFireFox()) {
+                    $('#textArea').css({
+                        display: 'block',
+                        left: activeObject.left - activeObject.width / 2,
+                        top: activeObject.top + activeObject.height / 2 + 10,
+                        width: activeObject.width,
+                        height: (activeObject.text.split("\n").length + 1) * 12,
+                        zIndex: 100,
+                        backgroundColor: "#ffffff",
+                        padding: 5,
+                        textAlign: activeObject.textAlign,
+                        textDecoration: activeObject.textDecoration
+                    }).focus();
+                }
+                else {
 
-                canvas.observe('object:modified', function () {
                     $('#textArea').css({
                         '-webkit-transform': 'rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
+                        '-moz-transform': 'rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
+                        '-0-transform': 'rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
+                        '-ms-transform': 'rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
                         display: 'block',
+                        fontFamily: activeObject.fontFamily,
+                        fontSize: activeObject.fontSize,
                         height: activeObject.height,
                         left: activeObject.left - activeObject.width / 2,
+                        lineHeight: activeObject.lineHeight,
+                        textAlign: activeObject.textAlign,
                         top: activeObject.top - activeObject.height / 2,
-                        width: activeObject.width
+                        width: activeObject.width,
+                        zIndex: 100
                     });
+
+
+                }
+
+                canvas.observe('object:modified', function () {
+                    if (IsFireFox()) {
+                        console.log((activeObject.text.split("\n").length + 1) * 12);
+                        $('#textArea').css({
+                            '-webkit-transform': 'rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
+                            height: ($("#textArea").val().split("\n").length + 1) * 12,
+                            left: activeObject.left - activeObject.width / 2,
+                            top: activeObject.top + activeObject.height / 2 + 10,
+                            width: activeObject.width,
+                            textAlign: activeObject.textAlign,
+                            textDecoration: activeObject.textDecoration
+                        });
+                    }
+                    else {
+
+                        $('#textArea').css({
+                            '-webkit-transform': 'rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
+                            display: 'block',
+                            height: activeObject.height,
+                            left: activeObject.left - activeObject.width / 2,
+                            top: activeObject.top - activeObject.height / 2,
+                            width: activeObject.width
+                        });
+                    }
+
                 });
                 canvas.observe('object:moving', function () {
                     $('#textArea').css({
@@ -512,17 +553,30 @@
                     });
                 });
                 canvas.observe('after:render', function () {
-                    $('#textArea').css({
-                        fontFamily: activeObject.fontFamily,
-                        fontStyle: activeObject.fontStyle,
-                        fontWeight: activeObject.fontWeight,
-                        height: activeObject.height,
-                        left: activeObject.left - activeObject.width / 2,
-                        textAlign: activeObject.textAlign,
-                        textDecoration: activeObject.textDecoration,
-                        top: activeObject.top - activeObject.height / 2,
-                        width: activeObject.width
-                    });
+                    if (IsFireFox()) {
+                        $('#textArea').css({
+                            height: (activeObject.text.split("\n").length + 1) * 12,
+                            left: activeObject.left - activeObject.width / 2,
+                            textAlign: activeObject.textAlign,
+                            textDecoration: activeObject.textDecoration,
+                            top: activeObject.top + activeObject.height / 2 + 10,
+                            width: activeObject.width
+                        });
+                    }
+                    else {
+                        $('#textArea').css({
+                            fontFamily: activeObject.fontFamily,
+                            fontStyle: activeObject.fontStyle,
+                            fontWeight: activeObject.fontWeight,
+                            height: activeObject.height,
+                            left: activeObject.left - activeObject.width / 2,
+                            textAlign: activeObject.textAlign,
+                            textDecoration: activeObject.textDecoration,
+                            top: activeObject.top - activeObject.height / 2,
+                            width: activeObject.width
+                        });
+                    }
+
                     if (activeObject.fontFamily === 'PacificoRegular') {
                         $('#textArea').css({
                             marginTop: activeObject.scaleY * 0.25 + 'em'
@@ -558,80 +612,18 @@
 
         canvas.observe('object:selected', function (e) {
             var activeObject = canvas.getActiveObject();
-            var activeObjectFill = canvas.getActiveObject().fill;
-            /*
-             if (canvas.getActiveObject() && canvas.getActiveObject().type === 'text') {
-             var activeObjectFontFamily = canvas.getActiveObject().fontFamily;
-             $('#fontFamily').val(activeObjectFontFamily).trigger("change");
-             $('#textArea').val(activeObject.text).css({
-             '-webkit-transform': 'rotate(' + activeObject.theta * 180 / Math.PI + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
-             '-moz-transform': 'rotate(' + activeObject.theta * 180 / Math.PI + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
-             '-0-transform': 'rotate(' + activeObject.theta * 180 / Math.PI + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
-             '-ms-transform': 'rotate(' + activeObject.theta * 180 / Math.PI + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
-             display: 'block',
-             fontFamily: activeObject.fontFamily,
-             fontSize: activeObject.fontSize,
-             height: activeObject.height,
-             left: activeObject.left - activeObject.width / 2,
-             lineHeight: activeObject.lineHeight,
-             textAlign: activeObject.textAlign,
-             top: activeObject.top - activeObject.height / 2,
-             width: activeObject.width,
-             zIndex: 100
-             });
-             canvas.observe('object:modified', function () {
-             $('#textArea').css({
-             '-webkit-transform': 'rotate(' + activeObject.theta * 180 / Math.PI + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
-             display: 'block',
-             height: activeObject.height,
-             left: activeObject.left - activeObject.width / 2,
-             top: activeObject.top - activeObject.height / 2,
-             width: activeObject.width
-             });
-             });
-             canvas.observe('object:moving', function () {
-             $('#textArea').css({
-             display: 'none'
-             });
-             });
-             canvas.observe('object:scaling', function () {
-             $('#textArea').css({
-             display: 'none'
-             });
-             });
-             canvas.observe('object:rotating', function () {
-             $('#textArea').css({
-             display: 'none'
-             });
-             });
-             canvas.observe('after:render', function () {
-             $('#textArea').css({
-             fontFamily: activeObject.fontFamily,
-             fontStyle: activeObject.fontStyle,
-             fontWeight: activeObject.fontWeight,
-             height: activeObject.height,
-             left: activeObject.left - activeObject.width / 2,
-             textAlign: activeObject.textAlign,
-             textDecoration: activeObject.textDecoration,
-             top: activeObject.top - activeObject.height / 2,
-             width: activeObject.width
-             });
-             if (activeObject.fontFamily === 'PacificoRegular') {
-             $('#textArea').css({
-             marginTop: activeObject.scaleY * 0.25 + 'em'
-             });
-             }
-             else {
-             $('#textArea').css({
-             marginTop: 0
-             })
-             }
-             });
-             }
-             */
+            //alert('sdf1');
+            if (activeObject.selectable) {
+                //alert('sdf2');
+                var activeObjectFill = canvas.getActiveObject().fill;
+            }
 
-            if (!activeObject.get("engraved")) {
-                $('.showPaletteOnly').spectrum("set", activeObjectFill);
+            canvas.calcOffset();
+
+            if (!activeObject.get("engraved") && activeObject.selectable) {
+                if (activeObject.type == "text") {
+                    $('#textColor').spectrum("set", activeObjectFill);
+                }
             }
         });
 
@@ -675,7 +667,7 @@
         $('.showPaletteOnly').change(function (e) {
             var fillColor = $(this).val();
             var activeObject = canvas.getActiveObject();
-            if (canvas.getActiveObject() && (fillColor != activeObject.fill)) {
+            if (activeObject && (fillColor != activeObject.fill) && activeObject.selectable) {
                 if (fillColor == "#000" && activeObject.fill == "#000000") {
                     // alert("black match : " + fillColor);
                 }
@@ -967,7 +959,7 @@
                     obj.scale(canvasScale);
 
                     obj.setCoords();
-                    obj.fill = "#000000"
+                    obj.fill = $('#shapeColor').val();
                     obj.hasRotatingPoint = true;
                     obj.set({
                         borderColor: 'cyan',
@@ -1133,16 +1125,7 @@
 
         $('#startagain').click(function () {
             if (confirm('Are you sure?')) {
-                var toRemove = [];
-                $.each(canvas.getObjects(), function (i, e) {
-                    if (e.selectable) {
-                        toRemove.push(e);
-                    }
-                });
-
-                while (toRemove.length > 0) {
-                    canvas.remove(toRemove.pop());
-                }
+                location.reload();
             }
 
             $(disabledTools).addClass('disabled');
@@ -1246,11 +1229,20 @@
                 $('#addTextMenu').show();
                 $('#addShapeMenu').hide();
                 $('#addBorderMenu').hide();
+                // set patal color
+                if (!activeObject.engraved) {
+                    $("#textColor").spectrum("set", activeObject.fill)
+                }
             }
             if (activeObject && activeObject.type === 'path') {
                 $('#addShapeMenu').show();
                 $('#addTextMenu').hide();
                 $('#addBorderMenu').hide();
+                // set palet color
+                if (!activeObject.engraved) {
+                    // alert(activeObject.fill);
+                    $("#shapeColor").spectrum("set", activeObject.fill)
+                }
             }
         });
 
@@ -1438,7 +1430,6 @@
 
             // add mask as canvas object, for when storing the SVG
             fabric.loadSVGFromURL(mask_svg_url, function (objects, options) {
-                alert('sdf');
                 mask_object = fabric.util.groupSVGElements(objects, options);
 
                 mask_object.scaleX = canvas.width / mask_object.width;
@@ -1447,14 +1438,15 @@
                 mask_object.left = canvas.width / 2;
 
                 // mask_object.set({ strokeWidth: (1 / mask_object.scaleX ), stroke: '#000000', strokeDashArray: [6 / mask_object.scaleX, 1 / mask_object.scaleX], fill: 'none', opacity: 0});
-                mask_object.set({ strokeWidth: (1 / mask_object.scaleX ), stroke: 'none', strokeDashArray: [6 / mask_object.scaleX, 1 / mask_object.scaleX], fill: 'none', opacity: 1});
+                mask_object.set({ strokeWidth: (1 / mask_object.scaleX ), stroke: 'none', strokeDashArray: [6 / mask_object.scaleX, 1 / mask_object.scaleX], fill: 'transparent', opacity: 1});
 
                 canvas.add(mask_object).bringToFront(mask_object);
 
                 mask_object.selectable = false;
 
                 canvas.renderAll();
-                alert("sdfsdf");
+                //
+                // alert("sdfsdf");
 
             });
         }
@@ -1886,4 +1878,23 @@
         });
     }
 
+    function GetBase64PNG() {
+        // hide object selection
+        var obj = canvas.getActiveObject();
+
+        canvas.deactivateAll();
+        canvas.renderAll();
+
+        var str = canvas.toDataURL({multiplier: 1});
+
+        // show object selection
+        canvas.setActiveObject(obj);
+        canvas.renderAll();
+
+        return str;
+    }
+
+    function IsFireFox() {
+        return !!navigator.userAgent.match(/firefox/i);
+    }
 </script>

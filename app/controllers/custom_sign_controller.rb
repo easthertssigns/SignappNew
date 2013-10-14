@@ -210,8 +210,12 @@ class CustomSignController < ApplicationController
 
   def get_sign_shape_sizes #This is the controller action called by your ajax
     sign_shape = SignBaseShape.find(params[:id])
+    product = Spree::Product.find(params[:product_id])
 
-    @sign_sizes = sign_shape.sign_sizes
+    # sign sizes are in mm
+    # variants are in CM
+
+    @sign_sizes = sign_shape.sign_sizes.where("width > ? AND width < ? AND height > ? AND height < ?", product.master.minimum_width * 10, product.master.maximum_width * 10, product.master.minimum_height * 10, product.master.maximum_height * 10)
     @custom_sign_size = sign_shape.custom_size
     render :partial => "size_select"
   end

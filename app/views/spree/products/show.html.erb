@@ -37,7 +37,7 @@
 
             $("#shapeSelect").change(function () {
                 var selectedShape = $("#shapeSelect").val();
-                $.get("/custom_sign/get_sign_shape_sizes?id=" + selectedShape, function (data, status) {
+                $.get("/custom_sign/get_sign_shape_sizes?id=" + selectedShape + "&product_id=" + $("#product_id").val(), function (data, status) {
                     if (status == "success") {  //if your ajax is success
                         // remove current size list, append new one
                         $("#size_container .select2-container").remove();

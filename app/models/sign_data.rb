@@ -16,6 +16,7 @@ class SignData < ActiveRecord::Base
                     :path => ':rails_root/public/spree/products/:id/:style/:basename.:extension'
 
   belongs_to :product, :class_name => 'Spree::Product', :foreign_key => :spree_product_id, :primary_key => :id
+  belongs_to :variant, :class_name => 'Spree::Variant', :foreign_key => :spree_variant_id, :primary_key => :id
 
   def self.search_admin(taxon_id = nil, query = nil)
 
