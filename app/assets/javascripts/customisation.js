@@ -3,7 +3,10 @@ $(window).load(function () {
     var canvasMargin = $('.canvas-container').css("margin-left");
     $("#loadingOverlay").fadeOut();
     $('#canvasZoomWrapper').css('height', canvasWrapperHeight);
-    $('#toolPalette').css('right', (parseInt(canvasMargin, 10) - 93) + 'px');
+
+    var rightvalue = ($('.canvas-container').parent().width() - $('.canvas-container').width()) / 2 - $('#toolPalette').width() - 10;
+    $('#toolPalette').css('right', rightvalue + 'px');
+
     $('#majorFunctions').css('left', (parseInt(canvasMargin, 10)) + 'px');
 
     function hideTourOverlay() {
@@ -64,12 +67,10 @@ $(function () {
         if (!shape.id) return shape.text; // optgroup
         // alert(shape.id.replace("id_", ""));
 
-        if (!isNaN(shape.id.replace("id_", "")))
-        {
+        if (!isNaN(shape.id.replace("id_", ""))) {
             return "<object type='image/svg+xml' data='/custom_sign/get_custom_shape_svg/" + shape.id.toLowerCase().replace("id_", "") + ".svg'/>" + shape.text;
         }
-        else
-        {
+        else {
             return "<object type='image/svg+xml' data='/assets/svg/" + shape.id.toLowerCase() + ".svg'/>" + shape.text;
         }
 

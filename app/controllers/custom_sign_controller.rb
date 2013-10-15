@@ -33,48 +33,54 @@ class CustomSignController < ApplicationController
       #raise "sign saved"
       @message = "Custom Sign Created"
     else
+
       @current_sign = SignData.find params[:id]
 
-      if params[:base64png]
-        # create png from string
+      if spree_current_user.has_role?(:superuser).to_s || @sign.account_id == spree_current_user.id
 
-        str = params[:base64png].sub("data:image/png;base64,", "")
+        if params[:base64png]
+          # create png from string
 
-        File.open(Rails.root + ('tmp/sign_thumb_' + params[:id] + ".png"), 'wb') do |f|
-          f.write(Base64.decode64(str))
+          str = params[:base64png].sub("data:image/png;base64,", "")
+
+          File.open(Rails.root + ('tmp/sign_thumb_' + params[:id] + ".png"), 'wb') do |f|
+            f.write(Base64.decode64(str))
+          end
+
+          @current_sign.image =
+
+              f = File.new(Rails.root + ('tmp/sign_thumb_' + params[:id] + ".png"))
+          @current_sign.image = f
+          f.close
+
         end
 
-        @current_sign.image =
 
-            f = File.new(Rails.root + ('tmp/sign_thumb_' + params[:id] + ".png"))
-        @current_sign.image = f
-        f.close
+        #load, modify and save existing custom sign
+        #may have to save other details as well. Height and width aren't changeable as far as I understand, put price certainly is
 
+        @current_sign.price = params[:calculated_price].to_f
+        @current_sign.sign_data = params[:sign_data]
+        #raise params[:svg_data]
+        @current_sign.svg_data = params[:svg_data]
+        @current_sign.name = params[:name]
+        @current_sign.description = params[:description]
+        @current_sign.account_id = params[:account_id]
+
+        @current_sign.deleted_by_admin = false
+        @current_sign.deleted_by_user = false
+
+        @current_sign.save
+        #svg_data = params[:svg_data]
+        ## Saving sign as thumb is locking up the server
+        #File.open("#{Rails.root}/tmp/" + params[:id].to_s + ".svg", 'w') {|f| f.write(svg_data)}
+        ##@current_sign.image = File.open("#{Rails.root}/tmp/" + params[:id].to_s + ".svg", 'r')
+        ##@current_sign.save
+        ##raise params.to_yaml + "SignData ID : " + params[:id]
+        @message = "Custom Sign Saved"
+      else
+        raise "Access Denied"
       end
-
-
-      #load, modify and save existing custom sign
-      #may have to save other details as well. Height and width aren't changeable as far as I understand, put price certainly is
-
-      @current_sign.price = params[:calculated_price].to_f
-      @current_sign.sign_data = params[:sign_data]
-      #raise params[:svg_data]
-      @current_sign.svg_data = params[:svg_data]
-      @current_sign.name = params[:name]
-      @current_sign.description = params[:description]
-      @current_sign.account_id = params[:account_id]
-
-      @current_sign.deleted_by_admin = false
-      @current_sign.deleted_by_user = false
-
-      @current_sign.save
-      #svg_data = params[:svg_data]
-      ## Saving sign as thumb is locking up the server
-      #File.open("#{Rails.root}/tmp/" + params[:id].to_s + ".svg", 'w') {|f| f.write(svg_data)}
-      ##@current_sign.image = File.open("#{Rails.root}/tmp/" + params[:id].to_s + ".svg", 'r')
-      ##@current_sign.save
-      ##raise params.to_yaml + "SignData ID : " + params[:id]
-      @message = "Custom Sign Saved"
     end
     respond_to do |format|
       format.js
@@ -93,31 +99,46 @@ class CustomSignController < ApplicationController
   #end
 
   def delete_sign
-    @sign = SignData.find params[:id]
-    @sign.destroy
+    if spree_current_user.has_role?(:superuser).to_s || @sign.account_id == spree_current_user.id
+      @sign = SignData.find params[:id]
+      @sign.destroy
+    else
+      raise "Access Denied"
+    end
   end
 
   def get_sign_svg
+
     @sign = SignData.find params[:id]
 
-    if @sign.svg_data
-      respond_to do |format|
-        format.svg {
-          render :inline => @sign.get_local_svg
-        }
+    # check user or admin
+    if spree_current_user.has_role?(:superuser).to_s || @sign.account_id == spree_current_user.id
+
+      if @sign.svg_data
+        respond_to do |format|
+          format.svg {
+            render :inline => @sign.get_local_svg
+          }
+        end
       end
+    else
+      raise "Access Denied"
     end
   end
 
   def get_sign
     @sign = SignData.find params[:id]
 
-    if @sign.svg_data
-      respond_to do |format|
-        format.svg {
-          render :inline => @sign.get_local_svg
-        }
+    if spree_current_user.has_role?(:superuser).to_s || @sign.account_id == spree_current_user.id
+      if @sign.svg_data
+        respond_to do |format|
+          format.svg {
+            render :inline => @sign.get_local_svg
+          }
+        end
       end
+    else
+      render :text => ""
     end
   end
 
@@ -154,25 +175,32 @@ class CustomSignController < ApplicationController
 
     sign_data = SignData.find params[:id]
 
-    new_sign_data = SignData.new
-    new_sign_data.account_id = spree_current_user ? spree_current_user.id : nil #this wants fixing at some point
-    new_sign_data.description = sign_data.description
-    new_sign_data.height = sign_data.height
-    new_sign_data.name = sign_data.name
-    new_sign_data.price = sign_data.price
-    new_sign_data.shape_id = sign_data.shape_id
-    new_sign_data.sign_data = sign_data.sign_data
-    new_sign_data.spree_product_id = sign_data.spree_product_id
-    new_sign_data.width = sign_data.width
-    new_sign_data.image = open(sign_data.image.url)
-    new_sign_data.svg_data = sign_data.svg_data
-    new_sign_data.show_as_product = false
-    new_sign_data.spree_variant_id = sign_data.spree_variant_id
+    # check that this is available to capture
 
-    new_sign_data.save
+    if sign_data.product.is_product != false
 
-    # redirect to edit in sign editor
-    redirect_to "/custom_sign/edit_sign?id=" + new_sign_data.id.to_s
+      new_sign_data = SignData.new
+      new_sign_data.account_id = spree_current_user ? spree_current_user.id : nil #this wants fixing at some point
+      new_sign_data.description = sign_data.description
+      new_sign_data.height = sign_data.height
+      new_sign_data.name = sign_data.name
+      new_sign_data.price = sign_data.price
+      new_sign_data.shape_id = sign_data.shape_id
+      new_sign_data.sign_data = sign_data.sign_data
+      new_sign_data.spree_product_id = sign_data.spree_product_id
+      new_sign_data.width = sign_data.width
+      new_sign_data.image = open(sign_data.image.url)
+      new_sign_data.svg_data = sign_data.svg_data
+      new_sign_data.show_as_product = false
+      new_sign_data.spree_variant_id = sign_data.spree_variant_id
+
+      new_sign_data.save
+
+      # redirect to edit in sign editor
+      redirect_to "/custom_sign/edit_sign?id=" + new_sign_data.id.to_s
+    else
+      raise "Not a product (#{sign_data.product.id})"
+    end
 
   end
 
@@ -188,15 +216,22 @@ class CustomSignController < ApplicationController
   def load_sign_ajax
     @custom_sign = SignData.find params[:saved_sign_id]
 
-    respond_to do |format|
-      format.js
+    if spree_current_user.has_role?(:superuser).to_s || @sign.account_id == spree_current_user.id
+      respond_to do |format|
+        format.js
+      end
+    else
+      raise "Access Denied"
     end
   end
 
   def reset_sign_data_ajax
     @sign_data = SignData.find params[:id]
-    render :json => {:sign_data => @sign_data.sign_data, :price => @sign_data.price}
+    if spree_current_user.has_role?(:superuser).to_s || @sign.account_id == spree_current_user.id
+      render :json => {:sign_data => @sign_data.sign_data, :price => @sign_data.price}
+    end
   end
+
 
   def get_graphic_url_ajax
     sign_graphic = SignGraphic.find params[:id]
@@ -214,8 +249,11 @@ class CustomSignController < ApplicationController
   end
 
   def edit_sign
-    @sign_data = SignData.find params[:id]
-    render :layout => "edit_sign"
+    if spree_current_user.has_role?(:superuser).to_s || @sign.account_id == spree_current_user.id
+
+      @sign_data = SignData.find params[:id]
+      render :layout => "edit_sign"
+    end
   end
 
   def edit_sign_from_product

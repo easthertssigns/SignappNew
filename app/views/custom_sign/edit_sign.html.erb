@@ -238,7 +238,7 @@
     var mask_svg_url = '';
     var canvasMargin = $('.canvas-container').css("margin-left");
     var base64png = "";
-    var canvasWidth = ($(window).width() - 120);
+    var canvasWidth = ($(window).width() - 200);
     var canvasHeight = ($(window).height() - 300);
     var screwholesarray = [];
     var canvasScale = 1.0;
@@ -311,6 +311,9 @@
 
         addBackingImage();
         addMask();
+
+
+        $('#toolPalette').css('right', (parseInt(canvasMargin, 10) - 30) + 'px');
 
         // setup slider beore loading sign (since it may have a border
         $("#borderThicknessSlider").slider({
@@ -1204,8 +1207,9 @@
             canvas.renderAll();
             canvas.calcOffset();
             $('#canvasScale').text(Math.round(canvasScale * 100) + "%");
-            canvasMargin = $('.canvas-container').css("margin-left");
-            $('#toolPalette').css('right', (parseInt(canvasMargin, 10) - 93) + 'px');
+            var rightvalue = ($('.canvas-container').parent().width() - $('.canvas-container').width()) / 2 - $('#toolPalette').width() - 10;
+            $('#toolPalette').css('right', rightvalue + 'px');
+
 
         });
 
@@ -1239,8 +1243,9 @@
 
             $('#canvasScale').text(Math.round(canvasScale * 100) + "%");
 
-            canvasMargin = $('.canvas-container').css("margin-left");
-            $('#toolPalette').css('right', (parseInt(canvasMargin, 10) - 93) + 'px');
+            var rightvalue = ($('.canvas-container').parent().width() - $('.canvas-container').width()) / 2 - $('#toolPalette').width() - 10;
+            $('#toolPalette').css('right', rightvalue + 'px');
+
         });
 
         var disabledTools = $('#deleteActiveObject, #cloneActiveObject, #bringForward, #sendBackwards, #flipY, #flipX');
