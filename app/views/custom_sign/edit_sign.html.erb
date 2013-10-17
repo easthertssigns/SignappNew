@@ -62,8 +62,8 @@
         </select>
         <input type="text" class="showPaletteOnly" value="#000000" id="textColor"/>
 
-        <div class="function engraved" id="textEngraved" title="No paint, only engraved">
-          Engraved, no paint
+        <div class="function engraved" id="textEngraved">
+          <span>Engraved, no paint</span>
         </div>
       </div>
     </div>
@@ -96,8 +96,8 @@
         </select>
         <input type="text" class="showPaletteOnly" value="#000000" id="shapeColor"/>
 
-        <div class="function engraved" id="shapeEngraved" title="No paint, only engraved">
-          Engraved, no paint
+        <div class="function engraved" id="shapeEngraved">
+          <span>Engraved, no paint</span>
         </div>
       </div>
     </div>
@@ -119,8 +119,8 @@
         <div id="borderThicknessSlider"></div>
         <input type="text" class="showPaletteOnly" id="borderColor" value="#000000"/>
 
-        <div class="function engraved" id="borderEngraved" title="No paint, only engraved">
-          Engraved, no paint
+        <div class="function engraved" id="borderEngraved">
+          <span>Engraved, no paint</span>
         </div>
       </div>
     </div>
@@ -430,13 +430,8 @@
             $.fancybox.open({href: '/custom_sign/save_dialog',
                 title: 'Save Custom Sign',
                 type: 'iframe',
-                autoSize: 'false',
-                minWidth: '640px',
-                minHeight: '480px',
-                maxWidth: '640px',
-                maxHeight: '480px',
-                width: '640px',
-                height: '480px'});
+                height: '70%'
+            });
             //$.fancybox.open( {href : '/assets/feature-image-1.jpg', title : 'Save Custom Sign', type : 'iframe', width : '640px', height : '480px'} );
             //jQuery.ajax("/custom_sign/save_sign?custom_data=" + $.base64.encode(json));
         });
