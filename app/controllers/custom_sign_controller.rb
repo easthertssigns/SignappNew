@@ -257,6 +257,8 @@ class CustomSignController < ApplicationController
   end
 
   def edit_sign_from_product
+
+
     @old_sign_data = SignData.find params[:id]
     @sign_data = SignData.new
     if current_refinery_user
@@ -288,20 +290,26 @@ class CustomSignController < ApplicationController
   end
 
   def new_custom_sign
+
+    # record the params
+    unless params["from_last_session"]
+      session["params_last_new_sign"] = params
+    end
+
     # Create new sign_data record
     @sign_data = SignData.new()
-    @sign_data.spree_product_id = params[:product_id]
-    @sign_data.spree_variant_id = params[:variant_id]
+    @sign_data.spree_product_id = session["params_last_new_sign"][:product_id]
+    @sign_data.spree_variant_id = session["params_last_new_sign"][:variant_id]
 
-    @sign_data.height = params[:height].to_i
-    @sign_data.width = params[:width].to_i
+    @sign_data.height = session["params_last_new_sign"][:height].to_i
+    @sign_data.width = session["params_last_new_sign"][:width].to_i
 
-    @sign_data.shape_id = params[:shapeSelect].to_i
+    @sign_data.shape_id = session["params_last_new_sign"][:shapeSelect].to_i
 
-    @sign_data.price = params[:calculated_price].to_f
+    @sign_data.price = session["params_last_new_sign"][:calculated_price].to_f
 
     if session[:account_id]
-      @sign_data.account_id = params[:account_id]
+      @sign_data.account_id = session["params_last_new_sign"][:account_id]
     end
 
     @sign_data.save
