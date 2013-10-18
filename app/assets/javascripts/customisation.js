@@ -14,21 +14,27 @@ $(window).load(function () {
         $('#tourOverlay').fadeOut();
     }
 
-    $("#joyRidePopup0 .button").live("click", function () {
+    $(".joyRidePopup0 .button").live("click", function () {
         $('#addText').removeClass('overlay');
         $('#addShape').addClass('overlay');
     });
-    $('#joyRidePopup1 .button').live("click", function () {
+    $('.joyRidePopup1 .button').live("click", function () {
         $('#addShape').removeClass('overlay');
         $('#addBorder').addClass('overlay');
     });
-    $('#joyRidePopup2 .button').live("click", function () {
+    $('.joyRidePopup2 .button').live("click", function () {
         $('#addBorder').removeClass('overlay');
         $('.priceWrapper, #addToBasket').addClass('overlay');
     });
 
+
+    $('#tourSteps').joyride({
+        postRideCallback: hideTourOverlay
+    });
+
     $('#startTutorial').click(function () {
         $('#tourOverlay').fadeIn();
+        $('#addText').addClass('overlay');
         $(this).joyride({
             tipContent: '#tourSteps',
             postRideCallback: hideTourOverlay

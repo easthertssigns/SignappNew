@@ -2,7 +2,7 @@
     <%= stylesheet_link_tag('select2', 'spectrum', 'customisation', 'stylesheet', 'jquery-fancybox', 'jquery.qtip', 'joyride-1.0.5') %>
 <% end %>
 <% content_for :javascripts do %>
-    <%= javascript_include_tag('select2.min', 'spectrum', 'customisation', 'fabric', 'jquery-base64-min', 'jquery-fancybox-pack', 'jquery-ui-1.8.23.custom.min', 'jquery.qtip.min', 'modernizr.mq', 'jquery.joyride-1.0.5') %>
+    <%= javascript_include_tag('select2.min', 'spectrum', 'customisation', 'fabric', 'jquery-base64-min', 'jquery-fancybox-pack', 'jquery-ui-1.8.23.custom.min', 'jquery.qtip.min', 'modernizr.mq', 'jquery.joyride-2.1') %>
 <% end %>
 <div id="loadingOverlay"></div>
 <div id="tourOverlay"></div>
@@ -28,7 +28,7 @@
 
     <!--Add Text-->
     <div class="buttonContainer">
-      <div class="button addText overlay" id="addText">Add Text</div>
+      <div class="button addText" id="addText">Add Text</div>
       <div class="menu addTextMenu" id="addTextMenu">
         <div class="arrow"></div>
         <div class="function textBold" id="textBold" title="Bold"></div>
@@ -430,7 +430,13 @@
             $.fancybox.open({href: '/custom_sign/save_dialog',
                 title: 'Save Custom Sign',
                 type: 'iframe',
-                height: '70%'
+                autoSize: 'false',
+                minWidth: '640px',
+                minHeight: '480px',
+                maxWidth: '640px',
+                maxHeight: '480px',
+                width: '640px',
+                height: '480px'
             });
             //$.fancybox.open( {href : '/assets/feature-image-1.jpg', title : 'Save Custom Sign', type : 'iframe', width : '640px', height : '480px'} );
             //jQuery.ajax("/custom_sign/save_sign?custom_data=" + $.base64.encode(json));
