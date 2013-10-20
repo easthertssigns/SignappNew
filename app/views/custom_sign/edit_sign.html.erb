@@ -345,6 +345,12 @@
                 }
 
                 canvas.renderAll();
+            },
+            stop: function(){
+                canvas.renderAll();
+
+                ignor_last_action = false;
+                canvas.fire('object:modified', { target: borderSingle });
             }
         });
 
@@ -491,6 +497,9 @@
                 $('#fontFamily').val(activeObjectFontFamily).trigger("change");
                 $('#textArea').val(activeObject.text);
 
+
+
+
                 // console.log('-webkit-transform : rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')');
 
                 console.log("double click text object");
@@ -538,6 +547,9 @@
                         width: activeObject.width,
                         zIndex: 100
                     });
+                    $('#textArea').focus();
+                    $('#textArea')[0].setSelectionRange($('#textArea').val().length -1, $('#textArea').val().length -1);
+
 
 
                 }
@@ -668,6 +680,10 @@
         });
 
         canvas.observe('object:selected', function (e) {
+
+            // set text box to display : none;
+            $('#textArea').css({display: "none"});
+
             var activeObject = canvas.getActiveObject();
             //alert('sdf1');
             if (activeObject.selectable) {
@@ -759,6 +775,8 @@
             borderScalloped.engraved = false;
 
             canvas.renderAll();
+
+            ignor_last_action = false;
             canvas.fire('object:modified', { target: borderSingle });
         });
 
@@ -879,6 +897,9 @@
             borderDouble.stroke = "#000000";
             borderScalloped.stroke = "#000000";
 
+            ignor_last_action = false;
+            canvas.fire('object:modified', { target: borderSingle });
+
             canvas.renderAll();
         });
 
@@ -910,8 +931,7 @@
             var activeObject = canvas.getActiveObject();
 
 
-            if (canvas.getObjects().indexOf(canvas.getActiveObject()) > 1 && (canvas.getObjects()[0] && canvas.getObjects()[0].selectable == false))
-            {
+            if (canvas.getObjects().indexOf(canvas.getActiveObject()) > 1 && (canvas.getObjects()[0] && canvas.getObjects()[0].selectable == false)) {
                 canvas.sendBackwards(activeObject);
             }
             canvas.renderAll();
@@ -1170,6 +1190,9 @@
             ignor_last_action = true;
             canvas.remove(borderDouble);
         }
+
+        ignor_last_action = false;
+        canvas.fire('object:modified', { target: borderSingle });
     });
 
 
@@ -1361,7 +1384,7 @@
 
 
         canvas.observe('object:modified', function () {
-            console.log("object:modified");
+            console.log("object:modified (track changes : " + canvas_track_changes + ", ignore last state : " + ignor_last_action + " )");
             if (canvas_track_changes && !ignor_last_action) {
                 redoStack = [];
                 appendToUndoStack();
@@ -1411,12 +1434,18 @@
                 canvas.remove(toRemove.pop());
             }
 
-            $.each(prevObj, function (i, e) {
+            $.each(prevObj.objects, function (i, e) {
                 if (e.selectable || e.type != "image") {
                     ignor_last_action = true;
                     canvas.add(e); // add object
                 }
             });
+
+            // remove all borders
+            canvas.renderAll();
+
+            // set border options from stack
+            SetupBorder(prevObj.border);
 
             canvas.renderAll();
 
@@ -1434,7 +1463,7 @@
                 $("#redo").removeClass("disabled");
             }
 
-            if (undoStack.length == 0) {
+            if (undoStack && undoStack.length == 0) {
                 $("#undo").addClass("disabled");
             }
         });
@@ -1449,6 +1478,7 @@
                 $("#undo").removeClass("disabled");
             }
 
+            console.log("redo stack length : " + redoStack.length);
             if (redoStack.length == 0) {
                 $("#redo").addClass("disabled");
             }
@@ -1461,13 +1491,13 @@
         console.log("Adding to undo stack, size : " + undoStack.length.toString());
         undoStack.push(currentState);
         $("#undo").removeClass("disabled");
-        $("#redo").addClass("disabled");
+        // $("#redo").addClass("disabled");
     }
 
     function appendToRedoStack() {
         console.log("Adding to redo stack, size : " + redoStack.length.toString());
         redoStack.push(currentState);
-        if (undoStack.length == 0) {
+        if (undoStack && undoStack.length == 0) {
             $("#undo").addClass("disabled");
         }
 
@@ -1478,13 +1508,21 @@
         console.log("current state captured");
 //        alert("captured");
         // reset the redo stack
-        var hist = [];
+        var hist = {};
+
+        hist.objects = [];
+        hist.border = {
+            style: $('#borderSelect option:selected').val(),
+            color: $("#borderColor").val(),
+            engraved: !!(borderSingle.engraved == true),
+            width: borderSingle.strokeWidth };
 
         $.each(canvas.getObjects(), function (i, e) {
-            if (e.selectable || e.type != "image") {
-                hist.push(jQuery.extend(true, {}, e));
+            if (e.selectable && e.type != "image") {
+                hist.objects.push(jQuery.extend(true, {}, e));
             }
         });
+
 
         currentState = hist;
     }
@@ -2008,6 +2046,10 @@
 
     function SetupBorder(settings) {
 
+        // remove any borders from canvas
+        canvas.remove(borderSingle);
+        canvas.remove(borderDouble);
+        canvas.remove(borderScalloped);
 
         if (borderSingle == null) {
             console.log("setting up borders");
