@@ -493,6 +493,8 @@
 
                 // console.log('-webkit-transform : rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')');
 
+                console.log("double click text object");
+
                 if (IsFireFox()) {
                     $('#textArea').css({
                         display: 'block',
@@ -571,7 +573,6 @@
 
                         $('#textArea').css({
                             '-webkit-transform': 'rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
-                            display: 'block',
                             height: activeObject.height,
                             left: activeObject.left - (activeObject.width / 2),
                             top: activeObject.top - activeObject.height / 2,
