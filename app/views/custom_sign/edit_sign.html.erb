@@ -584,6 +584,7 @@
                     $('#textArea').css({
                         display: 'none'
                     });
+                    console.log("textarea display none");
                 });
                 canvas.observe('object:scaling', function () {
                     $('#textArea').css({
@@ -653,6 +654,7 @@
         $('#textArea').live('keyup', function (e) {
             var keyCode = e.keyCode || e.which;
             if (keyCode == 9) {
+
                 e.preventDefault();
 
                 canvas.deactivateAll().renderAll();
@@ -689,7 +691,7 @@
 
                     canvas.fire('object:modified', { target: canvas.getActiveObject() });
 
-                    if (this.value == "") {
+                    if (this.value == "" || this.value == "\n") {
                         this.value = " ";
                         this.setSelectionRange(0, 0);
                     }
