@@ -50,7 +50,9 @@ html, body {
     width: 100%;
     z-index: 9999;
 }
-
+#tourSteps {
+    display: none;
+}
 #tourOverlay {
     background: rgba(22, 32, 34, 0.9);
     display: none;
@@ -600,6 +602,7 @@ html, body {
     right: 0;
     top: 135px;
     width: 83px;
+    z-index: 10;
 }
 
 .toolPalette.ui-draggable-dragging {

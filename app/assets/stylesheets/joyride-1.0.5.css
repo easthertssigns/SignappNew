@@ -18,12 +18,15 @@ body {
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
     border-radius: 3px;
+    display: none;
 }
 
 .joyride-content-wrapper {
     padding: 10px 10px 15px 15px;
 }
-
+.joyride-next-tip {
+    outline: none;
+}
 /* Mobile */
 @media only screen and (max-width: 769px) {
     .joyride-tip-guide {
@@ -94,8 +97,9 @@ body {
     font-size: 1.313em;
     font-weight: bold;
     margin: -10px -10px 12px -15px;
-    padding: 37px 10px 11px 15px;
+    padding: 20px 10px 11px 15px;
     text-transform: uppercase;
+
 }
 
 .joyride-tip-guide h4 span {
@@ -128,7 +132,7 @@ body {
 .joyride-close-tip {
     position: absolute;
     right: 10px;
-    top: -1px;
+    top: 10px;
     color: #314649;
     text-decoration: none;
     font-size: 0.750em;
