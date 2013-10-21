@@ -72,6 +72,5 @@ gem 'refinerycms-inquiries'
 # gem 'refinerycms-page-images', '~> 2.0.0'
 
 gem 'refinerycms-home_page_sliders', :path => 'vendor/extensions'
-
 gem 'omniauth'
 gem 'omniauth-facebook'
