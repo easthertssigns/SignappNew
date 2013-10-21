@@ -1462,13 +1462,19 @@ footer {
         }
         .image {
           width: 100px;
-          height: 60px;
           background: url("no-sign-image.png") no-repeat;
           float: left;
           margin-right: 10px;
+          line-height: 65%;
+          img {
+            margin: 0;
+            padding: 0;
+          }
         }
         .signDetails {
           float: left;
+          width: 300px;
+          line-height: 16px;
         }
         .editSign {
           float: right;

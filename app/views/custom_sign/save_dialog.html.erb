@@ -1,3 +1,4 @@
+<%= stylesheet_link_tag "modal-style" %>
 <% content_for :javascript_includes do %>
     <script language="javascript" type="text/javascript">
         $(document).ajaxSend(function (e, xhr, options) {
@@ -41,14 +42,11 @@
     </script>
 <% end %>
 <form action="/custom_sign/save_sign_dummy">
-  <div>Please enter a name for your saved design</div>
+  <label>Please enter a name for your saved design</label>
   <div><%= text_field_tag "name" %></div>
   <br/>
-
-  <div>Please enter a description for your saved design (optional)</div>
+  <label>Please enter a description for your saved design (optional)</label>
   <div><%= text_area_tag "description" %></div>
-  <br/>
-
   <div id="hiddenFields">
     <input type="hidden" name="sign_data_id" id="sign_data_id" value="">
     <input type="hidden" name="sign_data" id="sign_data" value="">
@@ -57,5 +55,5 @@
     <input type="hidden" name="base64png" id="base64png" value="">
     <input type="hidden" name="calculated_price" id="calculated_price" value="">
   </div>
-  <div><input type="button" id="save_button" value="Save">Save this Sign</div>
+  <div style="text-align: right;"><input type="button" id="save_button" value="Save This Sign" class="button red"></div>
 </form>
