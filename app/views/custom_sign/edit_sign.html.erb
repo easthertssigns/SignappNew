@@ -346,7 +346,7 @@
 
                 canvas.renderAll();
             },
-            stop: function(){
+            stop: function () {
                 canvas.renderAll();
 
                 ignor_last_action = false;
@@ -494,8 +494,6 @@
                 $('#textArea').val(activeObject.text);
 
 
-
-
                 // console.log('-webkit-transform : rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')');
 
                 console.log("double click text object");
@@ -544,8 +542,7 @@
                         zIndex: 100
                     });
                     $('#textArea').focus();
-                    $('#textArea')[0].setSelectionRange($('#textArea').val().length -1, $('#textArea').val().length -1);
-
+                    $('#textArea')[0].setSelectionRange($('#textArea').val().length - 1, $('#textArea').val().length - 1);
 
 
                 }
@@ -676,7 +673,6 @@
         });
 
         canvas.observe('object:selected', function (e) {
-
             // set text box to display : none;
             $('#textArea').css({display: "none"});
 
@@ -1664,6 +1660,7 @@
 //            });
 
             canvas.loadFromJSON(jsn, function () {
+                alert("loading sign");
                 var toRemove = [];
 
                 $.each(canvas.getObjects(), function (i, e) {
@@ -1680,8 +1677,11 @@
                     }
                 }
 
+//                var add_back = [];
                 $.each(canvas.getObjects(), function (i, e) {
                     if (e.selectable) {
+//                        add_backpush(e);
+//                        canvas.remove(e);
                         e.set({
                             borderColor: 'cyan',
                             cornerColor: 'cyan'
@@ -1689,12 +1689,19 @@
                     }
                 });
 
+//                $.each(add_back, function (i, e) {
+//                    alert("addubg");
+//                    canvas.add(e);
+//                });
+
 
                 setupMargins();
                 setupScrewholes();
 
                 //addBackingImage();
                 addMask();
+
+                canvas.calcOffset();
 
 
                 //alert("object count : " + canvas.getObjects().length);
@@ -1704,6 +1711,8 @@
                     canvasUpdate();
                 }, 500);
             });
+
+
 
             // address border element
 
