@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131004090114) do
+ActiveRecord::Schema.define(:version => 20131022212250) do
 
   create_table "custom_signs", :force => true do |t|
     t.integer  "spree_user_id"
@@ -335,6 +335,9 @@ ActiveRecord::Schema.define(:version => 20131004090114) do
     t.boolean  "screw_hole_bottom"
     t.boolean  "screw_hole_bottom_left"
     t.boolean  "screw_hole_left"
+    t.integer  "canvas_width"
+    t.integer  "canvas_height"
+    t.float    "canvas_scale"
   end
 
   create_table "sign_base_to_sizes", :force => true do |t|

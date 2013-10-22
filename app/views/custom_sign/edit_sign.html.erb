@@ -1448,6 +1448,14 @@
 
 
         $('#undo').click(function undo() {
+            if (redoStack.length > 0) {
+                console.log(redoStack[redoStack.length - 1].border);
+            }
+
+            if (undoStack.length > 0) {
+                console.log(undoStack[undoStack.length - 1].border);
+            }
+
             if (undoStack.length > 0) {
                 captureCurrentState();
                 appendToRedoStack();
@@ -1461,6 +1469,14 @@
         });
 
         $('#redo').click(function redo() {
+
+            if (redoStack.length > 0) {
+                console.log(redoStack[redoStack.length - 1].border);
+            }
+
+            if (undoStack.length > 0) {
+                console.log(undoStack[undoStack.length - 1].border);
+            }
 
             if (redoStack.length > 0) {
                 captureCurrentState();
@@ -1711,7 +1727,6 @@
                     canvasUpdate();
                 }, 500);
             });
-
 
 
             // address border element
