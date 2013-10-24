@@ -240,10 +240,10 @@
               <% end %>
               <div class="clearfix"></div>
               <div id="custom_size_div" style="display: none">
-                <div>This sign can be any size between <%= @product.master.minimum_width * 10 %>mm
+                <label style="margin-bottom: 5px; display: block;">This sign can be any size between <%= @product.master.minimum_width * 10 %>mm
                   x <%= @product.master.minimum_height * 10 %>mm and <%= @product.master.maximum_width * 10 %>mm
                   x <%= @product.master.maximum_height * 10 %>mm
-                </div>
+                </label>
                 <div><%= label_tag "Width (mm)" %> <%= text_field_tag "custom_width" %> <%= label_tag "Height (mm)" %> <%= text_field_tag "custom_height" %>
                   <input type="button" id="custom_size_button" value="Set Size"></div>
               </div>
