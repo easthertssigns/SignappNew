@@ -195,6 +195,9 @@
     <input type="hidden" id="name" name="name" value="">
     <input type="hidden" id="description" name="description" value="">
     <input type="hidden" id="calculated_price" name="calculated_price" value="<%= @sign_data.price %>">
+    <input type="hidden" id="canvas_width" name="canvas_width" value="">
+    <input type="hidden" id="canvas_height" name="canvas_height" value="">
+    <input type="hidden" id="canvas_scale" name="canvas_scale" value="">
   </form>
 </div>
 <div id="savingOverlay"></div>
@@ -250,6 +253,7 @@
     var borderSingle = null;
     var borderDouble = null;
     var borderScalloped = null;
+    var border_distance_scale = 1;
 
     var canvas = null;
     var mask_object = null;
@@ -289,8 +293,6 @@
         SignWidth = <%= @sign_data.width %>;
         var SignHeight = 100;
         SignHeight = <%= @sign_data.height %>;
-        // alert(SignHeight);
-
         // track the change activity on canvas
 
 
@@ -305,9 +307,10 @@
         canvas.setWidth(canvasWidth);
         canvas.setHeight(canvasHeight);
 
-        // alert(canvasWidth);
-        // alert(canvasHeight);
-
+        border_distance_scale = ((canvas.getWidth() / <%= @sign_data.width * 3  %>));
+        $("#canvas_width").val(canvas.getWidth());
+        $("#canvas_height").val(canvas.getHeight());
+        $("#canvas_scale").val(canvasScale);
         // canvas.backgroundImageStretch = true;
 
         addBackingImage();
@@ -324,13 +327,13 @@
             step: 1,
             slide: function (event, ui) {
                 borderSingle.set({
-                    strokeWidth: ui.value
+                    strokeWidth: ui.value * border_distance_scale
                 });
                 borderDouble.set({
-                    strokeWidth: ui.value
+                    strokeWidth: ui.value * border_distance_scale
                 });
                 borderScalloped.set({
-                    strokeWidth: ui.value
+                    strokeWidth: ui.value * border_distance_scale
                 });
 
                 if (borderSingle.get("engraved") == true) {
@@ -376,9 +379,6 @@
             // serialize the custom sign data
             // add this to the form field
             // var json = JSON.stringify(canvas);
-            // alert(json);
-
-            // alert(svg_data);
             var custom_data = $.base64.encode(getCanvasJSONCustom());
             $("#sign_data").val(custom_data);
             updateSVGfield();
@@ -398,7 +398,11 @@
                 account_id: account_id,
                 name: name,
                 description: description,
-                calculated_price: calculated_price
+                calculated_price: calculated_price,
+                canvas_width: $("#my-canvas").width(),
+                canvas_height: $("#my-canvas").height(),
+                canvas_scale: canvasScale
+
             };
 
             // about to save sign : this may take a few moments
@@ -422,10 +426,6 @@
                         alert("There was an error saving");
                     }
             );
-            // change submit path of the form
-            // $("#customSignForm").attr("action", "/orders/populate");
-            // submit the form to the basket
-            // $("#customSignForm").submit();
         });
 
         $("#saveCanvas").click(function () {
@@ -441,42 +441,12 @@
                 width: '40%',
                 height: '40%'
             });
-            //$.fancybox.open( {href : '/assets/feature-image-1.jpg', title : 'Save Custom Sign', type : 'iframe', width : '640px', height : '480px'} );
-            //jQuery.ajax("/custom_sign/save_sign?custom_data=" + $.base64.encode(json));
         });
-
-//        $("#loadCanvas").click(function () {
-//            //canvas.loadFromJSON(json);
-//            $.fancybox.open({href: '/custom_sign/load_sign_list/
-        <%#= session[:account_id].nil? ? "0" : session[:account_id].id.to_s %> //',
-//                title: 'Save Custom Sign',
-//                type: 'iframe',
-//                autoSize: 'false',
-//                minWidth: '640px',
-//                minHeight: '480px',
-//                maxWidth: '640px',
-//                maxHeight: '480px',
-//                width: '640px',
-//                height: '480px'});
-//        });
-
 
         canvas._onMouseUp = (function () {
             var activeObject = canvas.getActiveObject();
             return function (e) {
                 canvas.__onMouseUp(e);
-//                if (activeObject && activeObject.type === 'text') {
-//                    var currentText = activeObject.getText();
-//                    if (currentText = "") {
-//                        currentText = " ";
-//                    }
-//
-//                    canvas.fire('object:mouseup', { target: activeObject }, e);
-//                    $('#textArea').focus().val(currentText);
-//                    if (currentText == placeholderText) {
-//                        $('#textArea').val('');
-//                    }
-//                }
             };
 
         })(canvas.setActiveObject);
@@ -677,9 +647,8 @@
             $('#textArea').css({display: "none"});
 
             var activeObject = canvas.getActiveObject();
-            //alert('sdf1');
+
             if (activeObject.selectable) {
-                //alert('sdf2');
                 var activeObjectFill = canvas.getActiveObject().fill;
             }
 
@@ -735,10 +704,10 @@
             var activeObject = canvas.getActiveObject();
             if (activeObject && (fillColor != activeObject.fill) && activeObject.selectable) {
                 if (fillColor == "#000" && activeObject.fill == "#000000") {
-                    // alert("black match : " + fillColor);
+
                 }
                 else {
-                    //alert("Color Change Fire (" + activeObject.fill + " " + fillColor + ") ");
+
                     activeObject.fill = fillColor;
                     activeObject.setOpacity(1);
                     activeObject.stroke = null;
@@ -958,8 +927,6 @@
             var activeGroup = canvas.getActiveGroup();
 
             if (activeObject) {
-                // alert('cloneing in progress');
-
                 // clone works differently for text and shape / group
 
                 // function handels path
@@ -1063,11 +1030,11 @@
             }
         });
 
-        SetupBorder();
+        // SetupBorder();
 
 
-        setupScrewholes();
-        setupMargins();
+//        setupScrewholes();
+//        setupMargins();
 
 
         var disabledTools = $('#deleteActiveObject, #cloneActiveObject, #bringForward, #sendBackwards, #flipY, #flipX');
@@ -1090,7 +1057,6 @@
                 $('#addBorderMenu').hide();
                 // set palet color
                 if (!activeObject.engraved) {
-                    // alert(activeObject.fill);
                     $("#shapeColor").spectrum("set", activeObject.fill)
                 }
             }
@@ -1101,13 +1067,13 @@
 
             var activeObject = canvas.getActiveObject();
 
-            if (activeObject && activeObject.get("engraved")) {
+            if (activeObject && activeObject.get("engraved") == true) {
                 engraved = true;
             }
 
 
             // style fill and stroke up
-            if (engraved) {
+            if (engraved == true) {
                 activeObject.set({ strokeWidth: (1 / activeObject.scaleX ), stroke: 'rgba(0,0,0,1)', strokeDashArray: [3 / activeObject.scaleX, 2 / activeObject.scaleX]});
                 // console.log("object scaling : " + engraved);
             }
@@ -1122,21 +1088,7 @@
         });
 
         <% unless params["id"].nil? %>
-//        jQuery.ajax("/custom_sign/load_sign_ajax?saved_sign_id=
-        //
-        /*
 
-        <%# =params["id"]%>").done(function(){
-         */
-//            alert("done");
-//            alert($("#sign_data").val());
-//            //canvas.loadFromJSON($("#sign_data").val());
-//        });
-
-        /*$("#sign_data").val('
-        <%= @sign_data.sign_data %>');
-         alert($("#sign_data").val());
-         */
         <% end %>
 
     }
@@ -1257,6 +1209,11 @@
             canvasScale = canvasScale * 1.5;
             canvas.setHeight(canvas.getHeight() * 1.5);
             canvas.setWidth(canvas.getWidth() * 1.5);
+
+            $("#canvas_width").val(canvas.getWidth());
+            $("#canvas_height").val(canvas.getHeight());
+            $("#canvas_scale").val(canvasScale);
+
             var obj = canvas.getObjects();
             for (var i in obj) {
                 var scaleX = obj[i].get('scaleX');
@@ -1342,6 +1299,11 @@
             canvasScale = canvasScale / 1.5;
             canvas.setHeight(canvas.getHeight() / 1.5);
             canvas.setWidth(canvas.getWidth() / 1.5);
+
+            $("#canvas_width").val(canvas.getWidth());
+            $("#canvas_height").val(canvas.getHeight());
+            $("#canvas_scale").val(canvasScale);
+
             var obj = canvas.getObjects();
             for (var i in obj) {
                 var scaleX = obj[i].get('scaleX');
@@ -1426,12 +1388,14 @@
                 canvas.remove(toRemove.pop());
             }
 
-            $.each(prevObj.objects, function (i, e) {
-                if (e.selectable || e.type != "image") {
-                    ignor_last_action = true;
-                    canvas.add(e); // add object
-                }
-            });
+            if (prevObj.objects != null) {
+                $.each(prevObj.objects, function (i, e) {
+                    if (e.selectable || e.type != "image") {
+                        ignor_last_action = true;
+                        canvas.add(e); // add object
+                    }
+                });
+            }
 
             // remove all borders
             canvas.renderAll();
@@ -1514,7 +1478,6 @@
 
     function captureCurrentState() {
         console.log("current state captured");
-//        alert("captured");
         // reset the redo stack
         var hist = {};
 
@@ -1522,7 +1485,7 @@
         hist.border = {
             style: $('#borderSelect option:selected').val(),
             color: $("#borderColor").val(),
-            engraved: !!(borderSingle.engraved == true),
+            engraved: (borderSingle.engraved == true),
             width: borderSingle.strokeWidth };
 
         $.each(canvas.getObjects(), function (i, e) {
@@ -1530,6 +1493,10 @@
                 hist.objects.push(jQuery.extend(true, {}, e));
             }
         });
+
+
+        console.log("current state captured");
+        console.log(hist);
 
 
         currentState = hist;
@@ -1574,9 +1541,6 @@
                 canvas.add(mask_object).bringToFront(mask_object);
 
                 canvas.renderAll();
-                //
-                // alert("sdfsdf");
-
             });
         }
     }
@@ -1661,83 +1625,122 @@
     }
 
     function reloadSign() {
-//    alert("canvas objects : " + canvas.getObjects().length);
 
         $("#sign_data").val('<%= @sign_data.sign_data %>');
 
-        if ($("#sign_data").val() != '') {
-            //alert("Saved sign loaded!");
+        if ($("#sign_data").val() != "" && $("#sign_data").val().length > 10) {
             var jsn = $.base64.decode($("#sign_data").val());
-            // console.log(jQuery.parseJSON( jsn ).border);
-
-
-//            $.each(jsn["objects"], function(e, i){
-//                                             console.log(e);
-//            });
 
             canvas.loadFromJSON(jsn, function () {
-                alert("loading sign");
-                var toRemove = [];
+                        var toRemove = [];
 
-                $.each(canvas.getObjects(), function (i, e) {
-                    if (e.selectable && e.type == "image") {
-                        toRemove.push(e);
-                    }
-                });
+                        $.each(canvas.getObjects(), function (i, e) {
+                            if (e.selectable && e.type == "image") {
+                                toRemove.push(e);
+                            }
+                        });
 
-                // alert("object count : " + canvas.getObjects().length);
-
-                if (toRemove.length > 0) {
-                    while (toRemove.length > 0) {
-                        canvas.remove(toRemove.pop());
-                    }
-                }
+                        if (toRemove.length > 0) {
+                            while (toRemove.length > 0) {
+                                canvas.remove(toRemove.pop());
+                            }
+                        }
 
 //                var add_back = [];
-                $.each(canvas.getObjects(), function (i, e) {
-                    if (e.selectable) {
+                        $.each(canvas.getObjects(), function (i, e) {
+                            if (e.selectable) {
 //                        add_backpush(e);
 //                        canvas.remove(e);
-                        e.set({
-                            borderColor: 'cyan',
-                            cornerColor: 'cyan'
+                                e.set({
+                                    borderColor: 'cyan',
+                                    cornerColor: 'cyan'
+                                });
+                            }
                         });
+
+                        var SignWidth = 100;
+                        SignWidth = <%= @sign_data.width %>;
+                        var SignHeight = 100;
+                        SignHeight = <%= @sign_data.height %>;
+                        var tempscale = 1;
+                        // track the change activity on canvas
+
+                        <% if @sign_data.canvas_width && @sign_data.canvas_height %>
+                        if (SignWidth / canvasWidth > SignHeight / canvasHeight) {
+                            tempscale = canvasWidth / <%= @sign_data.canvas_width %>;
+                            canvasHeight = (canvasWidth / SignWidth) * SignHeight;
+                        }
+                        else {
+                            tempscale = canvasHeight / <%= @sign_data.canvas_height %>;
+                            canvasWidth = (canvasHeight / SignHeight) * SignWidth;
+                        }
+
+                        <% end %>
+
+
+                        var obj = canvas.getObjects();
+                        for (var i in obj) {
+                            var scaleX = obj[i].get('scaleX');
+                            var scaleY = obj[i].get('scaleY');
+                            var left = obj[i].get('left');
+                            var top = obj[i].get('top');
+
+                            var tempScaleX = scaleX * tempscale;
+                            var tempScaleY = scaleY * tempscale;
+                            var tempLeft = left * tempscale;
+                            var tempTop = top * tempscale;
+
+                            obj[i].set('scaleX', tempScaleX);
+                            obj[i].set('scaleY', tempScaleY);
+                            obj[i].set('left', tempLeft);
+                            obj[i].set('top', tempTop);
+
+                            obj[i].setCoords();
+                        }
+
+
+                        applyMask();
+                        canvas.renderAll();
+
+                        $('#canvasScale').text(Math.round(canvasScale * 100) + "%");
+                        var rightvalue = ($('.canvas-container').parent().width() - $('.canvas-container').width()) / 2 - $('#toolPalette').width() - 10;
+                        $('#toolPalette').css('right', rightvalue + 'px');
+
+                        console.log(jsn);
+
+
+                        setupMargins();
+                        setupScrewholes();
+
+                        //addBackingImage();
+                        addMask();
+
+                        canvas.calcOffset();
+                        canvas.renderAll();
+
+                        undoStack = [];
+                        redoStack = [];
+
+                        console.log(undoStack);
+                        console.log(redoStack);
+                        textUpdateOnce = setInterval(function () {
+                            canvasUpdate();
+                        }, 500);
                     }
-                });
-
-//                $.each(add_back, function (i, e) {
-//                    alert("addubg");
-//                    canvas.add(e);
-//                });
-
-
-                setupMargins();
-                setupScrewholes();
-
-                //addBackingImage();
-                addMask();
-
-                canvas.calcOffset();
-
-
-                //alert("object count : " + canvas.getObjects().length);
-                canvas.renderAll();
-
-                textUpdateOnce = setInterval(function () {
-                    canvasUpdate();
-                }, 500);
-            });
+            )
+            ;
 
 
             // address border element
 
+            ignor_last_action = true;
             SetupBorder(jQuery.parseJSON(jsn).border);
-
-
-//        alert("canvas objects : " + canvas.getObjects().length);
 
             $("#name").val("<%= @sign_data.name %>");
             $("#description").val("<%= @sign_data.description %>");
+        }
+        else {
+            SetupBorder();
         }
     }
 
@@ -1749,7 +1752,7 @@
             border: {
                 style: $('#borderSelect option:selected').val(),
                 color: $("#borderColor").val(),
-                engraved: !!(borderSingle.engraved == true),
+                engraved: (borderSingle.engraved == true),
                 width: borderSingle.strokeWidth }};
 
         $.each(canvas.getObjects(), function (i, e) {
@@ -2065,7 +2068,6 @@
     }
 
     function SetupBorder(settings) {
-
         // remove any borders from canvas
         canvas.remove(borderSingle);
         canvas.remove(borderDouble);
@@ -2074,7 +2076,7 @@
         if (borderSingle == null) {
             console.log("setting up borders");
             console.log(settings);
-            var borderInset = 50, scallopDepth = 70, borderX = canvasWidth - borderInset, borderY = canvasHeight - borderInset, scallopX = canvasWidth - scallopDepth, scallopY = canvasHeight - scallopDepth;
+            var borderInset = (50 * border_distance_scale), scallopDepth = (70 * border_distance_scale), borderX = canvasWidth - borderInset, borderY = canvasHeight - borderInset, scallopX = canvasWidth - scallopDepth, scallopY = canvasHeight - scallopDepth;
 
             borderSingle = new fabric.Path([
                 ['M', borderInset, borderInset],
@@ -2135,7 +2137,6 @@
 
             console.log("applying settings");
 
-
             if (settings.style == "noborder") {
                 //$("#borderSelect").select2().val(settings.style);
                 //$("#borderThicknessSlider").slider('value', settings.width.toString());
@@ -2194,16 +2195,18 @@
             }
 
             borderSingle.set({
-                strokeWidth: settings.width
+                strokeWidth: settings.width * border_distance_scale
             });
             borderDouble.set({
-                strokeWidth: settings.width
+                strokeWidth: settings.width * border_distance_scale
             });
             borderScalloped.set({
-                strokeWidth: settings.width
+                strokeWidth: settings.width * border_distance_scale
             });
 
-            if (settings.engraved) {
+            console.log(settings);
+
+            if (settings.engraved && settings.engraved == true) {
                 // set the border color
 
                 borderSingle.stroke = "#000000";
@@ -2213,6 +2216,10 @@
                 borderSingle.opacity = 0.3;
                 borderDouble.opacity = 0.3;
                 borderScalloped.opacity = 0.3;
+
+                borderSingle.engraved = true;
+                borderDouble.engraved = true;
+                borderScalloped.engraved = true;
             }
             else {
                 // set the border color
@@ -2228,6 +2235,10 @@
                 borderSingle.opacity = 1;
                 borderDouble.opacity = 1;
                 borderScalloped.opacity = 1;
+
+                borderSingle.engraved = false;
+                borderDouble.engraved = false;
+                borderScalloped.engraved = false;
             }
 
             canvas.renderAll();

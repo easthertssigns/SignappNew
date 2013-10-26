@@ -40,6 +40,11 @@ module Spree
         new_sign_data.spree_product_id = sign_data.spree_product_id
         new_sign_data.width = sign_data.width
         new_sign_data.image = open(sign_data.image.url)
+
+        new_sign_data.canvas_height = sign_data.canvas_height
+        new_sign_data.canvas_width = sign_data.canvas_width
+        new_sign_data.canvas_scale = sign_data.canvas_scale
+
         new_sign_data.save
 
         @product = Spree::Product.new

@@ -335,9 +335,6 @@ ActiveRecord::Schema.define(:version => 20131022212250) do
     t.boolean  "screw_hole_bottom"
     t.boolean  "screw_hole_bottom_left"
     t.boolean  "screw_hole_left"
-    t.integer  "canvas_width"
-    t.integer  "canvas_height"
-    t.float    "canvas_scale"
   end
 
   create_table "sign_base_to_sizes", :force => true do |t|
@@ -378,6 +375,9 @@ ActiveRecord::Schema.define(:version => 20131022212250) do
     t.datetime "image_updated_at"
     t.text     "svg_data"
     t.integer  "spree_variant_id"
+    t.integer  "canvas_width"
+    t.integer  "canvas_height"
+    t.float    "canvas_scale"
   end
 
   create_table "sign_data_to_categories", :force => true do |t|

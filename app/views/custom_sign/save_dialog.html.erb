@@ -15,6 +15,9 @@
             $("#name").val(parent.$("#name").val());
             $("#description").val(parent.$("#description").val());
             $("#calculated_price").val(parent.$("#calculated_price").val());
+            $("#canvas_width").val(parent.$("#canvas_width").val());
+            $("#canvas_height").val(parent.$("#canvas_height").val());
+            $("#canvas_scale").val(parent.$("#canvas_scale").val());
             //alert(parent.$("#sign_data").val());
 
             $("#save_button").click(function () {
@@ -28,12 +31,29 @@
                 var description = $("#description").val();
                 var base64png = $("#base64png").val();
                 var calculated_price = $("#calculated_price").val();
+
+                var canvas_width = $("#canvas_width").val();
+                var canvas_height = $("#canvas_height").val();
+                var canvas_scale = $("#canvas_scale").val();
+
                 parent.$("#name").val($("#name").val());
                 parent.$("#description").val($("#description").val());
                 $.ajax({
                     type: "POST",
                     url: "/custom_sign/save_sign",
-                    data: { id: id, sign_data: sign_data, svg_data: svg_data, base64png: base64png, account_id: account_id, name: name, description: description, calculated_price: calculated_price }
+                    data: {
+                        id: id,
+                        sign_data: sign_data,
+                        svg_data: svg_data,
+                        base64png: base64png,
+                        account_id: account_id,
+                        name: name,
+                        description: description,
+                        calculated_price: calculated_price,
+                        canvas_width: canvas_width,
+                        canvas_height: canvas_height,
+                        canvas_scale: canvas_scale
+                    }
                 }).done(function (msg) {
                             //alert( "Data Saved: " + msg );
                         });
@@ -43,9 +63,11 @@
 <% end %>
 <form action="/custom_sign/save_sign_dummy">
   <label>Please enter a name for your saved design</label>
+
   <div><%= text_field_tag "name" %></div>
   <br/>
   <label>Please enter a description for your saved design (optional)</label>
+
   <div><%= text_area_tag "description" %></div>
   <div id="hiddenFields">
     <input type="hidden" name="sign_data_id" id="sign_data_id" value="">
@@ -54,6 +76,9 @@
     <input type="hidden" name="account_id" id="account_id" value="">
     <input type="hidden" name="base64png" id="base64png" value="">
     <input type="hidden" name="calculated_price" id="calculated_price" value="">
+    <input type="hidden" name="canvas_height" id="canvas_height" value="">
+    <input type="hidden" name="canvas_width" id="canvas_width" value="">
+    <input type="hidden" name="canvas_scale" id="canvas_scale" value="">
   </div>
   <div style="text-align: right;"><input type="button" id="save_button" value="Save This Sign" class="button red"></div>
 </form>

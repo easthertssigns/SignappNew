@@ -10,8 +10,10 @@ class CustomSignController < ApplicationController
           f.write(Base64.decode64(params[:base64png]))
         end
 
-        raise "file saved!"
+        #raise "file saved!"
       end
+
+
 
       #create new custom sign
       @new_sign = SignData.new
@@ -22,6 +24,11 @@ class CustomSignController < ApplicationController
       @new_sign.price = params[:calculated_price].to_f
       @new_sign.account_id = params[:account_id]
       @new_sign.sign_data = params[:custom_data]
+
+      @new_sign.canvas_height = params[:canvas_height]
+      @new_sign.canvas_width = params[:canvas_width]
+      @new_sign.canvas_scale = params[:canvas_scale]
+
       @new_sign.deleted_by_admin = false
       @new_sign.deleted_by_user = false
 
@@ -66,6 +73,10 @@ class CustomSignController < ApplicationController
         @current_sign.name = params[:name]
         @current_sign.description = params[:description]
         @current_sign.account_id = params[:account_id]
+
+        @current_sign.canvas_height = params[:canvas_height]
+        @current_sign.canvas_width = params[:canvas_width]
+        @current_sign.canvas_scale = params[:canvas_scale]
 
         @current_sign.deleted_by_admin = false
         @current_sign.deleted_by_user = false
@@ -194,6 +205,10 @@ class CustomSignController < ApplicationController
       new_sign_data.show_as_product = false
       new_sign_data.spree_variant_id = sign_data.spree_variant_id
 
+      new_sign_data.canvas_height = sign_data.canvas_height
+      new_sign_data.canvas_width = sign_data.canvas_width
+      new_sign_data.canvas_scale = sign_data.canvas_scale
+
       new_sign_data.save
 
       # redirect to edit in sign editor
@@ -273,6 +288,11 @@ class CustomSignController < ApplicationController
     @sign_data.spree_product_id = @old_sign_data.spree_product_id
     @sign_data.width = @old_sign_data.width
     @sign_data.based_on = @old_sign_data.id
+
+    @sign_data.canvas_height = @old_sign_data.canvas_height
+    @sign_data.canvas_width = @old_sign_data.canvas_width
+    @sign_data.canvas_scale = @old_sign_data.canvas_scale
+
     @sign_data.save
     redirect_to "/custom_sign/edit_sign?id=" + @sign_data.id.to_s
   end

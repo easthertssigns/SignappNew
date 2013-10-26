@@ -1,6 +1,7 @@
 class SignData < ActiveRecord::Base
   attr_accessible :description, :height, :spree_product_id, :price, :name, :shape_id, :show_as_product,
-                  :account_id, :width, :sign_data, :sharing_key, :image, :svg_data, :spree_variant_id, :deleted_by_admin, :deleted_by_user
+                  :account_id, :width, :sign_data, :sharing_key, :image, :svg_data, :spree_variant_id, :deleted_by_admin, :deleted_by_user,
+                  :canvas_width, :canvas_height, :canvas_scale
 
   has_attached_file :image,
                     :styles => {
