@@ -792,10 +792,10 @@
     border-right: 1px solid #2B3E42;
     border-bottom: 1px solid #2B3E42;
     .cart-item-image {
-      width: 124px;
+      width: 104px;
       height: 84px;
       float: left;
-      padding: 20px 0;
+      padding: 15px 0;
       margin-right: 20px;
       img {
         border: 1px solid #2B3E42;
@@ -803,12 +803,12 @@
     }
     .cart-item-description {
       float: left;
-      width: 430px;
+      width: 470px;
+      border-right: 1px solid #2B3E42;
       h4 {
         font-size: 18px;
         text-transform: uppercase;
-        padding: 20px 0;
-        margin-top: 10px;
+        padding: 15px 0;
         font-weight: 700;
         a {
           text-decoration: none;
@@ -818,7 +818,7 @@
 
       .cart-item-price {
         float: left;
-        width: 320px;
+        width: 360px;
         font-size: 20px;
       }
 
@@ -856,13 +856,14 @@
       }
 
       .cart-item-delete {
-        float: left;
-        width: 140px;
+        float: right;
+        width: 130px;
         text-align: center;
+        margin: 10px 0;
         a {
           text-decoration: none;
-          font-size: 14px;
-          color: $white;
+          font-size: 13px;
+          color: $dark-grey;
           font-weight: 100;
         }
       }
@@ -870,10 +871,9 @@
 
     .cart-item-total {
       float: left;
-      width: 204px;
-      padding: 90px 0 20px 0;
+      width: 184px;
+      padding: 85px 0 20px 0;
       text-align: center;
-      border-left: 1px solid #2B3E42;
       font-weight: 900;
     }
   }
@@ -922,6 +922,7 @@
       color: $white;
       font-size: 14px;
       padding: 12px 20px;
+      text-transform: uppercase;
     }
     .order-total {
       float: right;
@@ -930,16 +931,33 @@
       display: inline-block;
       font-size: 18px;
       color: $white;
-      width: 165px;
+      width: 146px;
       text-align: center;
       font-weight: 600;
     }
   }
 
   #update-button {
-    margin: 20px 0 0 0;
-    height: 40px;
-    line-height: 40px;
+    margin: 20px 0 0 290px;
+    height: 42px;
+    line-height: 42px;
+    &.highlight {
+      background-position: bottom;
+      border-color: $mid-blue;
+      -webkit-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
+    }
+    .direction-arrow {
+      width: 25px;
+      height: 22px;
+      position: absolute;
+      left: 54px;
+      background: url("direction-arrow.png") no-repeat;
+      &.first {
+        top: -30px;
+      }
+    }
   }
   .continue.button {
     height: 39px;

@@ -8,7 +8,6 @@ $(function () {
 
         if ($button.text() == "+") {
             var newVal = parseInt(oldValue) + 1;
-
         } else {
             if (oldValue >= 1) {
                 var newVal = parseFloat(oldValue) - 1;
@@ -17,6 +16,18 @@ $(function () {
             }
         }
         $(this).siblings(".line_item_quantity").val(newVal);
+
+        setTimeout(function() {
+             $('#update-button').addClass("highlight").delay(1000).queue(function(next){
+                $(this).removeClass("highlight");
+                next();
+            });
+             $('.direction-arrow').animate({top: -45}).queue(function(next){
+                $(this).animate({top: -30});
+                next();
+            });
+        },1000)
+
     });
 
 

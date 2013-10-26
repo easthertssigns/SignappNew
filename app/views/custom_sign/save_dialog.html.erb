@@ -21,6 +21,7 @@
             //alert(parent.$("#sign_data").val());
 
             $("#save_button").click(function () {
+                $('.loading').fadeIn(200);
                 var token = $("meta[name='csrf-token']").attr("content");
                 // alert("saving sign");
                 var id = $("#sign_data_id").val();
@@ -56,6 +57,7 @@
                     }
                 }).done(function (msg) {
                             //alert( "Data Saved: " + msg );
+                            $('.loading').fadeOut(200);
                         });
             });
         });
@@ -81,4 +83,9 @@
     <input type="hidden" name="canvas_scale" id="canvas_scale" value="">
   </div>
   <div style="text-align: right;"><input type="button" id="save_button" value="Save This Sign" class="button red"></div>
+
+  <div class="loading">
+    Saving sign, please wait...
+  </div>
+
 </form>

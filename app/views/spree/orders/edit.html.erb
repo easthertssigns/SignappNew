@@ -31,7 +31,8 @@
                     <div class="links columns sixteen alpha omega">
                           <%= link_to t(:continue_shopping), products_path, :class => 'continue button blue' %>
                       <%= button_tag :class => 'button blue', :id => 'update-button' do %>
-                          <%= t(:update) %>
+                          <span class="direction-arrow first"></span>
+                          Update Basket
                       <% end %>
                       <%= link_to 'Proceed To Checkout', checkout_state_path(@order.checkout_steps.first), :class => 'button red', :id => 'checkout-link' %>
 
