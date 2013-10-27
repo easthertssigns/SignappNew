@@ -260,6 +260,7 @@
     // added to fix de-authentication when posting ajax : Doug
 
     var textUpdateOnce = null;
+    var canvasFinishedLoadingOnce = null;
 
     function canvasUpdate() {
         canvas.renderAll();
@@ -269,6 +270,21 @@
     function cancelTextRefreshTimer() {
         clearInterval(textUpdateOnce);
     }
+
+    function canvasFinishedLoading() {
+        undoStack = [];
+        redoStack = [];
+
+        $("#undo").addClass("disabled");
+        $("#redo").addClass("disabled");
+
+        cancelCanvasFinishedLoading();
+    }
+
+    function cancelCanvasFinishedLoading() {
+        clearInterval(canvasFinishedLoadingOnce);
+    }
+
 
     (function () {
         SetupAll();
@@ -368,7 +384,6 @@
 
         // setup complete
 
-        SetupCanvasEventHooks(canvas);
 
         //canvas.clear();
 
@@ -1032,9 +1047,12 @@
 
         // SetupBorder();
 
+        canvas_track_changes = false;
 
-//        setupScrewholes();
-//        setupMargins();
+        setupScrewholes();
+        setupMargins();
+
+        SetupCanvasEventHooks(canvas);
 
 
         var disabledTools = $('#deleteActiveObject, #cloneActiveObject, #bringForward, #sendBackwards, #flipY, #flipX');
@@ -1091,6 +1109,13 @@
 
         <% end %>
 
+        canvas_track_changes = true;
+
+        if (canvasFinishedLoadingOnce == null) {
+            canvasFinishedLoadingOnce = setInterval(function () {
+                canvasFinishedLoading()
+            }, 1000);
+        }
     }
 
     $("#addBorder").on("click", function () {
@@ -1335,13 +1360,11 @@
     });
 
     function SetupCanvasEventHooks(canvas) {
-
-
         canvas.observe('object:modified', function () {
             console.log("object:modified (track changes : " + canvas_track_changes + ", ignore last state : " + ignor_last_action + " )");
             if (canvas_track_changes && !ignor_last_action) {
                 redoStack = [];
-                appendToUndoStack();
+                appendToUndoStack(true);
                 captureCurrentState();
             }
             else {
@@ -1354,7 +1377,7 @@
             if (canvas_track_changes && !ignor_last_action) {
 
                 redoStack = [];
-                appendToUndoStack();
+                appendToUndoStack(true);
                 captureCurrentState();
             }
             else {
@@ -1366,7 +1389,7 @@
             console.log("object:removed");
             if (canvas_track_changes && !ignor_last_action) {
                 redoStack = [];
-                appendToUndoStack();
+                appendToUndoStack(true);
                 captureCurrentState();
             }
             else {
@@ -1434,23 +1457,15 @@
 
         $('#redo').click(function redo() {
 
-            if (redoStack.length > 0) {
-                console.log(redoStack[redoStack.length - 1].border);
-            }
-
-            if (undoStack.length > 0) {
-                console.log(undoStack[undoStack.length - 1].border);
-            }
 
             if (redoStack.length > 0) {
                 captureCurrentState();
-                appendToUndoStack();
+                appendToUndoStack(false);
                 CustomLoadFromHistory(redoStack.pop());
 
                 $("#undo").removeClass("disabled");
             }
 
-            console.log("redo stack length : " + redoStack.length);
             if (redoStack.length == 0) {
                 $("#redo").addClass("disabled");
             }
@@ -1459,11 +1474,13 @@
         canvas_track_changes = true;
     }
 
-    function appendToUndoStack() {
+    function appendToUndoStack(disable_redo) {
         console.log("Adding to undo stack, size : " + undoStack.length.toString());
         undoStack.push(currentState);
         $("#undo").removeClass("disabled");
-        // $("#redo").addClass("disabled");
+        if (disable_redo) {
+            $("#redo").addClass("disabled");
+        }
     }
 
     function appendToRedoStack() {
@@ -1486,7 +1503,7 @@
             style: $('#borderSelect option:selected').val(),
             color: $("#borderColor").val(),
             engraved: (borderSingle.engraved == true),
-            width: borderSingle.strokeWidth };
+            width: borderSingle.strokeWidth / border_distance_scale };
 
         $.each(canvas.getObjects(), function (i, e) {
             if (e.selectable && e.type != "image") {
@@ -2135,11 +2152,11 @@
 
         if (settings != null) {
 
-            console.log("applying settings");
+            console.log("border style : " + settings.style);
 
-            if (settings.style == "noborder") {
-                //$("#borderSelect").select2().val(settings.style);
-                //$("#borderThicknessSlider").slider('value', settings.width.toString());
+            if (settings.style == "noborder" || settings.style == "" || settings.style == null) {
+                $("#borderSelect").select2().val("noborder");
+                $("#borderThicknessSlider").slider('value', settings.width.toString());
 
                 console.log(settings.style);
                 // remove all
