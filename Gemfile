@@ -17,7 +17,7 @@ end
 gem 'spree', '~> 1.2.0'
 #gem 'spree_i18n', :git => 'git://github.com/spree/spree_i18n.git'
 gem 'spree-refinerycms-authentication', :git => 'git://github.com/adrianmacneil/spree-refinery-authentication.git'
-gem 'spree_promo'
+#gem 'spree_promo', "1.1.2.rc1"
 # gem "spree_auth"
 # gem 'spree_flexi_variants', :git => 'https://github.com/jsqu99/spree_flexi_variants.git'
 gem 'spree_related_products', :git => 'git://github.com/spree/spree_related_products.git', :branch => '1-2-stable'
@@ -42,7 +42,7 @@ end
 
 gem 'devise'
 gem 'acts_as_indexed'
-gem 'awesome_nested_set'
+gem 'awesome_nested_set', "2.1.4"
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
