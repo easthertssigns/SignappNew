@@ -1,5 +1,0 @@
-<% if @setting.name.to_s.titleize == "Inquiry Notification Recipients" %>
-  <%= render :partial => "notification_recipients_form", :locals => {:edit => true} -%>
-<% else %>
-  <%= render :partial => "confirmation_email_form", :locals => {:edit => true} -%>
-<% end %>
