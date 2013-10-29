@@ -1,6 +1,7 @@
 $(window).load(function () {
     var canvasWrapperHeight = $(window).height() - 131;
-    var canvasMargin = $('.canvas-container').css("margin-left");
+    var canvasMargin = $('.canvas-container').offset().left;
+   // alert(canvasMargin)
     $("#loadingOverlay").fadeOut();
     $('#canvasZoomWrapper').css('height', canvasWrapperHeight);
 
@@ -45,7 +46,7 @@ $(window).load(function () {
 $(function () {
     $(window).resize(function () {
         var canvasWrapperHeight = $(window).height() - 131;
-        var canvasMargin = $('.canvas-container').css("margin-left");
+        var canvasMargin = $('.canvas-container').offset().left;
         $('#canvasZoomWrapper').css('height', canvasWrapperHeight);
         $('#toolPalette').css('right', (parseInt(canvasMargin, 10) - 93) + 'px');
         $('#majorFunctions').css('left', (parseInt(canvasMargin, 10)) + 'px');

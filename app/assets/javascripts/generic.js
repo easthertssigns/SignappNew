@@ -63,7 +63,7 @@ $(function () {
     var basketHeight = $('#basketDropDown').outerHeight();
     $("#basketTab").toggle(function () {
         $('#basketDropDown').show();
-        $('#basketContainer').css({'z-index': 30}).animate({bottom:-basketHeight + 8});
+        $('#basketContainer').css({'z-index': 30}).animate({bottom:-basketHeight});
     }, function () {
         $('#basketContainer').animate({bottom:8}, function () {
             $('#basketDropDown').hide();
