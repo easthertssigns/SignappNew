@@ -14,13 +14,13 @@ group :development, :test do
   gem 'binding_of_caller'
 end
 
-gem 'spree', '~> 1.2.0'
+gem 'spree', '1.2.2'
 #gem 'spree_i18n', :git => 'git://github.com/spree/spree_i18n.git'
 gem 'spree-refinerycms-authentication', :git => 'git://github.com/adrianmacneil/spree-refinery-authentication.git'
 #gem 'spree_promo', "1.1.2.rc1"
 # gem "spree_auth"
 # gem 'spree_flexi_variants', :git => 'https://github.com/jsqu99/spree_flexi_variants.git'
-gem 'spree_related_products', :git => 'git://github.com/spree/spree_related_products.git', :ref => 'b9cc61a91e37b57281fed8948e27fc070107d367'
+#gem 'spree_related_products', :branch => '1-0-stable'
 # gem 'spree_minicart' #, '~> 1.1.0'
 # gem 'refinerycms-home_sliders', :path => 'vendor/extensions'
 #gem 'spree_html_email', :git => 'git://github.com/campbell/spree-html-email.git'
@@ -42,7 +42,7 @@ end
 
 gem 'devise'
 gem 'acts_as_indexed'
-gem 'awesome_nested_set', "2.1.4"
+#gem 'awesome_nested_set', "2.1.5"
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
