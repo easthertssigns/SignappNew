@@ -1,3 +1,0 @@
-Finish cleaning up module Refinery::Memberships::Engine
-  * move out crap into decorators
-  * test lost password can't go to dashboard
