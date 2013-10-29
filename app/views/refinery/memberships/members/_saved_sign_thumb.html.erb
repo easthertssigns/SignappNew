@@ -8,7 +8,7 @@
         <%= s.description %>
     <% end %>
    <p> Created on <%= s.created_at.strftime("%d %B %Y") %> - <b><%= s.price %></b> </p>
-    <p> Preview | <a href="/orders/add_saved_sign_to_basket?id=<%= s.id %>">
+    <p>  <a href="/custom_sign/edit_sign?id=<%= s.id %>">Preview</a> | <a href="/orders/add_saved_sign_to_basket?id=<%= s.id %>">
     Add to Basket</a> | Post On Facebook | <a href="javascript:submit_delete_sign(<%= s.id %>)">Delete</a>
      </p>
   </div>

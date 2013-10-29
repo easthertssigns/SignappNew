@@ -326,6 +326,7 @@ License: MIT
     overflow: hidden;
     padding: 3px;
     *zoom: 1;
+    float: left;
 }
 
 .sp-replacer.sp-active {

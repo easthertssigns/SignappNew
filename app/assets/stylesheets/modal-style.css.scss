@@ -157,10 +157,16 @@ input[type=submit] {
   left: 0;
   top: 0;
   width: 100%;
-  height: 53%;
-  background: #fff;
+  height: 70%;
+  background: #fff url("spinner.gif") no-repeat center center;
   text-align: center;
   padding-top: 20%;
   font-size: 13px;
   display: none;
+
+  span {
+    display: inline-block;
+    position: relative;
+    top: -20px;
+  }
 }
