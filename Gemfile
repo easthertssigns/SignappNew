@@ -1,6 +1,6 @@
-source 'http://rubygems.org'
+source 'https://rubygems.org'
 
-ruby '2.0.0'
+ruby '1.9.3', 'p448'
 gem 'rails', '3.2.13'
 gem 'pg'
 
@@ -15,7 +15,7 @@ group :development, :test do
   gem 'binding_of_caller'
 end
 
-gem 'spree', '1.2.3'
+gem 'spree', '1.2.2'
 #gem 'spree_i18n', :git => 'git://github.com/spree/spree_i18n.git'
 gem 'spree-refinerycms-authentication', :git => 'git://github.com/adrianmacneil/spree-refinery-authentication.git'
 #gem 'spree_promo', "1.1.2.rc1"
