@@ -312,6 +312,8 @@ GEM
       spree_core (= 1.2.2)
     spree_promo (1.2.2)
       spree_core (= 1.2.2)
+    spree_related_products (3.0.2)
+      spree_core (>= 0.30.0.beta1)
     spree_sample (1.2.2)
       spree_core (= 1.2.2)
     sprockets (2.2.2)
@@ -359,5 +361,6 @@ DEPENDENCIES
   sass-rails (~> 3.2.3)
   spree (= 1.2.2)
   spree-refinerycms-authentication!
+  spree_related_products
   sqlite3
   uglifier (>= 1.0.3)
