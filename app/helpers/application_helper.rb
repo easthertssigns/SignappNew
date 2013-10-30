@@ -41,6 +41,7 @@ module ApplicationHelper
   def get_related_products(product_id)
     product = Spree::Product.find product_id
     related_products = []
+
     product.relations.each do |rp|
       related_prod = Spree::Product.find rp.related_to_id
       unless related_prod.nil?

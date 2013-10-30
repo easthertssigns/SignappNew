@@ -1,4 +1,4 @@
-source 'http://rubygems.org'
+source 'https://rubygems.org'
 
 #ruby '1.9.3'
 gem 'rails', '3.2.13'
@@ -15,13 +15,13 @@ group :development, :test do
   gem 'binding_of_caller'
 end
 
-gem 'spree', '1.2.2'
+gem 'spree', '1.2'
 #gem 'spree_i18n', :git => 'git://github.com/spree/spree_i18n.git'
 gem 'spree-refinerycms-authentication', :git => 'git://github.com/adrianmacneil/spree-refinery-authentication.git'
 #gem 'spree_promo', "1.1.2.rc1"
 # gem "spree_auth"
 # gem 'spree_flexi_variants', :git => 'https://github.com/jsqu99/spree_flexi_variants.git'
-gem 'spree_related_products', :ref => 'b9cc61a91e37b57281fed8948e27fc070107d367'
+#gem 'spree_related_products', :ref => 'b9cc61a91e37b57281fed8948e27fc070107d367'
 # gem 'spree_minicart' #, '~> 1.1.0'
 # gem 'refinerycms-home_sliders', :path => 'vendor/extensions'
 #gem 'spree_html_email', :git => 'git://github.com/campbell/spree-html-email.git'
