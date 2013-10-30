@@ -12,6 +12,11 @@ PATH
     refinerycms-home_page_sliders (1.0)
       refinerycms-core (~> 2.0.10)
 
+PATH
+  remote: vendor/gems/refinerycms-memberships-2.0
+  specs:
+    refinerycms-memberships (2.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -350,6 +355,7 @@ DEPENDENCIES
   refinerycms
   refinerycms-home_page_sliders!
   refinerycms-inquiries
+  refinerycms-memberships!
   sass-rails (~> 3.2.3)
   spree (= 1.2.2)
   spree-refinerycms-authentication!
