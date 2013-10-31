@@ -15,7 +15,7 @@ Spree::Image.class_eval do
                     :s3_credentials => "#{Rails.root}/config/s3.yml",
                     :bucket => "signapp-prod",
                     :url => '/spree/products/:id/:style/:basename.:extension',
-                    :path => ':rails_root/public/spree/products/:id/:style/:basename.:extension',
+                    :path => 'app/public/spree/products/:id/:style/:basename.:extension',
                     :convert_options => {
                         #:mini => "-resize 40x40 -background white -gravity center -extent 40x40 -quality 92 -strip -colorspace RGB",
                         #:micro => "-resize 62x35 -background white -gravity center -extent 62x35 -quality 92 -strip -colorspace RGB",

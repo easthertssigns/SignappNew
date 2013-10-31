@@ -262,7 +262,19 @@
           </div>
       <% end %>
     </div>
-
+    <% unless @product.relations.blank? %>
+        <div class="relatedProducts fixed_container_12">
+          <div class="fixed_grid_12">
+            <h4>You may also be interested in&hellip;</h4>
+          </div>
+          <% get_related_products(@product.id).each do |rp| %>
+              <div class="grid_2">
+                <h5><%= link_to rp.name, rp %></h5>
+                <%= link_to related_image(rp), rp %>
+              </div>
+          <% end %>
+        </div>
+    <% end %>
     <div class="clearfix"></div>
     <div class="upperShadow"></div>
   </div>
