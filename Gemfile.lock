@@ -22,9 +22,13 @@ PATH
       refinerycms-core (~> 2.0.10)
 
 PATH
-  remote: vendor/gems/refinerycms-memberships-2.0
+  remote: vendor/gems/refinerycms_membership-da0ac8fc44a4
   specs:
-    refinerycms-memberships (2.0)
+    refinerycms-memberships (2.0.3)
+      nokogiri (~> 1.6.0)
+      refinerycms-core (>= 2.0.0)
+      refinerycms-settings (>= 2.0.0)
+      webrat (~> 0.7.3)
 
 GEM
   remote: https://rubygems.org/
@@ -113,15 +117,15 @@ GEM
       multi_json (~> 1.0)
       rack
     erubis (2.7.0)
-    excon (0.27.6)
+    excon (0.28.0)
     execjs (2.0.2)
     faraday (0.8.8)
       multipart-post (~> 1.2.0)
     ffaker (1.12.1)
     filters_spam (0.3)
-    fog (1.17.0)
+    fog (1.18.0)
       builder
-      excon (~> 0.27.0)
+      excon (~> 0.28.0)
       formatador (~> 0.2.0)
       mime-types
       multi_json (~> 1.0)
@@ -346,6 +350,10 @@ GEM
     uuidtools (2.1.4)
     warden (1.1.1)
       rack (>= 1.0)
+    webrat (0.7.3)
+      nokogiri (>= 1.2.0)
+      rack (>= 1.0)
+      rack-test (>= 0.5.3)
     will_paginate (3.0.5)
 
 PLATFORMS

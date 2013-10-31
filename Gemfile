@@ -64,7 +64,8 @@ gem 'acts_as_indexed'
 gem 'refinerycms'
 
 # Specify additional Refinery CMS Extensions here (all optional):
-gem 'refinerycms-memberships', :path => 'vendor/gems/refinerycms-memberships-2.0'
+gem 'refinerycms-memberships', :path => 'vendor/gems/refinerycms_membership-da0ac8fc44a4'
+#gem 'refinerycms-memberships', :path => 'vendor/gems/refinerycms-memberships-2.0'
 gem 'refinerycms-inquiries'
 # gem 'refinerycms-mailchimp', :github => 'Wirelab/refinerycms-mailchimp', :branch => 'refinery-2.0'
 # gem 'refinerycms-i18n', '~> 2.0.0'
