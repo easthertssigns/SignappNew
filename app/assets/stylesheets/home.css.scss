@@ -282,11 +282,11 @@
       border: 1px solid #45707c;
       height: 200px;
       position: absolute;
-      width: 240px;
+      width: 200px;
       img {
         display: block;
         height: 200px;
-        width: 240px;
+        width: 200px;
       }
       .infoPanel {
         background: #2C3F43;
@@ -294,10 +294,12 @@
         border-left: 2px solid #45707c;
         border-right: 2px solid #45707c;
         display: none;
-        height: 30px;
+        height: 70px;
         margin-left: -2px;
         padding: 10px 15px;
-        width: 470px;
+        width: 370px;
+        position: absolute;
+        bottom: 0;
         p {
           color: #FFF9DB;
           float: left;
@@ -310,7 +312,13 @@
           width: 275px;
         }
         .button.red {
-          float: right;
+          position: absolute;
+          width: 382px;
+          left: 0;
+          bottom: 0;
+          border-radius: 0;
+          height: 40px;
+          line-height: 40px;
         }
       }
     }

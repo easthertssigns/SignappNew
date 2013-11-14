@@ -122,8 +122,8 @@ $(function () {
     var tileWidth = imageTile.outerWidth();
     var imageHeight = $('.signCarousel .imageTile img').height();
     var imageWidth = $('.signCarousel .imageTile img').width();
-    var zoomHeight = 417;
-    var zoomWidth = 500;
+    var zoomHeight = 400;
+    var zoomWidth = 400;
     var tileCount = $(imageTile).length;
     var rowCount = tileCount / 2;
 
