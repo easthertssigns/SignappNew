@@ -270,7 +270,7 @@
           <% get_related_products(@product.id).each do |rp| %>
               <div class="grid_2">
                 <h5><%= link_to rp.name, rp %></h5>
-                <%= link_to related_image(rp), rp %>
+                <%= link_to basket_icon_image(rp), rp %>
               </div>
           <% end %>
         </div>
