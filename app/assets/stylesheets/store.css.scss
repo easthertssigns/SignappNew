@@ -244,6 +244,7 @@
     overflow: hidden;
     position: relative;
     width: 235px;
+    cursor: pointer;
     .imageOverlay {
       background: $dark-blue-grey;
       color: $white;
@@ -252,6 +253,7 @@
       position: absolute;
       top: 235px;
       width: 215px;
+      word-wrap: break-word;
       p {
         font-weight: normal;
         text-transform: none;
@@ -262,6 +264,15 @@
         font-weight: bold;
         text-decoration: underline;
         text-transform: uppercase;
+      }
+      a {
+        height: 215px;
+        padding: 10px;
+        position: absolute;
+        top: 0px;
+        left: 0;
+        width: 215px;
+        z-index: 11;
       }
     }
     .materialFeatures {
@@ -354,7 +365,7 @@
     text-transform: uppercase;
   }
   h3 {
-    font-size: 0.875em;
+    font-size: 0.825em;
     margin-bottom: 1em;
   }
   .imageColumn {

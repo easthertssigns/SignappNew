@@ -211,10 +211,10 @@
 
         <div class="priceWrapper">
           <% unless @product.price.nil? %>
-              <span class="price" id="sidebarDisplayPrice"><%= Spree::Money.new @product.price %></span><span class="inclVAT"> Incl. VAT</span>
+            <p>  From <span class="price" id="sidebarDisplayPrice"><%= Spree::Money.new @product.price %></span><span class="inclVAT"> Incl. VAT</span> </p>
           <% end %>
         </div>
-        <h3>Based on dimensions:</h3>
+        <h3>Based on your dimensions:</h3>
 
         <p><strong>Shape: </strong><span id="displayShape">Not Selected</span></p>
 

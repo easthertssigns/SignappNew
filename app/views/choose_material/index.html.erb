@@ -76,7 +76,7 @@
             <% @taxon.children.each do |taxon| %>
                 <% get_products(taxon).each do |product| %>
                     <li data-id="taxon-<%= product.id %>">
-                      <%= render :partial => 'spree/products/product', :locals => {:product => product} %>
+                       <%= render :partial => 'spree/products/product', :locals => {:product => product} %>
                     </li>
                 <% end %>
             <% end %>

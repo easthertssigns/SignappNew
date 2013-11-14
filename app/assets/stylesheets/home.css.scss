@@ -230,7 +230,7 @@
     text-decoration: none;
     text-transform: uppercase;
     transition: color linear 0.1s;
-    width: 226px;
+    width: 245px;
     &:hover {
       background-position: -548px -57px;
       color: #FAF5E1;
@@ -301,7 +301,7 @@
         p {
           color: #FFF9DB;
           float: left;
-          font-size: 0.875em;
+          font-size: 0.825em;
           font-weight: bold;
           height: 30px;
           line-height: 30px;
@@ -359,9 +359,14 @@
   h4 {
     color: #4F7077;
     font-size: 0.875em;
-    margin: 25px 20px 45px 20px;
+    margin: 25px 20px 10px 20px;
     position: relative;
     z-index: 1;
+    position: relative;
+  }
+  p, a {
+    color: #4F7077;
+    position: relative;
   }
   .iconContainer {
     position: relative;
@@ -392,7 +397,7 @@
       opacity: 0;
     }
   }
-  q {
+  q, h3 {
     color: #FAF5E1;
     display: block;
     font-size: 1.500em;
@@ -401,6 +406,7 @@
     position: relative;
     width: 80%;
     z-index: 1;
+    margin-bottom: 10px;
     &:before {
       content: "\201C";
     }

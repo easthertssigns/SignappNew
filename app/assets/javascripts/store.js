@@ -3,7 +3,7 @@ $(function () {
         function () {
             var $this = $(this);
             $(this).data('initialText', $this.text());
-            $(this).text("Ready? Let's make your sign!");
+            $(this).text("Ready? Personalise this sign!");
         }, function () {
             var $this = $(this);
             $(this).text($this.data('initialText'));

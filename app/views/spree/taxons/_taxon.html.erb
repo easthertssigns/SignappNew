@@ -3,15 +3,12 @@
     <div class="product-name">
       <%= link_to truncate(taxon.name, :length => 18), seo_url(taxon), :class => 'breadcrumbs' %>
     </div>
-    <div class="product-gallery">
-      Gallery
-    </div>
     <div class="clearfix"></div>
     <div class="product-image">
-      <%= link_to image_tag taxon.icon, {:action => seo_url(taxon)} %>
+      <%= link_to image_tag taxon.icon(:normal), {:action => seo_url(taxon)} %>
       <div class="imageOverlay">
         <p><%= truncate(taxon.description, :length => 100) %></p>
-        <%= link_to "Take a look at the " + taxon.name + " gallery", seo_url(taxon) %>
+        <%= link_to '', seo_url(taxon) %>
       </div>
     </div>
     <div class="materialFeatures">

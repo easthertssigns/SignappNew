@@ -22,15 +22,20 @@
                     <div class="product-name">
                       <%= link_to truncate(product.name, :length => 15), product, :class => 'info', :itemprop => "name", :title => product.name %>
                     </div>
-                    <!--<div class="product-gallery">-->
-                    <!--Gallery-->
-                    <!--</div>-->
                     <div class="clearfix"></div>
                     <div class="product-image">
-                      <%= link_to small_image(product, :itemprop => "image"), product, :itemprop => 'url' %>
-                      <%= link_to product, :class => "imageOverlay" do %>
-                          <p><%= truncate(product.description, :length => 100) %></p>
-                          <!--<p class="link">Take a look at the <%= product.name %> gallery</p>-->
+                      <% if product.images.size > 0 %>
+                          <%= image_tag product.images[0].attachment.url(:small) %>
+                          <div class="imageOverlay">
+                            <p><%= truncate(product.description, :length => 300) %></p>
+                            <%= link_to '', product %>
+                          </div>
+                      <% else %>
+                          <a href="<%=spree.product_url(product) %>"><img action="/t/material/wood" alt="Default_taxon" src="/assets/noimage/default_taxon.png"></a>
+                          <div class="imageOverlay">
+                            <p><%= truncate(product.description, :length => 300) %></p>
+                            <%= link_to '', product %>
+                          </div>
                       <% end %>
                     </div>
                     <div class="materialFeatures">

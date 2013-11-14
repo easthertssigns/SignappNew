@@ -23,7 +23,7 @@
       <div class="arrow"></div>
     </div>
   </div>
-  <a href="/choose_material" id="createYourSignNow">
+  <a href="/t/material" id="createYourSignNow">
     Create your sign now!
   </a>
 
@@ -60,15 +60,15 @@
 <div class="howArePeopleUsingSignApp">
   <h3><span class="downArrow"></span>How are people using SignApp?<span class="downArrow"></span></h3>
 
-  <a href="/how-does-customisation-works" class="howDoesCustomisationWork">How does customisation work?</a>
+  <a href="/how-does-customisation-works" class="howDoesCustomisationWork">How does Personalisation work?</a>
 
   <div class="signCarousel" id="signCarousel">
 
     <% get_featured_product_list.each do |p| %>
         <div class="imageTile">
-          <%= product_image(p, :itemprop => "image") %>
+          <%=link_to product_image(p, :itemprop => "image"), spree.product_url(p) %>
           <div class="infoPanel"><p><%= p.name %></p>
-            <a href="<%= spree.product_url(p) %>" class="button red">Customise this sign</a>
+            <a href="<%= spree.product_url(p) %>" class="button red">Personalise this sign</a>
           </div>
         </div>
     <% end %>
@@ -90,7 +90,6 @@
       <% if @page.content_for(:box1) %>
           <%= raw (@page.content_for(:box1)) %>
       <% end %>
-
       <div class="iconContainer">
         <div class="icon"></div>
         <div class="icon hover"></div>
@@ -102,7 +101,6 @@
       <% if @page.content_for(:box2) %>
           <%= raw (@page.content_for(:box2)) %>
       <% end %>
-
       <div class="iconContainer">
         <div class="icon"></div>
         <div class="icon hover"></div>
