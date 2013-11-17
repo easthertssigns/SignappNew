@@ -90,6 +90,15 @@ module Spree
         graphic.destroy
         redirect_to "/admin/sign_graphics"
       end
+
+      def delete_sign_graphics
+        graphic = SignGraphic.find params[:id]
+        SignGraphicToCategory.delete_all(["sign_graphic_id = ?", params[:id]])
+        graphic.svg_file.destroy
+        graphic.svg_file.clear
+        graphic.destroy
+        redirect_to "/admin/sign_graphics"
+      end
     end
   end
 end

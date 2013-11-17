@@ -792,6 +792,7 @@
         $('#textItalic').click(function () {
             var activeObject = canvas.getActiveObject();
             if (activeObject && activeObject.type === 'text') {
+                alert(activeObject.fontStyle);
                 console.log(activeObject.fontStyle);
                 activeObject.fontStyle = (activeObject.fontStyle == 'italic' ? '' : 'italic');
                 canvas.renderAll();
