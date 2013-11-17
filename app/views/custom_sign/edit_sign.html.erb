@@ -255,6 +255,30 @@
     var borderScalloped = null;
     var border_distance_scale = 1;
 
+    var textboxadditionalwidthforie10 = 0;
+    var textboxadditionaltopforie10 = 0;
+
+
+    function getIEVersion() {
+        var agent = navigator.userAgent;
+        var reg = /MSIE\s?(\d+)(?:\.(\d+))?/i;
+        var matches = agent.match(reg);
+        if (matches != null) {
+            return { major: matches[1], minor: matches[2] };
+        }
+        return { major: "-1", minor: "-1" };
+    }
+
+    var ie_version = getIEVersion();
+    var is_ie10 = ie_version.major == 10;
+
+
+    if (is_ie10) {
+        textboxadditionalwidthforie10 = 5;
+        textboxadditionaltopforie10 = 2;
+    }
+
+
     var canvas = null;
     var mask_object = null;
     // added to fix de-authentication when posting ajax : Doug
@@ -522,8 +546,8 @@
                         left: activeObject.left - (activeObject.width) / 2,
                         lineHeight: activeObject.lineHeight,
                         textAlign: activeObject.textAlign,
-                        top: activeObject.top - activeObject.height / 2,
-                        width: activeObject.width,
+                        top: (activeObject.top - activeObject.height / 2) + textboxadditionaltopforie10,
+                        width: activeObject.width + textboxadditionalwidthforie10,
                         zIndex: 100
                     });
                     $('#textArea').focus();
@@ -565,8 +589,8 @@
                             '-webkit-transform': 'rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
                             height: activeObject.height,
                             left: activeObject.left - (activeObject.width / 2),
-                            top: activeObject.top - activeObject.height / 2,
-                            width: activeObject.width
+                            top: (activeObject.top - activeObject.height / 2) + textboxadditionaltopforie10,
+                            width: activeObject.width + textboxadditionalwidthforie10
                         });
                     }
 
@@ -618,8 +642,8 @@
                             left: activeObject.left - activeObject.width / 2,
                             textAlign: activeObject.textAlign,
                             textDecoration: activeObject.textDecoration,
-                            top: activeObject.top - activeObject.height / 2,
-                            width: activeObject.width
+                            top: (activeObject.top - activeObject.height / 2) + textboxadditionaltopforie10,
+                            width: activeObject.width + textboxadditionalwidthforie10
                         });
                     }
 
@@ -2262,6 +2286,7 @@
 
         }
     }
+
 
 
 </script>

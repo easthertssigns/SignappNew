@@ -43,7 +43,7 @@ class CustomSignController < ApplicationController
 
       @current_sign = SignData.find params[:id]
 
-      if spree_current_user.has_role?(:superuser).to_s || @sign.account_id == spree_current_user.id
+      #if spree_current_user && (spree_current_user.has_role?(:superuser).to_s || @sign.account_id == spree_current_user.id)
 
         if params[:base64png]
           # create png from string
@@ -89,9 +89,9 @@ class CustomSignController < ApplicationController
         ##@current_sign.save
         ##raise params.to_yaml + "SignData ID : " + params[:id]
         @message = "Custom Sign Saved"
-      else
-        raise "Access Denied"
-      end
+      #else
+      #  raise "Access Denied"
+      #end
     end
     respond_to do |format|
       format.js
