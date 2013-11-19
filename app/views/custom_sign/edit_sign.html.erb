@@ -1,5 +1,5 @@
 <% content_for :stylesheets do %>
-    <%= stylesheet_link_tag('select2', 'spectrum', 'customisation', 'stylesheet', 'jquery-fancybox', 'jquery.qtip', 'joyride-1.0.5') %>
+    <%= stylesheet_link_tag('select2', 'spectrum', 'customisation', 'font-style', 'jquery-fancybox', 'jquery.qtip', 'joyride-1.0.5') %>
 <% end %>
 
 <% content_for :javascripts do %>
@@ -257,6 +257,10 @@
 
     var textboxadditionalwidthforie10 = 0;
     var textboxadditionaltopforie10 = 0;
+
+
+    $('html.touch #canvasZoomWrapper canvas, html.touch .minorFunctions, html.touch .majorFunctions, html.touch .toolPalette').hide();
+    $('html.touch .minorFunctions').before('<div class="touch-devise-message">Message for touch devices goes here</div>');
 
 
     function getIEVersion() {

@@ -1,4 +1,12 @@
 ---
+OpenSans-Italic-webfont.eot: OpenSans-Italic-webfont-d7757d0f22aea1e9f665acd1e3b4a90c.eot
+OpenSans-Italic-webfont/index.eot: OpenSans-Italic-webfont-d7757d0f22aea1e9f665acd1e3b4a90c.eot
+OpenSans-Italic-webfont.svg: OpenSans-Italic-webfont-7b424d664bc32f3c106087610db4b7a7.svg
+OpenSans-Italic-webfont/index.svg: OpenSans-Italic-webfont-7b424d664bc32f3c106087610db4b7a7.svg
+OpenSans-Italic-webfont.ttf: OpenSans-Italic-webfont-17f268009b41ae675c4243a5e98f3b65.ttf
+OpenSans-Italic-webfont/index.ttf: OpenSans-Italic-webfont-17f268009b41ae675c4243a5e98f3b65.ttf
+OpenSans-Italic-webfont.woff: OpenSans-Italic-webfont-9fbf0507486698a15f1e04ce46704a72.woff
+OpenSans-Italic-webfont/index.woff: OpenSans-Italic-webfont-9fbf0507486698a15f1e04ce46704a72.woff
 arvo-regular-webfont.eot: arvo-regular-webfont-ed8d5a207113884788f23f0bd02f99b3.eot
 arvo-regular-webfont/index.eot: arvo-regular-webfont-ed8d5a207113884788f23f0bd02f99b3.eot
 arvo-regular-webfont.svg: arvo-regular-webfont-3265d9b4ed496ecb0c6c351403807b5a.svg
@@ -306,8 +314,8 @@ store/all.js: store/all-cb6a7ae6481595b3c5efe1951727d21d.js
 store/all/index.js: store/all-cb6a7ae6481595b3c5efe1951727d21d.js
 admin/all.css: admin/all-769a04d7012f780093992ce3f40c128f.css
 admin/all/index.css: admin/all-769a04d7012f780093992ce3f40c128f.css
-application.css: application-5e208a42801f5212af3b2f1816bc7564.css
-application/index.css: application-5e208a42801f5212af3b2f1816bc7564.css
+application.css: application-3c722903c5044644c5f4b0180731b2af.css
+application/index.css: application-3c722903c5044644c5f4b0180731b2af.css
 home.css: home-627b3511ce8c336344f7bab5bb6ab855.css
 home/index.css: home-627b3511ce8c336344f7bab5bb6ab855.css
 store/all.css: store/all-9aeac1ee3bcc1da1a89260b636c4f101.css

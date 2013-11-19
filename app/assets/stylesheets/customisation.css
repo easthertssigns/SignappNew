@@ -90,6 +90,16 @@ html, body {
     margin: 116px auto;
     overflow: hidden;
 }
+#canvasZoomWrapper .touch-devise-message {
+    position: relative;
+    top: 10%;
+    width: 80%;
+    margin: 0 auto;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+}
 
 .canvas-container #textArea {
     -webkit-background-clip: text;

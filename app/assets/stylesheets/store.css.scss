@@ -55,6 +55,7 @@
   ul {
     display: inline-block;
     list-style: none;
+    padding-left: 20px;
     li {
       color: $dark-blue-grey;
       float: left;
@@ -62,6 +63,7 @@
       height: 11px;
       line-height: 11px;
       text-transform: uppercase;
+      margin-bottom: 20px;
       a {
         border-right: 1px solid $dark-blue-grey;
         color: $dark-blue-grey;

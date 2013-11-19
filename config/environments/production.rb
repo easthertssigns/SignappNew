@@ -62,19 +62,19 @@ SignappNew::Application.configure do
   config.active_support.deprecation = :notify
 
   # For refinery members plugin
-  config.action_mailer.raise_delivery_errors = true
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.perform_deliveries = true
-  ActionMailer::Base.default :from => 'auto@wearealight.com'
-  ActionMailer::Base.smtp_settings = {
-      :address              => "smtp.gmail.com",
-      :port                 => 587,
-      :domain               => 'wearealight.com',
-      :user_name            => 'auto@wearealight.com',
-      :password             => '1qazFloP',
-      :authentication       => 'plain',
-      :enable_starttls_auto => true
-  }
+  #config.action_mailer.raise_delivery_errors = true
+  #config.action_mailer.delivery_method = :smtp
+  #config.action_mailer.perform_deliveries = true
+  #ActionMailer::Base.default :from => 'auto@wearealight.com'
+  #ActionMailer::Base.smtp_settings = {
+  #    :address              => "smtp.gmail.com",
+  #    :port                 => 587,
+  #    :domain               => 'wearealight.com',
+  #    :user_name            => 'auto@wearealight.com',
+  #    :password             => '1qazFloP',
+  #    :authentication       => 'plain',
+  #    :enable_starttls_auto => true
+  #}
 
   # Log the query plan for queries taking more than this (works
   # with SQLite, MySQL, and PostgreSQL)
