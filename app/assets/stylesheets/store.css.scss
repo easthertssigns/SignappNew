@@ -56,6 +56,7 @@
     display: inline-block;
     list-style: none;
     padding-left: 20px;
+    width: 85%;
     li {
       color: $dark-blue-grey;
       float: left;
@@ -63,13 +64,14 @@
       height: 11px;
       line-height: 11px;
       text-transform: uppercase;
-      margin-bottom: 20px;
+      margin-top: 11px;
+      padding: 0 20px 0 0;
       a {
         border-right: 1px solid $dark-blue-grey;
         color: $dark-blue-grey;
         display: block;
         font-size: 1em;
-        padding: 0 20px;
+        padding: 0 20px 0 0;
         text-decoration: none;
         &:hover {
           color: $cream;
@@ -226,7 +228,7 @@
     float: left;
     height: 22px;
     line-height: 12px;
-    width: 165px;
+    width: 235px;
   }
   .product-gallery {
     background: url("store/store-materials-sprite.png") no-repeat 0 0;

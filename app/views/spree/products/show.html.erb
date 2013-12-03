@@ -262,7 +262,7 @@
           </div>
       <% end %>
     </div>
-    <% unless !@product.relations && @product.relations.blank? %>
+    <% if @product.relations && @product.relations.count > 0 %>
         <div class="relatedProducts fixed_container_12">
           <div class="fixed_grid_12">
             <h4>You may also be interested in&hellip;</h4>
