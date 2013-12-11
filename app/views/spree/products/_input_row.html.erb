@@ -12,7 +12,6 @@
 <div class="inputsRow">
   <div class="step one no-variants">
     <select id="shapeSelect" name="shapeSelect">
-      <option></option>
       <% get_sign_shapes_for_product(@product).each do |shape| %>
           <option value="<%= shape.id %>">
             <span><%= image_tag shape.svg_file.url(:mini) %></span> <%= shape.name %></option>

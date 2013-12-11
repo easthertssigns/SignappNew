@@ -31,7 +31,6 @@
   <div class="step three">
     <% if @product.has_variants? %>
         <select id="variantSelect" name="variant_id">
-          <option></option>
           <% @product.variants.each do |var| %>
               <option value="<%= var.id.to_s %>"><%= variant_options var %></option>
           <% end %>

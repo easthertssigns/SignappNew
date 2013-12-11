@@ -46,6 +46,8 @@
                         $("#size_container").prepend(data);
                         $('#sizeSelect').select2();
                         $('.choose-shape,.select-alert-message').remove();
+
+                        $('#sizeSelect').trigger('change');
                     }
                 });
                 $("#displayShape").text($("#shapeSelect option[value='" + selectedShape + "']").text());
@@ -130,6 +132,8 @@
                     return true;
                 }
             });
+
+            $('#shapeSelect').trigger('change');
         });
 
         function get_calculated_price_of_sign() {
