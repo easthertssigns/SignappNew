@@ -5,8 +5,8 @@ class SignData < ActiveRecord::Base
 
   has_attached_file :image,
                     :styles => {
-                        :extra_large => ["300x300", :jpg],
-                        :large => ["300x300", :jpg],
+                        :extra_large => ["1200x1200", :jpg],
+                        :large => ["600x600", :jpg],
                         :medium => ["300x300", :jpg],
                         :thumb => ["100x100", :jpg]
                     },
