@@ -75,7 +75,7 @@ html, body {
     display: block;
     height: 100%;
     left: 0;
-    overflow: auto;
+    /*overflow: auto;*/
     padding: 20px 0;
     position: relative;
     top: 0;
