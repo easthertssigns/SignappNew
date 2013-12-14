@@ -65,7 +65,7 @@
         <input type="text" class="showPaletteOnly" value="#000000" id="textColor"/>
 
         <!--<div class="function engraved" id="textEngraved">-->
-          <!--<span>Engraved, no paint</span>-->
+        <!--<span>Engraved, no paint</span>-->
         <!--</div>-->
       </div>
     </div>
@@ -85,21 +85,21 @@
               </optgroup>
           <% end %>
           <!--<optgroup label="Animals">-->
-            <!--<option value="ant">Ant</option>-->
-            <!--<option value="bear">Bear</option>-->
-            <!--<option value="chicken">Chicken</option>-->
-            <!--<option value="cow">Cow</option>-->
-            <!--<option value="crab">Crab</option>-->
-            <!--<option value="crow">Crow</option>-->
-            <!--<option value="deadbird">Dead Bird</option>-->
-            <!--<option value="seahorse">Seahorse</option>-->
-            <!--<option value="squirrel">Squirrel</option>-->
+          <!--<option value="ant">Ant</option>-->
+          <!--<option value="bear">Bear</option>-->
+          <!--<option value="chicken">Chicken</option>-->
+          <!--<option value="cow">Cow</option>-->
+          <!--<option value="crab">Crab</option>-->
+          <!--<option value="crow">Crow</option>-->
+          <!--<option value="deadbird">Dead Bird</option>-->
+          <!--<option value="seahorse">Seahorse</option>-->
+          <!--<option value="squirrel">Squirrel</option>-->
           <!--</optgroup>-->
         </select>
         <input type="text" class="showPaletteOnly" value="#000000" id="shapeColor"/>
 
         <!--<div class="function engraved" id="shapeEngraved">-->
-          <!--<span>Engraved, no paint</span>-->
+        <!--<span>Engraved, no paint</span>-->
         <!--</div>-->
       </div>
     </div>
@@ -122,7 +122,7 @@
         <input type="text" class="showPaletteOnly" id="borderColor" value="#000000"/>
 
         <!--<div class="function engraved" id="borderEngraved">-->
-          <!--<span>Engraved, no paint</span>-->
+        <!--<span>Engraved, no paint</span>-->
         <!--</div>-->
       </div>
     </div>
@@ -511,7 +511,7 @@
 
                 console.log("double click text object");
 
-                if (IsFireFox()) {
+                if (!$.browser.webkit) {
                     $('#textArea').css({
                         display: 'block',
                         left: activeObject.left - (activeObject.width * activeObject.scaleX) / 2,
@@ -561,7 +561,7 @@
                 }
 
                 canvas.observe('object:modified', function () {
-                    if (IsFireFox()) {
+                    if (!$.browser.webkit) {
 
                         console.log("vertical pos: " + (parseInt(activeObject.top) + parseInt(activeObject.height / 2)));
                         console.log("canvas height: " + (parseInt(canvas.height)));
@@ -616,7 +616,7 @@
                     });
                 });
                 canvas.observe('after:render', function () {
-                    if (IsFireFox()) {
+                    if (!$.browser.webkit) {
                         $('#textArea').css({
                             height: (activeObject.text.split("\n").length + 1) * 12,
                             left: activeObject.left - (activeObject.width * activeObject.scaleX) / 2,
@@ -1613,7 +1613,8 @@
 
         <% else %>
 
-        bg_image_url = '<%= background_image.attachment.url(:large) %>';
+        bg_image_url = '/custom_sign/get_background_for_signdata/<%= @sign_data.id %>.jpg';
+
         canvas.setBackgroundImage(bg_image_url, function () {
             //canvas.setBackgroundImage('/assets/customisation/brass.jpg', function () {
 
@@ -1655,9 +1656,10 @@
 
     function updateSVGfield() {
         // show mask
-        canvas.bringToFront(mask_object);
-        mask_object.set({stroke: 1});
-
+        if (mask_object != undefined) {
+            canvas.bringToFront(mask_object);
+            mask_object.set({stroke: 1});
+        }
         canvas.renderAll();
 
         // get svg data
@@ -1665,7 +1667,9 @@
         $("#svg_data").val(svg_data);
 
         // hide mask
-        mask_object.set({stroke: "none"});
+        if (mask_object != undefined) {
+            mask_object.set({stroke: "none"});
+        }
 
         canvas.renderAll();
     }
@@ -2291,7 +2295,6 @@
 
         }
     }
-
 
 
 </script>

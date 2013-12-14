@@ -46,6 +46,7 @@ SignappNew::Application.routes.draw do
   match "custom_sign/get_graphic_url_ajax" => "custom_sign#get_graphic_url_ajax"
   match "custom_sign/write_file" => "custom_sign#write_file"
   match "custom_sign/get_sign_svg/:id" => "custom_sign#get_sign_svg"
+  match "custom_sign/get_background_for_signdata/:id" => "custom_sign#get_background_for_signdata"
 
   # retrieve
   match "custom_sign/get_custom_shape_svg/:id" => "custom_sign#get_custom_shape_svg"

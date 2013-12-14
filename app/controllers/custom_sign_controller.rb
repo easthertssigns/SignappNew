@@ -390,4 +390,25 @@ class CustomSignController < ApplicationController
     }
   end
 
+  def get_background_for_signdata
+    @sd = SignData.find(params[:id].to_i)
+
+    if @sd.get_background_image
+      f = open(@sd.get_background_image.attachment.url(:original))
+
+      @attachment = @sd.get_background_image.attachment
+
+      #raise @attachment.to_yaml
+
+      send_data(
+          open( @attachment.url(:original), "rb").read,
+          :type => @attachment.content_type,
+          :filename => "sdf.jpg",
+          :disposition => "inline"
+      )
+
+    else
+      nil
+    end
+  end
 end
