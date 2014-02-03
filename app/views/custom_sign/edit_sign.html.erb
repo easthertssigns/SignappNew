@@ -62,6 +62,12 @@
             <option value="PermanentMarkerRegular">Permanent Marker</option>
           </optgroup>
         </select>
+        <select class="fontSize" id="fontSize">
+          <option value="72">Small</option>
+          <option value="96">Medium</option>
+          <option value="128">Large</option>
+          <option value="176">Extra Large</option>
+        </select>
         <input type="text" class="showPaletteOnly" value="#000000" id="textColor"/>
 
         <!--<div class="function engraved" id="textEngraved">-->
@@ -248,7 +254,7 @@
     var canvasHeight = ($(window).height() - 300);
     var screwholesarray = [];
     var canvasScale = 1.0;
-    var placeholderText = 'Double click to change me...';
+    var placeholderText = ' ';
 
     var borderSingle = null;
     var borderDouble = null;
@@ -416,6 +422,7 @@
         //canvas.clear();
 
         $('<textarea rows="1" cols="1" id="textArea"></textarea>').appendTo('.canvas-container');
+        $('<div id="textTooltip">Double-click to edit</div>').appendTo('.canvas-container');
 
 
         $("#addToBasket").click(function () {
@@ -506,6 +513,9 @@
                 $('#fontFamily').val(activeObjectFontFamily).trigger("change");
                 $('#textArea').val(activeObject.text);
 
+                var activeObjectFontSize = canvas.getActiveObject().fontSize;
+                $('#fontSize').val(activeObjectFontSize).trigger("change");
+                $('#textArea').val(activeObject.text);
 
                 // console.log('-webkit-transform : rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')');
 
@@ -545,7 +555,7 @@
                         '-ms-transform': 'rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
                         display: 'block',
                         fontFamily: activeObject.fontFamily,
-                        fontSize: activeObject.fontSize,
+                        fontSize: activeObject.fontSize + 'px',
                         height: activeObject.height,
                         left: activeObject.left - (activeObject.width) / 2,
                         lineHeight: activeObject.lineHeight,
@@ -640,6 +650,7 @@
                     else {
                         $('#textArea').css({
                             fontFamily: activeObject.fontFamily,
+                            fontSize: activeObject.fontSize + 'px',
                             fontStyle: activeObject.fontStyle,
                             fontWeight: activeObject.fontWeight,
                             height: activeObject.height,
@@ -721,12 +732,9 @@
                         this.setSelectionRange(1, 1);
                     }
 
-
                     activeObject.text = this.value;
 
                     canvas.renderAll();
-                    // dfdf
-
                 }
             });
         }
@@ -738,7 +746,15 @@
             if (activeObject && activeObject.type === 'text') {
                 activeObject.fontFamily = (activeObject.fill == fontFamily ? '' : fontFamily);
                 canvas.renderAll();
+            }
+        });
 
+        $('#fontSize').change(function () {
+            var fontSize = $(this).val();
+            var activeObject = canvas.getActiveObject();
+            if (activeObject && activeObject.type === 'text') {
+                activeObject.fontSize = (activeObject.fill == fontSize ? '' : fontSize);
+                canvas.renderAll();
             }
         });
 
@@ -796,7 +812,7 @@
         $('#textItalic').click(function () {
             var activeObject = canvas.getActiveObject();
             if (activeObject && activeObject.type === 'text') {
-                alert(activeObject.fontStyle);
+//                alert(activeObject.fontStyle);
                 console.log(activeObject.fontStyle);
                 activeObject.fontStyle = (activeObject.fontStyle == 'italic' ? '' : 'italic');
                 canvas.renderAll();
@@ -1230,10 +1246,10 @@
                 url: "/custom_sign/reset_sign_data_ajax",
                 data: { id: <%= @sign_data.based_on.to_s %> }
             }).done(function (result) {
-                        $("#sign_data").val(result.sign_data);
-                        var jsn = $.base64.decode($("#sign_data").val());
-                        canvas.loadFromJSON(jsn);
-                    });
+                $("#sign_data").val(result.sign_data);
+                var jsn = $.base64.decode($("#sign_data").val());
+                canvas.loadFromJSON(jsn);
+            });
         }
         $(disabledTools).addClass('disabled');
     });
@@ -1304,9 +1320,11 @@
         $('#addBorderMenu').hide();
         var textValue = $('#textArea').val();
         var fontFamily = $('#fontFamily').val();
+        var fontSize = $('#fontSize').val();
         var color = $('#textColor').val();
         var text = new fabric.Text(placeholderText, {
             fontFamily: fontFamily,
+            fontSize: fontSize,
             fill: color,
             left: canvasWidth / 2,
             top: canvasHeight / 2
@@ -1326,7 +1344,6 @@
         // make text selected
         canvas.add(text);
 
-
         // add timed event to refresh on first text eleemnt added
         if (textUpdateOnce == null) {
             textUpdateOnce = setInterval(function () {
@@ -1334,7 +1351,50 @@
             }, 100);
         }
         canvas.renderAll();
+
+        fabric.Canvas.prototype.getAbsoluteCoords = function (object) {
+            return {
+                left: object.left,
+                top: object.top
+            };
+        }
+
+        var tooltip = document.getElementById('textTooltip'),
+                tooltipWidth = 120,
+                tooltipHeight = 22;
+
+        $('#textTooltip').addClass('visible');
+        setTimeout(function () {
+            $('#textTooltip').removeClass('visible')
+        }, 3000);
+        setTimeout(function () {
+            $('#textTooltip').css({
+                left: '-9999px',
+                top: '-9999px'
+            })
+        }, 3300);
+
+        function positionTooltip(obj) {
+            var absCoords = canvas.getAbsoluteCoords(obj);
+            if ($('#textTooltip').hasClass('visible')) {
+                tooltip.style.left = (absCoords.left - tooltipWidth / 2) + 'px';
+                tooltip.style.top = (absCoords.top + tooltipHeight + 50) + 'px';
+            }
+        }
+
+        text.on('moving', function () {
+            positionTooltip(text)
+        });
+        text.on('scaling', function () {
+            positionTooltip(text)
+        });
+        text.on('rotating', function () {
+            positionTooltip(text)
+        });
+
+        positionTooltip(text);
     });
+
 
     $('#addShape').click(function () {
         $('#addShapeMenu').show();
@@ -2296,5 +2356,35 @@
         }
     }
 
+    canvas.findTarget = (function (originalFn) {
+        return function () {
+            var target = originalFn.apply(this, arguments);
+            if (target) {
+                if (this._hoveredTarget !== target) {
+                    canvas.fire('object:over', { target: target });
+                    if (this._hoveredTarget) {
+                        canvas.fire('object:out', { target: this._hoveredTarget });
+                    }
+                    this._hoveredTarget = target;
+                }
+            }
+            else if (this._hoveredTarget) {
+                canvas.fire('object:out', { target: this._hoveredTarget });
+                this._hoveredTarget = null;
+            }
+            return target;
+        };
+    })(canvas.findTarget);
+
+    // now we can observe "object:over" and "object:out" events
+    // in this example, object is set to red color on hover over and green color on hover out
+
+    canvas.on('object:over', function (e) {
+        $('#textTooltip').addClass('visible');
+    });
+
+    canvas.on('object:out', function (e) {
+        $('#textTooltip').removeClass('visible');
+    });
 
 </script>

@@ -70,6 +70,11 @@ $(function () {
         width: "element"
     });
 
+    $('#fontSize').select2({
+        minimumResultsForSearch: 1000,
+        width: "element"
+    });
+
     function shapeSelect(shape) {
         if (!shape.id) return shape.text; // optgroup
         // alert(shape.id.replace("id_", ""));
