@@ -314,8 +314,8 @@ store/all.js: store/all-cb6a7ae6481595b3c5efe1951727d21d.js
 store/all/index.js: store/all-cb6a7ae6481595b3c5efe1951727d21d.js
 admin/all.css: admin/all-769a04d7012f780093992ce3f40c128f.css
 admin/all/index.css: admin/all-769a04d7012f780093992ce3f40c128f.css
-application.css: application-97e2fa6323bde08c81fe6d1541cd67fd.css
-application/index.css: application-97e2fa6323bde08c81fe6d1541cd67fd.css
+application.css: application-95b83dc61a23ee160374c747fc6fa70f.css
+application/index.css: application-95b83dc61a23ee160374c747fc6fa70f.css
 home.css: home-627b3511ce8c336344f7bab5bb6ab855.css
 home/index.css: home-627b3511ce8c336344f7bab5bb6ab855.css
 store/all.css: store/all-9aeac1ee3bcc1da1a89260b636c4f101.css
