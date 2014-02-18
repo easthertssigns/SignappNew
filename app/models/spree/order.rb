@@ -111,15 +111,15 @@ module Spree
     end
 
     def display_outstanding_balance
-      Spree::Money.new(outstanding_balance, { :currency => currency })
+      Spree::Money.new(outstanding_balance, {:currency => currency})
     end
 
     def display_item_total
-      Spree::Money.new(item_total, { :currency => currency })
+      Spree::Money.new(item_total, {:currency => currency})
     end
 
     def display_adjustment_total
-      Spree::Money.new(adjustment_total, { :currency => currency })
+      Spree::Money.new(adjustment_total, {:currency => currency})
     end
 
     def display_total
@@ -131,7 +131,7 @@ module Spree
     end
 
     def completed?
-      !! completed_at
+      !!completed_at
     end
 
     # Indicates whether or not the user is allowed to proceed to checkout.  Currently this is implemented as a
@@ -212,20 +212,20 @@ module Spree
       update_payment_state
 
       # give each of the shipments a chance to update themselves
-      shipments.each { |shipment| shipment.update!(self) }#(&:update!)
+      shipments.each { |shipment| shipment.update!(self) } #(&:update!)
       update_shipment_state
       update_adjustments
       # update totals a second time in case updated adjustments have an effect on the total
       update_totals
 
       update_attributes_without_callbacks({
-        :payment_state => payment_state,
-        :shipment_state => shipment_state,
-        :item_total => item_total,
-        :adjustment_total => adjustment_total,
-        :payment_total => payment_total,
-        :total => total
-      })
+                                              :payment_state => payment_state,
+                                              :shipment_state => shipment_state,
+                                              :item_total => item_total,
+                                              :adjustment_total => adjustment_total,
+                                              :payment_total => payment_total,
+                                              :total => total
+                                          })
 
       #ensure checkout payment always matches order total
       if payment and payment.checkout? and payment.amount != total
@@ -258,7 +258,7 @@ module Spree
     def awaiting_returns?
       return_authorizations.any? { |return_authorization| return_authorization.authorized? }
     end
-    
+
     def add_variant(variant, quantity = 1, sign_data)
       current_item = find_line_item_by_variant_sign_data(variant, sign_data)
       if current_item
@@ -269,7 +269,13 @@ module Spree
         current_item.variant = variant
         #current_item.price   = variant.price
         current_item.sign_data_id = sign_data.id
-        current_item.price = sign_data.price
+
+        if variant.product.parent_id.nil?
+          current_item.price = sign_data.price
+        else
+          current_item.price = variant.price
+        end
+
         self.line_items << current_item
       end
 
@@ -290,7 +296,7 @@ module Spree
     def generate_order_number
       record = true
       while record
-        random = "R#{Array.new(9){rand(9)}.join}"
+        random = "R#{Array.new(9) { rand(9) }.join}"
         record = self.class.where(:number => random).first
       end
       self.number = random if self.number.blank?
@@ -316,7 +322,7 @@ module Spree
     end
 
     def find_line_item_by_variant_sign_data(variant, sign_data)
-      line_items.detect { |line_item| line_item.variant_id == variant.id && sign_data.id == line_item.sign_data_id}
+      line_items.detect { |line_item| line_item.variant_id == variant.id && sign_data.id == line_item.sign_data_id }
     end
 
     def ship_total
@@ -345,10 +351,10 @@ module Spree
       if shipment.present?
         shipment.update_attributes!(:shipping_method => shipping_method)
       else
-        self.shipments << Shipment.create!({ :order => self,
-                                          :shipping_method => shipping_method,
-                                          :address => self.ship_address,
-                                          :inventory_units => self.inventory_units}, :without_protection => true)
+        self.shipments << Shipment.create!({:order => self,
+                                            :shipping_method => shipping_method,
+                                            :address => self.ship_address,
+                                            :inventory_units => self.inventory_units}, :without_protection => true)
       end
     end
 
@@ -357,7 +363,7 @@ module Spree
     end
 
     def outstanding_balance?
-     self.outstanding_balance != 0
+      self.outstanding_balance != 0
     end
 
     def name
@@ -368,7 +374,7 @@ module Spree
 
     def credit_cards
       credit_card_ids = payments.from_credit_card.map(&:source_id).uniq
-      CreditCard.scoped(:conditions => { :id => credit_card_ids })
+      CreditCard.scoped(:conditions => {:id => credit_card_ids})
     end
 
     # Finalizes an in progress order after checkout is complete.
@@ -389,11 +395,11 @@ module Spree
       deliver_order_confirmation_email
 
       self.state_changes.create({
-        :previous_state => 'cart',
-        :next_state     => 'complete',
-        :name           => 'order' ,
-        :user_id        => self.user_id
-      }, :without_protection => true)
+                                    :previous_state => 'cart',
+                                    :next_state => 'complete',
+                                    :name => 'order',
+                                    :user_id => self.user_id
+                                }, :without_protection => true)
     end
 
     def deliver_order_confirmation_email
@@ -421,19 +427,19 @@ module Spree
       # create all the threads and kick off their execution
       threads = available_shipping_methods(:front_end).each_with_index.map do |ship_method, index|
         Thread.new { computed_costs[index] = [ship_method, ship_method.calculator.compute(self)] }
-      end      
+      end
 
       # wait for all threads to finish
       threads.map(&:join)
 
       # now consolidate and memoize the threaded results
       @rate_hash ||= computed_costs.map do |pair|
-        ship_method,cost = *pair
+        ship_method, cost = *pair
         next unless cost
-        ShippingRate.new( :id => ship_method.id,
-                          :shipping_method => ship_method,
-                          :name => ship_method.name,
-                          :cost => cost)
+        ShippingRate.new(:id => ship_method.id,
+                         :shipping_method => ship_method,
+                         :name => ship_method.name,
+                         :cost => cost)
       end.compact.sort_by { |r| r.cost }
     end
 
@@ -458,7 +464,7 @@ module Spree
     end
 
     def pending_payments
-      payments.select {|p| p.state == "checkout"}
+      payments.select { |p| p.state == "checkout" }
     end
 
     def process_payments!
@@ -523,147 +529,147 @@ module Spree
     end
 
     private
-      def link_by_email
-        self.email = user.email if self.user
+    def link_by_email
+      self.email = user.email if self.user
+    end
+
+    # Updates the +shipment_state+ attribute according to the following logic:
+    #
+    # shipped   when all Shipments are in the "shipped" state
+    # partial   when at least one Shipment has a state of "shipped" and there is another Shipment with a state other than "shipped"
+    #           or there are InventoryUnits associated with the order that have a state of "sold" but are not associated with a Shipment.
+    # ready     when all Shipments are in the "ready" state
+    # backorder when there is backordered inventory associated with an order
+    # pending   when all Shipments are in the "pending" state
+    #
+    # The +shipment_state+ value helps with reporting, etc. since it provides a quick and easy way to locate Orders needing attention.
+    def update_shipment_state
+      self.shipment_state =
+          case shipments.count
+            when 0
+              nil
+            when shipments.shipped.count
+              'shipped'
+            when shipments.ready.count
+              'ready'
+            when shipments.pending.count
+              'pending'
+            else
+              'partial'
+          end
+      self.shipment_state = 'backorder' if backordered?
+
+      if old_shipment_state = self.changed_attributes['shipment_state']
+        self.state_changes.create({
+                                      :previous_state => old_shipment_state,
+                                      :next_state => self.shipment_state,
+                                      :name => 'shipment',
+                                      :user_id => self.user_id
+                                  }, :without_protection => true)
+      end
+    end
+
+    # Updates the +payment_state+ attribute according to the following logic:
+    #
+    # paid          when +payment_total+ is equal to +total+
+    # balance_due   when +payment_total+ is less than +total+
+    # credit_owed   when +payment_total+ is greater than +total+
+    # failed        when most recent payment is in the failed state
+    #
+    # The +payment_state+ value helps with reporting, etc. since it provides a quick and easy way to locate Orders needing attention.
+    def update_payment_state
+
+      #line_item are empty when user empties cart
+      if self.line_items.empty? || round_money(payment_total) < round_money(total)
+        self.payment_state = 'balance_due'
+        self.payment_state = 'failed' if payments.present? and payments.last.state == 'failed'
+      elsif round_money(payment_total) > round_money(total)
+        self.payment_state = 'credit_owed'
+      else
+        self.payment_state = 'paid'
       end
 
-      # Updates the +shipment_state+ attribute according to the following logic:
-      #
-      # shipped   when all Shipments are in the "shipped" state
-      # partial   when at least one Shipment has a state of "shipped" and there is another Shipment with a state other than "shipped"
-      #           or there are InventoryUnits associated with the order that have a state of "sold" but are not associated with a Shipment.
-      # ready     when all Shipments are in the "ready" state
-      # backorder when there is backordered inventory associated with an order
-      # pending   when all Shipments are in the "pending" state
-      #
-      # The +shipment_state+ value helps with reporting, etc. since it provides a quick and easy way to locate Orders needing attention.
-      def update_shipment_state
-        self.shipment_state =
-        case shipments.count
-        when 0
-          nil
-        when shipments.shipped.count
-          'shipped'
-        when shipments.ready.count
-          'ready'
-        when shipments.pending.count
-          'pending'
-        else
-          'partial'
-        end
-        self.shipment_state = 'backorder' if backordered?
-
-        if old_shipment_state = self.changed_attributes['shipment_state']
-          self.state_changes.create({
-            :previous_state => old_shipment_state,
-            :next_state     => self.shipment_state,
-            :name           => 'shipment',
-            :user_id        => self.user_id
-          }, :without_protection => true)
-        end
+      if old_payment_state = self.changed_attributes['payment_state']
+        self.state_changes.create({
+                                      :previous_state => old_payment_state,
+                                      :next_state => self.payment_state,
+                                      :name => 'payment',
+                                      :user_id => self.user_id
+                                  }, :without_protection => true)
       end
+    end
 
-      # Updates the +payment_state+ attribute according to the following logic:
-      #
-      # paid          when +payment_total+ is equal to +total+
-      # balance_due   when +payment_total+ is less than +total+
-      # credit_owed   when +payment_total+ is greater than +total+
-      # failed        when most recent payment is in the failed state
-      #
-      # The +payment_state+ value helps with reporting, etc. since it provides a quick and easy way to locate Orders needing attention.
-      def update_payment_state
+    def round_money(n)
+      (n*100).round / 100.0
+    end
 
-        #line_item are empty when user empties cart
-        if self.line_items.empty? || round_money(payment_total) < round_money(total)
-          self.payment_state = 'balance_due'
-          self.payment_state = 'failed' if payments.present? and payments.last.state == 'failed'
-        elsif round_money(payment_total) > round_money(total)
-          self.payment_state = 'credit_owed'
-        else
-          self.payment_state = 'paid'
-        end
+    # Updates the following Order total values:
+    #
+    # +payment_total+      The total value of all finalized Payments (NOTE: non-finalized Payments are excluded)
+    # +item_total+         The total value of all LineItems
+    # +adjustment_total+   The total value of all adjustments (promotions, credits, etc.)
+    # +total+              The so-called "order total."  This is equivalent to +item_total+ plus +adjustment_total+.
+    def update_totals
+      # update_adjustments
+      self.payment_total = payments.completed.map(&:amount).sum
+      self.item_total = line_items.map(&:amount).sum
+      self.adjustment_total = adjustments.eligible.map(&:amount).sum
+      self.total = item_total + adjustment_total
+    end
 
-        if old_payment_state = self.changed_attributes['payment_state']
-          self.state_changes.create({
-            :previous_state => old_payment_state,
-            :next_state     => self.payment_state,
-            :name           => 'payment',
-            :user_id        => self.user_id
-          }, :without_protection => true)
-        end
+    # Updates each of the Order adjustments.  This is intended to be called from an Observer so that the Order can
+    # respond to external changes to LineItem, Shipment, other Adjustments, etc.
+    # Adjustments will check if they are still eligible. Ineligible adjustments are preserved but not counted
+    # towards adjustment_total.
+    def update_adjustments
+      self.adjustments.reload.each { |adjustment| adjustment.update!(self) }
+    end
+
+    # Determine if email is required (we don't want validation errors before we hit the checkout)
+    def require_email
+      return true unless new_record? or state == 'cart'
+    end
+
+    def has_available_shipment
+      return unless has_step?("delivery")
+      return unless address?
+      return unless ship_address && ship_address.valid?
+      errors.add(:base, :no_shipping_methods_available) if available_shipping_methods.empty?
+    end
+
+    def has_available_payment
+      return unless delivery?
+      errors.add(:base, :no_payment_methods_available) if available_payment_methods.empty?
+    end
+
+    def after_cancel
+      restock_items!
+
+      #TODO: make_shipments_pending
+      OrderMailer.cancel_email(self).deliver
+      unless %w(partial shipped).include?(shipment_state)
+        self.payment_state = 'credit_owed'
       end
+    end
 
-      def round_money(n)
-        (n*100).round / 100.0
+    def restock_items!
+      line_items.each do |line_item|
+        InventoryUnit.decrease(self, line_item.variant, line_item.quantity)
       end
+    end
 
-      # Updates the following Order total values:
-      #
-      # +payment_total+      The total value of all finalized Payments (NOTE: non-finalized Payments are excluded)
-      # +item_total+         The total value of all LineItems
-      # +adjustment_total+   The total value of all adjustments (promotions, credits, etc.)
-      # +total+              The so-called "order total."  This is equivalent to +item_total+ plus +adjustment_total+.
-      def update_totals
-        # update_adjustments
-        self.payment_total = payments.completed.map(&:amount).sum
-        self.item_total = line_items.map(&:amount).sum
-        self.adjustment_total = adjustments.eligible.map(&:amount).sum
-        self.total = item_total + adjustment_total
+    def after_resume
+      unstock_items!
+    end
+
+    def unstock_items!
+      line_items.each do |line_item|
+        InventoryUnit.increase(self, line_item.variant, line_item.quantity)
       end
+    end
 
-      # Updates each of the Order adjustments.  This is intended to be called from an Observer so that the Order can
-      # respond to external changes to LineItem, Shipment, other Adjustments, etc.
-      # Adjustments will check if they are still eligible. Ineligible adjustments are preserved but not counted
-      # towards adjustment_total.
-      def update_adjustments
-        self.adjustments.reload.each { |adjustment| adjustment.update!(self) }
-      end
-
-      # Determine if email is required (we don't want validation errors before we hit the checkout)
-      def require_email
-        return true unless new_record? or state == 'cart'
-      end
-
-      def has_available_shipment
-        return unless has_step?("delivery")
-        return unless address?
-        return unless ship_address && ship_address.valid?
-        errors.add(:base, :no_shipping_methods_available) if available_shipping_methods.empty?
-      end
-
-      def has_available_payment
-        return unless delivery?
-        errors.add(:base, :no_payment_methods_available) if available_payment_methods.empty?
-      end
-
-      def after_cancel
-        restock_items!
-
-        #TODO: make_shipments_pending
-        OrderMailer.cancel_email(self).deliver
-        unless %w(partial shipped).include?(shipment_state)
-          self.payment_state = 'credit_owed'
-        end
-      end
-
-      def restock_items!
-        line_items.each do |line_item|
-          InventoryUnit.decrease(self, line_item.variant, line_item.quantity)
-        end
-      end
-
-      def after_resume
-        unstock_items!
-      end
-
-      def unstock_items!
-        line_items.each do |line_item|
-          InventoryUnit.increase(self, line_item.variant, line_item.quantity)
-        end
-      end
-
-      def use_billing?
-        @use_billing == true || @use_billing == "true" || @use_billing == "1"
-      end
+    def use_billing?
+      @use_billing == true || @use_billing == "true" || @use_billing == "1"
+    end
   end
 end

@@ -1,0 +1,41 @@
+<%= render :partial => 'spree/admin/shared/product_sub_menu' %>
+
+<%#= render :partial => 'spree/admin/shared/product_tabs', :locals => {:current => 'Variants'} %>
+
+
+
+<% if @collection.count > 0 %>
+    <table>
+      <thead>
+        <tr>
+          <td>ID</td>
+          <td>Width</td>
+          <td>Height</td>
+          <td>Price</td>
+          <td>Options</td>
+        </tr>
+      </thead>
+      <tbody>
+      <% @collection.each do |child_product| %>
+          <tr>
+            <td>
+              <%= child_product.id %>
+            </td>
+            <td>
+              <%= child_product.sign_data.width %> mm
+            </td>
+            <td>
+              <%= child_product.sign_data.height %> mm
+            </td>
+            <td>
+              &pound;<%= child_product.sign_data.price %>
+            </td>
+            <td>
+              <%= link_to "Edit", "/admin/products/#{child_product.permalink}/edit" %>
+              <%= link_to "Delete", "http://0.0.0.0:3000/admin/products/#{params[:product_id]}/variants/#{child_product.id}", :method => :delete, :confirm => "Remove Variant, Are you sure?" %>
+            </td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+<% end %>

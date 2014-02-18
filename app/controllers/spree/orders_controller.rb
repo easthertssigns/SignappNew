@@ -90,6 +90,21 @@ module Spree
       respond_with(@order) { |format| format.html { redirect_to cart_path } }
     end
 
+    def add_child_to_basket
+
+
+      product = Spree::Product.find params[:id]
+      sign_data = SignData.find product.sign_data
+      #product_id = product.id
+      variant_id = product.variants_with_only_master.id
+      quantity = 1
+      @order = current_order(true)
+      @order.add_variant(Variant.find(variant_id), quantity, sign_data) if quantity > 0
+      fire_event('spree.cart.add')
+      fire_event('spree.order.contents_changed')
+      respond_with(@order) { |format| format.html { redirect_to cart_path } }
+    end
+
     def empty
       if @order = current_order
         @order.empty!

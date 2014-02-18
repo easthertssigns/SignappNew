@@ -13,8 +13,8 @@ Spree.config do |config|
   config.default_country_id = 213
   config.address_requires_state = false
   config.logo = "/assets/header-logo.png"
+  config.searcher_class=(Spree::Core::Search::Modified)
 end
 
 #Spree.user_class = "Spree::LegacyUser"
 Spree.user_class = "Refinery::User"
-

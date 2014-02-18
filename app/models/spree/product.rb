@@ -23,6 +23,8 @@ module Spree
     has_many :option_types, :through => :product_option_types
     has_many :product_properties, :dependent => :destroy
     has_many :properties, :through => :product_properties
+    has_many :child_products, class_name: "Spree::Product", :foreign_key => :parent_id
+    #has_one :parent_product, class_name: "Spree::Product", :primary_key => :parent_id
 
     has_and_belongs_to_many :taxons, :join_table => 'spree_products_taxons'
 
@@ -45,6 +47,8 @@ module Spree
       :dependent => :destroy
 
     has_many :variants_including_master_and_deleted, :class_name => 'Spree::Variant'
+
+    has_one :sign_data, :class_name => "SignData", :foreign_key => :id, :primary_key => :sign_data_id
 
     delegate_belongs_to :master, :sku, :price, :weight, :height, :width, :depth, :is_master,
                         :small_size_price, :large_size_price, :small_size_threshold, :large_size_threshold,
@@ -77,7 +81,7 @@ module Spree
                     :variants_attributes, :taxon_ids, :option_type_ids,
                     :small_size_price, :small_size_threshold, :large_size_price, :large_size_threshold,
                     :minimum_width, :maximum_width, :minimum_height, :maximum_height, :editor_background_image_id,
-                    :is_featured, :is_material, :is_product, :show_in_menu, :featured_product
+                    :is_featured, :is_material, :is_product, :show_in_menu, :featured_product, :parent_id
 
     attr_accessible :cost_price if Variant.table_exists? && Variant.column_names.include?('cost_price')
 
@@ -105,9 +109,25 @@ module Spree
       variants.any?
     end
 
+    def has_children?
+      child_products.count > 0
+    end
+
+    def has_parent?
+      !parent_id.nil?
+    end
+
+    def parent_product
+      Spree::Product.find(parent_id)
+    end
+
     # should product be displayed on products pages and search
     def on_display?
       has_stock? || Spree::Config[:show_zero_stock_products]
+    end
+
+    def is_sub_product?
+      !parent_id.nil?
     end
 
     # is this product actually available for purchase
@@ -130,6 +150,10 @@ module Spree
     # Variants take precedence over master
     def has_stock?
       has_variants? ? variants.any?(&:in_stock?) : master.in_stock?
+    end
+
+    def select_description
+    "sdfgsdgdfg"
     end
 
     def tax_category

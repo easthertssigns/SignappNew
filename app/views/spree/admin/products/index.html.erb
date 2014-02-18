@@ -30,8 +30,12 @@
         <td>
           <% if product.is_material %>
               Material
+          <% elsif product.is_sub_product? %>
+              Child Product
+          <% elsif product.child_products.count > 0 %>
+              Parent Product (<%= product.child_products.count %>)
           <% elsif product.is_product %>
-              Product
+              Standard Product
           <% end %>
         </td>
         <td><%= link_to product.try(:name), edit_admin_product_path(product) %></td>

@@ -1,0 +1,40 @@
+<div class="labelsRow">
+  <div class="step one">
+    <label for="shapeSelect">options</label>
+  </div>
+</div>
+
+<div class="inputsRow bottom">
+
+  <select id="childSelect" name="childSelect" style="position: absolute; left: 10px; top: 5px; width: 200px;">
+    <option></option>
+    <% @product.child_products.each do |child| %>
+        <option value="<%= child.id %>|<%= Spree::Money.new child.price %>">
+          Size : <%= child.sign_data.width %>mm X <%= child.sign_data.height %>mm
+        </option>
+    <% end %>
+  </select>
+
+  <div class="step four rightFloat" id="add_to_basket">
+    <input type="submit" value="Add To Basket" onclick="add_selected_child_product_to_basket();">
+  </div>
+
+  <div class="step basePrice rightFloat">
+    <div class="priceWrapper">
+      <div id="base_price_bottom">
+        <% unless @product.price.nil? %>
+            <span class="price" id="displayPrice"><%= Spree::Money.new @product.price %></span><span class="inclVAT"> Incl. VAT</span>
+        <% end %>
+      </div>
+    </div>
+    <div id="basket_arrow" class="arrow"></div>
+  </div>
+</div>
+<script>
+    $('#base_price').hide();
+    $('#base_price_bottom').hide();
+    $('#add_to_basket').hide();
+    $('#basket_arrow').hide();
+    $('#shape_size').hide();
+    $('#sign_note').hide();
+</script>

@@ -1,0 +1,45 @@
+<%= render :partial => 'spree/admin/shared/product_sub_menu' %>
+
+<%#= render :partial => 'spree/admin/shared/product_tabs', :locals => {:current => 'Variants'} %>
+
+
+
+<% if @collection.count > 0 %>
+    <table class="index" id="listing_products">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Width</th>
+        <th>Height</th>
+        <th>Price</th>
+        <th>Options</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @collection.each do |child_product| %>
+          <tr>
+            <td>
+              <%= child_product.id %>
+            </td>
+            <td>
+              <%= child_product.sign_data.width %> mm
+            </td>
+            <td>
+              <%= child_product.sign_data.height %> mm
+            </td>
+            <td>
+              &pound;<%= child_product.sign_data.price %>
+            </td>
+            <td class="actions">
+              <%= link_to "Edit", "/admin/products/#{child_product.permalink}/edit", :class => 'edit icon_link' %>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <%= link_to "Delete", "http://0.0.0.0:3000/admin/products/#{params[:product_id]}/child_products/#{child_product.id}", :method => :delete, :confirm => "Remove Variant, Are you sure?", :class => 'delete icon_link' %>
+            </td>
+          </tr>
+      <% end %>
+      </tbody>
+    </table>
+<% else %>
+    <p>No products here, go to the custom signs tab, select a custom sign and create a child product</p>
+<% end %>
+

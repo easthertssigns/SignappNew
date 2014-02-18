@@ -7,7 +7,7 @@
                 data: { id: <%= @sign.id %>, value: box_checked }
             }).done(function (result) {
 
-                    });
+            });
         });
     });
 
@@ -18,9 +18,9 @@
                 url: "/admin/sign_data/delete_sign",
                 data: { id: id }
             }).done(function (result) {
-                        //do nothing
-                        window.location = '/admin/sign_data';
-                    });
+                //do nothing
+                window.location = '/admin/sign_data';
+            });
         }
     }
 </script>
@@ -37,9 +37,48 @@
 <div>Material: <%= get_spree_product(@sign.spree_product_id).name %></div>
 <div>Size: <%= @sign.width %> x <%= @sign.height %></div>
 <div>Price: £<%= @sign.price %></div>
+
+<BR><BR>
+<h2>Create new product</h2>
+
 <%= form_tag '/admin/sign_products' do -%>
     <input type="hidden" id="sign_data_id" name="sign_data_id" value="<%= @sign.id %>">
     <input type="submit" value="Create Product from this design">
 <% end -%>
 
-<div>Note : Created signs as products can be searched in the products normal search</div>
+<div>Note : Created signs as products can be searched in the products normal search.</div>
+
+<% if Spree::Product.where(:is_material => false).count == 0 %>
+    <!-- Show notice of requirements  -->
+    <BR>
+    <p>
+      No non-material products currently exist in the database. Once you add one you can add this or any saved sign as a
+      variant of that products.
+    </p>
+<% else %>
+    <br>
+    <h2>Append to existing product as child</h2>
+    <%= form_tag '/admin/sign_products/create_var' do -%>
+        <input type="hidden" id="sign_data_id" name="sign_data_id" value="<%= @sign.id %>">
+        Target Parent Product : <br>
+        <select id="parent_id" name="parent_id">
+          <option value="">Select a parent product</option>
+          <% Spree::Product.where(:is_material => false, :parent_id => nil).each do |parent_product| %>
+              <option value="<%= parent_product.id %>"><%= parent_product.name %></option>
+          <% end %>
+        </select>
+        <BR>
+
+        <br>
+        <input type="submit" value="Create Child Product">
+        <br>
+        Note : Child products can be accessed by editing the parent product once created
+        <script>
+            $("#parent_id").select2({
+
+            });
+        </script>
+    <% end -%>
+<% end -%>
+
+

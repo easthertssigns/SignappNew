@@ -35,6 +35,23 @@
                 }
             });
 
+            $("#childSelect").change(function () {
+                var childId = $("#childSelect").val().split('|');
+                var childPrice = childId[1].split(".");
+
+                $('#base_price').show();
+                $('#base_price_bottom').show();
+                $('#add_to_basket').show();
+                $('#basket_arrow').show();
+
+                $('#sidebarDisplayPrice').text(childPrice[0]);
+                $('#sidebarDisplayPrice').append('<sup>.' + childPrice[1] + '</sup>');
+
+                $('#displayPrice').text(childPrice[0]);
+                $('#displayPrice').append('<sup>.' + childPrice[1] + '</sup>');
+
+            });
+
             $("#shapeSelect").change(function () {
                 var selectedShape = $("#shapeSelect").val();
                 $.get("/custom_sign/get_sign_shape_sizes?id=" + selectedShape + "&product_id=" + $("#product_id").val(), function (data, status) {
@@ -116,13 +133,19 @@
                 placeholder: "Select a Shape",
                 formatResult: format_shape,
                 formatSelection: format_shape
-
             });
+
             // $('#shapeSelect').select2();
             $('#sizeSelect').select2();
+
+            $('#childSelect').select2({
+                placeholder: "Select a Variant"
+            });
+
             $('#variantSelect').select2({
                 placeholder: "Choose your Sign"
             });
+
             $("form").submit(function (e) {
                 if ($('#shapeSelect').val() <= 0 || $('#variantSelect').val() <= 0) {
                     $('.select-alert-message, .size-alert-message, .variant-alert-message').fadeIn(200);
@@ -146,41 +169,52 @@
                 url: "/custom_sign/calculate_sign_base_price",
                 data: { width: width, height: height, product_id: product_id }
             }).done(function (result) {
-                        if (result.width_to_small || result.width_to_large || result.height_to_small || result.height_to_large) {
-                            var msg = "";
+                if (result.width_to_small || result.width_to_large || result.height_to_small || result.height_to_large) {
+                    var msg = "";
 
-                            if (result.width_to_small) {
-                                msg += "\nThe width entered is too small.";
-                            }
+                    if (result.width_to_small) {
+                        msg += "\nThe width entered is too small.";
+                    }
 
-                            if (result.width_to_large) {
-                                msg += "\nThe width entered is too large.";
-                            }
+                    if (result.width_to_large) {
+                        msg += "\nThe width entered is too large.";
+                    }
 
-                            if (result.height_to_small) {
-                                msg += "\nThe height entered is too small.";
-                            }
+                    if (result.height_to_small) {
+                        msg += "\nThe height entered is too small.";
+                    }
 
-                            if (result.height_to_large) {
-                                msg += "\nThe height entered is too large.";
-                            }
+                    if (result.height_to_large) {
+                        msg += "\nThe height entered is too large.";
+                    }
 
-                            alert("The Size is invalid\n" + msg);
-                        }
-                        else {
-                            var thePrice = result.result.toFixed(2);
-                            $("#calculated_price").val(thePrice);
-                            var split_price = thePrice.split('.');
-                            var display_price = "£" + split_price[0] + "<sup>." + split_price[1] + "<sup>";
-                            //$("#displayPrice").text(result.result.toFixed(2));
-                            $("#displayPrice").html(display_price);
-                            $("#sidebarDisplayPrice").html(display_price);
-                            //alert("base price=" + result.base_price);
-                        }
-                    });
+                    alert("The Size is invalid\n" + msg);
+                }
+                else {
+                    var thePrice = result.result.toFixed(2);
+                    $("#calculated_price").val(thePrice);
+                    var split_price = thePrice.split('.');
+                    var display_price = "£" + split_price[0] + "<sup>." + split_price[1] + "<sup>";
+                    //$("#displayPrice").text(result.result.toFixed(2));
+                    $("#displayPrice").html(display_price);
+                    $("#sidebarDisplayPrice").html(display_price);
+                    //alert("base price=" + result.base_price);
+                }
+            });
+        }
+
+        function add_selected_child_product_to_basket() {
+            // get child product id
+            var childId = $("#childSelect").val().split('|');
+            var childPrice = childId[1].split(".");
+
+            var child_product_id = childId[0];
+
+            document.location = '/orders/add_child_to_basket?id=' + child_product_id
         }
     </script>
 <% end %>
+
 <div data-hook="product_show" itemscope itemtype="http://schema.org/Product">
   <% @body_id = 'product-details' %>
   <h1 class="product-title" itemprop="name"><%= accurate_title %></h1>
@@ -211,23 +245,32 @@
         <%#= render :partial => 'taxons' %>
       </div>
       <div class="priceColumn">
-        <h2>Base price</h2>
+        <div id="base_price">
+          <h2>Base price</h2>
 
-        <div class="priceWrapper">
-          <% unless @product.price.nil? %>
-            <p>  From <span class="price" id="sidebarDisplayPrice"><%= Spree::Money.new @product.price %></span><span class="inclVAT"> Incl. VAT</span> </p>
-          <% end %>
+          <div class="priceWrapper">
+            <% if !@product.price.nil? %>
+                <p> From
+                  <span class="price" id="sidebarDisplayPrice"><%= Spree::Money.new @product.price %></span><span class="inclVAT"> Incl. VAT</span>
+                </p>
+            <% end %>
+          </div>
+          <div id="shape_size">
+            <h3>Based on your dimensions:</h3>
+
+
+            <p><strong>Shape: </strong><span id="displayShape">Not Selected</span></p>
+
+            <p><strong>Size: </strong><span id="displaySize">Not Selected</span></p>
+          </div>
         </div>
-        <h3>Based on your dimensions:</h3>
-
-        <p><strong>Shape: </strong><span id="displayShape">Not Selected</span></p>
-
-        <p><strong>Size: </strong><span id="displaySize">Not Selected</span></p>
         <%#= link_to 'View The Size Guide', '/product-size-guide', :class => 'sizeGuideLink' %>
-        <h3>Note:</h3>
+        <div id="sign_note">
+          <h3>Note:</h3>
 
-        <p>The final price or your sign will be affected by the amount of elements you add to your design but you will
-          be able to see exactly how much each element will cost as you are adding them.</p>
+          <p>The final price or your sign will be affected by the amount of elements you add to your design but you will
+            be able to see exactly how much each element will cost as you are adding them.</p>
+        </div>
       </div>
       <div class="whiteTip"></div>
       <div class="clearfix"></div>
@@ -244,18 +287,32 @@
               <% end %>
               <div class="clearfix"></div>
               <div id="custom_size_div" style="display: none">
-                <label style="margin-bottom: 5px; display: block;">This sign can be any size between <%= @product.master.minimum_width * 10 %>mm
+                <label style="margin-bottom: 5px; display: block;">This sign can be any size
+                  between <%= @product.master.minimum_width * 10 %>mm
                   x <%= @product.master.minimum_height * 10 %>mm and <%= @product.master.maximum_width * 10 %>mm
                   x <%= @product.master.maximum_height * 10 %>mm
                 </label>
+
                 <div><%= label_tag "Width (mm)" %> <%= text_field_tag "custom_width" %> <%= label_tag "Height (mm)" %> <%= text_field_tag "custom_height" %>
-                  <input type="button" id="custom_size_button" value="Set Size"></div>
+                  <input type="button" id="custom_size_button" value="Set Size">
+                </div>
               </div>
               <div class="clearfix"></div>
           <% end %>
           <!--<div id="cart-form" data-hook="cart_form">-->
           <!--<%= render :partial => 'cart_form' %>-->
           <!--</div>-->
+      <% elsif @product.child_products.count > 0 %>
+          <h3>Choose a shape &amp; size</h3>
+
+          <%= hidden_field_tag "product_id", @product.id %>
+
+          <%= render :partial => 'input_row_with_children' %>
+
+          <div class="clearfix"></div>
+
+          <div class="clearfix"></div>
+
       <% else %>
           <h3>Buy this product</h3>
 

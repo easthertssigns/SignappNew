@@ -167,6 +167,10 @@ Spree::Core::Engine.routes.draw do
 
   get "account/overview"
 
+  match "orders/add_child_to_basket" => "orders#add_child_to_basket"
+
+  get "orders/add_child_to_basket"
+
   namespace :admin do
     resources :sign_graphics
     resources :sign_shape
@@ -174,7 +178,14 @@ Spree::Core::Engine.routes.draw do
     resources :sign_category
     resources :sign_data
     resources :sign_size
-    resources :sign_products
+    resources :products do
+      resources :child_products
+    end
+    resources :sign_products do
+      collection do
+        post "create_var"
+      end
+    end
   end
 end
 

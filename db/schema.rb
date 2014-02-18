@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131022212250) do
+ActiveRecord::Schema.define(:version => 20140216121113) do
 
   create_table "custom_signs", :force => true do |t|
     t.integer  "spree_user_id"
@@ -745,6 +745,7 @@ ActiveRecord::Schema.define(:version => 20131022212250) do
     t.integer  "sign_data_id"
     t.boolean  "show_in_menu"
     t.boolean  "featured_product"
+    t.integer  "parent_id"
   end
 
   add_index "spree_products", ["available_on"], :name => "index_spree_products_on_available_on"
