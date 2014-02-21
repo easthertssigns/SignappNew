@@ -288,9 +288,21 @@
               <div class="clearfix"></div>
               <div id="custom_size_div" style="display: none">
                 <label style="margin-bottom: 5px; display: block;">This sign can be any size
-                  between <%= @product.master.minimum_width * 10 %>mm
-                  x <%= @product.master.minimum_height * 10 %>mm and <%= @product.master.maximum_width * 10 %>mm
-                  x <%= @product.master.maximum_height * 10 %>mm
+                  between
+                  <% if @product.master.minimum_width %>
+                      <%= @product.master.minimum_width * 10 %>
+                  <% end %>mm
+                  x
+                  <% if @product.master.minimum_height %>
+                      <%= @product.master.minimum_height * 10 %>
+                  <% end %>mm and
+                  <% if @product.master.maximum_width %>
+                      <%= @product.master.maximum_width * 10 %>
+                  <% end %>mm
+                  x
+                  <% if @product.master.maximum_height %>
+                      <%= @product.master.maximum_height * 10 %>
+                  <% end %>mm
                 </label>
 
                 <div><%= label_tag "Width (mm)" %> <%= text_field_tag "custom_width" %> <%= label_tag "Height (mm)" %> <%= text_field_tag "custom_height" %>
@@ -315,28 +327,24 @@
 
       <% else %>
           <h3>Buy this product</h3>
-
-          <div class="button">
-            <a href="/orders/add_saved_sign_to_basket?id=<%= @product.sign_data_id.to_s %>">Add to basket</a></div>
-          <div class="button">
-            <a href="/custom_sign/customise_sign/<%= @product.sign_data_id.to_s %>">Customise this sign</a>
-          </div>
+          <a href="/orders/add_saved_sign_to_basket?id=<%= @product.sign_data_id.to_s %>" class="button red">Add to
+            Basket</a></div>
       <% end %>
-    </div>
-    <% if @product.relations && @product.relations.count > 0 %>
-        <div class="relatedProducts fixed_container_12">
-          <div class="fixed_grid_12">
-            <h4>You may also be interested in&hellip;</h4>
-          </div>
-          <% get_related_products(@product.id).each do |rp| %>
-              <div class="grid_2">
-                <h5><%= link_to rp.name, rp %></h5>
-                <%= link_to basket_icon_image(rp), rp %>
-              </div>
-          <% end %>
+      </div>
+  <% if @product.relations && @product.relations.count > 0 %>
+      <div class="relatedProducts fixed_container_12">
+        <div class="fixed_grid_12">
+          <h4>You may also be interested in&hellip;</h4>
         </div>
-    <% end %>
-    <div class="clearfix"></div>
-    <div class="upperShadow"></div>
-  </div>
+        <% get_related_products(@product.id).each do |rp| %>
+            <div class="grid_2">
+              <h5><%= link_to rp.name, rp %></h5>
+              <%= link_to basket_icon_image(rp), rp %>
+            </div>
+        <% end %>
+      </div>
+  <% end %>
+  <div class="clearfix"></div>
+  <div class="upperShadow"></div>
+</div>
 </div>

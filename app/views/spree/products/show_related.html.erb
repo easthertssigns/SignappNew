@@ -142,38 +142,38 @@
                 url: "/custom_sign/calculate_sign_base_price",
                 data: { width: width, height: height, product_id: product_id }
             }).done(function (result) {
-                        if (result.width_to_small || result.width_to_large || result.height_to_small || result.height_to_large) {
-                            var msg = "";
+                if (result.width_to_small || result.width_to_large || result.height_to_small || result.height_to_large) {
+                    var msg = "";
 
-                            if (result.width_to_small) {
-                                msg += "\nThe width entered is too small.";
-                            }
+                    if (result.width_to_small) {
+                        msg += "\nThe width entered is too small.";
+                    }
 
-                            if (result.width_to_large) {
-                                msg += "\nThe width entered is too large.";
-                            }
+                    if (result.width_to_large) {
+                        msg += "\nThe width entered is too large.";
+                    }
 
-                            if (result.height_to_small) {
-                                msg += "\nThe height entered is too small.";
-                            }
+                    if (result.height_to_small) {
+                        msg += "\nThe height entered is too small.";
+                    }
 
-                            if (result.height_to_large) {
-                                msg += "\nThe height entered is too large.";
-                            }
+                    if (result.height_to_large) {
+                        msg += "\nThe height entered is too large.";
+                    }
 
-                            alert("The Size is invalid\n" + msg);
-                        }
-                        else {
-                            var thePrice = result.result.toFixed(2);
-                            $("#calculated_price").val(thePrice);
-                            var split_price = thePrice.split('.');
-                            var display_price = "£" + split_price[0] + "<sup>." + split_price[1] + "<sup>";
-                            //$("#displayPrice").text(result.result.toFixed(2));
-                            $("#displayPrice").html(display_price);
-                            $("#sidebarDisplayPrice").html(display_price);
-                            //alert("base price=" + result.base_price);
-                        }
-                    });
+                    alert("The Size is invalid\n" + msg);
+                }
+                else {
+                    var thePrice = result.result.toFixed(2);
+                    $("#calculated_price").val(thePrice);
+                    var split_price = thePrice.split('.');
+                    var display_price = "£" + split_price[0] + "<sup>." + split_price[1] + "<sup>";
+                    //$("#displayPrice").text(result.result.toFixed(2));
+                    $("#displayPrice").html(display_price);
+                    $("#sidebarDisplayPrice").html(display_price);
+                    //alert("base price=" + result.base_price);
+                }
+            });
         }
     </script>
 <% end %>
@@ -240,10 +240,24 @@
               <% end %>
               <div class="clearfix"></div>
               <div id="custom_size_div" style="display: none">
-                <label style="margin-bottom: 5px; display: block;">This sign can be any size between <%= @product.master.minimum_width * 10 %>mm
-                  x <%= @product.master.minimum_height * 10 %>mm and <%= @product.master.maximum_width * 10 %>mm
-                  x <%= @product.master.maximum_height * 10 %>mm
+                <label style="margin-bottom: 5px; display: block;">This sign can be any size
+                  between
+                  <% if @product.master.minimum_width %>
+                      <%= @product.master.minimum_width * 10 %>
+                  <% end %>mm
+                  x
+                  <% if @product.master.minimum_height %>
+                      <%= @product.master.minimum_height * 10 %>
+                  <% end %>mm and
+                  <% if @product.master.maximum_width %>
+                      <%= @product.master.maximum_width * 10 %>
+                  <% end %>mm
+                  x
+                  <% if @product.master.maximum_height %>
+                      <%= @product.master.maximum_height * 10 %>
+                  <% end %>mm
                 </label>
+
                 <div><%= label_tag "Width (mm)" %> <%= text_field_tag "custom_width" %> <%= label_tag "Height (mm)" %> <%= text_field_tag "custom_height" %>
                   <input type="button" id="custom_size_button" value="Set Size"></div>
               </div>
@@ -254,28 +268,24 @@
           <!--</div>-->
       <% else %>
           <h3>Buy this product</h3>
-
-          <div class="button">
-            <a href="/orders/add_saved_sign_to_basket?id=<%= @product.sign_data_id.to_s %>">Add to basket</a></div>
-          <div class="button">
-            <a href="/custom_sign/customise_sign/<%= @product.sign_data_id.to_s %>">Customise this sign</a>
-          </div>
+          <a href="/orders/add_saved_sign_to_basket?id=<%= @product.sign_data_id.to_s %>" class="button red">Add to
+            Basket</a></div>
       <% end %>
-    </div>
-    <% if @product.relations && @product.relations.count > 0 %>
-        <div class="relatedProducts fixed_container_12">
-          <div class="fixed_grid_12">
-            <h4>You may also be interested in&hellip;</h4>
-          </div>
-          <% get_related_products(@product.id).each do |rp| %>
-              <div class="grid_2">
-                <h5><%= link_to rp.name, rp %></h5>
-                <%= link_to related_image(rp), rp %>
-              </div>
-          <% end %>
+      </div>
+  <% if @product.relations && @product.relations.count > 0 %>
+      <div class="relatedProducts fixed_container_12">
+        <div class="fixed_grid_12">
+          <h4>You may also be interested in&hellip;</h4>
         </div>
-    <% end %>
-    <div class="clearfix"></div>
-    <div class="upperShadow"></div>
-  </div>
+        <% get_related_products(@product.id).each do |rp| %>
+            <div class="grid_2">
+              <h5><%= link_to rp.name, rp %></h5>
+              <%= link_to related_image(rp), rp %>
+            </div>
+        <% end %>
+      </div>
+  <% end %>
+  <div class="clearfix"></div>
+  <div class="upperShadow"></div>
+</div>
 </div>

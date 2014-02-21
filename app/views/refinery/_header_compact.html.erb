@@ -24,7 +24,7 @@
       <nav id="menu" class="menu">
         <ul>
           <li><a href="/">Home</a></li>
-          <li class="topLevel"><a href="#">Shop for Ideas</a>
+          <li class="topLevel"><a href="#">Design by Material</a>
 
             <div class="megaMenu">
               <% get_taxonomies.each do |taxonomy| %>
@@ -43,14 +43,14 @@
                     <h5><%= get_product_list_for_menu.name %></h5>
                     <p><%= truncate(get_product_list_for_menu.description, :length => 80) %> </p>
                     <p class="price">From <span><%= get_product_list_for_menu.display_price %></span></p>
-                    <a href="<%= '/products/' + get_product_list_for_menu.permalink %>" class="button red">Buy</a><a href="<%= '/products/' + get_product_list_for_menu.permalink %>" class="button">Customise</a>
-                    <a href="/how-does-customisation-works" class="customisation">How does customisation work?</a>
+                    <a href="<%= '/products/' + get_product_list_for_menu.permalink %>" class="button red">Add to Basket</a>
+                    <a href="/how-does-personalisation-works" class="customisation">How does Personalisation work?</a>
                 <% end %>
                 <div class="clearfix"></div>
               </div>
             </div>
           </li>
-          <li class="topLevel"><a href="/t/business-signs">Business Signs</a>
+          <li class="topLevel"><a href="/t/business-signs">Design by Type</a>
             <div class="megaMenu">
               <ul>
                 <% get_taxonomies.where(:name => 'Business Signs').each do |taxonomy| %>
