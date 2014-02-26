@@ -32,19 +32,19 @@ module Spree
     belongs_to :shipping_category
 
     has_one :master,
-      :class_name => 'Spree::Variant',
-      :conditions => { :is_master => true },
-      :dependent => :destroy
+            :class_name => 'Spree::Variant',
+            :conditions => {:is_master => true},
+            :dependent => :destroy
 
     has_many :variants,
-      :class_name => 'Spree::Variant',
-      :conditions => { :is_master => false, :deleted_at => nil },
-      :order => :position
+             :class_name => 'Spree::Variant',
+             :conditions => {:is_master => false, :deleted_at => nil},
+             :order => :position
 
     has_many :variants_including_master,
-      :class_name => 'Spree::Variant',
-      :conditions => { :deleted_at => nil },
-      :dependent => :destroy
+             :class_name => 'Spree::Variant',
+             :conditions => {:deleted_at => nil},
+             :dependent => :destroy
 
     has_many :variants_including_master_and_deleted, :class_name => 'Spree::Variant'
 
@@ -81,7 +81,7 @@ module Spree
                     :variants_attributes, :taxon_ids, :option_type_ids,
                     :small_size_price, :small_size_threshold, :large_size_price, :large_size_threshold,
                     :minimum_width, :maximum_width, :minimum_height, :maximum_height, :editor_background_image_id,
-                    :is_featured, :is_material, :is_product, :show_in_menu, :featured_product, :parent_id
+                    :is_featured, :is_material, :is_product, :show_in_menu, :featured_product, :parent_id, :price_overide
 
     attr_accessible :cost_price if Variant.table_exists? && Variant.column_names.include?('cost_price')
 
@@ -153,7 +153,7 @@ module Spree
     end
 
     def select_description
-    "sdfgsdgdfg"
+      "sdfgsdgdfg"
     end
 
     def tax_category
@@ -173,6 +173,7 @@ module Spree
 
     # Adding properties and option types on creation based on a chosen prototype
     attr_reader :prototype_id
+
     def prototype_id=(value)
       @prototype_id = value.to_i
     end
@@ -183,6 +184,30 @@ module Spree
       option_values_hash.keys.map(&:to_i).each do |id|
         self.option_type_ids << id unless option_type_ids.include?(id)
         product_option_types.create({:option_type_id => id}, :without_protection => true) unless product_option_types.map(&:option_type_id).include?(id)
+      end
+    end
+
+    def get_price_for_type
+
+
+      if parent_id.nil? && !is_material
+        if price_overide.blank?
+          sign_data.price
+        else
+          price_overide
+        end
+        # material
+      elsif is_material
+
+          price
+
+        # not material, not single product from sign, leaves child sign
+      else
+        if price_overide.blank?
+          sign_data.price
+        else
+          price_overide
+        end
       end
     end
 
@@ -229,7 +254,7 @@ module Spree
     # eg categorise_variants_from_option(color) => {"red" -> [...], "blue" -> [...]}
     def categorise_variants_from_option(opt_type)
       return {} unless option_types.include?(opt_type)
-      variants.active.group_by { |v| v.option_values.detect { |o| o.option_type == opt_type} }
+      variants.active.group_by { |v| v.option_values.detect { |o| o.option_type == opt_type } }
     end
 
     def self.like_any(fields, values)
@@ -266,54 +291,54 @@ module Spree
 
     private
 
-      # Builds variants from a hash of option types & values
-      def build_variants_from_option_values_hash
-        ensure_option_types_exist_for_values_hash
-        values = option_values_hash.values
-        values = values.inject(values.shift) { |memo, value| memo.product(value).map(&:flatten) }
+    # Builds variants from a hash of option types & values
+    def build_variants_from_option_values_hash
+      ensure_option_types_exist_for_values_hash
+      values = option_values_hash.values
+      values = values.inject(values.shift) { |memo, value| memo.product(value).map(&:flatten) }
 
-        values.each do |ids|
-          variant = variants.create({ :option_value_ids => ids, :price => master.price }, :without_protection => true)
-        end
-        save
+      values.each do |ids|
+        variant = variants.create({:option_value_ids => ids, :price => master.price}, :without_protection => true)
       end
+      save
+    end
 
-      def add_properties_and_option_types_from_prototype
-        if prototype_id && prototype = Spree::Prototype.find_by_id(prototype_id)
-          prototype.properties.each do |property|
-            product_properties.create({:property => property}, :without_protection => true)
-          end
-          self.option_types = prototype.option_types
+    def add_properties_and_option_types_from_prototype
+      if prototype_id && prototype = Spree::Prototype.find_by_id(prototype_id)
+        prototype.properties.each do |property|
+          product_properties.create({:property => property}, :without_protection => true)
         end
+        self.option_types = prototype.option_types
       end
+    end
 
-      def recalculate_count_on_hand
-        product_count_on_hand = has_variants? ?
+    def recalculate_count_on_hand
+      product_count_on_hand = has_variants? ?
           variants.sum(:count_on_hand) : (master ? master.count_on_hand : 0)
-        self.count_on_hand = product_count_on_hand
-      end
+      self.count_on_hand = product_count_on_hand
+    end
 
-      # the master on_hand is meaningless once a product has variants as the inventory
-      # units are now "contained" within the product variants
-      def set_master_on_hand_to_zero_when_product_has_variants
-        master.on_hand = 0 if has_variants? && Spree::Config[:track_inventory_levels]
-      end
+    # the master on_hand is meaningless once a product has variants as the inventory
+    # units are now "contained" within the product variants
+    def set_master_on_hand_to_zero_when_product_has_variants
+      master.on_hand = 0 if has_variants? && Spree::Config[:track_inventory_levels]
+    end
 
-      # ensures the master variant is flagged as such
-      def set_master_variant_defaults
-        master.is_master = true
-      end
+    # ensures the master variant is flagged as such
+    def set_master_variant_defaults
+      master.is_master = true
+    end
 
-      # there's a weird quirk with the delegate stuff that does not automatically save the delegate object
-      # when saving so we force a save using a hook.
-      def save_master
-        master.save if master && (master.changed? || master.new_record?)
-      end
+    # there's a weird quirk with the delegate stuff that does not automatically save the delegate object
+    # when saving so we force a save using a hook.
+    def save_master
+      master.save if master && (master.changed? || master.new_record?)
+    end
 
-      def ensure_master
-        return unless new_record?
-        self.master ||= Variant.new
-      end
+    def ensure_master
+      return unless new_record?
+      self.master ||= Variant.new
+    end
   end
 end
 

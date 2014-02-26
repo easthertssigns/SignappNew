@@ -203,14 +203,14 @@
             });
         }
 
-        function add_selected_child_product_to_basket() {
+        function customise_selected_product() {
             // get child product id
             var childId = $("#childSelect").val().split('|');
             var childPrice = childId[1].split(".");
 
             var child_product_id = childId[0];
 
-            document.location = '/orders/add_child_to_basket?id=' + child_product_id
+            document.location = '/custom_sign/customise_sign/' + child_product_id
         }
     </script>
 <% end %>
@@ -251,7 +251,7 @@
           <div class="priceWrapper">
             <% if !@product.price.nil? %>
                 <p> From
-                  <span class="price" id="sidebarDisplayPrice"><%= Spree::Money.new @product.price %></span><span class="inclVAT"> Incl. VAT</span>
+                  <span class="price" id="sidebarDisplayPrice"><%= Spree::Money.new @product.get_price_for_type %></span><span class="inclVAT"> Incl. VAT</span>
                 </p>
             <% end %>
           </div>
@@ -327,7 +327,7 @@
 
       <% else %>
           <h3>Buy this product</h3>
-          <a href="/orders/add_saved_sign_to_basket?id=<%= @product.sign_data_id.to_s %>" class="button red">Add to
+          <a href="/orders/add_saved_sign_to_basket?id=<%= @product.id.to_s %>" class="button red">Add to
             Basket</a></div>
       <% end %>
       </div>

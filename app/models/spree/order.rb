@@ -260,7 +260,11 @@ module Spree
     end
 
     def add_variant(variant, quantity = 1, sign_data)
+
+      #raise variant.to_yaml
+
       current_item = find_line_item_by_variant_sign_data(variant, sign_data)
+
       if current_item
         current_item.quantity += quantity
         current_item.save
@@ -270,10 +274,27 @@ module Spree
         #current_item.price   = variant.price
         current_item.sign_data_id = sign_data.id
 
-        if variant.product.parent_id.nil?
-          current_item.price = sign_data.price
+        # single product, not material, not child
+        if variant.product.parent_id.nil? && !variant.product.is_material
+          if variant.product.price_overide.blank?
+            current_item.price = sign_data.price
+          else
+            current_item.price = variant.product.price_overide
+          end
+          # material
+        elsif variant.product.is_material
+          if variant.product.price_overide.blank?
+            current_item.price = sign_data.price
+          else
+            current_item.price = variant.product.price_overide
+          end
+          # not material, not single product from sign, leaves child sign
         else
-          current_item.price = variant.price
+          if variant.product.price_overide.blank?
+            current_item.price = sign_data.price
+          else
+            current_item.price = variant.product.price_overide
+          end
         end
 
         self.line_items << current_item

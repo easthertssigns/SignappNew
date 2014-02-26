@@ -78,9 +78,15 @@ module Spree
     end
 
     def add_saved_sign_to_basket
-      sign_data = SignData.find params[:id]
-      product = Spree::Product.find sign_data.spree_product_id
-      product_id = product.id
+      #raise params[:id]
+
+      product = Spree::Product.find(params[:id])
+
+
+
+      sign_data = product.sign_data
+      #product = Spree::Product.find sign_data.spree_product_id
+      #product_id = product.id
       variant_id = product.variants_with_only_master.id
       quantity = 1
       @order = current_order(true)

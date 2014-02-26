@@ -99,7 +99,7 @@ module Spree
           new_sign_data.price = sign_data.price
           new_sign_data.shape_id = sign_data.shape_id
           new_sign_data.sign_data = sign_data.sign_data
-          new_sign_data.spree_product_id = sign_data.spree_product_id
+
           new_sign_data.width = sign_data.width
           new_sign_data.image = open(sign_data.image.url)
 
@@ -130,6 +130,10 @@ module Spree
           unless @product.save
             raise @product.errors.to_yaml
           end
+
+          new_sign_data.spree_product_id = @product.id
+          new_sign_data.save
+
           #how to set the taxonomy? Try this first and see what happens though
           redirect_to "/admin/products/#{@product.permalink}/edit"
         end

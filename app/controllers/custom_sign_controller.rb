@@ -188,14 +188,24 @@ class CustomSignController < ApplicationController
 
     # check that this is available to capture
 
+    #raise sign_data.product.is_product
+
     if sign_data.product.is_product != false
+
+      #raise !sign_data.product.price_overide.blank?.to_s
 
       new_sign_data = SignData.new
       new_sign_data.account_id = spree_current_user ? spree_current_user.id : nil #this wants fixing at some point
       new_sign_data.description = sign_data.description
       new_sign_data.height = sign_data.height
       new_sign_data.name = sign_data.name
-      new_sign_data.price = sign_data.price
+
+      if !sign_data.product.price_overide.blank?
+        new_sign_data.price = sign_data.product.price_overide
+      else
+        new_sign_data.price = sign_data.price
+      end
+
       new_sign_data.shape_id = sign_data.shape_id
       new_sign_data.sign_data = sign_data.sign_data
       new_sign_data.spree_product_id = sign_data.spree_product_id

@@ -501,181 +501,7 @@
 
         })(canvas.setActiveObject);
 
-        function dblClickHandler() {
-            var activeObject = canvas.getActiveObject();
 
-            if (canvas.getActiveObject() && canvas.getActiveObject().type === 'text') {
-
-                console.log("vertical pos: " + (parseInt(activeObject.top) + parseInt(activeObject.height / 2)));
-                console.log("canvas height: " + (parseInt(canvas.height)));
-
-                var activeObjectFontFamily = canvas.getActiveObject().fontFamily;
-                $('#fontFamily').val(activeObjectFontFamily).trigger("change");
-                $('#textArea').val(activeObject.text);
-
-                var activeObjectFontSize = canvas.getActiveObject().fontSize;
-                $('#fontSize').val(activeObjectFontSize).trigger("change");
-                $('#textArea').val(activeObject.text);
-
-                // console.log('-webkit-transform : rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')');
-
-                console.log("double click text object");
-
-                if (!$.browser.webkit) {
-                    $('#textArea').css({
-                        display: 'block',
-                        left: activeObject.left - (activeObject.width * activeObject.scaleX) / 2,
-                        //top: activeObject.top + activeObject.height / 2 + 10,
-                        width: activeObject.width * activeObject.scaleX,
-                        height: (activeObject.text.split("\n").length + 1) * 12,
-                        zIndex: 100,
-                        backgroundColor: "#ffffff",
-                        padding: 5,
-                        textAlign: activeObject.textAlign,
-                        textDecoration: activeObject.textDecoration
-                    }).focus();
-
-                    if (parseInt(activeObject.top) + parseInt(activeObject.height * activeObject.scaleX / 2) > parseInt(canvas.height / 2)) {
-                        $('#textArea').css({
-                            top: parseInt(activeObject.top) - parseInt(activeObject.height * activeObject.scaleX / 2) - 20 - $('#textArea').height()
-                        });
-                    }
-                    else {
-                        $('#textArea').css({
-                            top: parseInt(activeObject.top) + parseInt(activeObject.height * activeObject.scaleX / 2) + 10
-                        });
-                    }
-                }
-                else {
-
-                    $('#textArea').css({
-                        '-webkit-transform': 'rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
-                        '-moz-transform': 'rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
-                        '-0-transform': 'rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
-                        '-ms-transform': 'rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
-                        display: 'block',
-                        fontFamily: activeObject.fontFamily,
-                        fontSize: activeObject.fontSize + 'px',
-                        height: activeObject.height,
-                        left: activeObject.left - (activeObject.width) / 2,
-                        lineHeight: activeObject.lineHeight,
-                        textAlign: activeObject.textAlign,
-                        top: (activeObject.top - activeObject.height / 2) + textboxadditionaltopforie10,
-                        width: activeObject.width + textboxadditionalwidthforie10,
-                        zIndex: 100
-                    });
-                    $('#textArea').focus();
-                    $('#textArea')[0].setSelectionRange($('#textArea').val().length - 1, $('#textArea').val().length - 1);
-
-
-                }
-
-                canvas.observe('object:modified', function () {
-                    if (!$.browser.webkit) {
-
-                        console.log("vertical pos: " + (parseInt(activeObject.top) + parseInt(activeObject.height / 2)));
-                        console.log("canvas height: " + (parseInt(canvas.height)));
-
-                        $('#textArea').css({
-                            '-webkit-transform': 'rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
-                            height: ($("#textArea").val().split("\n").length + 1) * 12,
-                            left: activeObject.left - (activeObject.width * activeObject.scaleX) / 2,
-                            width: activeObject.width * activeObject.scaleX,
-                            textAlign: activeObject.textAlign,
-                            textDecoration: activeObject.textDecoration
-                        });
-
-                        // CHECK IF THE TEXT OBJECT IS GREATER THAN 50% below top
-                        if (parseInt(activeObject.top) + parseInt(activeObject.height * activeObject.scaleX / 2) > parseInt(canvas.height / 2)) {
-                            $('#textArea').css({
-                                top: parseInt(activeObject.top) - parseInt(activeObject.height * activeObject.scaleX / 2) - 20 - $('#textArea').height()
-                            });
-                        }
-                        else {
-                            $('#textArea').css({
-                                top: parseInt(activeObject.top) + parseInt(activeObject.height * activeObject.scaleX / 2) + 10
-                            });
-                        }
-                    }
-                    else {
-
-                        $('#textArea').css({
-                            '-webkit-transform': 'rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
-                            height: activeObject.height,
-                            left: activeObject.left - (activeObject.width / 2),
-                            top: (activeObject.top - activeObject.height / 2) + textboxadditionaltopforie10,
-                            width: activeObject.width + textboxadditionalwidthforie10
-                        });
-                    }
-
-                });
-                canvas.observe('object:moving', function () {
-                    $('#textArea').css({
-                        display: 'none'
-                    });
-                    console.log("textarea display none");
-                });
-                canvas.observe('object:scaling', function () {
-                    $('#textArea').css({
-                        display: 'none'
-                    });
-                });
-                canvas.observe('object:rotating', function () {
-                    $('#textArea').css({
-                        display: 'none'
-                    });
-                });
-                canvas.observe('after:render', function () {
-                    if (!$.browser.webkit) {
-                        $('#textArea').css({
-                            height: (activeObject.text.split("\n").length + 1) * 12,
-                            left: activeObject.left - (activeObject.width * activeObject.scaleX) / 2,
-                            textAlign: activeObject.textAlign,
-                            textDecoration: activeObject.textDecoration,
-                            //top: activeObject.top + activeObject.height / 2 + 10,
-                            width: activeObject.width * activeObject.scaleX
-                        });
-
-                        if (activeObject.top + (activeObject.height * activeObject.scaleX / 2) > canvas.height / 2) {
-                            $('#textArea').css({
-                                top: parseInt(activeObject.top) - parseInt(activeObject.height * activeObject.scaleX / 2) - 20 - $('#textArea').height()
-                            });
-                        }
-                        else {
-                            $('#textArea').css({
-                                top: activeObject.top + activeObject.height * activeObject.scaleX / 2 + 10
-                            });
-                        }
-                    }
-                    else {
-                        $('#textArea').css({
-                            fontFamily: activeObject.fontFamily,
-                            fontSize: activeObject.fontSize + 'px',
-                            fontStyle: activeObject.fontStyle,
-                            fontWeight: activeObject.fontWeight,
-                            height: activeObject.height,
-                            left: activeObject.left - activeObject.width / 2,
-                            textAlign: activeObject.textAlign,
-                            textDecoration: activeObject.textDecoration,
-                            top: (activeObject.top - activeObject.height / 2) + textboxadditionaltopforie10,
-                            width: activeObject.width + textboxadditionalwidthforie10
-                        });
-                    }
-
-                    if (activeObject.fontFamily === 'PacificoRegular') {
-                        $('#textArea').css({
-                            marginTop: activeObject.scaleY * 0.25 + 'em'
-                        });
-                    }
-                    else {
-                        $('#textArea').css({
-                            marginTop: 0
-                        })
-                    }
-                });
-            }
-
-        }
 
         fabric.util.addListener(fabric.document, 'dblclick', dblClickHandler);
         // fabric.util.removeListener(canvas_ctx.upperCanvasEl, 'dblclick', dblClickHandler);
@@ -1348,10 +1174,15 @@
         // add timed event to refresh on first text eleemnt added
         if (textUpdateOnce == null) {
             textUpdateOnce = setInterval(function () {
-                canvasUpdate()
+                canvasUpdate();
+
             }, 100);
         }
+
+
+
         canvas.renderAll();
+
 
         fabric.Canvas.prototype.getAbsoluteCoords = function (object) {
             return {
@@ -1392,6 +1223,12 @@
         text.on('rotating', function () {
             positionTooltip(text)
         });
+
+        console.log("sdfsdf");
+//        $(text).trigger("dblclick");
+
+        dblClickHandler();
+        console.log("sdfsdf");
 
         positionTooltip(text);
     });
@@ -2387,5 +2224,181 @@
     canvas.on('object:out', function (e) {
         $('#textTooltip').removeClass('visible');
     });
+
+    function dblClickHandler() {
+        var activeObject = canvas.getActiveObject();
+
+        if (canvas.getActiveObject() && canvas.getActiveObject().type === 'text') {
+
+            console.log("vertical pos: " + (parseInt(activeObject.top) + parseInt(activeObject.height / 2)));
+            console.log("canvas height: " + (parseInt(canvas.height)));
+
+            var activeObjectFontFamily = canvas.getActiveObject().fontFamily;
+            $('#fontFamily').val(activeObjectFontFamily).trigger("change");
+            $('#textArea').val(activeObject.text);
+
+            var activeObjectFontSize = canvas.getActiveObject().fontSize;
+            $('#fontSize').val(activeObjectFontSize).trigger("change");
+            $('#textArea').val(activeObject.text);
+
+            // console.log('-webkit-transform : rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')');
+
+            console.log("double click text object");
+
+            if (!$.browser.webkit) {
+                $('#textArea').css({
+                    display: 'block',
+                    left: activeObject.left - (activeObject.width * activeObject.scaleX) / 2,
+                    //top: activeObject.top + activeObject.height / 2 + 10,
+                    width: activeObject.width * activeObject.scaleX,
+                    height: (activeObject.text.split("\n").length + 1) * 12,
+                    zIndex: 100,
+                    backgroundColor: "#ffffff",
+                    padding: 5,
+                    textAlign: activeObject.textAlign,
+                    textDecoration: activeObject.textDecoration
+                }).focus();
+
+                if (parseInt(activeObject.top) + parseInt(activeObject.height * activeObject.scaleX / 2) > parseInt(canvas.height / 2)) {
+                    $('#textArea').css({
+                        top: parseInt(activeObject.top) - parseInt(activeObject.height * activeObject.scaleX / 2) - 20 - $('#textArea').height()
+                    });
+                }
+                else {
+                    $('#textArea').css({
+                        top: parseInt(activeObject.top) + parseInt(activeObject.height * activeObject.scaleX / 2) + 10
+                    });
+                }
+            }
+            else {
+
+                $('#textArea').css({
+                    '-webkit-transform': 'rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
+                    '-moz-transform': 'rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
+                    '-0-transform': 'rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
+                    '-ms-transform': 'rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
+                    display: 'block',
+                    fontFamily: activeObject.fontFamily,
+                    fontSize: activeObject.fontSize + 'px',
+                    height: activeObject.height,
+                    left: activeObject.left - (activeObject.width) / 2,
+                    lineHeight: activeObject.lineHeight,
+                    textAlign: activeObject.textAlign,
+                    top: (activeObject.top - activeObject.height / 2) + textboxadditionaltopforie10,
+                    width: activeObject.width + textboxadditionalwidthforie10,
+                    zIndex: 100
+                });
+                $('#textArea').focus();
+                $('#textArea')[0].setSelectionRange($('#textArea').val().length - 1, $('#textArea').val().length - 1);
+
+
+            }
+
+            canvas.observe('object:modified', function () {
+                if (!$.browser.webkit) {
+
+                    console.log("vertical pos: " + (parseInt(activeObject.top) + parseInt(activeObject.height / 2)));
+                    console.log("canvas height: " + (parseInt(canvas.height)));
+
+                    $('#textArea').css({
+                        '-webkit-transform': 'rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
+                        height: ($("#textArea").val().split("\n").length + 1) * 12,
+                        left: activeObject.left - (activeObject.width * activeObject.scaleX) / 2,
+                        width: activeObject.width * activeObject.scaleX,
+                        textAlign: activeObject.textAlign,
+                        textDecoration: activeObject.textDecoration
+                    });
+
+                    // CHECK IF THE TEXT OBJECT IS GREATER THAN 50% below top
+                    if (parseInt(activeObject.top) + parseInt(activeObject.height * activeObject.scaleX / 2) > parseInt(canvas.height / 2)) {
+                        $('#textArea').css({
+                            top: parseInt(activeObject.top) - parseInt(activeObject.height * activeObject.scaleX / 2) - 20 - $('#textArea').height()
+                        });
+                    }
+                    else {
+                        $('#textArea').css({
+                            top: parseInt(activeObject.top) + parseInt(activeObject.height * activeObject.scaleX / 2) + 10
+                        });
+                    }
+                }
+                else {
+
+                    $('#textArea').css({
+                        '-webkit-transform': 'rotate(' + activeObject.get('angle') + 'deg) scale(' + activeObject.scaleX + ',' + activeObject.scaleY + ')',
+                        height: activeObject.height,
+                        left: activeObject.left - (activeObject.width / 2),
+                        top: (activeObject.top - activeObject.height / 2) + textboxadditionaltopforie10,
+                        width: activeObject.width + textboxadditionalwidthforie10
+                    });
+                }
+
+            });
+            canvas.observe('object:moving', function () {
+                $('#textArea').css({
+                    display: 'none'
+                });
+                console.log("textarea display none");
+            });
+            canvas.observe('object:scaling', function () {
+                $('#textArea').css({
+                    display: 'none'
+                });
+            });
+            canvas.observe('object:rotating', function () {
+                $('#textArea').css({
+                    display: 'none'
+                });
+            });
+            canvas.observe('after:render', function () {
+                if (!$.browser.webkit) {
+                    $('#textArea').css({
+                        height: (activeObject.text.split("\n").length + 1) * 12,
+                        left: activeObject.left - (activeObject.width * activeObject.scaleX) / 2,
+                        textAlign: activeObject.textAlign,
+                        textDecoration: activeObject.textDecoration,
+                        //top: activeObject.top + activeObject.height / 2 + 10,
+                        width: activeObject.width * activeObject.scaleX
+                    });
+
+                    if (activeObject.top + (activeObject.height * activeObject.scaleX / 2) > canvas.height / 2) {
+                        $('#textArea').css({
+                            top: parseInt(activeObject.top) - parseInt(activeObject.height * activeObject.scaleX / 2) - 20 - $('#textArea').height()
+                        });
+                    }
+                    else {
+                        $('#textArea').css({
+                            top: activeObject.top + activeObject.height * activeObject.scaleX / 2 + 10
+                        });
+                    }
+                }
+                else {
+                    $('#textArea').css({
+                        fontFamily: activeObject.fontFamily,
+                        fontSize: activeObject.fontSize + 'px',
+                        fontStyle: activeObject.fontStyle,
+                        fontWeight: activeObject.fontWeight,
+                        height: activeObject.height,
+                        left: activeObject.left - activeObject.width / 2,
+                        textAlign: activeObject.textAlign,
+                        textDecoration: activeObject.textDecoration,
+                        top: (activeObject.top - activeObject.height / 2) + textboxadditionaltopforie10,
+                        width: activeObject.width + textboxadditionalwidthforie10
+                    });
+                }
+
+                if (activeObject.fontFamily === 'PacificoRegular') {
+                    $('#textArea').css({
+                        marginTop: activeObject.scaleY * 0.25 + 'em'
+                    });
+                }
+                else {
+                    $('#textArea').css({
+                        marginTop: 0
+                    })
+                }
+            });
+        }
+
+    }
 
 </script>
