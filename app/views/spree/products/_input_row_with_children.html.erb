@@ -6,17 +6,19 @@
 
 <div class="inputsRow bottom">
 
-  <select id="childSelect" name="childSelect" style="position: absolute; left: 10px; top: 5px; width: 200px;">
+  <%= @product.uniq_sign_shapes %>
+
+  <select id="childSelectShape" name="childSelectShape" style="position: absolute; left: 10px; top: 5px; width: 200px;">
     <option></option>
     <% @product.child_products.each do |child| %>
         <option value="<%= child.sign_data.id %>|<%= Spree::Money.new child.get_price_for_type %>">
-          Size : <%= child.sign_data.width %>mm X <%= child.sign_data.height %>mm
+          Shape : <%= child.sign_data.get_base_shape.name %>, Size : <%= child.sign_data.width %>mm X <%= child.sign_data.height %>mm
         </option>
     <% end %>
   </select>
 
   <div class="step four rightFloat" id="add_to_basket">
-    <input type="submit" value="Add To Basket" onclick="customise_selected_product();">
+    <input type="submit" value="Ready? Customise your sign!" onclick="customise_selected_product();">
   </div>
 
   <div class="step basePrice rightFloat">

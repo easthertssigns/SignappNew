@@ -39,7 +39,10 @@ SignappNew::Application.routes.draw do
   match "custom_sign/load_sign_ajax" => "custom_sign#load_sign_ajax"
   match "custom_sign/edit_sign" => "custom_sign#edit_sign"
   match "custom_sign/new_custom_sign" => "custom_sign#new_custom_sign"
+
   match "custom_sign/calculate_sign_base_price" => "custom_sign#calculate_sign_base_price"
+  match "custom_sign/calculate_sign_base_price_child" => "custom_sign#calculate_sign_base_price_child"
+
   match "custom_sign/delete_saved_sign" => "custom_sign#delete_saved_sign", :via => :post
   match "custom_sign/edit_sign_from_product" => "custom_sign#edit_sign_from_product"
   match "custom_sign/reset_sign_data_ajax" => "custom_sign#reset_sign_data_ajax"
@@ -52,6 +55,8 @@ SignappNew::Application.routes.draw do
   match "custom_sign/get_custom_shape_svg/:id" => "custom_sign#get_custom_shape_svg"
 
   match "custom_sign/get_sign_shape_sizes" => "custom_sign#get_sign_shape_sizes"
+  match "custom_sign/get_sign_shape_sizes_child" => "custom_sign#get_sign_shape_sizes_child"
+
   match "custom_sign/:id/get_sign_shape_svg" => "custom_sign#get_sign_shape_svg"
 
   match "admin/sign_products/product_not_found" => "spree/admin/sign_products#product_not_found"

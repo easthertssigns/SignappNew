@@ -35,6 +35,24 @@
                 }
             });
 
+            $("#sizeSelectChild").live("change", function () {
+
+                var selectedSize = $("#sizeSelectChild").val();
+
+                $("#custom_size_div").hide();
+
+                var width = selectedSize.split('|')[0];
+                var height = selectedSize.split('|')[1];
+                var child_product_id = selectedSize.split('|')[2];
+                $("#width").val(width);
+                $("#height").val(height);
+
+                $("#displaySize").text(width + 'mm x ' + height + 'mm');
+                //alert($("#sizeSelect option[value='" + selectedSize + "']").text());
+                get_calculated_price_of_sign_child();
+
+            });
+
             $("#childSelect").change(function () {
                 var childId = $("#childSelect").val().split('|');
                 var childPrice = childId[1].split(".");
@@ -65,6 +83,24 @@
                         $('.choose-shape,.select-alert-message').remove();
 
                         $('#sizeSelect').trigger('change');
+                    }
+                });
+                $("#displayShape").text($("#shapeSelect option[value='" + selectedShape + "']").text());
+            });
+
+            $("#shapeSelectChild").change(function () {
+                var selectedShape = $("#shapeSelectChild").val();
+                $.get("/custom_sign/get_sign_shape_sizes_child?id=" + selectedShape + "&product_id=" + $("#product_id").val(), function (data, status) {
+                    if (status == "success") {  //if your ajax is success
+                        // remove current size list, append new one
+                        $("#size_container .select2-container").remove();
+                        $("#sizeSelectChild").remove();
+                        // add the one from the request
+                        $("#size_container").prepend(data);
+                        $('#sizeSelectChild').select2();
+                        $('.choose-shape,.select-alert-message').remove();
+
+                        $('#sizeSelectChild').trigger('change');
                     }
                 });
                 $("#displayShape").text($("#shapeSelect option[value='" + selectedShape + "']").text());
@@ -135,8 +171,16 @@
                 formatSelection: format_shape
             });
 
+            $('#shapeSelectChild').select2({
+                placeholder: "Select a Shape",
+                formatResult: format_shape,
+                formatSelection: format_shape
+            });
+
             // $('#shapeSelect').select2();
             $('#sizeSelect').select2();
+
+            $('#sizeSelectChild').select2();
 
             $('#childSelect').select2({
                 placeholder: "Select a Variant"
@@ -157,6 +201,8 @@
             });
 
             $('#shapeSelect').trigger('change');
+
+            $('#shapeSelectChild').trigger('change');
         });
 
         function get_calculated_price_of_sign() {
@@ -203,14 +249,58 @@
             });
         }
 
+        function get_calculated_price_of_sign_child() {
+            var width = $("#width").val();
+            var height = $("#height").val();
+            var product_id = $("#sizeSelectChild").val().split("|")[2];
+//           var sign_area = width * height;
+//           var sign_price = sign_area * base_price;
+            $.ajax({
+                url: "/custom_sign/calculate_sign_base_price_child",
+                data: { width: width, height: height, product_id: product_id }
+            }).done(function (result) {
+                if (result.width_to_small || result.width_to_large || result.height_to_small || result.height_to_large) {
+                    var msg = "";
+
+                    if (result.width_to_small) {
+                        msg += "\nThe width entered is too small.";
+                    }
+
+                    if (result.width_to_large) {
+                        msg += "\nThe width entered is too large.";
+                    }
+
+                    if (result.height_to_small) {
+                        msg += "\nThe height entered is too small.";
+                    }
+
+                    if (result.height_to_large) {
+                        msg += "\nThe height entered is too large.";
+                    }
+
+                    alert("The Size is invalid\n" + msg);
+                }
+                else {
+                    var thePrice = result.result.toFixed(2);
+                    $("#calculated_price").val(thePrice);
+                    var split_price = thePrice.split('.');
+                    var display_price = "£" + split_price[0] + "<sup>." + split_price[1] + "<sup>";
+                    //$("#displayPrice").text(result.result.toFixed(2));
+                    $("#displayPrice").html(display_price);
+                    $("#sidebarDisplayPrice").html(display_price);
+                    //alert("base price=" + result.base_price);
+                }
+            });
+        }
+
         function customise_selected_product() {
             // get child product id
-            var childId = $("#childSelect").val().split('|');
-            var childPrice = childId[1].split(".");
+            var childId = $("#sizeSelectChild").val().split('|')[2];
+//            var childPrice = childId[1].split(".");
+//
+//            var child_product_id = childId[0];
 
-            var child_product_id = childId[0];
-
-            document.location = '/custom_sign/customise_sign/' + child_product_id
+            document.location = '/custom_sign/customise_sign/' + childId
         }
     </script>
 <% end %>
@@ -319,7 +409,7 @@
 
           <%= hidden_field_tag "product_id", @product.id %>
 
-          <%= render :partial => 'input_row_with_children' %>
+          <%= render :partial => 'input_row_with_children_2' %>
 
           <div class="clearfix"></div>
 

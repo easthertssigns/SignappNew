@@ -184,11 +184,8 @@ class CustomSignController < ApplicationController
 
     # duplicate to new ID and redirect to edit sign
 
-    sign_data = SignData.find params[:id]
-
-    # check that this is available to capture
-
-    #raise sign_data.product.is_product
+    prod = Spree::Product.find params[:id]
+    sign_data = prod.sign_data
 
     if sign_data.product.is_product != false
 
@@ -274,9 +271,11 @@ class CustomSignController < ApplicationController
   end
 
   def edit_sign
-    if spree_current_user.has_role?(:superuser).to_s || @sign.account_id == spree_current_user.id
+    sign_data = SignData.find params[:id]
 
-      @sign_data = SignData.find params[:id]
+    if spree_current_user && (spree_current_user.has_role?(:superuser).to_s || @sign_data.account_id == spree_current_user.id) || sign_data.product.has_parent?
+
+      @sign_data = sign_data
       render :layout => "edit_sign"
     end
   end
@@ -317,6 +316,24 @@ class CustomSignController < ApplicationController
     @sign_sizes = sign_shape.sign_sizes.where("width > ? AND width < ? AND height > ? AND height < ?", product.master.minimum_width * 10, product.master.maximum_width * 10, product.master.minimum_height * 10, product.master.maximum_height * 10)
     @custom_sign_size = sign_shape.custom_size
     render :partial => "size_select"
+  end
+
+  def get_sign_shape_sizes_child
+    sign_shape = SignBaseShape.find(params[:id])
+    product = Spree::Product.find(params[:product_id])
+
+    # sign sizes are in mm
+    # variants are in CM
+
+    @sign_sizes = []
+
+    product.child_products.each do |cp|
+      if cp.sign_data && cp.sign_data.shape_id == sign_shape.id
+        @sign_sizes << {:width => cp.sign_data.width, :height => cp.sign_data.height, :price => cp.get_price_for_type, :child_product_id => cp.id }
+      end
+    end
+
+    render :partial => "size_select_child"
   end
 
   def new_custom_sign
@@ -397,6 +414,18 @@ class CustomSignController < ApplicationController
         :width_to_large => width_to_large,
         :height_to_small => height_to_small,
         :height_to_large => height_to_large
+    }
+  end
+
+  def calculate_sign_base_price_child
+    product = Spree::Product.find params[:product_id]
+
+    render :json => {
+        :result => product.get_price_for_type,
+        :width_to_small => false,
+        :width_to_large => false,
+        :height_to_small => false,
+        :height_to_large => false
     }
   end
 

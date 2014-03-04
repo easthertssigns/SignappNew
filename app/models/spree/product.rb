@@ -126,6 +126,22 @@ module Spree
       has_stock? || Spree::Config[:show_zero_stock_products]
     end
 
+    def uniq_sign_shapes
+      if has_children?
+        shapes = []
+
+        child_products.each do |cp|
+          if cp.sign_data
+            shapes << cp.sign_data.get_base_shape
+          end
+        end
+
+        shapes.uniq.sort_by{ |e| e.name }
+      else
+        []
+      end
+    end
+
     def is_sub_product?
       !parent_id.nil?
     end
@@ -199,7 +215,7 @@ module Spree
         # material
       elsif is_material
 
-          price
+        price
 
         # not material, not single product from sign, leaves child sign
       else

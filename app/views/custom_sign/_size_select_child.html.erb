@@ -1,0 +1,5 @@
+<select id="sizeSelectChild" name="sizeSelectChild">
+  <% @sign_sizes.each do |size| %>
+      <option value="<%= size[:product_id] %>|<%= size[:height] %>|<%= size[:child_product_id] %>">Size <%= size[:width] %> x <%= size[:height] %>mm</option>
+  <% end %>
+</select>
