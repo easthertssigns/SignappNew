@@ -32,7 +32,7 @@
             </td>
             <td>
               <%= link_to "Edit", "/admin/products/#{child_product.permalink}/edit" %>
-              <%= link_to "Delete", "http://0.0.0.0:3000/admin/products/#{params[:product_id]}/variants/#{child_product.id}", :method => :delete, :confirm => "Remove Variant, Are you sure?" %>
+              <%= link_to "Delete", "/admin/products/#{params[:product_id]}/variants/#{child_product.id}", :method => :delete, :confirm => "Remove Variant, Are you sure?" %>
             </td>
           </tr>
       <% end %>
