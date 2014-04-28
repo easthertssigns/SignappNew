@@ -13,8 +13,6 @@ class CustomSignController < ApplicationController
         #raise "file saved!"
       end
 
-
-
       #create new custom sign
       @new_sign = SignData.new
       @new_sign.spree_product_id = params[:product_id]
