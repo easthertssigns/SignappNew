@@ -205,7 +205,7 @@ class CustomSignController < ApplicationController
       new_sign_data.sign_data = sign_data.sign_data
       new_sign_data.spree_product_id = sign_data.spree_product_id
       new_sign_data.width = sign_data.width
-      new_sign_data.image = open(sign_data.image.url)
+      new_sign_data.image = open(sign_data.image.url) rescue nil
       new_sign_data.svg_data = sign_data.svg_data
       new_sign_data.show_as_product = false
       new_sign_data.spree_variant_id = sign_data.spree_variant_id
