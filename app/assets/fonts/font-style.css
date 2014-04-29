@@ -1,174 +1,127 @@
 @font-face {
-    font-family: 'pacifico_regular';
+    font-family: 'Pacifico Regular';
     src: url('pacifico-webfont.eot');
-    src: url('pacifico-webfont.eot') format('embedded-opentype'),
-         url('pacifico-webfont.woff') format('woff'),
-         url('pacifico-webfont.ttf') format('truetype'),
-         url('pacifico-webfont.svg#PacificoRegular') format('svg');
+    src: url('pacifico-webfont.eot') format('embedded-opentype'), url('pacifico-webfont.woff') format('woff'), url('pacifico-webfont.ttf') format('truetype'), url('pacifico-webfont.svg#PacificoRegular') format('svg');
     font-weight: normal;
     font-style: normal;
-
 }
 
 @font-face {
-    font-family: 'questrial_regular';
+    font-family: 'Questrial Regular';
     src: url('questrial-regular-webfont.eot');
-    src: url('questrial-regular-webfont.eot') format('embedded-opentype'),
-         url('questrial-regular-webfont.woff') format('woff'),
-         url('questrial-regular-webfont.ttf') format('truetype'),
-         url('questrial-regular-webfont.svg#QuestrialRegular') format('svg');
+    src: url('questrial-regular-webfont.eot') format('embedded-opentype'), url('questrial-regular-webfont.woff') format('woff'), url('questrial-regular-webfont.ttf') format('truetype'), url('questrial-regular-webfont.svg#QuestrialRegular') format('svg');
     font-weight: normal;
     font-style: normal;
-
 }
 
 @font-face {
-    font-family: 'rokkitt_regular';
+    font-family: 'Rokkitt Regular';
     src: url('rokkitt-regular-webfont.eot');
-    src: url('rokkitt-regular-webfont.eot') format('embedded-opentype'),
-         url('rokkitt-regular-webfont.woff') format('woff'),
-         url('rokkitt-regular-webfont.ttf') format('truetype'),
-         url('rokkitt-regular-webfont.svg#RokkittRegular') format('svg');
+    src: url('rokkitt-regular-webfont.eot') format('embedded-opentype'), url('rokkitt-regular-webfont.woff') format('woff'), url('rokkitt-regular-webfont.ttf') format('truetype'), url('rokkitt-regular-webfont.svg#RokkittRegular') format('svg');
     font-weight: normal;
     font-style: normal;
-
 }
 
 @font-face {
-    font-family: 'black_jack_regular';
+    font-family: 'BlackJack Regular';
     src: url('black_jack-webfont.eot');
-    src: url('black_jack-webfont.eot?#iefix') format('embedded-opentype'),
-    url('black_jack-webfont.woff') format('woff'),
-    url('black_jack-webfont.ttf') format('truetype'),
-    url('black_jack-webfont.svg#blackjackregular') format('svg');
+    src: url('black_jack-webfont.eot?#iefix') format('embedded-opentype'), url('black_jack-webfont.woff') format('woff'), url('black_jack-webfont.ttf') format('truetype'), url('black_jack-webfont.svg#blackjackregular') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'stix_general_regular';
+    font-family: 'STIXGeneral Regular';
     src: url('sticks_serif-webfont.eot');
-    src: url('sticks_serif-webfont.eot?#iefix') format('embedded-opentype'),
-    url('sticks_serif-webfont.woff') format('woff'),
-    url('sticks_serif-webfont.ttf') format('truetype'),
-    url('sticks_serif-webfont.svg#stixgeneralregular') format('svg');
+    src: url('sticks_serif-webfont.eot?#iefix') format('embedded-opentype'), url('sticks_serif-webfont.woff') format('woff'), url('sticks_serif-webfont.ttf') format('truetype'), url('sticks_serif-webfont.svg#stixgeneralregular') format('svg');
     font-weight: normal;
     font-style: normal;
-
 }
 
 @font-face {
-    font-family: 'league_gothic_regular';
+    font-family: 'League Gothic Regular';
     src: url('bus_blind-webfont.eot');
-    src: url('bus_blind-webfont.eot?#iefix') format('embedded-opentype'),
-    url('bus_blind-webfont.woff') format('woff'),
-    url('bus_blind-webfont.ttf') format('truetype'),
-    url('bus_blind-webfont.svg#league_gothicregular') format('svg');
+    src: url('bus_blind-webfont.eot?#iefix') format('embedded-opentype'), url('bus_blind-webfont.woff') format('woff'), url('bus_blind-webfont.ttf') format('truetype'), url('bus_blind-webfont.svg#league_gothicregular') format('svg');
     font-weight: normal;
     font-style: normal;
-
 }
 
 @font-face {
-    font-family: 'valentina_regular';
+    font-family: 'Valentina Regular';
     src: url('valentina-webfont.eot');
-    src: url('valentina-webfont.eot?#iefix') format('embedded-opentype'),
-    url('valentina-webfont.woff') format('woff'),
-    url('valentina-webfont.ttf') format('truetype'),
-    url('valentina-webfont.svg#valentinaregular') format('svg');
-    font-weight: normal;
-    font-style: normal;
-
-}
-
-@font-face {
-    font-family: 'six_capsregular';
-    src: url('six_caps-webfont.eot');
-    src: url('six_caps-webfont.eot?#iefix') format('embedded-opentype'),
-    url('six_caps-webfont.woff') format('woff'),
-    url('six_caps-webfont.ttf') format('truetype'),
-    url('six_caps-webfont.svg#six_capsregular') format('svg');
+    src: url('valentina-webfont.eot?#iefix') format('embedded-opentype'), url('valentina-webfont.woff') format('woff'), url('valentina-webfont.ttf') format('truetype'), url('valentina-webfont.svg#valentinaregular') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'roman_serif';
-    src: url('roman_serif-webfont.eot');
-    src: url('roman_serif-webfont.eot?#iefix') format('embedded-opentype'),
-    url('roman_serif-webfont.woff') format('woff'),
-    url('roman_serif-webfont.ttf') format('truetype'),
-    url('roman_serif-webfont.svg#bateman_engravingregular') format('svg');
-    font-weight: normal;
-    font-style: normal;
-
-}
-
-@font-face {
-    font-family: 'english111_vivace_btregular';
+    font-family: 'English111 Vivace BT Regular';
     src: url('english_vivace-webfont.eot');
-    src: url('english_vivace-webfont.eot?#iefix') format('embedded-opentype'),
-    url('english_vivace-webfont.woff') format('woff'),
-    url('english_vivace-webfont.ttf') format('truetype'),
-    url('english_vivace-webfont.svg#english111_vivace_btregular') format('svg');
+    src: url('english_vivace-webfont.eot?#iefix') format('embedded-opentype'), url('english_vivace-webfont.woff') format('woff'), url('english_vivace-webfont.ttf') format('truetype'), url('english_vivace-webfont.svg#english111_vivace_btregular') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'olde_english';
+    font-family: 'Cloister Black Light';
     src: url('olde_english-webfont.eot');
-    src: url('olde_english-webfont.eot?#iefix') format('embedded-opentype'),
-    url('olde_english-webfont.woff') format('woff'),
-    url('olde_english-webfont.ttf') format('truetype'),
-    url('olde_english-webfont.svg#cloister_blacklight') format('svg');
+    src: url('olde_english-webfont.eot?#iefix') format('embedded-opentype'), url('olde_english-webfont.woff') format('woff'), url('olde_english-webfont.ttf') format('truetype'), url('olde_english-webfont.svg#cloister_blacklight') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'modern_no_20regular';
+    font-family: 'Modern No20 Regular';
     src: url('modern_no._20-webfont.eot');
-    src: url('modern_no._20-webfont.eot?#iefix') format('embedded-opentype'),
-    url('modern_no._20-webfont.woff') format('woff'),
-    url('modern_no._20-webfont.ttf') format('truetype'),
-    url('modern_no._20-webfont.svg#modern_no._20regular') format('svg');
+    src: url('modern_no._20-webfont.eot?#iefix') format('embedded-opentype'), url('modern_no._20-webfont.woff') format('woff'), url('modern_no._20-webfont.ttf') format('truetype'), url('modern_no._20-webfont.svg#modern_no._20regular') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'swiss_721bold';
+    font-family: 'Swiss721 Bold';
     src: url('swiss_721_bold-webfont.eot');
-    src: url('swiss_721_bold-webfont.eot?#iefix') format('embedded-opentype'),
-    url('swiss_721_bold-webfont.woff') format('woff'),
-    url('swiss_721_bold-webfont.ttf') format('truetype'),
-    url('swiss_721_bold-webfont.svg#swiss_721bold') format('svg');
+    src: url('swiss_721_bold-webfont.eot?#iefix') format('embedded-opentype'), url('swiss_721_bold-webfont.woff') format('woff'), url('swiss_721_bold-webfont.ttf') format('truetype'), url('swiss_721_bold-webfont.svg#swiss_721bold') format('svg');
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'swiss_721light';
+    font-family: 'Swiss721 Light';
     src: url('swiss_721_light-webfont.eot');
-    src: url('swiss_721_light-webfont.eot?#iefix') format('embedded-opentype'),
-    url('swiss_721_light-webfont.woff') format('woff'),
-    url('swiss_721_light-webfont.ttf') format('truetype'),
-    url('swiss_721_light-webfont.svg#swiss_721light') format('svg');
+    src: url('swiss_721_light-webfont.eot?#iefix') format('embedded-opentype'), url('swiss_721_light-webfont.woff') format('woff'), url('swiss_721_light-webfont.ttf') format('truetype'), url('swiss_721_light-webfont.svg#swiss_721light') format('svg');
     font-weight: normal;
     font-style: normal;
-
 }
 
-
 @font-face {
-    font-family: 'cinzel_regular';
+    font-family: 'Cinzel Regular';
     src: url('cinzel-webfont.eot');
-    src: url('cinzel-webfont.eot?#iefix') format('embedded-opentype'),
-    url('cinzel-webfont.woff') format('woff'),
-    url('cinzel-webfont.ttf') format('truetype'),
-    url('cinzel-webfont.svg#cinzelregular') format('svg');
+    src: url('cinzel-webfont.eot?#iefix') format('embedded-opentype'), url('cinzel-webfont.woff') format('woff'), url('cinzel-webfont.ttf') format('truetype'), url('cinzel-webfont.svg#cinzelregular') format('svg');
     font-weight: normal;
     font-style: normal;
+}
 
+@font-face {
+    font-family: 'Keep Calm Medium';
+    src: url('keepcalm-medium-webfont.eot');
+    src: url('keepcalm-medium-webfont.eot?#iefix') format('embedded-opentype'), url('keepcalm-medium-webfont.woff') format('woff'), url('keepcalm-medium-webfont.ttf') format('truetype'), url('keepcalm-medium-webfont.svg#keep_calmmedium') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Bateman Engraving Regular';
+    src: url('roman_serif_fixed-webfont.eot');
+    src: url('roman_serif_fixed-webfont.eot?#iefix') format('embedded-opentype'), url('roman_serif_fixed-webfont.woff') format('woff'), url('roman_serif_fixed-webfont.ttf') format('truetype'), url('roman_serif_fixed-webfont.svg#bateman_engravingregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Six Caps Regular';
+    src: url('sixcaps-webfont.eot');
+    src: url('sixcaps-webfont.eot?#iefix') format('embedded-opentype'), url('sixcaps-webfont.woff') format('woff'), url('sixcaps-webfont.ttf') format('truetype'), url('sixcaps-webfont.svg#six_capsregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
 }

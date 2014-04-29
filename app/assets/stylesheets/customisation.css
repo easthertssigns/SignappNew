@@ -115,6 +115,7 @@ html, body {
     position: absolute;
     resize: none;
     vertical-align: text-bottom;
+    white-space: nowrap;
 }
 
 .canvas-container #textTooltip {
@@ -196,7 +197,7 @@ html, body {
 
 .majorFunctions .button.addText {
     background-color: #f44966;
-    background-position: 0 2px;
+    background-position: 0 1px;
     border: 1px solid #f44966;
 }
 
@@ -206,26 +207,26 @@ html, body {
 }
 
 .majorFunctions .button.addText:hover {
-    background-position: 0 -27px;
+    background-position: 0 -28px;
 }
 
 .majorFunctions .button.addShape {
     background-color: #36CE70;
-    background-position: 0 -63px;
+    background-position: 0 -65px;
     border: 1px solid #36CE70;
 }
 
 .majorFunctions .button.addShape:hover {
-    background-position: 0 -95px;
+    background-position: 0 -97px;
 }
 
 .majorFunctions .button.addBorder {
     background-color: #03C2D6;
-    background-position: 0 -137px;
+    background-position: 0 -142px;
 }
 
 .majorFunctions .button.addBorder:hover {
-    background-position: 0 -171px;
+    background-position: 0 -177px;
 }
 
 .majorFunctions .menu {
