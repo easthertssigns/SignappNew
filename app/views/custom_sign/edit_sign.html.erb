@@ -42,26 +42,28 @@
         <div class="function alignRight" id="alignRight" title="Right Align"></div>
         <select class="fontFamily" id="fontFamily">
           <optgroup label="Serif">
-            <option value="modern_no_20regular">Modern No. 20</option>
-            <option value="roman_serif">Roman Serif</option>
-            <option value="stix_general_regular">Stix General</option>
-            <option value="valentina_regular">Valentina</option>
-            <option value="cinzel_regular">Ciznel</option>
-            <option value="rokkitt_regular">Rokkitt</option>
-            <option value="questrial_regular">Questrial</option>
+            <option value="Modern No20 Regular">Modern No. 20</option>
+            <option value="Bateman Engraving Regular">Roman Serif</option>
+            <option value="STIXGeneral Regular">Stix General</option>
+            <option value="Valentina Regular">Valentina</option>
+            <option value="Cinzel Regular">Cinzel</option>
+            <option value="Rokkitt Regular">Rokkitt</option>
+            <option value="Questrial Regular">Questrial</option>
           </optgroup>
           <optgroup label="Sans Serif">
-            <option value="swiss_721light" selected="selected">Swiss 721 Light</option>
-            <option value="swiss_721bold">Swiss 721 Bold</option>
-            <option value="league_gothic_regular">League Gothic</option>
+            <option value="Swiss721 Light">Swiss 721 Light</option>
+            <option value="Swiss721 Bold">Swiss 721 Bold</option>
+            <option value="League Gothic Regular">League Gothic</option>
+            <option value="Keep Calm Medium">Keep Calm</option>
           </optgroup>
           <optgroup label="Display">
-            <option value="olde_english">Olde English</option>
+            <option value="Cloister Black Light">Olde English</option>
+            <option value="Six Caps Regular">Six Caps</option>
           </optgroup>
           <optgroup label="Handwriting">
-            <option value="english111_vivace_btregular">English Vivace</option>
-            <option value="black_jack_regular">BlackJack</option>
-            <option value="pacifico_regular">Pacifico</option>
+            <option value="English111 Vivace BT Regular">English Vivace</option>
+            <option value="BlackJack Regular">BlackJack</option>
+            <option value="Pacifico Regular">Pacifico</option>
           </optgroup>
         </select>
         <select class="fontSize" id="fontSize">
@@ -214,26 +216,26 @@
 
     <p>Click here to add text to your sign.</p>
 
-    <p><strong>Tip: </strong>If you want to edit some existing text, select it and use the tools that will appear here
-      to change it's attributes.</p></li>
+    <p><strong>Tip: </strong>You can simply double-click existing text to type. If you want to edit the size and colour
+      of existing text, select it and use the tools that will appear here to change it's attributes.</p></li>
   <li data-id="addShape" data-text="Next - Add a Border"><h4>Add Shape <span>(2 of 4)</span></h4>
 
-    <p>Click here to add text to your sign.</p>
+    <p>Click here to choose a shape or icon from the drop-down menu.</p>
 
-    <p><strong>Tip: </strong>If you want to edit some existing text, select it and use the tools that will appear here
-      to change it's attributes.</p></li>
+    <p><strong>Tip: </strong>You can change the size of your shape using the blue handles that surround your selected
+      shape.</p></li>
   <li data-id="addBorder" data-text="Next - Add to Basket"><h4>Add Border <span>(3 of 4)</span></h4>
 
-    <p>Click here to add text to your sign.</p>
+    <p>Click here to choose a simple border from the drop-down menu.</p>
 
-    <p><strong>Tip: </strong>If you want to edit some existing text, select it and use the tools that will appear here
-      to change it's attributes.</p></li>
+    <p><strong>Tip: </strong>If you want to edit the size and colour of your border, select it and use the tools that
+      will appear here to change it's attributes.</p></li>
   <li data-id="addToBasket" data-text="Finish Tour"><h4>Add to Basket <span>(4 of 4)</span></h4>
 
-    <p>Click here to add text to your sign.</p>
+    <p>Click here to save your sign to the basket.</p>
 
-    <p><strong>Tip: </strong>If you want to edit some existing text, select it and use the tools that will appear here
-      to change it's attributes.</p></li>
+    <p><strong>Tip: </strong>Once purchsed, your sign will be saved in your account for future amendments if required.
+    </p></li>
 </ol>
 <div style="display: none;">
   <img id="engravedbg" src="/assets/engraved_bg.png">
@@ -256,7 +258,7 @@
     var canvasHeight = ($(window).height() - 300);
     var screwholesarray = [];
     var canvasScale = 1.0;
-    var placeholderText = ' ';
+    var placeholderText = 'Double-click to edit';
 
     var borderSingle = null;
     var borderDouble = null;
@@ -267,9 +269,16 @@
     var textboxadditionaltopforie10 = 0;
 
 
-    $('html.touch #canvasZoomWrapper canvas, html.touch .minorFunctions, html.touch .majorFunctions, html.touch .toolPalette').hide();
-    $('html.touch .minorFunctions').before('<div class="touch-devise-message">Message for touch devices goes here</div>');
+    //    $('html.touch #canvasZoomWrapper canvas, html.touch .minorFunctions, html.touch .majorFunctions, html.touch .toolPalette').hide();
+    //    $('html.touch .minorFunctions').before('<div class="touch-devise-message">Message for touch devices goes here</div>');
 
+    function is_touch_device() {
+        return !!('ontouchstart' in window) || !!('msmaxtouchpoints' in window.navigator);
+    }
+
+    if (is_touch_device()) {
+        alert('SignApp is best experienced on a laptop or desktop computer with a physical keyboard and mouse/trackpad. Touchscreen devices, such as smartphones and tablets, are currently unsupported.');
+    }
 
     function getIEVersion() {
         var agent = navigator.userAgent;
@@ -325,7 +334,7 @@
     (function () {
         SetupAll();
     })
-            ();
+    ();
 
     function SetupAll() {
         $("#redo").addClass('disabled');
@@ -504,7 +513,6 @@
         })(canvas.setActiveObject);
 
 
-
         fabric.util.addListener(fabric.document, 'dblclick', dblClickHandler);
         // fabric.util.removeListener(canvas_ctx.upperCanvasEl, 'dblclick', dblClickHandler);
 
@@ -541,6 +549,53 @@
                     $('#textColor').spectrum("set", activeObjectFill);
                 }
             }
+
+            $('#fontFamily').val(activeObject.fontFamily);
+
+
+            fabric.Canvas.prototype.getAbsoluteCoords = function (object) {
+                return {
+                    left: object.left,
+                    top: object.top
+                };
+            };
+
+            $('#textTooltip').addClass('visible');
+            setTimeout(function () {
+                $('#textTooltip').removeClass('visible')
+            }, 3000);
+            setTimeout(function () {
+                $('#textTooltip').css({
+                    left: '-9999px',
+                    top: '-9999px'
+                })
+            }, 3300);
+
+            function positionTooltip(obj) {
+                if (activeObject && activeObject.type == "text") {
+                    var tooltip = document.getElementById('textTooltip'),
+                            tooltipWidth = 120,
+                            tooltipHeight = 22;
+                    var absCoords = canvas.getAbsoluteCoords(obj);
+                    if ($('#textTooltip').hasClass('visible')) {
+                        tooltip.style.left = (absCoords.left - tooltipWidth / 2) + 'px';
+                        tooltip.style.top = (absCoords.top + tooltipHeight + 50) + 'px';
+                    }
+                }
+            }
+
+            activeObject.on('moving', function () {
+                positionTooltip(activeObject)
+            });
+            activeObject.on('scaling', function () {
+                positionTooltip(activeObject)
+            });
+            activeObject.on('rotating', function () {
+                positionTooltip(activeObject)
+            });
+
+            positionTooltip(activeObject);
+
         });
 
         var textEl = $('#textArea');
@@ -1164,7 +1219,7 @@
             borderColor: 'cyan',
             cornerColor: 'cyan',
             fontWeight: "normal",
-            textAlign:  "center"
+            textAlign: "center"
         });
 
         text.scale(canvasScale);
@@ -1180,7 +1235,6 @@
 
             }, 100);
         }
-
 
 
         canvas.renderAll();
@@ -1226,11 +1280,11 @@
             positionTooltip(text)
         });
 
-        console.log("sdfsdf");
+//        console.log("sdfsdf");
 //        $(text).trigger("dblclick");
 
         dblClickHandler();
-        console.log("sdfsdf");
+//        console.log("sdfsdf");
 
         positionTooltip(text);
     });

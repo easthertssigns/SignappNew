@@ -416,25 +416,26 @@
           <div class="clearfix"></div>
 
       <% else %>
-          <h3>Buy this product</h3>
-          <a href="/orders/add_saved_sign_to_basket?id=<%= @product.id.to_s %>" class="button red">Add to
-            Basket</a></div>
+          <h3 style="float: left; line-height: 30px; margin-bottom: 0">Buy this product</h3>
+          <a href="/orders/add_saved_sign_to_basket?id=<%= @product.id.to_s %>" class="button red" style="float: right">Add to
+            Basket</a>
+          <div class="clearfix"></div>
       <% end %>
-      </div>
-  <% if @product.relations && @product.relations.count > 0 %>
-      <div class="relatedProducts fixed_container_12">
-        <div class="fixed_grid_12">
-          <h4>You may also be interested in&hellip;</h4>
+    </div>
+    <% if @product.relations && @product.relations.count > 0 %>
+        <div class="relatedProducts fixed_container_12">
+          <div class="fixed_grid_12">
+            <h4>You may also be interested in&hellip;</h4>
+          </div>
+          <% get_related_products(@product.id).each do |rp| %>
+              <div class="grid_2">
+                <h5><%= link_to rp.name, rp %></h5>
+                <%= link_to basket_icon_image(rp), rp %>
+              </div>
+          <% end %>
         </div>
-        <% get_related_products(@product.id).each do |rp| %>
-            <div class="grid_2">
-              <h5><%= link_to rp.name, rp %></h5>
-              <%= link_to basket_icon_image(rp), rp %>
-            </div>
-        <% end %>
-      </div>
-  <% end %>
-  <div class="clearfix"></div>
-  <div class="upperShadow"></div>
-</div>
+    <% end %>
+    <div class="clearfix"></div>
+    <div class="upperShadow"></div>
+  </div>
 </div>

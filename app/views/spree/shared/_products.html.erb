@@ -20,7 +20,7 @@
                 <li id="product_<%= product.id %>" class="columns three <%= cycle("alpha", "secondary", "", "omega secondary", :name => "classes") %>" data-hook="products_list_item" itemscope itemtype="http://schema.org/Product">
                   <div class="product-container">
                     <div class="product-name">
-                      <%= link_to truncate(product.name, :length => 25), product, :class => 'info', :itemprop => "name", :title => product.name %>
+                      <%= link_to truncate(product.name, :length => 24), product, :class => 'info', :itemprop => "name", :title => product.name %>
                     </div>
                     <div class="clearfix"></div>
                     <div class="product-image">
