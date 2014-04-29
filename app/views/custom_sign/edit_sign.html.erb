@@ -257,11 +257,13 @@
     var screwholesarray = [];
     var canvasScale = 1.0;
     var placeholderText = ' ';
+    var width_to_mm_ratio = 1;
 
     var borderSingle = null;
     var borderDouble = null;
     var borderScalloped = null;
     var border_distance_scale = 1;
+
 
     var textboxadditionalwidthforie10 = 0;
     var textboxadditionaltopforie10 = 0;
@@ -359,11 +361,19 @@
         canvas.setWidth(canvasWidth);
         canvas.setHeight(canvasHeight);
 
-        border_distance_scale = ((canvas.getWidth() / <%= @sign_data.width * 3  %>));
+
+        // Here is where it needs to change to effect the sign border width
+
+
+
+        border_distance_scale = ((canvas.getWidth() / <%= @sign_data.width * 3%>));
+        width_to_mm_ratio = (canvas.getWidth() / <%= @sign_data.width %>);
         $("#canvas_width").val(canvas.getWidth());
         $("#canvas_height").val(canvas.getHeight());
         $("#canvas_scale").val(canvasScale);
         // canvas.backgroundImageStretch = true;
+
+        console.log('canvas scale : ' + canvasScale);
 
         addBackingImage();
         addMask();
@@ -2026,7 +2036,16 @@
         if (borderSingle == null) {
             console.log("setting up borders");
             console.log(settings);
-            var borderInset = (50 * border_distance_scale), scallopDepth = (70 * border_distance_scale), borderX = canvasWidth - borderInset, borderY = canvasHeight - borderInset, scallopX = canvasWidth - scallopDepth, scallopY = canvasHeight - scallopDepth;
+            var borderInset = (canvasWidth * 0.02);
+            var scallopDepth = (canvasWidth * 0.03);
+            var borderX = canvasWidth - borderInset;
+            var borderY = canvasHeight - borderInset;
+            var scallopX = canvasWidth - scallopDepth;
+            var scallopY = canvasHeight - scallopDepth;
+
+            console.log('setup border');
+            console.log(borderInset);
+            console.log("border_distance_scale : " + border_distance_scale);
 
             borderSingle = new fabric.Path([
                 ['M', borderInset, borderInset],
