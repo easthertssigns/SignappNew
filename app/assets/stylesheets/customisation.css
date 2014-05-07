@@ -23,7 +23,7 @@ html, body {
 }
 
 .footerWrapper .footerTab {
-    background: #212F32 url("customisation/customisation-sprite.png") no-repeat 10px -390px;
+    background: #212F32 url("customisation/customisation-sprite.png") no-repeat 10px -490px;
     border-radius: 3px 3px 0 0;
     color: #4F7077;
     cursor: pointer;
@@ -88,7 +88,7 @@ html, body {
     background: #999;
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset, 0 0 10px 2px rgba(0, 0, 0, 0.75);
     */
-    margin: 116px auto;
+    margin: 128px auto;
     overflow: hidden;
 }
 
@@ -185,9 +185,10 @@ html, body {
 .majorFunctions .button {
     background-image: url('customisation/customisation-sprite.png');
     background-repeat: no-repeat;
+    background-size: auto;
     color: #FAF5E1;
-    height: 33px;
-    line-height: 33px;
+    height: 38px;
+    line-height: 38px;
     padding: 0 18px 0 40px;
     -webkit-transition: none;
     -moz-transition: none;
@@ -197,7 +198,7 @@ html, body {
 
 .majorFunctions .button.addText {
     background-color: #f44966;
-    background-position: 0 1px;
+    background-position: 0 0;
     border: 1px solid #f44966;
 }
 
@@ -207,26 +208,26 @@ html, body {
 }
 
 .majorFunctions .button.addText:hover {
-    background-position: 0 -28px;
+    background-position: 0 -48px;
 }
 
 .majorFunctions .button.addShape {
     background-color: #36CE70;
-    background-position: 0 -65px;
+    background-position: 0 -96px;
     border: 1px solid #36CE70;
 }
 
 .majorFunctions .button.addShape:hover {
-    background-position: 0 -97px;
+    background-position: 0 -144px;
 }
 
 .majorFunctions .button.addBorder {
     background-color: #03C2D6;
-    background-position: 0 -142px;
+    background-position: 0 -192px;
 }
 
 .majorFunctions .button.addBorder:hover {
-    background-position: 0 -177px;
+    background-position: 0 -240px;
 }
 
 .majorFunctions .menu {
@@ -308,68 +309,68 @@ html, body {
 
 /*Bold*/
 .majorFunctions .menu.addTextMenu .function.textBold {
-    background-position: 2px -317px;
+    background-position: 2px -417px;
     width: 18px;
 }
 
 .majorFunctions .menu.addTextMenu .function.textBold:hover, .majorFunctions .menu .function.textBold.active {
-    background-position: 2px -355px;
+    background-position: 2px -455px;
 }
 
 /*Italic*/
 .majorFunctions .menu.addTextMenu .function.textItalic {
-    background-position: -30px -317px;
+    background-position: -30px -417px;
     width: 18px;
 }
 
 .majorFunctions .menu.addTextMenu .function.textItalic:hover, .majorFunctions .menu .function.textItalic.active {
-    background-position: -30px -355px;
+    background-position: -30px -455px;
 }
 
 /*Underline*/
 .majorFunctions .menu.addTextMenu .function.textUnderline {
-    background-position: -62px -317px;
+    background-position: -62px -417px;
     width: 18px;
 }
 
 .majorFunctions .menu.addTextMenu .function.textUnderline:hover, .majorFunctions .menu .function.textUnderline.active {
-    background-position: -62px -355px;
+    background-position: -62px -455px;
 }
 
 /*Strikethrough*/
 .majorFunctions .menu.addTextMenu .function.textStrikethrough {
-    background-position: -99px -317px;
+    background-position: -99px -417px;
 }
 
 .majorFunctions .menu.addTextMenu .function.textStrikethrough:hover, .majorFunctions .menu .function.textStrikethrough.active {
-    background-position: -99px -355px;
+    background-position: -99px -455px;
 }
 
 /*Align Left*/
 .majorFunctions .menu.addTextMenu .function.alignLeft {
-    background-position: -145px -317px;
+    background-position: -145px -417px;
 }
 
 .majorFunctions .menu.addTextMenu .function.alignLeft:hover, .majorFunctions .menu .function.alignLeft.active {
-    background-position: -145px -355px;
+    background-position: -145px -455px;
 }
 
 /*Align Center*/
 .majorFunctions .menu.addTextMenu .function.alignCenter {
-    background-position: -189px -317px;
+    background-position: -189px -417px;
 }
 
 .majorFunctions .menu.addTextMenu .function.alignCenter:hover, .majorFunctions .menu .function.alignCenter.active {
-    background-position: -189px -355px;
+    background-position: -189px -455px;
 }
 
 /*Align Right*/
 .majorFunctions .menu.addTextMenu .function.alignRight {
-    background-position: -233px -317px;
+    background-position: -233px -417px;
 }
 
 .majorFunctions .menu.addTextMenu .function.alignRight:hover, .majorFunctions .menu .function.alignRight.active {
-    background-position: -233px -355px;
+    background-position: -233px -455px;
 }
 
 /*Fonts Menu*/
@@ -389,7 +390,7 @@ html, body {
 }
 
 .majorFunctions .menu.addTextMenu .select2-container .select2-choice div b {
-    background: url('customisation/customisation-sprite.png') no-repeat -271px -319px;
+    background: url('customisation/customisation-sprite.png') no-repeat -271px -419px;
     border-left: none;
 }
 
@@ -455,7 +456,7 @@ html, body {
 }
 
 .majorFunctions .menu.addShapeMenu .select2-container .select2-choice div b {
-    background: url('customisation/customisation-sprite.png') no-repeat -271px -319px;
+    background: url('customisation/customisation-sprite.png') no-repeat -271px -419px;
     border-left: none;
 }
 
@@ -509,7 +510,7 @@ html, body {
 }
 
 .majorFunctions .menu.addBorderMenu .select2-container .select2-choice div b {
-    background: url('customisation/customisation-sprite.png') no-repeat -271px -319px;
+    background: url('customisation/customisation-sprite.png') no-repeat -271px -419px;
     border-left: none;
 }
 
@@ -518,7 +519,7 @@ html, body {
     margin: 0 10px;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
     text-transform: uppercase;
-    width: 120px;
+    width: 130px;
 }
 
 .majorFunctions .menu.addBorderMenu .ui-slider {
@@ -532,7 +533,7 @@ html, body {
 }
 
 .majorFunctions .menu.addBorderMenu .ui-slider .ui-slider-handle {
-    background: url('customisation/customisation-sprite.png') no-repeat -319px -400px;
+    background: url('customisation/customisation-sprite.png') no-repeat -319px -500px;
     cursor: default;
     height: 16px;
     outline: none;
@@ -604,7 +605,7 @@ html, body {
 /*Add to Basket button*/
 
 .majorFunctions .addToBasket {
-    background: url('customisation/customisation-sprite.png') no-repeat 0 -228px;
+    background: url('customisation/customisation-sprite.png') no-repeat 0 -288px;
     color: #FAF5E1;
     cursor: pointer;
     display: block;
@@ -620,7 +621,7 @@ html, body {
 }
 
 .majorFunctions .addToBasket:hover {
-    background-position: 0 -268px;
+    background-position: 0 -338px;
     height: 43px;
 }
 

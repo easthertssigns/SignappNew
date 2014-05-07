@@ -1,7 +1,7 @@
 $(window).load(function () {
     var canvasWrapperHeight = $(window).height() - 131;
     var canvasMargin = $('.canvas-container').offset().left;
-   // alert(canvasMargin)
+    // alert(canvasMargin)
     $("#loadingOverlay").fadeOut();
     $('#canvasZoomWrapper').css('height', canvasWrapperHeight);
 
@@ -130,7 +130,12 @@ $(function () {
         return text.join(".") + (text.length > 0 ? "<sup>." + last + "</sup>" : last);
     });
 
-    $('#toolPalette .tool, #addTextMenu .function').qtip();
+    $('#toolPalette .tool, #addTextMenu .function').qtip({
+        position: {
+            my: 'right center',  // Position my top left...
+            at: 'left center'
+        }
+    });
 
     var footerHeight = $('#footerWrapper').outerHeight();
 

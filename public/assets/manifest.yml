@@ -151,8 +151,8 @@ customisation/brass.jpg: customisation/brass-909b760248cf3f4fd07ec96d1fb4581d.jp
 customisation/brass/index.jpg: customisation/brass-909b760248cf3f4fd07ec96d1fb4581d.jpg
 customisation/brass_test.jpg: customisation/brass_test-40b0522ed63ab07aa5518bced53d7f25.jpg
 customisation/brass_test/index.jpg: customisation/brass_test-40b0522ed63ab07aa5518bced53d7f25.jpg
-customisation/customisation-sprite.png: customisation/customisation-sprite-a50a018922006bcabdb4cea93e1e1312.png
-customisation/customisation-sprite/index.png: customisation/customisation-sprite-a50a018922006bcabdb4cea93e1e1312.png
+customisation/customisation-sprite.png: customisation/customisation-sprite-cba284fcded7891454ebbf9d78e5d44f.png
+customisation/customisation-sprite/index.png: customisation/customisation-sprite-cba284fcded7891454ebbf9d78e5d44f.png
 customisation/slate.jpg: customisation/slate-97cfba8b1077c99e735f1a237f41a389.jpg
 customisation/slate/index.jpg: customisation/slate-97cfba8b1077c99e735f1a237f41a389.jpg
 customisation/tool-palette-sprite.png: customisation/tool-palette-sprite-1ef7c31fd575da3edee8225506c9c9a3.png
@@ -354,8 +354,8 @@ store/all.js: store/all-53d6c77ba8e5e25f21c1996a3c6325ad.js
 store/all/index.js: store/all-53d6c77ba8e5e25f21c1996a3c6325ad.js
 admin/all.css: admin/all-769a04d7012f780093992ce3f40c128f.css
 admin/all/index.css: admin/all-769a04d7012f780093992ce3f40c128f.css
-application.css: application-2d07cfa84146ece96dc72825947559a2.css
-application/index.css: application-2d07cfa84146ece96dc72825947559a2.css
+application.css: application-38e9b9e62b093108bfd0d7f58bf45c74.css
+application/index.css: application-38e9b9e62b093108bfd0d7f58bf45c74.css
 home.css: home-627b3511ce8c336344f7bab5bb6ab855.css
 home/index.css: home-627b3511ce8c336344f7bab5bb6ab855.css
 store/all.css: store/all-9aeac1ee3bcc1da1a89260b636c4f101.css

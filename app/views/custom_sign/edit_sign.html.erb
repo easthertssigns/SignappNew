@@ -8,6 +8,7 @@
 
 <div id="loadingOverlay"></div>
 <div id="tourOverlay"></div>
+<div id="fontSetter" style="height: 0; width: 0">Test</div>
 <div id="canvasZoomWrapper">
   <div class="minorFunctions" id="minorFunctions">
     <div class="function" id="startagain">Start Again</div>
@@ -42,7 +43,7 @@
         <div class="function alignRight" id="alignRight" title="Right Align"></div>
         <select class="fontFamily" id="fontFamily">
           <optgroup label="Serif">
-            <option value="Modern No20 Regular">Modern No. 20</option>
+            <option value="Modern No20 Regular" selected="selected">Modern No. 20</option>
             <option value="Bateman Engraving Regular">Roman Serif</option>
             <option value="STIXGeneral Regular">Stix General</option>
             <option value="Valentina Regular">Valentina</option>
@@ -67,7 +68,7 @@
           </optgroup>
         </select>
         <select class="fontSize" id="fontSize">
-          <option value="72">Small</option>
+          <option value="72">Small</option>wd
           <option value="96">Medium</option>
           <option value="128">Large</option>
           <option value="176">Extra Large</option>
@@ -1197,6 +1198,9 @@
 
     });
 
+    var firstFont = $('#fontFamily option[value!=""]').first().val();
+    $('#fontSetter').css({fontFamily: firstFont});
+
     $('#addText').click(function () {
         $('#addTextMenu').show();
         $('#addShapeMenu').hide();
@@ -1206,7 +1210,7 @@
         var fontSize = $('#fontSize').val();
         var color = $('#textColor').val();
         var text = new fabric.Text(placeholderText, {
-            fontFamily: fontFamily,
+            fontFamily: firstFont,
             fontSize: fontSize,
             fill: color,
             left: canvasWidth / 2,
