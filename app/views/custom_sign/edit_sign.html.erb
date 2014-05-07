@@ -369,7 +369,7 @@
         canvas.setWidth(canvasWidth);
         canvas.setHeight(canvasHeight);
 
-        border_distance_scale = ((canvas.getWidth() / <%= @sign_data.width * 3  %>));
+        border_distance_scale = ((canvas.getWidth() / <%= @sign_data.width * 3 %>));
         $("#canvas_width").val(canvas.getWidth());
         $("#canvas_height").val(canvas.getHeight());
         $("#canvas_scale").val(canvasScale);
@@ -2084,7 +2084,15 @@
         if (borderSingle == null) {
             console.log("setting up borders");
             console.log(settings);
-            var borderInset = (50 * border_distance_scale), scallopDepth = (70 * border_distance_scale), borderX = canvasWidth - borderInset, borderY = canvasHeight - borderInset, scallopX = canvasWidth - scallopDepth, scallopY = canvasHeight - scallopDepth;
+            // var borderInset = (50 * border_distance_scale);
+            // var scallopDepth = (70 * border_distance_scale);
+
+            var borderInset = (canvasWidth * 0.03);
+            var scallopDepth = (canvasWidth * 0.05);
+            var borderX = canvasWidth - borderInset;
+            var borderY = canvasHeight - borderInset;
+            var scallopX = canvasWidth - scallopDepth;
+            var scallopY = canvasHeight - scallopDepth;
 
             borderSingle = new fabric.Path([
                 ['M', borderInset, borderInset],
