@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140226202335) do
+ActiveRecord::Schema.define(:version => 20140619074910) do
 
   create_table "custom_signs", :force => true do |t|
     t.integer  "spree_user_id"

@@ -7,6 +7,14 @@ GIT
       spree (~> 1.2)
 
 GIT
+  remote: git://github.com/spree/spree_gateway.git
+  revision: b5006a2a72eb3b1bb81e40d24b963d26eec47eb5
+  branch: 1-2-stable
+  specs:
+    spree_gateway (1.2.0)
+      spree_core (~> 1.0)
+
+GIT
   remote: git://github.com/spree/spree_related_products.git
   revision: b9cc61a91e37b57281fed8948e27fc070107d367
   branch: 1-2-stable
@@ -387,6 +395,7 @@ DEPENDENCIES
   sass-rails (~> 3.2.3)
   spree (= 1.2)
   spree-refinerycms-authentication!
+  spree_gateway!
   spree_related_products!
   sqlite3
   uglifier (>= 1.0.3)
