@@ -15,6 +15,8 @@ group :development, :test do
   gem 'binding_of_caller'
 end
 
+gem 'addressable'
+
 gem 'spree', '1.2'
 #gem 'spree_i18n', :git => 'git://github.com/spree/spree_i18n.git'
 gem 'spree-refinerycms-authentication', :git => 'git://github.com/adrianmacneil/spree-refinery-authentication.git'
