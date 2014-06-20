@@ -26,6 +26,7 @@ gem 'spree_related_products', :git => 'git://github.com/spree/spree_related_prod
 # gem 'refinerycms-home_sliders', :path => 'vendor/extensions'
 #gem 'spree_html_email', :git => 'git://github.com/campbell/spree-html-email.git'
 gem 'spree_gateway', github: 'spree/spree_gateway', branch: '1-2-stable'
+gem 'spree_sagepayform', github: 'WeAreAlight/spree_sagepayform'
 
 group :production do
   gem 'fog'

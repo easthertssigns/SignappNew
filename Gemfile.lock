@@ -1,4 +1,11 @@
 GIT
+  remote: git://github.com/WeAreAlight/spree_sagepayform.git
+  revision: eecfd8acdc39ffff67ff7dd0a3c624c89c2dec36
+  specs:
+    spree_sagepayform (1.2.0.10)
+      spree_core (~> 1.2.0)
+
+GIT
   remote: git://github.com/adrianmacneil/spree-refinery-authentication.git
   revision: 627b574b83a70def5cfb4e09dc2bb81a044475ab
   specs:
@@ -397,5 +404,6 @@ DEPENDENCIES
   spree-refinerycms-authentication!
   spree_gateway!
   spree_related_products!
+  spree_sagepayform!
   sqlite3
   uglifier (>= 1.0.3)

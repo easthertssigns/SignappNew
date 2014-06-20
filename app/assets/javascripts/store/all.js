@@ -12,3 +12,4 @@
 
 //= require_tree .
 
+//= require store/spree_sagepayform
