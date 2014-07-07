@@ -1315,6 +1315,9 @@
       li {
         padding-left: 0;
         text-indent: 0em !important;
+        &:before {
+          display: none;
+        }
       }
   }
   #order, #order_details {

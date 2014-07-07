@@ -28,12 +28,10 @@
                     <tr>
                       <td class="imageColumn"></td>
                       <td class="descriptionColumn">
-                        Delivery Costs<br/>
                         <strong>Total</strong>
                       </td>
                       <td class="priceColumn">
-                        + &pound;20.00<br/>
-                        <strong><%#= order_subtotal(@minicart_order) %></strong>
+                        <strong><%= @minicart_order.display_total %></strong>
                       </td>
                     </tr>
                     </tfoot>

@@ -354,12 +354,12 @@ store/all.js: store/all-53d6c77ba8e5e25f21c1996a3c6325ad.js
 store/all/index.js: store/all-53d6c77ba8e5e25f21c1996a3c6325ad.js
 admin/all.css: admin/all-769a04d7012f780093992ce3f40c128f.css
 admin/all/index.css: admin/all-769a04d7012f780093992ce3f40c128f.css
-application.css: application-38e9b9e62b093108bfd0d7f58bf45c74.css
-application/index.css: application-38e9b9e62b093108bfd0d7f58bf45c74.css
+application.css: application-207036a6ddea4f00b4ee353e0218aeaa.css
+application/index.css: application-207036a6ddea4f00b4ee353e0218aeaa.css
 home.css: home-627b3511ce8c336344f7bab5bb6ab855.css
 home/index.css: home-627b3511ce8c336344f7bab5bb6ab855.css
-store/all.css: store/all-9aeac1ee3bcc1da1a89260b636c4f101.css
-store/all/index.css: store/all-9aeac1ee3bcc1da1a89260b636c4f101.css
+store/all.css: store/all-89de797f599af00ced7d23fe040fa13b.css
+store/all/index.css: store/all-89de797f599af00ced7d23fe040fa13b.css
 refinery/inquiries/inquiries.css: refinery/inquiries/inquiries-475e459824d33c6266a4e7cbee737830.css
 refinery/inquiries/inquiries/index.css: refinery/inquiries/inquiries-475e459824d33c6266a4e7cbee737830.css
 grid/sort_asc.png: grid/sort_asc-6b60527abc7c8d756b20e7d6b3510dbd.png
@@ -820,6 +820,10 @@ wymeditor/skins/refinery/skin.css: wymeditor/skins/refinery/skin-2a89251be9418c3
 wymeditor/skins/refinery/skin/index.css: wymeditor/skins/refinery/skin-2a89251be9418c36368c7948c523636a.css
 wymeditor/skins/refinery/wymiframe.css: wymeditor/skins/refinery/wymiframe-dd919852b10b49b72714f0832a6637f8.css
 wymeditor/skins/refinery/wymiframe/index.css: wymeditor/skins/refinery/wymiframe-dd919852b10b49b72714f0832a6637f8.css
+footer-card-acceptance.png: footer-card-acceptance-95d5725f270a47fd0d4a1a9fd8ee200b.png
+footer-card-acceptance/index.png: footer-card-acceptance-95d5725f270a47fd0d4a1a9fd8ee200b.png
+footer-sage-pay.png: footer-sage-pay-a5d4de5df69b42553ff95c763e3a60f4.png
+footer-sage-pay/index.png: footer-sage-pay-a5d4de5df69b42553ff95c763e3a60f4.png
 analytics_dashboard_preview.png: analytics_dashboard_preview-b95bfb48a3579fa3596a36f6774daa57.png
 analytics_dashboard_preview/index.png: analytics_dashboard_preview-b95bfb48a3579fa3596a36f6774daa57.png
 admin/bg/active-tab.png: admin/bg/active-tab-aa73ff806c998a534be3eb32f48b1ac1.png

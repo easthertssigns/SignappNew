@@ -13,7 +13,7 @@
   <% @order.adjustments.eligible.each do |adjustment| %>
       <% next if (adjustment.originator_type == 'Spree::TaxRate') and (adjustment.amount == 0) %>
       <tr class="total">
-        <td><strong><%= adjustment.label %></strong>
+        <td><%= adjustment.label %>
           <% if @order.has_step?("delivery") %>
               <div class="columns four">
               <div class="delivery">
@@ -26,18 +26,18 @@
       </tr>
   <% end %>
   <tr class="total" id="subtotal-row" style="display: none;">
-    <td><b><%= t(:subtotal) %>:</b></td>
+    <td><strong><%= t(:subtotal) %>:</strong></td>
     <td class="total"><span><%= Spree::Money.new @order.item_total %></span></td>
   </tr>
-  <% if order.price_adjustment_totals.present? %>
+  <!--<% if order.price_adjustment_totals.present? %>-->
 
-      <% @order.price_adjustment_totals.keys.each do |key| %>
-          <tr class="total">
-            <td><strong><%= key %></strong></td>
-            <td class="total"><span><%= Spree::Money.new @order.price_adjustment_totals[key] %></span></td>
-          </tr>
-      <% end %>
-  <% end %>
+      <!--<% @order.price_adjustment_totals.keys.each do |key| %>-->
+          <!--<tr class="total">-->
+            <!--<td><strong><%= key %></strong></td>-->
+            <!--<td class="total"><span><%= Spree::Money.new @order.price_adjustment_totals[key] %></span></td>-->
+          <!--</tr>-->
+      <!--<% end %>-->
+  <!--<% end %>-->
   <tr class="total order-total">
     <td><b><%= t(:order_total) %>:</b></td>
     <td class="total"><span id="order_total"><%= Spree::Money.new @order.total %></span></td>
