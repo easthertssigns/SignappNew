@@ -45,7 +45,7 @@
               </div>
           <% end %>
         </div>
-        <%= link_to 'Go to checkout', spree.checkout_path, :class => 'goToCheckout', :id => 'checkout-link' %>
+        <%= link_to 'Go to checkout', '/cart', :class => 'goToCheckout', :id => 'checkout-link' %>
       </div>
       <%= render :partial => 'spree/shared/error_messages', :locals => {:target => @order} %>
       <div class="basket full" id="basketTab">
