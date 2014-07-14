@@ -1,7 +1,7 @@
 <tr class="<%= cycle('', 'alt') %>">
   <td class="imageColumn" data-hook="minicart_item_image">
     <% if variant.images.length == 0 %>
-        <%= image_tag('/noimage/minibasket.png')%>
+        <%= image_tag('/assets/noimage/minibasket.png')%>
     <% else %>
         <%#= image_tag(variant.product.images[0].attachment.url(:thumb))%>
         <%= image_tag line_item.sign_data.image.url(:thumb) %>

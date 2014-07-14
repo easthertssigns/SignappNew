@@ -417,16 +417,19 @@ header {
             text-align: right;
             vertical-align: bottom;
             width: 55px;
+            position: relative;
             .delete {
               background: url('header-sprite.png') no-repeat 0 -242px;
               cursor: pointer;
               display: block;
               float: right;
               height: 12px;
-              margin-bottom: 36px;
               overflow: hidden;
               text-indent: 9999px;
               width: 11px;
+              position: absolute;
+              right: 0;
+              top: 20px;
             }
             .qbutton {
               display: none;
