@@ -68,7 +68,8 @@
           </optgroup>
         </select>
         <select class="fontSize" id="fontSize">
-          <option value="72">Small</option>wd
+          <option value="72">Small</option>
+          wd
           <option value="96">Medium</option>
           <option value="128">Large</option>
           <option value="176">Extra Large</option>
@@ -274,11 +275,15 @@
     //    $('html.touch .minorFunctions').before('<div class="touch-devise-message">Message for touch devices goes here</div>');
 
     function is_touch_device() {
-        return !!('ontouchstart' in window) || !!('msmaxtouchpoints' in window.navigator);
+        if (!Modernizr.touch) {
+            return !!('ontouchstart' in window) || !!('msmaxtouchpoints' in window.navigator);
+        }
     }
 
     if (is_touch_device()) {
-        alert('SignApp is best experienced on a laptop or desktop computer with a physical keyboard and mouse/trackpad. Touchscreen devices, such as smartphones and tablets, are currently unsupported.');
+        if (!Modernizr.touch) {
+            alert('SignApp is best experienced on a laptop or desktop computer with a physical keyboard and mouse/trackpad. Touchscreen devices, such as smartphones and tablets, are currently unsupported.');
+        }
     }
 
     function getIEVersion() {

@@ -83,7 +83,7 @@
     padding: 4px 4px 4px 24px !important;
     text-align: left;
     text-decoration: none;
-    visibility: hidden;
+    visibility: hidden !important;
 }
 
 /* Style of shadow effect behind zoomed image */
