@@ -28,7 +28,7 @@
 
             <div class="megaMenu">
               <% get_taxonomies.each do |taxonomy| %>
-                  <% unless taxonomy.name == "Business Signs" %>
+                  <% unless taxonomy.name == "Design by Type" %>
                       <ul>
                         <li>
                           <h4 class='taxonomy-root'><%= link_to taxonomy.name, seo_url(taxonomy.root) %></h4>
@@ -59,7 +59,7 @@
 
             <div class="megaMenu">
               <ul>
-                <% get_taxonomies.where(:name => 'Business Signs').each do |taxonomy| %>
+                <% get_taxonomies.where(:name => 'Design by Type').each do |taxonomy| %>
                     <% taxonomy.root.children.each do |taxon| %>
                         <li>  <%= link_to taxon.name, seo_url(taxon) %></li>
                     <% end %>
