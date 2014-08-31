@@ -211,7 +211,7 @@ module Spree
     end
 
     def get_spree_product(product_id)
-      product = Spree::Product.find product_id
+      Spree::Product.find product_id rescue nil
     end
 
     def get_material_types

@@ -57,7 +57,7 @@
                     <%= s.description %>
                   </td>
                   <td>
-                    <%= get_spree_product(s.spree_product_id).name %>
+                    <%= get_spree_product(s.spree_product_id) ? get_spree_product(s.spree_product_id).name : 'Deleted' %>
                   </td>
                   <td>
                     <%= s.deleted_by_user ? "yes" : "no" %>
