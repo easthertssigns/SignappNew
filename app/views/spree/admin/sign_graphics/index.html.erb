@@ -24,7 +24,13 @@
         <td><%= image_tag g.svg_file.url(:thumb) %></td>
         <td><a href="/admin/sign_graphics/<%= g.id %>"><%= g.title %></a></td>
         <td><%= g.description %></td>
-        <td><%= Spree::Money.new g.price %></td>
+        <td>
+          <% if g.price.null? %>
+              None
+          <% else %>
+              <%= Spree::Money.new g.price %>
+          <% end %>
+        </td>
         <td class="actions" data-hook="admin_products_index_row_actions">
           <a href="/admin/sign_graphics/<%= g.id %>/edit" class="edit">Edit</a>
           &nbsp;
@@ -45,9 +51,9 @@
                 url: "/admin/sign_graphics/delete_sign_graphics",
                 data: { id: id }
             }).done(function (result) {
-                        //do nothing
-                        location.reload(true);
-                    });
+                //do nothing
+                location.reload(true);
+            });
         }
     }
 </script>
