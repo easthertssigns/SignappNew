@@ -25,7 +25,7 @@
         <td><a href="/admin/sign_graphics/<%= g.id %>"><%= g.title %></a></td>
         <td><%= g.description %></td>
         <td>
-          <% if g.price.null? %>
+          <% if g.price.nil? %>
               None
           <% else %>
               <%= Spree::Money.new g.price %>
