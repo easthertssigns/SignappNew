@@ -28,12 +28,14 @@
 
             <div class="megaMenu">
               <% get_taxonomies.each do |taxonomy| %>
-                  <ul>
-                    <li>
-                      <h4 class='taxonomy-root'><%= link_to taxonomy.name, seo_url(taxonomy.root) %></h4>
-                    </li>
-                    <%= taxons_tree(taxonomy.root, @taxon, Spree::Config[:max_level_in_taxons_menu] || 1) %>
-                  </ul>
+                  <% unless taxonomy.name == "Design by Type" %>
+                      <ul>
+                        <li>
+                          <h4 class='taxonomy-root'><%= link_to taxonomy.name, seo_url(taxonomy.root) %></h4>
+                        </li>
+                        <%= taxons_tree(taxonomy.root, @taxon, Spree::Config[:max_level_in_taxons_menu] || 1) %>
+                      </ul>
+                  <% end %>
               <% end %>
 
               <div class="blueColumn">
@@ -41,9 +43,12 @@
                 <% unless get_product_list_for_menu.nil? %>
                     <div class="image"> <%= small_image(@product, :itemprop => "image") %></div>
                     <h5><%= get_product_list_for_menu.name %></h5>
+
                     <p><%= truncate(get_product_list_for_menu.description, :length => 80) %> </p>
+
                     <p class="price">From <span><%= get_product_list_for_menu.display_price %></span></p>
-                    <a href="<%= '/products/' + get_product_list_for_menu.permalink %>" class="button red">Add to Basket</a>
+                    <a href="<%= '/products/' + get_product_list_for_menu.permalink %>" class="button red">Add to
+                      Basket</a>
                     <a href="/how-does-personalisation-works" class="customisation">How does Personalisation work?</a>
                 <% end %>
                 <div class="clearfix"></div>
@@ -51,9 +56,10 @@
             </div>
           </li>
           <li class="topLevel"><a href="/t/business-signs">Design by Type</a>
+
             <div class="megaMenu">
               <ul>
-                <% get_taxonomies.where(:name => 'Business Signs').each do |taxonomy| %>
+                <% get_taxonomies.where(:name => 'Design by Type').each do |taxonomy| %>
                     <% taxonomy.root.children.each do |taxon| %>
                         <li>  <%= link_to taxon.name, seo_url(taxon) %></li>
                     <% end %>
