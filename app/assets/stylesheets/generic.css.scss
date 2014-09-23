@@ -682,8 +682,8 @@ section h1, aside {
         width: 288px;
       }
       input[type=text].error,input[type=email].error, input[type=password].error {
-          color: #ffffff;
-          background: #db4464;
+        color: #ffffff;
+        background: #db4464;
       }
       button {
         height: 33px;
@@ -1077,8 +1077,7 @@ footer {
       text-transform: uppercase;
       width: 308px;
       z-index: 10;
-      margin-top: 50px;
-      margin-bottom: -7px;
+      margin: 50px auto -7px auto;
       position: relative;
     }
 
@@ -1217,15 +1216,14 @@ footer {
       text-transform: uppercase;
       width: 308px;
       z-index: 10;
-      margin-top: 50px;
-      margin-bottom: -7px;
+      margin: 50px auto -7px auto;
       position: relative;
     }
-   &.checkout-layout {
-     background: #FFFFFF;
-     padding: 20px;
-     border-radius: 0 0 5px 5px;
-   }
+    &.checkout-layout {
+      background: #FFFFFF;
+      padding: 20px;
+      border-radius: 0 0 5px 5px;
+    }
   }
   .defaultShadow {
     background: url("upper-shadow.png") repeat-x left top;
@@ -1238,7 +1236,7 @@ footer {
   }
 
   .error-page {
-   padding-bottom: 0;
+    padding-bottom: 0;
     .content-wrapper {
       border: 10px solid #67D9E5;
       border-radius: 10px;
@@ -1356,11 +1354,11 @@ footer {
           background: #db4464;
         }
       }
-        input[type=submit] {
-          float: right;
-          height: 35px;
-          padding: 0 20px;
-        }
+      input[type=submit] {
+        float: right;
+        height: 35px;
+        padding: 0 20px;
+      }
 
     }
   }
@@ -1527,10 +1525,10 @@ footer {
     color: white;
   }
   &.flash_alert {
-   background: #db4464;
+    background: #db4464;
   }
   &.flash_error {
-   background: #db4464;
+    background: #db4464;
   }
 }
 .floatRight {

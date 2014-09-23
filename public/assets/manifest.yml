@@ -171,6 +171,8 @@ fancybox_sprite.png: fancybox_sprite-6db739144c51af76aea8960fc35dbda7.png
 fancybox_sprite/index.png: fancybox_sprite-6db739144c51af76aea8960fc35dbda7.png
 fancybox_sprite@2x.png: fancybox_sprite@2x-d9bfb0ab4609b8c34067c1371d35435c.png
 fancybox_sprite@2x/index.png: fancybox_sprite@2x-d9bfb0ab4609b8c34067c1371d35435c.png
+favicon.png: favicon-8dcb3dabca4cddff0c5e81ea83062bcf.png
+favicon/index.png: favicon-8dcb3dabca4cddff0c5e81ea83062bcf.png
 footer-sprite.png: footer-sprite-ba41d8c2bb162f3a20adc55b1721dbc2.png
 footer-sprite/index.png: footer-sprite-ba41d8c2bb162f3a20adc55b1721dbc2.png
 grey-linen-texture.jpg: grey-linen-texture-b4b7b45ba0b2901f8feda619182896af.jpg
@@ -354,8 +356,8 @@ store/all.js: store/all-53d6c77ba8e5e25f21c1996a3c6325ad.js
 store/all/index.js: store/all-53d6c77ba8e5e25f21c1996a3c6325ad.js
 admin/all.css: admin/all-769a04d7012f780093992ce3f40c128f.css
 admin/all/index.css: admin/all-769a04d7012f780093992ce3f40c128f.css
-application.css: application-782cbf9c1387849ec97f8dba4a66b53f.css
-application/index.css: application-782cbf9c1387849ec97f8dba4a66b53f.css
+application.css: application-2afc7add6acdcb00a75e05365aad37ab.css
+application/index.css: application-2afc7add6acdcb00a75e05365aad37ab.css
 home.css: home-627b3511ce8c336344f7bab5bb6ab855.css
 home/index.css: home-627b3511ce8c336344f7bab5bb6ab855.css
 store/all.css: store/all-c8735a2ded03e4e906b1cadbb32977a3.css
