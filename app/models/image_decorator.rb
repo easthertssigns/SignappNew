@@ -6,7 +6,7 @@ Spree::Image.class_eval do
                         :mini => '75x75#', # thumbs under image
                         :small => '235x235#', # images on category view
                         :basket_icon => '124x84#', # images on category view
-                        :related => '140x100#',
+                        :related => '140x77#',
                         :product => '400x400#', # full product image
                         :large => ['1000x1000#',:jpg] # light box image
                     },
@@ -27,7 +27,7 @@ Spree::Image.class_eval do
                         :mini => "-background transparent -gravity center -extent 75x75 -strip",
                         :small => "-background transparent -gravity center -extent 235x235 -strip",
                         :basket_icon => "-background transparent -gravity center -extent 124x84 -strip",
-                        :related => "-background transparent -gravity center -extent 140x100 -strip",
+                        :related => "-background transparent -gravity center -extent 140x77 -strip",
                         :product => "-background transparent -gravity center -extent 400x400 -strip",
                         :large => "-background transparent -gravity center -extent 1000x1000 -strip"
                     }
