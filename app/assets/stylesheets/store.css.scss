@@ -769,6 +769,16 @@
       }
     }
   }
+  .grid_2 {
+    a {
+      width: 220px;
+      display: inline-block;
+      img {
+        max-width: 100%;
+        margin-bottom: 20px;
+      }
+    }
+  }
 }
 
 .select2-result-label {
@@ -924,7 +934,7 @@
       border-right: 1px solid $darkest-blue-grey;
       display: inline-block;
       font-size: 18px;
-      width: 164px;
+      width: 144px;
       text-align: center;
       font-weight: 600;
     }
@@ -1239,12 +1249,10 @@
     }
     #methods {
       position: relative;
-
       label {
         display: block;
         margin-bottom: 15px;
-        width: 30%;
-
+        width: 50%;
         span {
           float: right;
           font-weight: bold;

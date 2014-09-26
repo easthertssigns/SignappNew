@@ -172,7 +172,7 @@ html, body {
 /*Major Functions*/
 .majorFunctions {
     left: 10%;
-    min-width: 831px;
+    min-width: 1000px;
     position: absolute;
     top: 50px;
 }

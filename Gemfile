@@ -19,6 +19,7 @@ gem 'addressable'
 
 gem 'spree', '1.2'
 #gem 'spree_i18n', :git => 'git://github.com/spree/spree_i18n.git'
+gem 'spree_paypal_express', :git => 'git://github.com/spree/spree_paypal_express.git', :branch => '1-2-stable'
 gem 'spree-refinerycms-authentication', :git => 'git://github.com/adrianmacneil/spree-refinery-authentication.git'
 #gem 'spree_promo', "1.1.2.rc1"
 # gem "spree_auth"

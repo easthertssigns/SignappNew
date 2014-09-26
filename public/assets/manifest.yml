@@ -356,8 +356,8 @@ store/all.js: store/all-53d6c77ba8e5e25f21c1996a3c6325ad.js
 store/all/index.js: store/all-53d6c77ba8e5e25f21c1996a3c6325ad.js
 admin/all.css: admin/all-769a04d7012f780093992ce3f40c128f.css
 admin/all/index.css: admin/all-769a04d7012f780093992ce3f40c128f.css
-application.css: application-2afc7add6acdcb00a75e05365aad37ab.css
-application/index.css: application-2afc7add6acdcb00a75e05365aad37ab.css
+application.css: application-4eb4c99bcd9a58ad9907b01239b748db.css
+application/index.css: application-4eb4c99bcd9a58ad9907b01239b748db.css
 home.css: home-627b3511ce8c336344f7bab5bb6ab855.css
 home/index.css: home-627b3511ce8c336344f7bab5bb6ab855.css
 store/all.css: store/all-c8735a2ded03e4e906b1cadbb32977a3.css
@@ -826,6 +826,8 @@ footer-card-acceptance.png: footer-card-acceptance-95d5725f270a47fd0d4a1a9fd8ee2
 footer-card-acceptance/index.png: footer-card-acceptance-95d5725f270a47fd0d4a1a9fd8ee200b.png
 footer-sage-pay.png: footer-sage-pay-a5d4de5df69b42553ff95c763e3a60f4.png
 footer-sage-pay/index.png: footer-sage-pay-a5d4de5df69b42553ff95c763e3a60f4.png
+paypal.png: paypal-8211338ca8700f032f08b4e697114d89.png
+paypal/index.png: paypal-8211338ca8700f032f08b4e697114d89.png
 analytics_dashboard_preview.png: analytics_dashboard_preview-b95bfb48a3579fa3596a36f6774daa57.png
 analytics_dashboard_preview/index.png: analytics_dashboard_preview-b95bfb48a3579fa3596a36f6774daa57.png
 admin/bg/active-tab.png: admin/bg/active-tab-aa73ff806c998a534be3eb32f48b1ac1.png

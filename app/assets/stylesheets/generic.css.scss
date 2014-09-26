@@ -1527,7 +1527,13 @@ footer {
   &.flash_alert {
     background: #db4464;
   }
+  &.alert {
+    background: #db4464;
+  }
   &.flash_error {
+    background: #db4464;
+  }
+  &.error {
     background: #db4464;
   }
 }
