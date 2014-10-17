@@ -322,7 +322,7 @@
         </div>
       </div>
       <div class="detailsColumn">
-        <h2>About <%= accurate_title %></h2>
+        <h2><%= accurate_title %></h2>
 
         <div id="product-description" data-hook="product_description">
           <div itemprop="description" data-hook="description">
@@ -336,7 +336,7 @@
       </div>
       <div class="priceColumn">
         <div id="base_price">
-          <h2>Base price</h2>
+          <h2>Price:</h2>
 
           <div class="priceWrapper">
             <% if !@product.price.nil? %>
@@ -356,15 +356,13 @@
         </div>
         <%#= link_to 'View The Size Guide', '/product-size-guide', :class => 'sizeGuideLink' %>
         <div id="sign_note">
-          <h3>Note:</h3>
+          <h3>Why us?</h3>
 
-          <p>Why Us?
-            <ul>
-              <li>Free standard delivery, or upgrade to super fast recorded delivery.</li>
-              <li>Suitable fixings, drill bit and installation guide are included at no extra cost.</li>
-              <li>Unlike other sign makers, we don't charge 'by the letter' or charge extra for more words or icons.</li>
-              <li>Your sign is guaranteed to last a lifetime. (Or we'll replace it free of charge).</li>
-          </ul>
+          <p>
+            - Free standard delivery, or upgrade to super fast recorded delivery.<br>
+            - Suitable fixings, drill bit and installation guides are included at no extra cost.<br>
+            - Unlike other sign makers, we don't charge 'by the letter' or charge extra for more words or icons.<br>
+            - Your sign is guaranteed to last a lifetime. (Or we'll replace it free of charge).
           </p>
         </div>
       </div>
